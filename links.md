@@ -4,12 +4,12 @@
 
 # Ссылки на сайты и форумы — FreeBASIC на русском
 
-За новостями и обновлениями сайта можно следить через <a href="/rss.rss">RSS</a>.
+За новостями и обновлениями сайта можно следить через [RSS](www.freebasic.su/rss.rss).
 
 ## Сайты
 
-* [www.freebasic.net](http://www.freebasic.net/) — официальный сайт FreeBasic (английский);
-* [www.free-basic.ru](http://www.free-basic.ru/) — сайт Станислава Будинова.
+* [www.freebasic.net](http://www.freebasic.net/) — официальный сайт FreeBASIC (английский), где можно скачать все версии компилятора;
+* [www.free-basic.ru](http://www.free-basic.ru/) — объёмный сайт сайт Станислава Будинова с примерами кода, статьями, библиотеками, исходниками программ, игр и утилит.
 
 ## Форумы
 
