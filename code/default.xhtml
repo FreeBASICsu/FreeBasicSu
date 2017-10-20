@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd"[
+
+	<!ENTITY nbsp "&#160;">
+	
+]>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<head>
+	<title>Проекты — FreeBASIC на русском</title>
+	<meta name="description" content="Программы, библиотеки и исходные коды, написанные на языке FreeBASIC" />
+	<meta name="keywords" content="FreeBASIC, WinAPI, программирование, проекты на FreeBASIC, исходный код" />
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link href="/styles.css" type="text/css" rel="stylesheet" />
+	
+</head>
+
+<body>
+
+<ul class="navbar">
+	<li><a href="/">Главная</a></li>
+	<li><a href="/src/">Статьи</a></li>
+	<li>Проекты</li>
+	<li><a href="/books/">Учебник</a></li>
+	<li><a href="/links.xhtml">Ссылки</a></li>
+	<li><a href="/about.xhtml">О сайте</a></li>
+</ul>
+
+
+<h1>Проекты — FreeBASIC на русском</h1>
+
+<p>Программы, утилиты и библиотеки.</p>
+
+
+<h2>Программы</h2>
+
+
+<h3>Вебсервер написанный на FreeBASIC</h3>
+<p>Очень компактный вебсервер, написанный на фрибейсике. Умеет обрабатывать методы CONNECT, GET, HEAD, PUT, DELETE, TRACE и OPTIONS. Настоящий сайт работает на этом сервере.</p>
+<p>Исходный код, программа и пояснения лежат <a href="/code/freebasic-webserver/">тут</a>.</p>
+
+<h3>Вебсервер написанный на Visual Basic.Net</h3>
+<p>Простой и «легковесный» веб‐сервер, обрабатывающий запросы к статическим страницам HTML и приложениям ASP.NET, написанный на Visual Basic.Net. Перед запуском сервера нужно поправить файл конфигурации.</p>
+<p>Ссылка на исходник и программу <a href="/res/webserver.zip">WebServer</a>.</p>
+
+
+<h2>Проект «Маленькие консольные утилиты»</h2>
+
+
+<h3>Проксирующая утилита</h3>
+<p>Утилита, перебрасывающая сетевой трафик с одной конечной точки на другую. Применяется для тех программ, которые не умеют привязываться к определённому сетевому интерфейсу (IP‐адресу), а отправляют‐принимают данные на 0.0.0.0.</p>
+<p>Параметры командной строки:</p>
+<ul>
+<li>IP‐адрес для привязки утилиты, с этого адреса утилита будет отправлять данные на сервер;</li>
+<li>порт для привязки утилиты;</li>
+<li>удалённый сервер, куда будут отправляться данные;</li>
+<li>порт удалённого сервера;</li>
+<li>IP‐адрес, с которого утилита будет принимать данные, с этим адресом соединяется клиентская программа;</li>
+<li>порт, с которого утилита будет принимать данные.</li>
+</ul>
+<p>Пример. В компьтере имеется две сетевые карты с адресами 192.168.0.50 (по умолчанию) и 192.168.43.68. Необходимо, чтобы данные на сервер шли с адреса 192.168.43.68, но не с адреса 192.168.0.50; в таком случае параметры утилиты будут такими:</p>
+<p class="codebox"><code>SocketProxy.exe 192.168.43.68 0 chat.freenode.net 6667 localhost 6667</code></p>
+<p>В клиентской программе необходимо будет указать сервер для соединени localhost и порт 6667.</p>
+<p>Ссылка на исходники и программу <a href="/res/SocketProxy.zip">SocketProxy</a>.</p>
+
+
+<h2>Библиотеки</h2>
+
+
+<h3>IRC‐библиотека</h3>
+<p>Статическая библиотека для работы с протоколом IRC. Можно создавать чатботов и клиентские программы типа mIRC и X-Chat. Пример использования <a href="/src/irclibrary.xhtml">в статье про IRC‐библиотеку</a>.</p>
+<p>Ссылка на библиотеку <a href="/res/libIRC.zip">IRC</a>.</p>
+
+
+<hr />
+
+
+<p class="footer">Сайт создан по технологии XHTML</p>
+
+<p class="footer">
+	
+	<span id="pLiveInternet"></span>
+	
+	<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
+		<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
+	</a>
+	<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
+		<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
+	</a> 
+</p>
+
+<script type="text/javascript">var idL=document.getElementById("pLiveInternet");var idA=document.createElement("a");idA.href="//www.liveinternet.ru/stat/freebasic.su";idA.title="Счётчик посещений LiveInternet";var idImg=document.createElement("img");idImg.src="//counter.yadro.ru/hit?t44."+Math.round(1+18*Math.random())+";r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();idImg.alt="Логотип LiveInternet";idA.appendChild(idImg);idL.appendChild(idA);</script>
+
+</body></html>

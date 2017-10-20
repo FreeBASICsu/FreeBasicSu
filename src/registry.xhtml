@@ -1,0 +1,970 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd"[
+
+	<!ENTITY nbsp "&#160;">
+	<!ENTITY t "&#160;&#160;&#160;&#160;">
+	
+]>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<head>
+	<title>Реестр Windows</title>
+	<meta name="description" content="Работа с реестром Windows" />
+	<meta name="keywords" content="реестр, winapi" />
+	
+	<link href="/styles.css" type="text/css" rel="stylesheet" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+</head>
+
+<body>
+
+<ul class="navbar">
+	<li><a href="/">Главная</a></li>
+	<li><a href="/src/">Статьи</a></li>
+	<li><a href="/code/">Проекты</a></li>
+	<li><a href="/books/">Учебник</a></li>
+	<li><a href="/links.xhtml">Ссылки</a></li>
+	<li><a href="/about.xhtml">О сайте</a></li>
+</ul>
+
+
+<h1>Реестр Windows</h1>
+
+<p><span class="postername">Эрик Замабувараев‐Ёмолкуу</span> <span class="date">05.03.2016 23:25:31</span></p>
+
+<p>Реестр Windows или системный реестр — иерархическая база данных параметров и настроек в большинстве операционных систем Microsoft Windows. Реестр содержит информацию и настройки для аппаратного обеспечения, программного обеспечения, профилей пользователей, предустановки. Большинство изменений в Панели управления, ассоциации файлов, системные политики, список установленных программ фиксируются в реестре. Реестр Windows был введён для упорядочения информации, хранившейся до этого во множестве INI‐файлов, обеспечения единого механизма чтения‐записи настроек, избавления от проблем коротких имён файлов, отсутствия разграничения прав доступа и медленного доступа к INI‐файлам.</p>
+
+<ol class="contents">
+	<li><a href="#c1">Историческая справка</a></li>
+	<li><a href="#c2">Внутреннее устройство</a>
+		<ol>
+			<li><a href="#c2c1">Хранение настроек в реестре</a></li>
+			<li><a href="#c2c2">Типы параметров реестра</a></li>
+			<li><a href="#c2c3">Ограничения</a></li>
+		</ol>
+	</li>
+	<li><a href="#c3">Функции</a>
+		<ol>
+			<li><a href="#c3c1">RegOpenKeyEx</a></li>
+			<li><a href="#c3c2">RegCreateKeyEx</a></li>
+			<li><a href="#c3c3">RegCloseKey</a></li>
+			<li><a href="#c3c4">RegQueryInfoKey</a></li>
+			<li><a href="#c3c5">RegQueryValueEx</a></li>
+			<li><a href="#c3c6">RegSetValueEx</a></li>
+			<li><a href="#c3c7">RegEnumKeyEx</a></li>
+			<li><a href="#c3c8">RegEnumValue</a></li>
+			<li><a href="#c3c9">RegNotifyChangeKeyValue</a></li>
+		</ol>
+		<h3></h3>
+	</li>
+	<li><a href="#c4">Примеры</a>
+		<ol>
+			<li><a href="#c4c1">Чтение и запись настроек приложения</a></li>
+			<li><a href="#c4c2">Перечисление подразделов</a></li>
+		</ol>
+	</li>
+</ol>
+
+
+<h2><a id="c1">Историческая справка</a></h2>
+
+<p>Сам реестр как древовидная иерархическая база данных впервые появился в Windows 3.1 (апрель 1992). Это был всего один двоичный файл, который назывался REG.DAT и хранился в каталоге C:\Windows\. Реестр Windows 3.1 имел только одну ветку HKEY_CLASSES_ROOT. Он служил для связи DDE, а позднее и OLE-объектов. Одновременно c появлением реестра в Windows 3.1 появилась программа REGEDIT.EXE для просмотра и редактирования реестра.</p>
+
+<p>Следующий шаг был сделан в Windows NT 3.1 (июль 1993). Произошёл отказ от INI‐файлов как основных файлов конфигурации. На «регистрационную базу» (реестр) была переведена вся конфигурация системы. Основой конфигурации системы стал реестр. Он имел 4 корневых раздела: HKEY_ LOCAL_MACHINE, HKEY_CURRENT_USER, HKEY_CLASSES_ROOT и HKEY_USERS. Реестр стал «сборным»: на диске он хранился в файлах: DEFAULT, SOFTWARE, SYSTEM, а при запуске системы из этих файлов собиралась единая БД.</p>
+
+<p>Реестр в том виде, как его использует Windows и как видит его пользователь в процессе использования программ работы с реестром, формируется из различных данных. Вначале, в процессе установки и настройки Windows, на диске формируются файлы, в которых хранится часть данных относительно конфигурации системы. Затем, в процессе каждой загрузки системы а также в процессе каждого входа и выхода каждого из пользователей, формируется некая виртуальная сущность, называемая «реестром» — объект ядра «REGISTRY\». Данные для формирования «реестра» частично берутся из тех самых файлов (Software, System), частично из информации, собранной ntdetect.com при загрузке Windows. То есть часть данных реестра хранится в файлах, а часть данных формируется в процессе загрузки Windows.</p>
+
+<h2><a id="c2">Внутреннее устройство</a></h2>
+
+<p>В реестре очень легко разобраться, если представлять его структуру в виде файловой системы. Реестр состоит разделов, подразделов, параметров и значений. Разделы и подразделы — это как папки и каталоги в проводнике, параметры — это имена файлов, значения — содержимое файлов.</p>
+
+<p>Если открыть редактор реестра regedit, то можно увидеть пять основных корневых разделов реестра.</p>
+
+<ul>
+	<li>HKEY_CLASSES_ROOT — предназначается для хранения зарегистрированных типов файлов. Это не настоящий корневой раздел, а всего лишь ссылка на HKEY_LOCAL_MACHINE\Software\Classes.</li>
+	<li>HKEY_CURRENT_USER — здесь хранятся настройки текущего пользователя. Тоже не является настоящим разделом, это ссылка на один из подразделов из HKEY_USERS.</li>
+	<li>HKEY_LOCAL_MACHINE — здесь хранятся настройки операционной системы и программ для всех пользователей.</li>
+	<li>HKEY_USERS — в этот раздел подключаются кусты всех загруженных подреестров профилей пользователей.</li>
+	<li>HKEY_CURRENT_CONFIG — сведения о настройке оборудования, является ссылкой на HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Hardware Profiles.</li>
+</ul>
+
+<p>Для простоты их часто указывают в сокращённом обозначении: HKCR, HKCU, HKLM, HKU, HKCC. Также существует раздел HKEY_PERFORMANCE_DATA, где хранится информация о счётчиках производительности Windows, но он не отображается в редакторе реестра.</p>
+
+<p>Только три раздела реестра являются «настоящими» корневыми, остальные являются ссылками на соответствующие подразделы.</p>
+
+
+<h3><a id="c2c1">Хранение настроек в реестре</a></h3>
+
+<p>Программы обычно применяют следующую стратегию когда хранят настройки в реестре:</p>
+
+<ul>
+	<li>Настройки программы для всех пользователей хранят в ветке «HKEY_LOCAL_MACHINE\Software\Имя организации\Название продукта». В то же время программа должна корректно работать при отсутствии этой ветки или какого‐либо параметра в ней, используя значения по умолчанию. Нужно помнить, что запись в HKEY_LOCAL_MACHINE обычно разрешена только администраторам, поэтому многие программы обходятся без этого пункта.</li>
+	
+	<li>Настройки программы для текущего пользователя хранят в ветке «HKEY_CURRENT_USER\Software\Имя организации\Название продукта». Если какие‐либо параметры существуют как в ветке HKEY_LOCAL_MACHINE, так и в ветке HKEY_CURRENT_USER, то последние имеют приоритет. Раздел HKEY_CURRENT_USER хранится в файле NTUSER.DAT в профиле пользователя, что делает настройки перемещаемыми между пользователями домена. Также запись в HKEY_CURRENT_USER разрешена текущему пользователю.</li>
+
+</ul>
+
+
+<h3><a id="c2c2">Типы параметров реестра</a></h3>
+
+<p>Параметры реестра могут хранить данные в различных форматах. При создании параметра его тип сохраняется в реестре и затем используется в функциях чтения значений.</p>
+
+<dl>
+<dt>REG_BINARY</dt>
+<dd>Любые двоичные данные.</dd>
+</dl>
+
+<dl>
+<dt>REG_DWORD</dt>
+<dd>32‐битное число.</dd>
+</dl>
+
+<dl>
+<dt>REG_QWORD</dt>
+<dd>64‐битное число.</dd>
+</dl>
+
+<dl>
+<dt>REG_SZ</dt>
+<dd>Строка с нулевым символом на конце.</dd>
+</dl>
+
+<dl>
+<dt>REG_EXPAND_SZ</dt>
+<dd>Строка с нулевым символом на конце, в которой могут использоваться переменные среды, такие как %PATH%.</dd>
+</dl>
+
+<dl>
+<dt>REG_MULTI_SZ</dt>
+<dd>Список строк, каждая из которых заканчивается нулевым символом + ещё один нулевой символ в конце списка.</dd>
+</dl>
+
+<p>Если данные имеют тип REG_SZ, REG_EXPAND_SZ или REG_MULTI_SZ, то может быть так, что строка не была сохранена с соответствующими конечными нулевыми символами. При чтении строки из реестра необходимо убедиться, что строка правильно завершена перед её использованием, иначе может произойти переполнение буфера. Обрати внимание, что список строк REG_MULTI_SZ должен иметь два завершающих нулевых символа, один для собственно строки, второй как указание на завершение списка.</p>
+
+<p>При записи строки в реестр необходимо указать длину строки включая конечный нулевой символ. Общей ошибкой является использование функции Len (strlen в Си, lstrlen в WinAPI) для определения длины строки, так как функция Len возвращает количество символов в строке не включая завершающий нулевой символ. Длина строки должна быть рассчитана следующим образом: Len(string) + 1.</p>
+
+<p>Список строк REG_MULTI_SZ заканчивается нулевым символом, который интерпретируется как пустая строка. Таким образом в списке нельзя сохранить пустую строку.</p>
+
+<p>Кроме этих типов данных существуют и другие, но используются они крайне редко.</p>
+
+
+<h3><a id="c2c3">Ограничения</a></h3>
+
+<p>Имена разделов нечувствительны к регистру символов.</p>
+
+<p>Имя раздела не должно превышать 255 символов.</p>
+
+<p>Длина имени параметра раздела не должна превышать 16383 юникодных символа (включая нулевой).</p>
+
+<p>Значение параметра может занимать всю доступную память, но рекомендуется использовать не более 2048 байт.</p>
+
+<p>Подразделы не должны превышать 512 уровней вложенности. Одновременно можно создать не более 32 уровней вложенности.</p>
+
+
+<h2><a id="c3">Функции</a></h2>
+
+<p>Как и для любого объекта ядра, для обращения к разделу реестра нужно получить его описатель и указать действия, которые необходимо с ним выполнять. Описатель раздела реестра можно получить открывая или создавая раздел, для этого предназначены функции RegOpenKeyEx и RegCreateKeyEx.</p>
+
+<p>Чтобы уничтожить объект ядра реестра и освободить занимаемую им память применяется функция RegCloseKey.</p>
+
+<p>Для чтения и записи значений параметров используются функции RegQueryValueEx и RegSetValueEx.</p>
+
+<p>Для получения списка подразделов и параметров созданы функции RegEnumKeyEx и RegEnumValue.</p>
+
+<p>Имена разделов, подразделов и параметров не чувствительны к регистру символов.</p>
+
+
+<h3><a id="c3c1">RegOpenKeyEx</a></h3>
+
+<p>Открывает существующий раздел реестра.</p>
+
+<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+<span class="keyword">Declare</span> <span class="keyword">Function</span> RegOpenKeyEx <span class="keyword">Alias</span> <span class="string">&quot;RegOpenKeyExW&quot;</span>( _<br />
+&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpSubKey <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+&t;<span class="keyword">ByVal</span> ulOptions <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> samDesired <span class="keyword">As</span> <span class="datatype">REGSAM</span>, _<br />
+&t;<span class="keyword">ByVal</span> phkResult <span class="keyword">As</span> <span class="datatype">PHKEY</span>) _<br />
+<span class="keyword">As</span> <span class="datatype">LONG</span>
+</code></p>
+
+
+<h4>Параметры</h4>
+
+<dl>
+<dt>hKey</dt>
+<dd>Описатель открываемого раздела, который может быть получен функциями RegCreateKeyEx и RegOpenKey. Также действуют стандартные описатели корневых разделов, перечисленные выше.</dd>
+</dl>
+
+<dl>
+<dt>lpSubKey</dt>
+<dd>Указатель на строку с подразделом.</dd>
+</dl>
+
+<dl>
+<dt>ulOptions</dt>
+<dd>Зарезервировано. Должно быть 0.</dd>
+</dl>
+
+<dl>
+<dt>samDesired</dt>
+<dd>Требуемый доступ к разделу. Может быть комбинацией одного или нескольких значений:
+	<ul>
+		<li>KEY_ALL_ACCESS — разрешаются любые действия над разделом;</li>
+		<li>KEY_ENUMERATE_SUB_KEYS — разрешается перечисление подразделов данного раздела;</li>
+		<li>KEY_QUERY_VALUE — разрешается чтение параметров раздела;</li>
+		<li>KEY_NOTIFY — разрешается использовать ключ для уведомлений об изменениях в разделе и подразделах;</li>
+		<li>KEY_READ — разрешается чтение раздела, параметров и подразделов, является комбинацией флагов STANDARD_RIGHTS_READ, KEY_QUERY_VALUE, KEY_ENUMERATE_SUB_KEYS и KEY_NOTIFY;</li>
+		<li>KEY_SET_VALUE — разрешается создание, удаление и изменение параметров в разделе;</li>
+		<li>KEY_CREATE_SUB_KEY — разрешается создание подразделов в текущем разделе;</li>
+		<li>KEY_WRITE — разрешается запись параметров, является комбинацией флагов STANDARD_RIGHTS_WRITE, KEY_SET_VALUE и KEY_CREATE_SUB_KEY.</li>
+	</ul>
+</dd>
+</dl>
+
+<dl>
+<dt>phkResult</dt>
+<dd>Указатель на переменную, куда будет записан описатель открытого раздела реестра. Открытый раздел необходимо закрывать функцией RegCloseKey, когда он больше не нужен.</dd>
+</dl>
+
+
+<h4>Возвращаемое значение</h4>
+
+<p>При успешном выполнении функция возвращает ERROR_SUCCESS.</p>
+
+<p>Если функция завершилась ошибкой, то возвращается код ошибки.</p>
+
+
+<h4>Замечания</h4>
+
+<p>Функция RegOpenKeyEx открывает существующий раздел, но не создаёт его. Если необходимо создать раздел, то нужно использовать функицю RegCreateKeyEx.</p>
+
+
+<h3><a id="c3c2">RegCreateKeyEx</a></h3>
+
+<p>Создаёт подраздел в реестре. Если подразле уще существует, то функция открывает его.</p>
+
+<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+<span class="keyword">Declare</span> <span class="keyword">Function</span> RegCreateKeyEx <span class="keyword">Alias</span> <span class="string">&quot;RegCreateKeyExW&quot;</span>( _<br />
+&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpSubKey <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+&t;<span class="keyword">ByVal</span> Reserved <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpClass <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
+&t;<span class="keyword">ByVal</span> dwOptions <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> samDesired <span class="keyword">As</span> <span class="datatype">REGSAM</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpSecurityAttributes <span class="keyword">As</span> <span class="datatype">LPSECURITY_ATTRIBUTES</span>, _<br />
+&t;<span class="keyword">ByVal</span> phkResult <span class="keyword">As</span> <span class="datatype">PHKEY</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpdwDisposition <span class="keyword">As</span> <span class="datatype">LPDWORD</span>) _<br />
+<span class="keyword">As</span> <span class="datatype">LONG</span>
+</code></p>
+
+
+<h4>Параметры</h4>
+
+<dl>
+<dt>hKey</dt>
+<dd>Описатель открываемого раздела, который может быть получен функциями RegCreateKeyEx и RegOpenKey. Также действуют стандартные описатели корневых разделов, перечисленные выше.</dd>
+</dl>
+
+<dl>
+<dt>lpSubKey</dt>
+<dd>Указатель на строку с подразделом.</dd>
+</dl>
+
+<dl>
+<dt>Reserved</dt>
+<dd>Зарезервировано. Должно быть 0.</dd>
+</dl>
+
+<dl>
+<dt>lpClass</dt>
+<dd>Указатель на строку, которая содержит класс этого раздела. Может быть проигнорирован и равен NULL. Используется для подключения к удаленному реестру.</dd>
+</dl>
+
+<dl>
+<dt>dwOptions</dt>
+<dd>Опции открытия раздела. Может принимать одну из следующих констант:
+	
+	<ul>
+		<li>REG_OPTION_NON_VOLATILE — вся записанная в реестр информация будет сохранена на диск в файле;</li>
+		<li>REG_OPTION_VOLATILE — вся записанная в реестр информация будет храниться только в памяти и пропадёт при выгрузке раздела (для HKEY_LOCAL_MACHINE перезагрузка компьютера, для HKEY_CURRENT_USER выход пользователя).</li>
+	</ul>
+
+</dd>
+</dl>
+
+<dl>
+<dt>samDesired</dt>
+<dd>Требуемый доступ к разделу. Флаги точно такие же как и у параметра samDesired функции RegOpenKeyEx.</dd>
+</dl>
+
+<dl>
+<dt>lpSecurityAttributes</dt>
+<dd>Указатель на структуру SECURITY_ATTRIBUTES, указывающую, может ли дочерний процесс унаследовать возвращённый функцией описатель. Если указано NULL, то описатель не может быть унаследован.</dd>
+</dl>
+
+<dl>
+<dt>phkResult</dt>
+<dd>Указатель на переменную, куда будет записан описатель открытого раздела реестра. Открытый раздел необходимо закрывать функцией RegCloseKey, когда он больше не нужен.</dd>
+</dl>
+
+<dl>
+<dt>lpdwDisposition</dt>
+<dd>Указатель на переменную, куда будет функция запишет результат открытия или создания подраздела реестра. Если раздел ранее существовал, то функция сиюда запишет константу REG_OPENED_EXISTING_KEY, если раздел был создан, то функция запишет REG_CREATED_NEW_KEY. Этот параметр может быть NULL.</dd>
+</dl>
+
+
+<h4>Возвращаемое значение</h4>
+
+<p>При успешном выполнении функция возвращает ERROR_SUCCESS.</p>
+
+<p>Если функция завершилась ошибкой, то возвращается код ошибки.</p>
+
+
+<h4>Замечания</h4>
+
+<p>Функция RegCreateKeyEx создаёт разделы без параметров. можно воспользоваться функцией RegSetValueEx для создания параметров. Функция создаёт все подразделы в пути, если они не существовали.</p>
+
+<p>После получения описателя раздела реестра с ним проделывают нужные действия, например считывают или записывают значения параметров. После проделанных операций описатель раздела реестра должен быть корректно закрыт.</p>
+
+
+<h3><a id="c3c3">RegCloseKey</a></h3>
+
+<p>Закрывает описатель реестра, уничтожает объект ядра и освобождает память.</p>
+
+<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+<span class="keyword">Declare</span> <span class="keyword">Function</span> RegCloseKey(<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>)<span class="keyword">As</span> <span class="datatype">LONG</span>
+</code></p>
+
+
+<h4>Параметры</h4>
+
+<dl>
+<dt>hKey</dt>
+<dd>Описатель открытого раздела, который больше не нужен.</dd>
+</dl>
+
+
+<h4>Возвращаемое значение</h4>
+
+<p>Если описатель успешно освобождён, то возвращается ERROR_SUCCESS.</p>
+
+<p>Если функция завершилась ошибкой, то возвращается код ошибки.</p>
+
+
+<h3><a id="c3c4">RegQueryInfoKey</a></h3>
+
+<p>Получает информацию о разделе реестра: имя класса, поличество подразделов и параметров, дату последней модификации.</p>
+
+<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+<span class="keyword">Declare</span> <span class="keyword">Function</span> RegQueryInfoKey <span class="keyword">Alias</span> <span class="string">&quot;RegQueryInfoKeyW&quot;</span>( _<br />
+&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpClass <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpcchClass <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpReserved <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpcSubKeys <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpcbMaxSubKeyLen <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpcbMaxClassLen <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpcValues <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpcbMaxValueNameLen <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpcbMaxValueLen <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpcbSecurityDescriptor <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpftLastWriteTime <span class="keyword">As</span> <span class="datatype">PFILETIME</span>) _<br />
+<span class="keyword">As</span> <span class="datatype">LONG</span>
+</code></p>
+
+
+<h4>Параметры</h4>
+
+<dl>
+<dt>hKey</dt>
+<dd>Описатель открытого раздела. Раздел должен быть открыт с правами KEY_QUERY_VALUE.</dd>
+</dl>
+
+<dl>
+<dt>lpClass</dt>
+<dd>Указатель на строку, куда будет записано имя класса раздела. Может быть NULL.</dd>
+</dl>
+
+<dl>
+<dt>lpcchClass</dt>
+<dd>Указатель на переменную с размером буфера для класса раздела, включая нулевой символ. Если размер буфера недостаточен, то функция запишет сюда требуемое число символов под буфер без учёта нулевого и вернёт значение ERROR_MORE_DATA. Если lpClass не равен NULL, а lpcchClass равен NULL, то функция вернёт ERROR_INVALID_PARAMETER.</dd>
+</dl>
+
+<dl>
+<dt>lpReserved</dt>
+<dd>Зарезервировано. Должно быть 0.</dd>
+</dl>
+
+<dl>
+<dt>lpcSubKeys</dt>
+<dd>Указатель на переменную, куда будет записано количество подразделов в текущем разделе. Может быть NULL.</dd>
+</dl>
+
+<dl>
+<dt>lpcbMaxSubKeyLen</dt>
+<dd>Указатель на переменную, куда будет записана длина самого длинного имени подраздела без учёта нулевого символа. Может быть NULL.</dd>
+</dl>
+
+<dl>
+<dt>lpcbMaxClassLen</dt>
+<dd>Указатель на переменную, куда будет записана длина самого длинного имени класса подраздела без учёта нулевого символа. Может быть NULL.</dd>
+</dl>
+
+<dl>
+<dt>lpcValues</dt>
+<dd>Указатель на переменную, куда будет записано количество параметров в разделе. Может быть NULL.</dd>
+</dl>
+
+<dl>
+<dt>lpcbMaxValueNameLen</dt>
+<dd>Указатель на переменную, куда будет записана длина самого длинного имени параметра в разделе. Может быть NULL.</dd>
+</dl>
+
+<dl>
+<dt>lpcbMaxValueLen</dt>
+<dd>Указатель на переменную, куда будет записана длина самого большого значения параметра в разделе в байтах. Может быть NULL.</dd>
+</dl>
+
+<dl>
+<dt>lpcbSecurityDescriptor</dt>
+<dd>Указатель на переменную, куда будет записана длина дескриптора защиты раздела в байтах. Может быть NULL.</dd>
+</dl>
+
+<dl>
+<dt>lpftLastWriteTime</dt>
+<dd>Указатель на структуру FILETIME, куда будет записана дата последней модификации раздела или его параметров. Может быть NULL.</dd>
+</dl>
+
+
+<h4>Возвращаемое значение</h4>
+
+<p>При успешном выполнении функция возвращает ERROR_SUCCESS.</p>
+
+<p>Если функция завершилась ошибкой, то возвращается код ошибки.</p>
+
+
+<h3><a id="c3c5">RegQueryValueEx</a></h3>
+
+<p>Получает значение параметра раздела реестра.</p>
+
+<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+<span class="keyword">Declare</span> <span class="keyword">Function</span> RegQueryValueEx <span class="keyword">Alias</span> <span class="string">&quot;RegQueryValueExW&quot;</span>( _<br />
+&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpValueName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpReserved <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpType <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpData <span class="keyword">As</span> <span class="datatype">LPBYTE</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpcbData <span class="keyword">As</span> <span class="datatype">LPDWORD</span>) _<br />
+<span class="keyword">As</span> <span class="datatype">LONG</span>
+</code></p>
+
+
+<h4>Параметры</h4>
+
+<dl>
+<dt>hKey</dt>
+<dd>Описатель открытого раздела. Раздел должен быть открыт с правами KEY_QUERY_VALUE.</dd>
+</dl>
+
+<dl>
+<dt>lpValueName</dt>
+<dd>Указатель на строку, содержащую название параметра. Если равно NULL, то возвращается значение «по умолчанию». Если параметр с таким именем не существует, то функция вернёт ERROR_FILE_NOT_FOUND.</dd>
+</dl>
+
+<dl>
+<dt>lpReserved</dt>
+<dd>Зарезервировано. Должно быть 0.</dd>
+</dl>
+
+<dl>
+<dt>lpType</dt>
+<dd>Указатель на переменную, куда будет записан тип параметра. Может быть NULL.</dd>
+</dl>
+
+<dl>
+<dt>lpData</dt>
+<dd>Указатель на буфер, куда будет записано значение параметра. Может быть NULL, в этом случае значение параметра не возвращается, такой метод используется для вычисления размера требуемого буфера.</dd>
+</dl>
+
+<dl>
+<dt>lpcbData</dt>
+<dd>Указатель на переменную с размером буфера под значение параметра в байтах. Функция запишет сюда размер данных, скопированных в буфер. Если данные носят текстовый характер, то в это число включается размер нулевого символа в байтах. Если размер буфера недостаточен для сохранения данных, функция запишет требуемый размер буфера и вернёт ERROR_MORE_DATA.</dd>
+</dl>
+
+
+<h4>Возвращаемое значение</h4>
+
+<p>При успешном выполнении функция возвращает ERROR_SUCCESS.</p>
+
+<p>Если функция завершилась ошибкой, то возвращается код ошибки.</p>
+
+
+<h4>Замечания</h4>
+
+<p>Функция предоставляет возможность вначале проверить каков размер данных в параметре, отправив NULL в lpData. Это позволяет выделять память под значение параметра динамически, по ходу выполнения программы.</p>
+
+
+<h3><a id="c3c6">RegSetValueEx</a></h3>
+
+<p>Устанавливает значение параметра реестра. Если такого параметра не существовало в подразделе реестра, то он будет создан.</p>
+
+<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+<span class="keyword">Declare</span> <span class="keyword">Function</span> RegSetValueEx <span class="keyword">Alias</span> <span class="string">&quot;RegSetValueExW&quot;</span>( _<br />
+&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpValueName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+&t;<span class="keyword">ByVal</span> Reserved <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> dwType <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpData <span class="keyword">As</span> <span class="datatype">Const UBYTE Ptr</span>, _<br />
+&t;<span class="keyword">ByVal</span> cbData <span class="keyword">As</span> <span class="datatype">DWORD</span>) _<br />
+<span class="keyword">As</span> <span class="datatype">LONG</span>
+</code></p>
+
+
+<h4>Параметры</h4>
+
+<dl>
+<dt>hKey</dt>
+<dd>Описатель открытого раздела. Раздел должен быть открыт с правами KEY_SET_VALUE.</dd>
+</dl>
+
+<dl>
+<dt>lpValueName</dt>
+<dd>Указатель на строку, содержащую название параметра. Если равно NULL, то устанавливается значение «по умолчанию». Если параметр с таким именем не существует, то он будет создан.</dd>
+</dl>
+
+<dl>
+<dt>lpReserved</dt>
+<dd>Зарезервировано. Должно быть 0.</dd>
+</dl>
+
+<dl>
+<dt>dwType</dt>
+<dd>Тип параметра.</dd>
+</dl>
+
+<dl>
+<dt>lpData</dt>
+<dd>Указатель на буфер, содержащий значение параметра. Строковые данные должны заканчиваться нулевым символом.</dd>
+</dl>
+
+<dl>
+<dt>cbData</dt>
+<dd>Размер буфера под параметр в байтах. Для числовых данных достаточно указать SizeOf(REG_DWORD) или SizeOf(REG_QWORD), для строк необходимо учитывать все нулевые символы, например, так: ((Длина строки + 1) * SizeOf(WString)).</dd>
+</dl>
+
+
+<h4>Возвращаемое значение</h4>
+
+<p>При успешном выполнении функция возвращает ERROR_SUCCESS.</p>
+
+<p>Если функция завершилась ошибкой, то возвращается код ошибки.</p>
+
+
+<h4>Замечания</h4>
+
+<p>Значения параметров реестра ограничеты только размером доступной памяти. Однако сохранение очень больших данных сильно сказывается на производительности. Данные больше чем 2048 байт слудует сохранять в файлах, а не в реестре, сохраняя в реестре только пути к ним.</p>
+
+<p>Такие данные как значки, точечные рисунки, исполняемые файлы необходимо сохранять на диске.</p>
+
+
+<h3><a id="c3c7">RegEnumKeyEx</a></h3>
+
+<p>Перечисляет подразделы раздела реестра.</p>
+
+<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+<span class="keyword">Declare</span> <span class="keyword">Function</span> RegEnumKeyEx <span class="keyword">Alias</span> <span class="string">&quot;RegEnumKeyExW&quot;</span>( _<br />
+&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
+&t;<span class="keyword">ByVal</span> dwIndex <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpName <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpcchName <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpReserved <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpClass <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpcchClass <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpftLastWriteTime <span class="keyword">As</span> <span class="datatype">PFILETIME</span>) _<br />
+<span class="keyword">As</span> <span class="datatype">LONG</span>
+</code></p>
+
+
+<h4>Параметры</h4>
+
+<dl>
+<dt>hKey</dt>
+<dd>Описатель открытого раздела. Раздел должен быть открыт с правами KEY_ENUMERATE_SUB_KEYS.</dd>
+</dl>
+
+<dl>
+<dt>dwIndex</dt>
+<dd>Индекс подраздела. При первом вызове этот параметр должен быть равен нулю, при последующих увеличиваться на единицу.</dd>
+</dl>
+
+<dl>
+<dt>lpName</dt>
+<dd>Указатель на строку‐буфер, куда будет записано имя подраздела.</dd>
+</dl>
+
+<dl>
+<dt>lpcchName</dt>
+<dd>Указатель на переменную, где хранится длина строки‐буфера имени подраздела в символах включая нулевой. Если функция выполнится успешно, то сюда будет записана длина имени подраздела без учёта нулевого символа.</dd>
+</dl>
+
+<dl>
+<dt>lpReserved</dt>
+<dd>Зарезервировано. Должно быть 0.</dd>
+</dl>
+
+<dl>
+<dt>lpClass</dt>
+<dd>Указатель на строку‐буфер, куда будет записано имя класса раздела. Может быть NULL.</dd>
+</dl>
+
+<dl>
+<dt>lpcchClass</dt>
+<dd>Указатель на переменную, где хранится длина строки‐буфера имени класса подраздела в символах включая нулевой. Если функция выполнится успешно, то сюда будет записана длина имени класса подраздела без учёта нулевого символа. Может быть NULL если строка‐буфер для имени класса подраздела равна NULL.</dd>
+</dl>
+
+<dl>
+<dt>lpftLastWriteTime</dt>
+<dd>Указатель на структуру FILETIME, куда будет записана дата последней модификации подраздела. Может быть NULL.</dd>
+</dl>
+
+
+<h4>Возвращаемое значение</h4>
+
+<p>При успешном выполнении функция возвращает ERROR_SUCCESS.</p>
+
+<p>Если функция завершилась ошибкой, то возвращается код ошибки. Приложение, вызывающее эту функцию, должно увеличивать параметр dwIndex до тех пор, пока функция не возвратит ERROR_NO_MORE_ITEMS.</p>
+
+
+<h4>Замечания</h4>
+
+<p>Для перечисления подразделов приложение должно вызвать функцию RegEnumKeyEx с параметром dwIndex равным нулю. Затем каждый раз увеличивать этот параметр на единицу и вызывать функцию снова, до тех пор, пока не будут перечислены все подразделы, в этом случае функция вернёт ERROR_NO_MORE_ITEMS или ошибку.</p>
+
+<p>Также можно перечислять подразделы в обратном порядке, установив параметр dwIndex равным максимальному индексу подраздела, возвращённому функцией ReqQueryValue, и уменьшая его на единицу при каждом вызове функции до нуля.</p>
+
+
+<h3><a id="c3c8">RegEnumValue</a></h3>
+
+<p>Перечисляет параметры раздела реестра.</p>
+
+<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+<span class="keyword">Declare</span> <span class="keyword">Function</span> RegEnumValue <span class="keyword">Alias</span> <span class="string">&quot;RegEnumValueW&quot;</span>( _<br />
+&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
+&t;<span class="keyword">ByVal</span> dwIndex <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpValueName <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpcchValueName <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpReserved <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpType <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpData <span class="keyword">As</span> <span class="datatype">LPBYTE</span>, _<br />
+&t;<span class="keyword">ByVal</span> lpcbData <span class="keyword">As</span> <span class="datatype">LPDWORD</span>) _<br />
+<span class="keyword">As</span> <span class="datatype">LONG</span>
+</code></p>
+
+
+<h4>Параметры</h4>
+
+<dl>
+<dt>hKey</dt>
+<dd>Описатель открытого раздела. Раздел должен быть открыт с правами KEY_QUERY_VALUE.</dd>
+</dl>
+
+<dl>
+<dt>dwIndex</dt>
+<dd>Индекс подраздела. При первом вызове этот параметр должен быть равен нулю, при последующих увеличиваться на единицу.</dd>
+</dl>
+
+<dl>
+<dt>lpValueName</dt>
+<dd>Указатель на строку‐буфер, куда будет записано имя параметра.</dd>
+</dl>
+
+<dl>
+<dt>lpcchValueName</dt>
+<dd>Указатель на переменную, где хранится длина строки‐буфера имени параметра в символах включая нулевой. Если функция выполнится успешно, то сюда будет записана длина имени параметра без учёта нулевого символа.</dd>
+</dl>
+
+<dl>
+<dt>lpReserved</dt>
+<dd>Зарезервировано. Должно быть 0.</dd>
+</dl>
+
+<dl>
+<dt>lpType</dt>
+<dd>Указатель на переменную, куда будет записан тип данных параметра. Может быть NULL.</dd>
+</dl>
+
+<dl>
+<dt>lpData</dt>
+<dd>Указатель на буфер, куда будет записано значение параметра. Если указать NULL, то функция заполнит lpcbData требуемой длиной буфера.</dd>
+</dl>
+
+<dl>
+<dt>lpcbData</dt>
+<dd>Указатель на переменную с размером буфера под значение параметра в байтах. Функция запишет сюда размер данных, скопированных в буфер. Может быть NULL, только если lpData равно NULL.</dd>
+</dl>
+
+
+<h4>Возвращаемое значение</h4>
+
+<p>При успешном выполнении функция возвращает ERROR_SUCCESS.</p>
+
+<p>Если буфер, размер буфера, указанный в lpcbData недостаточен для сохранения данных, то функция вернёт ERROR_MORE_DATA и сохранит требуемый размер буфера в lpcbData.</p>
+
+<p>Если функция завершилась ошибкой, то возвращается код ошибки. Приложение, вызывающее эту функцию, должно увеличивать параметр dwIndex до тех пор, пока функция не возвратит ERROR_NO_MORE_ITEMS.</p>
+
+
+<h4>Замечания</h4>
+
+<p>Для перечисления параметров подраздела реестра приложение должно вызвать функцию RegEnumValue с параметром dwIndex равным нулю. Затем каждый раз увеличивать этот параметр на единицу и вызывать функцию снова, до тех пор, пока не будут перечислены все подразделы, в этом случае функция вернёт ERROR_NO_MORE_ITEMS или ошибку.</p>
+
+<p>Также можно перечислять подразделы в обратном порядке, установив параметр dwIndex равным максимальному индексу параметра, возвращённому функцией ReqQueryValue, и уменьшая его на единицу при каждом вызове функции до нуля.</p>
+
+<p>Функция возвращает параметры подраздела без всякой сортировки.</p>
+
+
+<h3><a id="c3c9">RegNotifyChangeKeyValue</a></h3>
+
+<p>Уведомляет приложение об изменении в разделе реестра.</p>
+
+<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+<span class="keyword">Declare</span> <span class="keyword">Function</span> RegNotifyChangeKeyValue( _<br />
+&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
+&t;<span class="keyword">ByVal</span> bWatchSubtree <span class="keyword">As</span> <span class="datatype">WINBOOL</span>, _<br />
+&t;<span class="keyword">ByVal</span> dwNotifyFilter <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+&t;<span class="keyword">ByVal</span> hEvent <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
+&t;<span class="keyword">ByVal</span> fAsynchronous <span class="keyword">As</span> <span class="datatype">WINBOOL</span>) _<br />
+<span class="keyword">As</span> <span class="datatype">LONG</span>
+</code></p>
+
+
+<h4>Параметры</h4>
+
+<dl>
+<dt>hKey</dt>
+<dd>Описатель открытого раздела. Раздел должен быть открыт с правами KEY_NOTIFY.</dd>
+</dl>
+
+<dl>
+<dt>bWatchSubtree</dt>
+<dd>Если этот параметр равен True, то функция будет следить за изменениями в подразделах, если False то только в текущем разделе.</dd>
+</dl>
+
+<dl>
+<dt>dwNotifyFilter</dt>
+<dd>Указывает, о каких изменениях следуем уведомлять приложение. Может быть комбинацией из следующи значений:
+	<ul>
+		<li>REG_NOTIFY_CHANGE_NAME — уведомление о добавлении или удалении подраздела;</li>
+		<li>REG_NOTIFY_CHANGE_ATTRIBUTES — уведомление об изменении атрибутов раздела, например, дескриптора защиты;</li>
+		<li>REG_NOTIFY_CHANGE_LAST_SET — уведомление об добавлении, удалении, изменении значения параметра;</li>
+		<li>REG_NOTIFY_CHANGE_SECURITY — уведомление об изменении дескриптора защиты.</li>
+	</ul>
+</dd>
+</dl>
+
+<dl>
+<dt>hEvent</dt>
+<dd>Описатель объекта ядра «событие». Если fAsynchronous установлен в True, то функция возвращает значение немедленно и будет отправлять уведомления через указанное событие. Если fAsynchronous равно False, то hEvent игнорируется.</dd>
+</dl>
+
+<dl>
+<dt>fAsynchronous</dt>
+<dd>Если установлен в True, то функция возвращает значение немедленно и будет отправлять уведомления через указанное событие, в этом случае hEvent должен быть действительным объектом ядра «событие». Если fAsynchronous равно False, то hEvent игнорируется.</dd>
+</dl>
+
+
+<h4>Возвращаемое значение</h4>
+
+<p>При успешном выполнении функция возвращает ERROR_SUCCESS.</p>
+
+<p>Если функция завершилась ошибкой, то возвращается код ошибки.</p>
+
+
+<h4>Замечания</h4>
+
+<p>Функция уведомляет об одном изменении. Чтобы получить уведомление о следующем, необходимо вызвать её снова.</p>
+
+
+<h2><a id="c4">Примеры</a></h2>
+
+
+<h3><a id="c4c1">Чтение и запись настроек приложения</a></h3>
+
+<p>В этом примере сохраним и считаем из реестра имя пользователя и размеры окна приложения «Офис» вымышленной корпорации «Большие программы» в профиле пользователя.</p>
+
+<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+#ifndef unicode<br />
+#define unicode<br />
+#endif<br />
+#include once &quot;windows.bi&quot;<br />
+<br />
+Const RegSection = &quot;Software\Большие программы\Офис&quot;<br />
+Const UserNameKey = &quot;Пользователь&quot;<br />
+Const WidthKey = &quot;Width&quot;<br />
+Const HeightKey = &quot;Height&quot;<br />
+<br />
+&apos; Запись параметров<br />
+Scope<br />
+&t;Dim reg As HKEY = Any<br />
+&t;Dim lpdwDisposition As DWORD = Any<br />
+<br />
+&t;&apos; Открыть раздел реестра в профиле текущего пользователя<br />
+&t;Dim hr As Long = RegCreateKeyEx(HKEY_CURRENT_USER, @RegSection, 0, 0, 0, KEY_SET_VALUE, NULL, @reg, @lpdwDisposition)<br />
+<br />
+&t;If hr &lt;&gt; ERROR_SUCCESS Then<br />
+&t;&t;End(1)<br />
+&t;End If<br />
+<br />
+&t;&apos; Записать ширину окна<br />
+&t;Dim WindowWidth As DWORD = 640<br />
+&t;hr = RegSetValueEx(reg, @WidthKey, 0, REG_DWORD, CPtr(Byte Ptr, @WindowWidth), SizeOf(DWORD))<br />
+<br />
+&t;&apos; Записать высоту окна<br />
+&t;Dim WindowHeight As DWORD = 480<br />
+&t;hr = RegSetValueEx(reg, @HeightKey, 0, REG_DWORD, CPtr(Byte Ptr, @WindowHeight), SizeOf(DWORD))<br />
+<br />
+&t;&apos; Записать имя пользователя<br />
+&t;Dim UserName As WString Ptr = @&quot;Алексей&quot;<br />
+&t;hr = RegSetValueEx(reg, @UserNameKey, 0, REG_SZ, CPtr(Byte Ptr, UserName), (Len(UserName) + 1) * SizeOf(WString))<br />
+<br />
+&t;RegCloseKey(reg)<br />
+End Scope<br />
+<br />
+&apos; Чтение параметров<br />
+Scope<br />
+&t;Dim reg As HKEY = Any<br />
+&t;Dim lpdwDisposition As DWORD = Any<br />
+&t;Dim hr As Long = RegCreateKeyEx(HKEY_CURRENT_USER, @RegSection, 0, 0, 0, KEY_QUERY_VALUE, NULL, @reg, @lpdwDisposition)<br />
+<br />
+&t;If hr &lt;&gt; ERROR_SUCCESS Then<br />
+&t;&t;End(1)<br />
+&t;End If<br />
+<br />
+&t;Scope<br />
+&t;&t;Dim WindowWidth As DWORD = Any<br />
+&t;&t;Dim BufferLength As DWORD = SizeOf(DWORD)<br />
+&t;&t;hr = RegQueryValueEx(reg, @WidthKey, 0, NULL, CPtr(Byte Ptr, @WindowWidth), @BufferLength)<br />
+&t;&t;Print &quot;Ширина окна&quot;, WindowWidth<br />
+&t;End Scope<br />
+<br />
+&t;Scope<br />
+&t;&t;Dim WindowHeight As DWORD = Any<br />
+&t;&t;Dim BufferLength As DWORD = SizeOf(DWORD)<br />
+&t;&t;hr = RegQueryValueEx(reg, @HeightKey, 0, NULL, CPtr(Byte Ptr, @WindowHeight), @BufferLength)<br />
+&t;&t;Print &quot;Высота окна&quot;, WindowHeight<br />
+&t;End Scope<br />
+<br />
+&t;Scope<br />
+&t;&t;&apos; Определить размер требуемого буфера для имени пользователя<br />
+&t;&t;Dim BufferLength As DWORD = Any<br />
+&t;&t;hr = RegQueryValueEx(reg, @UserNameKey, 0, NULL, NULL, @BufferLength)<br />
+&t;&t;Print &quot;Размер буфера под имя пользователя в байтах&quot;, BufferLength<br />
+<br />
+&t;&t;Dim UserName As WString Ptr = Allocate(BufferLength)<br />
+&t;&t;hr = RegQueryValueEx(reg, @UserNameKey, 0, NULL, CPtr(Byte Ptr, UserName), @BufferLength)<br />
+&t;&t;Print &quot;Имя пользователя&quot;, *UserName<br />
+&t;&t;DeAllocate(UserName)<br />
+&t;End Scope<br />
+<br />
+&t;RegCloseKey(reg)<br />
+End Scope
+</code></p>
+
+
+<h3><a id="c4c2">Перечисление подразделов</a></h3>
+
+<p>В этом примере перечислим все подразделы в разделе «Software» для всех пользователей.</p>
+
+<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+#ifndef unicode<br />
+#define unicode<br />
+#endif<br />
+#include once &quot;windows.bi&quot;<br />
+<br />
+Const RegSection = &quot;Software&quot;<br />
+<br />
+&apos; Получить список подразделов<br />
+<br />
+Dim reg As HKEY = Any<br />
+Dim lpdwDisposition As DWORD = Any<br />
+<br />
+&apos; Открыть раздел реестра общий для всех пользователей<br />
+Dim hr As Long = RegCreateKeyEx(HKEY_LOCAL_MACHINE, @RegSection, 0, 0, 0, KEY_QUERY_VALUE + KEY_ENUMERATE_SUB_KEYS, NULL, @reg, @lpdwDisposition)<br />
+<br />
+If hr &lt;&gt; ERROR_SUCCESS Then<br />
+&t;End(1)<br />
+End If<br />
+<br />
+Dim strClassName As WString * 512 = Any<br />
+Dim ClassNameLength As DWORD = 511<br />
+<br />
+Dim SubKeysCount As DWORD = Any<br />
+Dim MaxSubKeyLength As DWORD = Any<br />
+Dim MaxClassNameLength As DWORD = Any<br />
+<br />
+Dim ValuesCount As DWORD = Any<br />
+Dim MaxValueDataLength As DWORD = Any<br />
+Dim MaxValueNameLength As DWORD = Any<br />
+<br />
+Dim LastWriteTime As FILETIME = Any<br />
+<br />
+&apos; Информация о разделе реестра<br />
+hr = RegQueryInfoKey(reg, @strClassName, @ClassNameLength, 0, @SubKeysCount, @MaxSubKeyLength, @MaxClassNameLength, @ValuesCount, @MaxValueNameLength, @MaxValueDataLength, NULL, @LastWriteTime)<br />
+If hr &lt;&gt; ERROR_SUCCESS Then<br />
+&t;End(1)<br />
+End If<br />
+<br />
+Print &quot;ClassNameLength&quot;, ClassNameLength<br />
+Print &quot;SubKeysCount&quot;, SubKeysCount<br />
+Print &quot;MaxSubKeyLength&quot;, MaxSubKeyLength<br />
+Print &quot;MaxClassNameLength&quot;, MaxClassNameLength<br />
+Print &quot;ValuesCount&quot;, ValuesCount<br />
+Print &quot;MaxValueNameLength&quot;, MaxValueNameLength<br />
+Print &quot;MaxValueDataLength&quot;, MaxValueDataLength<br />
+<br />
+Dim SubKeyName As WString Ptr = Allocate((SizeOf(WString) + 1) * MaxSubKeyLength)<br />
+<br />
+&apos; Перечисление подразделов<br />
+For i As DWORD = 0 To SubKeysCount - 1<br />
+&t;Dim MaxSubKeyLength1 As DWORD = MaxSubKeyLength + 1<br />
+&t;hr = RegEnumKeyEx(reg, i, SubKeyName, @MaxSubKeyLength1, 0, NULL, 0, @LastWriteTime)<br />
+&t;If hr &lt;&gt; ERROR_SUCCESS Then<br />
+&t;&t;Print &quot;Ошибка перечисления&quot;, hr<br />
+&t;&t;Exit For<br />
+&t;End If<br />
+&t;Print *SubKeyName<br />
+Next<br />
+<br />
+DeAllocate(SubKeyName)<br />
+RegCloseKey(reg)
+</code></p>
+
+
+<h2>Поделись ссылочкой в социальных сетях</h2>
+<div id="vk_share_button"></div>
+
+
+<hr />
+
+<p class="footer">Сайт создан по технологии XHTML</p>
+
+<p class="footer">
+	
+	<span id="pLiveInternet"></span>
+	
+	<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
+		<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
+	</a>
+	<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
+		<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
+	</a> 
+</p>
+
+<script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
+<script type="text/javascript">var docUrl=document.URL.toString();document.getElementById("vk_share_button").innerHTML=VK.Share.button(docUrl, {type: "round"});</script>
+
+
+<script type="text/javascript">var idL=document.getElementById("pLiveInternet");var idA=document.createElement("a");idA.href="//www.liveinternet.ru/stat/freebasic.su";idA.title="Счётчик посещений LiveInternet";var idImg=document.createElement("img");idImg.src="//counter.yadro.ru/hit?t44."+Math.round(1+18*Math.random())+";r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(docUrl)+";"+Math.random();idImg.alt="Логотип LiveInternet";idA.appendChild(idImg);idL.appendChild(idA);</script>
+
+</body></html>

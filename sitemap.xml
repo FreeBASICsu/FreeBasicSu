@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
+	<url>
+		<loc>http://www.freebasic.su/</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/about.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/links.xhtml</loc>
+	</url>
+	
+	
+	<url>
+		<loc>http://www.freebasic.su/users/mabu.xhtml</loc>
+	</url>
+	
+	
+	<url>
+		<loc>http://www.freebasic.su/src/</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/src/inifiles.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/src/tips.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/src/irclibrary.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/src/base64.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/src/memorymappedfiles.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/src/unicode.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/src/consolehandlers.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/src/cardslibrary.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/src/fileswinapi.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/src/windows-services.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/src/codepages.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/src/without-rtl.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/src/cheatsheet.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/src/windows-errors.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/src/registry.xhtml</loc>
+	</url>
+
+
+	<url>
+		<loc>http://www.freebasic.su/code/</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/code/freebasic-webserver/</loc>
+	</url>
+
+	
+	<url>
+		<loc>http://www.freebasic.su/books/</loc>
+	</url>
+
+</urlset>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd"[
+
+	<!ENTITY nbsp "&#160;">
+	
+]>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<head>
+	<title>Учебник — FreeBASIC на русском</title>
+	<meta name="description" content="Учебник по программированию на языке FreeBASIC, технические статьи, документации, примеры кода FreeBASIC, исходники, библиотеки" />
+	<meta name="keywords" content="FreeBASIC, WinAPI, программирование, статьи, исходники, библиотеки" />
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link href="/styles.css" type="text/css" rel="stylesheet" />
+	
+</head>
+
+<body>
+
+<ul class="navbar">
+	<li><a href="/">Главная</a></li>
+	<li><a href="/src/">Статьи</a></li>
+	<li><a href="/code/">Проекты</a></li>
+	<li>Учебник</li>
+	<li><a href="/links.xhtml">Ссылки</a></li>
+	<li><a href="/about.xhtml">О сайте</a></li>
+</ul>
+
+
+<h1>Учебник — FreeBASIC на русском</h1>
+
+
+<ul class="contents">
+	<li><a href="#c1">Введение</a></li>
+	<li><a href="install.xhtml">Установка и настройка</a></li>
+	<li>Первая программа</li>
+	<li>Переменные</li>
+	<li>Выбор вариантов</li>
+	<li>Циклы</li>
+	
+		<li>Методы отладки программы</li>
+		<li>Работа в графическом режиме</li>
+		<li>Структура программы</li>
+		<li>Анимация</li>
+		<li>Случайные и псевдослучайные числа</li>
+		
+	<li>Структуры</li>
+	<li>Указатели</li>
+	<li>Управление памятью</li>
+	<li>Массивы</li>
+	<li>Символьные строки</li>
+	<li>Процедуры</li>
+	<li>Функции</li>
+	<li>Рекурсия</li>
+	
+	<li>Матрицы (двумерные массивы)</li>
+	
+	<li>Проектирование программ</li>
+	<li>Построение графиков и работа с ними</li>
+	<li>Вычислительные методы</li>
+	<li>Моделирование</li>
+	<li>Сложные проекты</li>
+	<li>Списки</li>
+	<li>Стеки, очереди, деки</li>
+	<li>Деревья</li>
+	<li>Графы</li>
+</ul>
+
+<h2><a id="c1">Введение</a></h2>
+
+<p>Фрибейсик — это язык программирования наследник Microsoft QuickBasic и компилятор для него. Появился в 2004 г. и разрабатывается так называемой The FreeBASIC Development Team под руководством Andre Victor. Изначально язык развивался как альтернатива и замена QuickBasic корпорации Microsoft, но быстро превратился в мощный инструмент. Фрибейсик сейчас развивается и его функциональные возможности увеличиваются с каждой новой версией.</p>
+
+<p>Фрибейсик распространяется по лицензии GNU GPL по которой является компилятором с открытыми исходными кодами.</p>
+
+<p>Компилятор фрибейсика, на данный момент, создает исполняемые файлы для нескольких основных платформ: DOS, Windows, Linux. Число платформ в будущем может увеличиться.</p>
+
+<p>Несмотря на то, что компилятор имеет совместимость с QuickBASIC, в язык FreeBASIC было добавлено множество расширений и возможностей для соответствия основным современным требованиям.</p>
+
+<p>Начиная с версии 0.17 пользователь может выбрать три режима компиляции (опция -lang): режим совместимости с QuickBASIC (qb), старыми версиями FreeBASIC (deprecated), и стандартный режим (fb), включающий в себя все последние изменения и возможности.</p>
+
+<p>FreeBasic вбирает в себя, по мере своего развития, все наилучшее от языков Basic и c/c++. Вот некоторые нововведения:</p>
+
+<ul>
+	<li>Поддержка Unicode (как исходники, так и строки).</li>
+	<li>Множество встроенных типов переменных (Byte, UByte, Short, UShort, Integer, UInteger, LongInt, ULongInt, Single, Double, String, ZString, WString).</li>
+	<li>Обработка ошибок.</li>
+	<li>Типы данных определяемые пользователем (бесконечная вложенность, Union, тип поля (array, function, bit fields)).</li>
+	<li>Пространства имён (Namespace).</li>
+	<li>Перечисление (Enum).</li>
+	<li>Новые возможности при работе с массивами (до 2 ГБ размером, Redim Preserve).</li>
+	<li>Указатели (указатели на любые типы данных, неограниченная косвенная адресация).</li>
+	<li>Перегрузка функций и операторов.</li>
+	<li>Необязательные аргументы функций.</li>
+	<li>Встроенный ассемблер (ассемблерные инструкции в исходном коде программы).</li>
+	<li>Возможности препроцессора.</li>
+	<li>Переопределения типов (Typedefs).</li>
+	<li>Многопоточность.</li>
+	<li>Некоторая поддержка объектно‐ориентированного программирования (инкапсуляция, наследование, полиморфизм).</li>
+</ul>
+
+<p>Вместе с компилятором в комплект входят также наиболее распространенные библиотеки (с подключаемыми заголовочными файлами):</p>
+
+<p>OpenGL, GTK+, SDL, Allegro, ODE, Newton, BASS, Fmod, FreeImage, Zlib, sqlite, MySQL, PostgreSQL, Lua, LibXML, и многие другие.</p>
+
+<p>Из всего этого можно сделать вывод, что FreeBASIC — это полноценный инструмент не только для начинающих, но и для профессиональных разработчиков. Язык программирования BASIC всегда славился простотой в освоении и лёгкостью в программировании.</p>
+
+
+<hr />
+
+<p class="footer">Сайт создан по технологии XHTML</p>
+
+<p class="footer">
+	
+	<span id="pLiveInternet"></span>
+	
+	<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
+		<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
+	</a>
+	<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
+		<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
+	</a> 
+</p>
+
+<script type="text/javascript">var idL=document.getElementById("pLiveInternet");var idA=document.createElement("a");idA.href="//www.liveinternet.ru/stat/freebasic.su";idA.title="Счётчик посещений LiveInternet";var idImg=document.createElement("img");idImg.src="//counter.yadro.ru/hit?t44."+Math.round(1+18*Math.random())+";r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();idImg.alt="Логотип LiveInternet";idA.appendChild(idImg);idL.appendChild(idA);</script>
+
+</body></html>

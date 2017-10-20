@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+	<channel>
+		<title>FreeBASIC на русском</title>
+		<link>http://www.freebasic.su/</link>
+		<description>Программирование на языке FreeBASIC по‐русски, примеры статей, исходный код, библиотеки, советы по написанию красивого, быстрого и эффективного кода. FreeBASIC — язык программирования высокого уровня по синтаксису наиболее близкий к QuickBASIC, а также компилятор для него (FreeBASIC Compiler). Первоначально компилятор разрабатывался как свободная альтернатива Microsoft QuickBasic, но скоро обзавёлся новыми возможностями, превратившись в мощное средство разработки.</description>
+		<language>ru</language>
+		
+		
+		<item>
+			<pubDate>Fri, 15 Sep 2017 22:31:05 GMT</pubDate>
+			<title>Реестр Windows</title>
+			<link>http://www.freebasic.su/src/registry.xhtml</link>
+			<description>Реестр всегда был опасным местом для пользователей и разработчиков, существуют рекомендации избегать реестра как огня.</description>
+			<guid>{A9DDCA3B-D0EE-4404-B28E-11FE4EBCE2F4}</guid>
+		</item>
+		
+		
+		<item>
+			<pubDate>Mon, 21 Aug 2017 08:54:14 GMT</pubDate>
+			<title>Об ошибках в Windows</title>
+			<link>http://www.freebasic.su/src/windows-errors.xhtml</link>
+			<description>Статья о том как Windows уведомляет пользователя об ошибках и как получить текстовое описание ошибки.</description>
+			<guid>{F0E92BD9-B1DC-4F3B-9894-FD6B247E4A76}</guid>
+		</item>
+		
+		
+		<item>
+			<pubDate>Sun, 16 Jul 2017 13:33:39 GMT</pubDate>
+			<title>Сразу две неучтённые статьи</title>
+			<link>http://www.freebasic.su/src/fileswinapi.xhtml</link>
+			<description>Статья об работе с файлами средствами операционной системы <a href="http://www.freebasic.su/src/fileswinapi.xhtml">Работа с файлами средствами WinAPI</a>. Пригодится тем, кто хочет использовать файловые функции напрямую. Статья про уменьшение размера бинарных файлов <a href="http://www.freebasic.su/src/without-rtl.xhtml">Уменьшение размера бинарников</a> — интересные наблюдения за работой компилятора изнутри. Удивительно, почему эти статьи не попали в общую ленту.</description>
+			<guid>{0DE0A30B-B939-4F7F-A7C2-F3142FB58281}</guid>
+		</item>
+		
+		
+		<item>
+			<pubDate>Sun, 16 Jul 2017 11:28:15 GMT</pubDate>
+			<title>Реклама, реклама, реклама…</title>
+			<link>http://www.freebasic.su/</link>
+			<description>После тщательных попыток поставить рекламу на сайт решено было отказаться от неё вовсе. Теперь можно смотреть на сайт без всякой рекламы. Хотя в будущем всё может измениться и она появится снова.</description>
+			<guid>{5ED914D2-9BAA-480E-9DA9-F6E4BA69BD77}</guid>
+		</item>
+		
+		
+		<item>
+			<pubDate>Sat, 21 Jan 2017 17:39:50 GMT</pubDate>
+			<title>FreeBASIC, кракозябры, кодировки и кириллица</title>
+			<link>http://www.freebasic.su/src/codepages.xhtml</link>
+			<description>Самый часто задаваемый вопрос новичков по фрибейсику: как выводить кириллицу и русские буквы на консоль.</description>
+			<guid>{1B75C88B-F63D-4309-900A-2BFC686CA37C}</guid>
+		</item>
+		
+
+		<item>
+			<pubDate>Mon, 09 Jan 2017 13:54:43 GMT</pubDate>
+			<title>Изменения на сайте</title>
+			<link>http://www.freebasic.su/</link>
+			<description>Первое: на сайте появился рекламный баннер. Второе: страница со статьями переехала в свой раздел, а на глагне теперь визиткая карточка языка.</description>
+			<guid>{056766A0-2DCE-4900-8639-61AF09D1DE46}</guid>
+		</item>
+		
+		
+		<item>
+			<pubDate>Sun, 11 Dec 2016 13:29:03 GMT</pubDate>
+			<title>Вебсервер как служба Windows</title>
+			<link>http://www.freebasic.su/code/freebasic-webserver/</link>
+			<description>Вебсервер выходит в бету. И теперь его можно скомпилировать как службу Windows (Windows Service).</description>
+			<guid>{18B57143-E39C-4060-B6D2-C8A8CFEC52BD}</guid>
+		</item>
+		
+		
+		<item>
+			<pubDate>Mon, 07 Nov 2016 13:29:03 GMT</pubDate>
+			<title>Реализация метода CONNECT</title>
+			<link>http://www.freebasic.su/code/freebasic-webserver/</link>
+			<description>Маленькая новость: FreeBASIC‐вебсервер поддерживает метод CONNECT. Теперь его можно использовать как HTTPS‐прокси.</description>
+			<guid>{3F291CF2-E57D-46B1-94E4-1B369D7EE3F7}</guid>
+		</item>
+		
+		
+		<item>
+			<pubDate>Wed, 02 Nov 2016 07:11:15 GMT</pubDate>
+			<title>Дополнение советов</title>
+			<link>http://www.freebasic.su/src/tips.xhtml#c1c3</link>
+			<description>Добавил параграф про получение символа в строке по индексу в массиве и обход строки без предварительного вычисления её длины.</description>
+			<guid>{EEF31AF4-F7CD-4CC2-81B5-E87304C83F94}</guid>
+		</item>
+		
+		
+		<item>
+			<pubDate>Sat, 29 Oct 2016 23:47:37 GMT</pubDate>
+			<title>Исходный код вебсервера на фрибейсике</title>
+			<link>http://www.freebasic.su/code/freebasic-webserver/</link>
+			<description>Маленькое замечание. Теперь исходные коды вебсервера на фрибейсике можно смотреть прямо онлайн.</description>
+			<guid>{E683BBF3-19E5-4195-BE6F-AD4FAFF94E53}</guid>
+		</item>
+		
+		
+		<item>
+			<pubDate>Thu, 13 Oct 2016 01:19:29 GMT</pubDate>
+			<title>Карточные игры и библиотека cards.dll</title>
+			<link>http://www.freebasic.su/src/cardslibrary.xhtml</link>
+			<description>Ты конечно же играл в карточные игры, входящие в состав Windows: «Солитёр», «Черви», «Косынка», «Паук». Это достаточно простые игры, в которые ты играл много раз. Но может быть тебе хотелось поиграть в более сложные игры? В таком случае, напиши игру сам! Дело упрощается тем, что вышуепомянутые игры используют библиотеку cards.dll, которая поставляется с Windows XP. Опираясь на эту библиотеку, ты способен создать любую карточную игру на фрибейсике по собственному вкусу. Не нужно самостоятельно рисовать все карты колоды, об этом уже позаботились программисты корпорации Microsoft.</description>
+			<guid>{5BFCFA13-5392-49C0-B25A-CBE5D98E5AB3}</guid>
+		</item>
+		
+		
+		<item>
+			<pubDate>Thu, 29 Sep 2016 13:50:7 GMT</pubDate>
+			<title>RSS - в массы</title>
+			<link>http://www.freebasic.su/rss.rss</link>
+			<description>Обнаружено, что в интернетах всё прогрессивное человечество давно уже пользуется форматом RSS для передачи новостей. Теперь прикручено сиё куролесие для шкодливых мыслей к сайту.</description>
+			<guid>{98FC8B5A-C306-40B9-88E2-8380694033D3}</guid>
+		</item>
+		
+	</channel>
+</rss> 
