@@ -20,225 +20,237 @@
 
 <body>
 
-<ul class="navbar">
-	<li><a href="/">Главная</a></li>
-	<li><a href="/src/">Статьи</a></li>
-	<li><a href="/code/">Проекты</a></li>
-	<li><a href="/books/">Учебник</a></li>
-	<li><a href="/links.xhtml">Ссылки</a></li>
-	<li><a href="/about.xhtml">О сайте</a></li>
-</ul>
-
+<header>
+	
+	<nav>
+		<a href="/">Главная</a>
+		<a href="/src/">Статьи</a>
+		<a href="/code/">Проекты</a>
+		<a href="/books/">Учебник</a>
+		<a href="/links.xhtml">Ссылки</a>
+		<a href="/about.xhtml">О сайте</a>
+	</nav>
+	
+</header>
 
 <h1>Пишем на FreeBASIC не используя библиотеки времени выполнения</h1>
 
-<p><span class="postername">Эрик Замабувараев‐Ёмолкуу</span> <span class="date">12.04.2017 22:44:32</span></p>
-
-<p>Как‐то сравнивая HelloWorld на ассемблере и FreeBASIC, обнаружено, что откомпилированные на FreeBASIC программы всегда получались больше. Так происходит из‐за того, что непосредственно перед нашим кодом идут разные инициализации критических секций, создание командной строки, кучи и так далее. Зачастую в простых программах это не нужно, к тому же иногда хочется удивить коллегу и сделать маленький бинарник или просто покопаться во внутренностях исполняемого файла.</p>
-
-<p>Разработчики FreeBASIC предусмотрели ключик <code>-v</code>, он показывает все шаги компиляции, какие программы запускает и какие параметры им передаёт.</p>
-
-<p>Цель: сделать простую программу, выводящую строку «Привет, мир!», размером 2048 байт. Или даже меньше.</p>
-
-
-<ol class="contents">
-	<li><a href="#c1">Что будет, если выкинуть библиотеку времени выполнения</a></li>
-	<li><a href="#c2">Исходный текст</a></li>
-	<li><a href="#c3">Компиляция</a></li>
-	<li><a href="#c4">Чем заменить стандартные функции</a></li>
-</ol>
-
-
-
-
-
-
-<h2><a id="c1">Что будет, если выкинуть библиотеку времени выполнения</a></h2>
-
-<p>Придётся отказаться от стандартных возможностей:</p>
-
-<ul>
-	<li>все стандартные функции будут недоступны;</li>
-	<li>вместо привычного <code>String</code> необходимо использовать <code>ZString</code> или <code>WString</code>;</li>
-	<li>объединение строк и присваивание не работают, потому что эти операции реализуются функциями встроенной библиотеки;</li>
-	<li>функции работы с памятью <code>Allocate</code>, <code>DeAllocate</code> недоступны, необходимо использовать API операционной системы для работы с кучей;</li>
-	<li>динамические массивы не поддерживаются, они используют встроенные функции для выделения памяти;</li>
-	<li>графическая библиотека недоступна, необходимо использовать API операционной системы.</li>
-</ul>
-
-
-
-
-
-<h2><a id="c2">Исходный текст</a></h2>
-
-<p>Наша программа будет очень простая, она будет выводить строку на консоль и завершаться. Но так как мы не будем использовать встроенные функции, то для вывода строки придётся использовать WinAPI.</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-#define unicode<br />
-#include once &quot;windows.bi&quot;<br />
-<br />
-Const HelloWorld = !&quot;Привет, мир!\r\n&quot;<br />
-Const HelloWorldLength As Integer = 14<br />
-<br />
-&apos; Это точка входа в программу<br />
-&apos; Эту функцию вызовет операционная система при запуске<br />
-Function EntryPoint Alias &quot;EntryPoint&quot;()As Integer<br />
-&t;&apos; Напечатать HelloWorld<br />
-&t;Dim CharsCount As DWORD = Any<br />
-&t;WriteConsole(GetStdHandle(STD_OUTPUT_HANDLE), @HelloWorld, HelloWorldLength, @CharsCount, 0)<br />
-<br />
-&t;Return 0<br />
-End Function
-</code></p>
-
-<p>Здесь в имени функции <code>EntryPoint</code> используется оператор <code>Alias</code>, указывающий правильное название функции, иначе без него она будет в верхнем регистре.</p>
-
-
-
-
-<h2><a id="c3">Компиляция</a></h2>
-
-<h3>Компиляция в 32‐битную программу</h3>
-
-<p>По умолчанию будем считать, что FreeBASIC установлен в %ProgramFiles%.</p>
-
-<p>Для начала получим ассемблерный код. Следующая команда заставит создать только ассемблерный код:</p>
-
-<p class="codebox"><span>Код</span> <span>Batch</span><br /><code>
-&quot;%ProgramFiles%\FreeBASIC\fbc.exe&quot; -r -lib helloworld.bas
-</code></p>
-
-<p>Параметр <code>-lib</code> заставляет компилятор создать библиотеку функций без добавления ссылок на пролог и эпилог встроенных библиотек, а параметр <code>-r</code> обязывает только оттранслировать исходники без компиляции.</p>
-
-<p>На этом работа компилятора FreeBASIC закончена, отложим его в сторонку, он нам больше не понадобится. Все остальные действия по созданию исполняемого файла осуществляются дополнительными утилитами.</p>
-
-<p>Теперь с помощью ассемблера создадим объектный файл:</p>
-
-<p class="codebox"><span>Код</span> <span>Batch</span><br /><code>
-&quot;%ProgramFiles%\FreeBASIC\bin\win32\as.exe&quot; --32 --strip-local-absolute helloworld.asm -o helloworld.o
-</code></p>
-
-<p>Компоновщик из него сделает исполняемый файл:</p>
-
-<p class="codebox"><span>Код</span> <span>Batch</span><br /><code>
-&quot;%ProgramFiles%\FreeBASIC\bin\win32\ld.exe&quot; -m i386pe -e _EntryPoint@0 -subsystem console -s --stack 1048576,1048576 -L &quot;%programfiles%\freebasic\lib\win32&quot; -L &quot;./&quot; helloworld.o -o helloworld.exe -( -lkernel32 -)
-</code></p>
-
-<p>Параметр <code>-e</code> указывает на точку входа <code>_EntryPoint@0</code>. Имя функции искажено: слева добавлен знак подчёркивания, справа через собаку количество принимаемых байт в качестве параметров. Это делается для совместимости с конвенцией вызовов <code>stdcall</code> в WinAPI.</p>
-
-<p>Параметр <code>-subsystem</code> указывает на подсистему. Так как мы пишем консольное приложение, то указываем <code>console</code>, для оконного приложения необходимо будет указать <code>gui</code>.</p>
-
-<p>Параметр <code>-L</code> добавляет пути поиска библиотечных файлов.</p>
-
-<p>Параметр <code>-o</code> назначает имя получившегося исполняемого файла.</p>
-
-<p>В этой программе мы используем пару функций для вывода строки на консоль, все они лежат в библиотеке <code>kernel32.dll</code>. Через параметры в скобках мы сообщаем компоновщику, что нас интресует только библиотека kernel32.dll: <code>-lkernel32</code>. В том случае, когда будут дополнительные библиотеки, то необходимо будет это указать. Например, вот указание на большинство стандартных библиотек: <code>-( -lkernel32 -lgdi32 -lmsimg32 -luser32 -lversion -ladvapi32 -limm32 -lshlwapi -lole32 -loleaut32 -lshell32 -lcomctl32 -lws2_32 -lmsvcrt -)</code>.</p>
-
-<p>После работы компоновщика получаем исполняемый файл helloworld.exe размером 2048 байт.</p>
-
-
-<h3>Компиляция в 64‐битную программу 64‐битным компилятором</h3>
-
-<p>Компиляция в 64‐битный исполняемый файл принципиально ничем не отличается. Просто в этом случае появляется дополнительный этап: в данном случае FreeBASIC создаёт листинг на Си. Далее этот листинг с помощью компилятора Си транслируется в ассеблерный код, создаются объектные и исполняемый файл. Все вспомогательные утилиты 64‐битные.</p>
-
-<p class="codebox"><span>Код</span> <span>Batch</span><br /><code>
-&quot;%ProgramFiles%\FreeBASIC\fbc.exe&quot; -r -lib helloworld.bas<br />
-&quot;%ProgramFiles%\FreeBASIC\bin\win64\gcc.exe&quot; -m64 -march=x86-64 -S -nostdlib -nostdinc -Wall -Wno-unused-label -Wno-unused-function -Wno-unused-variable -Wno-unused-but-set-variable -Wno-main -Werror-implicit-function-declaration -O0 -mno-stack-arg-probe -fno-stack-check -fno-stack-protector -fno-strict-aliasing -frounding-math -fno-math-errno -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-ident -masm=intel helloworld.c -o helloworld.asm<br />
-&quot;%ProgramFiles%\FreeBASIC\bin\win64\as.exe&quot; --64 --strip-local-absolute helloworld.asm -o helloworld.o<br />
-&quot;%ProgramFiles%\FreeBASIC\bin\win64\ld.exe&quot; -m i386pep -e EntryPoint -o helloworld.exe -subsystem console --stack 1048576,1048576 -s -L &quot;%ProgramFiles%\FreeBASIC\lib\win64&quot; -L &quot;.&quot; helloworld.o -( -lkernel32 -)
-</code></p>
-
-<h2><a id="c4">Чем заменить стандартные функции</a></h2>
-
-<p>Итак, мы выбросили всю библиотеку времени выполнения. К счастью, нам не придётся самим писать аналогичные функции, так как часть из них уже есть во внешних библиотеках.</p>
-
-<h3>Работа со строками</h3>
+<main>
 	
-<h4>Kernel32.dll</h4>
+	<p class="postername">
+		<a href="/users/mabu.xhtml">
+			<img src="/avatars/mabu.jpg" alt="Аватар пользователя" width="50" height="50" class="avatar" />
+			&#32;
+			mabu
+		</a>
+		&#32;
+		<time pubdate="pubdate">2016-04-12T22:44:32+07:00</time>
+	</p>
 
-<p>lstrcpyW(приёмник, источник) — копирует строку «источник» в строку «приёмник».</p>
-<p>lstrcatW(приёмник, источник) — добавляет строку «источник» к строке «приёмник».</p>
-<p>lstrlenW(строка) — вычисляет длину строки в символах.</p>
-<p>lstrcmpW(строка1, строка2) — сравнивает строки, если строки равны, то возвращает 0.</p>
-	
-<h4>Shlwapi.dll</h4>
+	<p>Как‐то сравнивая HelloWorld на ассемблере и FreeBASIC, обнаружилось, что откомпилированные на FreeBASIC программы всегда получались больше. Так происходит из‐за того, что непосредственно перед нашим кодом идут разные инициализации критических секций, создание командной строки, кучи и так далее. Зачастую в простых программах это не нужно, к тому же иногда хочется удивить коллегу и сделать маленький бинарник или просто покопаться во внутренностях исполняемого файла.</p>
 
-<p>StrStr / StrStrI / StrRStrI —  ищет подстроку в строке. I — если нужна нечувствительность к регистру.</p>
-<p>StrChr / StrChrI — ищет символ в строке (в том числе нулевой).</p>
-<p>StrToInt / StrToIntEx / StrToInt64Ex — возвращает число из строки.</p>
-<p>StrTrim — удаляет начальные и конечные знаки из строки.</p>
+	<p>Разработчики FreeBASIC предусмотрели параметр компиляции <code>-v</code>, он показывает все этапы компиляции, какие программы запускает и какие параметры им передаёт.</p>
 
-<h3>Работа с памятью</h3>
-	
-<h4>Kernel32.dll</h4>
-
-<p>GetProcessHeap — получет кучу процесса по умолчанию.</p>
-<p>HeapCreate / HeapDestroy — создание / уничтожение куч.</p>
-<p>HeapAlloc — выделяет память из кучи.</p>
-<p>HeapFree — освобождает память из кучи.</p>
+	<p>Цель: сделать простую программу, выводящую строку «Привет, мир!», размером 2048 байт. Или даже меньше.</p>
 
 
-<h3>Работа с файлами</h3>
-	
-<h4>Kernel32.dll</h4>
-
-<p>CreateFile — открытие файла.</p>
-<p>CloseHandle — закрытие файла.</p>
-<p>WriteFile — запись в файл.</p>
-<p>ReadFile — чтение из файла.</p>
-<p>Придется реализовывать самому разбор считанных данных на строки.</p>
-
-
-<h3>Работа с потоками</h3>
-	
-<h4>Kernel32.dll</h4>
-
-<p>CreateThread</p>
-<p>ExitThread</p>
-
-
-<h3>Консольный ввод/вывод</h3>
-	
-<h4>Kernel32.dll</h4>
-
-<p>Print — WriteConsole</p>
-<p>Input – ReadConsole + парсинг строк</p>
-
-
-<h3>Аргументы командной строки</h3>
-	
-<h4>Kernel32.dll + Shell32.dll</h4>
-
-<p>CommandLineToArgvW + GetCommandLineW</p>
-
-	
-	
+	<ol class="contents">
+		<li><a href="#c1">Что будет, если выкинуть библиотеку времени выполнения</a></li>
+		<li><a href="#c2">Исходный текст</a></li>
+		<li><a href="#c3">Компиляция</a></li>
+		<li><a href="#c4">Чем заменить стандартные функции</a></li>
+	</ol>
 
 
 
 
-<h2>Поделись ссылочкой в социальных сетях</h2>
-<div id="vk_share_button"></div>
 
 
+	<h2><a id="c1">Что будет, если выкинуть библиотеку времени выполнения</a></h2>
+
+	<p>Придётся отказаться от стандартных возможностей:</p>
+
+	<ul>
+		<li>все стандартные функции будут недоступны;</li>
+		<li>вместо привычного <code>String</code> необходимо использовать <code>ZString</code> или <code>WString</code>;</li>
+		<li>объединение строк и присваивание не работают, потому что эти операции реализуются функциями встроенной библиотеки;</li>
+		<li>функции работы с памятью <code>Allocate</code>, <code>DeAllocate</code> недоступны, необходимо использовать API операционной системы для работы с кучей;</li>
+		<li>динамические массивы не поддерживаются, они используют встроенные функции для выделения памяти;</li>
+		<li>графическая библиотека недоступна, необходимо использовать API операционной системы.</li>
+	</ul>
+
+
+
+
+
+	<h2><a id="c2">Исходный текст</a></h2>
+
+	<p>Наша программа будет очень простая, она будет выводить строку на консоль и завершаться. Но так как мы не будем использовать встроенные функции, то для вывода строки придётся использовать WinAPI.</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		#define unicode<br />
+		#include once &quot;windows.bi&quot;<br />
+		<br />
+		Const HelloWorld = !&quot;Привет, мир!\r\n&quot;<br />
+		Const HelloWorldLength As Integer = 14<br />
+		<br />
+		&apos; Это точка входа в программу<br />
+		&apos; Эту функцию вызовет операционная система при запуске<br />
+		Function EntryPoint Alias &quot;EntryPoint&quot;()As Integer<br />
+			&t;&apos; Напечатать HelloWorld<br />
+			&t;Dim CharsCount As DWORD = Any<br />
+			&t;WriteConsole(GetStdHandle(STD_OUTPUT_HANDLE), @HelloWorld, HelloWorldLength, @CharsCount, 0)<br />
+		<br />
+		&t;Return 0<br />
+		End Function
+	</code></p>
+
+	<p>Здесь в имени функции <code>EntryPoint</code> используется оператор <code>Alias</code>, указывающий правильное название функции, иначе без него в объектном файле она будет в верхнем регистре.</p>
+
+
+
+
+	<h2><a id="c3">Компиляция</a></h2>
+
+	<h3>Компиляция в 32‐битную программу</h3>
+
+	<p>По умолчанию будем считать, что FreeBASIC установлен в %ProgramFiles%.</p>
+
+	<p>Для начала получим ассемблерный код. Следующая команда заставит создать только ассемблерный код:</p>
+
+	<p class="codebox"><span>Код</span> <span>Batch</span><br /><code>
+		&quot;%ProgramFiles%\FreeBASIC\fbc.exe&quot; -r -lib helloworld.bas
+	</code></p>
+
+	<p>Параметр <code>-lib</code> заставляет компилятор создать библиотеку функций, а параметр <code>-r</code> обязывает оттранслировать исходник без компиляции в исполняемый файл.</p>
+
+	<p>На этом работа FreeBASIC закончена, отложим его в сторонку, сейчас он нам не понадобится. Все остальные действия по созданию исполняемого файла осуществляются дополнительными утилитами.</p>
+
+	<p>Теперь с помощью ассемблера создадим объектный файл:</p>
+
+	<p class="codebox"><span>Код</span> <span>Batch</span><br /><code>
+	&quot;%ProgramFiles%\FreeBASIC\bin\win32\as.exe&quot; --32 --strip-local-absolute helloworld.asm -o helloworld.o
+	</code></p>
+
+	<p>Компоновщик из него сделает исполняемый файл:</p>
+
+	<p class="codebox"><span>Код</span> <span>Batch</span><br /><code>
+	&quot;%ProgramFiles%\FreeBASIC\bin\win32\ld.exe&quot; -m i386pe -e _EntryPoint@0 -subsystem console -s --stack 1048576,1048576 -L &quot;%programfiles%\freebasic\lib\win32&quot; -L &quot;./&quot; helloworld.o -o helloworld.exe -( -lkernel32 -)
+	</code></p>
+
+	<p>Параметр <code>-e</code> указывает на точку входа <code>_EntryPoint@0</code>. Имя функции искажено: слева добавлен знак подчёркивания, справа через собаку количество принимаемых байт в качестве параметров. Это делается для совместимости с конвенцией вызовов <code>stdcall</code> в WinAPI.</p>
+
+	<p>Параметр <code>-subsystem</code> указывает на подсистему. Так как мы пишем консольное приложение, то указываем <code>console</code>, для оконного приложения необходимо будет указать <code>gui</code>.</p>
+
+	<p>Параметр <code>-L</code> добавляет пути поиска библиотечных файлов.</p>
+
+	<p>Параметр <code>-o</code> назначает имя получившегося исполняемого файла.</p>
+
+	<p>В этой программе мы используем пару функций для вывода строки на консоль, все они лежат в библиотеке <code>kernel32.dll</code>. Через параметры в скобках мы сообщаем компоновщику, что нас интресует только библиотека kernel32.dll: <code>-lkernel32</code>. В том случае, когда будут дополнительные библиотеки, то необходимо будет это указать. Например, вот указание на большинство стандартных библиотек: <code>-( -lkernel32 -lgdi32 -lmsimg32 -luser32 -lversion -ladvapi32 -limm32 -lshlwapi -lole32 -loleaut32 -lshell32 -lcomctl32 -lws2_32 -lmsvcrt -)</code>.</p>
+
+	<p>После работы компоновщика получаем исполняемый файл helloworld.exe размером 2048 байт.</p>
+
+
+	<h3>Компиляция в 64‐битную программу 64‐битным компилятором</h3>
+
+	<p>Компиляция в 64‐битный исполняемый файл принципиально ничем не отличается. Просто в этом случае появляется дополнительный этап: в данном случае FreeBASIC создаёт листинг на Си. Далее этот листинг с помощью компилятора Си транслируется в ассеблерный код, создаются объектные и исполняемый файл. Все вспомогательные утилиты 64‐битные.</p>
+
+	<p class="codebox"><span>Код</span> <span>Batch</span><br /><code>
+	&quot;%ProgramFiles%\FreeBASIC\fbc.exe&quot; -r -lib helloworld.bas<br />
+	&quot;%ProgramFiles%\FreeBASIC\bin\win64\gcc.exe&quot; -m64 -march=x86-64 -S -nostdlib -nostdinc -Wall -Wno-unused-label -Wno-unused-function -Wno-unused-variable -Wno-unused-but-set-variable -Wno-main -Werror-implicit-function-declaration -O0 -mno-stack-arg-probe -fno-stack-check -fno-stack-protector -fno-strict-aliasing -frounding-math -fno-math-errno -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-ident -masm=intel helloworld.c -o helloworld.asm<br />
+	&quot;%ProgramFiles%\FreeBASIC\bin\win64\as.exe&quot; --64 --strip-local-absolute helloworld.asm -o helloworld.o<br />
+	&quot;%ProgramFiles%\FreeBASIC\bin\win64\ld.exe&quot; -m i386pep -e EntryPoint -o helloworld.exe -subsystem console --stack 1048576,1048576 -s -L &quot;%ProgramFiles%\FreeBASIC\lib\win64&quot; -L &quot;.&quot; helloworld.o -( -lkernel32 -)
+	</code></p>
+
+	<h2><a id="c4">Чем заменить стандартные функции</a></h2>
+
+	<p>Итак, мы выбросили всю библиотеку времени выполнения. К счастью, нам не придётся самим писать аналогичные функции, так как часть из них уже есть во внешних библиотеках.</p>
+
+	<h3>Работа со строками</h3>
+		
+	<h4>Kernel32.dll</h4>
+
+	<p>lstrcpyW(приёмник, источник) — копирует строку «источник» в строку «приёмник».</p>
+	<p>lstrcatW(приёмник, источник) — добавляет строку «источник» к строке «приёмник».</p>
+	<p>lstrlenW(строка) — вычисляет длину строки в символах.</p>
+	<p>lstrcmpW(строка1, строка2) — сравнивает строки, если строки равны, то возвращает 0.</p>
+		
+	<h4>Shlwapi.dll</h4>
+
+	<p>StrStr / StrStrI / StrRStrI —  ищет подстроку в строке. I — если нужна нечувствительность к регистру.</p>
+	<p>StrChr / StrChrI — ищет символ в строке (в том числе нулевой).</p>
+	<p>StrToInt / StrToIntEx / StrToInt64Ex — возвращает число из строки.</p>
+	<p>StrTrim — удаляет начальные и конечные знаки из строки.</p>
+
+	<h3>Работа с памятью</h3>
+		
+	<h4>Kernel32.dll</h4>
+
+	<p>GetProcessHeap — получет кучу процесса по умолчанию.</p>
+	<p>HeapCreate / HeapDestroy — создание / уничтожение куч.</p>
+	<p>HeapAlloc — выделяет память из кучи.</p>
+	<p>HeapFree — освобождает память из кучи.</p>
+
+
+	<h3>Работа с файлами</h3>
+		
+	<h4>Kernel32.dll</h4>
+
+	<p>CreateFile — открытие файла.</p>
+	<p>CloseHandle — закрытие файла.</p>
+	<p>WriteFile — запись в файл.</p>
+	<p>ReadFile — чтение из файла.</p>
+	<p>Придется реализовывать самому разбор считанных данных на строки.</p>
+
+
+	<h3>Работа с потоками</h3>
+		
+	<h4>Kernel32.dll</h4>
+
+	<p>CreateThread</p>
+	<p>ExitThread</p>
+
+
+	<h3>Консольный ввод/вывод</h3>
+		
+	<h4>Kernel32.dll</h4>
+
+	<p>Print — WriteConsole</p>
+	<p>Input – ReadConsole + парсинг строк</p>
+
+
+	<h3>Аргументы командной строки</h3>
+		
+	<h4>Kernel32.dll + Shell32.dll</h4>
+
+	<p>CommandLineToArgvW + GetCommandLineW</p>
+
+		
+		
+
+
+
+
+	<h2>Поделись ссылочкой в социальных сетях</h2>
+	<div id="vk_share_button"></div>
+
+
+</main>
 
 <hr />
 
-
-<p class="footer">Сайт создан по технологии XHTML</p>
-
-<p class="footer">
-	
-	<span id="pLiveInternet"></span>
-	
-	<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
-		<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
-	</a>
-	<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
-		<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
-	</a> 
-</p>
+<footer>
+	<p>Сайт создан по технологии XHTML</p>
+	<p>
+		<span id="pLiveInternet"></span>
+		<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
+			<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
+		</a>
+		<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
+			<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
+		</a> 
+	</p>
+</footer>
 
 <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
 <script type="text/javascript">var docUrl=document.URL.toString();document.getElementById("vk_share_button").innerHTML=VK.Share.button(docUrl, {type: "round"});</script>

@@ -9,7 +9,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 
 <head>
-	<title>Заголовок статьи</title>
+	<title>Шаблон статьи</title>
 	<meta name="description" content="Описание статьи" />
 	<meta name="keywords" content="ключевые слова" />
 	
@@ -20,53 +20,65 @@
 
 <body>
 
-<ul class="navbar">
-	<li><a href="/">Главная</a></li>
-	<li><a href="/src/">Статьи</a></li>
-	<li><a href="/code/">Проекты</a></li>
-	<li><a href="/books/">Учебник</a></li>
-	<li><a href="/links.xhtml">Ссылки</a></li>
-	<li><a href="/about.xhtml">О сайте</a></li>
-</ul>
+<header>
+	
+	<nav>
+		<a href="/">Главная</a>
+		<a href="/src/">Статьи</a>
+		<a href="/code/">Проекты</a>
+		<a href="/books/">Учебник</a>
+		<a href="/links.xhtml">Ссылки</a>
+		<a href="/about.xhtml">О сайте</a>
+	</nav>
+	
+</header>
 
+<h1>Шаблон статьи</h1>
 
-<h1>Название статьи</h1>
+<main>
+	<p class="postername">
+		<a href="/users/mabu.xhtml">
+			<img src="/avatars/mabu.jpg" alt="Аватар пользователя" width="50" height="50" class="avatar" />
+			&#32;
+			mabu
+		</a>
+		&#32;
+		<time pubdate="pubdate">2016-02-10T09:25:31+07:00</time>
+	</p>
 
-<p><span class="postername">Эрик Замабувараев‐Ёмолкуу</span> <span class="date">05.03.2016 23:25:31</span></p>
+	<p>Преамбула.</p>
 
-<p>Преамбула.</p>
+	<ol class="contents">
+		<li><a href="#c1">Первая глава</a>
+			<ol>
+				<li><a href="#c1c1">Первая подглава</a></li>
+				<li><a href="#c1c2">Вторая подглава</a></li>
+				<li><a href="#c1c3">Третья подглава</a></li>
+			</ol>
+		</li>
+		<li><a href="#c2">Вторая глава</a></li>
+		<li><a href="#c3">Третья глава</a></li>
+	</ol>
 
-<ol class="contents">
-	<li><a href="#c1">Первая глава</a>
-		<ol>
-			<li><a href="#c1c1">Первая подглава</a></li>
-			<li><a href="#c1c2">Вторая подглава</a></li>
-			<li><a href="#c1c3">Третья подглава</a></li>
-		</ol>
-	</li>
-	<li><a href="#c2">Вторая глава</a></li>
-	<li><a href="#c3">Третья глава</a></li>
-</ol>
-
-<h2>Поделись ссылочкой в социальных сетях</h2>
-<div id="vk_share_button"></div>
-
+	<h2>Поделись ссылочкой в социальных сетях</h2>
+	<div id="vk_share_button"></div>
+	
+</main>
 
 <hr />
 
-<p class="footer">Сайт создан по технологии XHTML</p>
-
-<p class="footer">
-	
-	<span id="pLiveInternet"></span>
-	
-	<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
-		<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
-	</a>
-	<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
-		<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
-	</a> 
-</p>
+<footer>
+	<p>Сайт создан по технологии XHTML</p>
+	<p>
+		<span id="pLiveInternet"></span>
+		<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
+			<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
+		</a>
+		<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
+			<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
+		</a> 
+	</p>
+</footer>
 
 <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
 <script type="text/javascript">var docUrl=document.URL.toString();document.getElementById("vk_share_button").innerHTML=VK.Share.button(docUrl, {type: "round"});</script>

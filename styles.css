@@ -4,23 +4,12 @@ html
 	font-family:sans-serif;
 }
 
-div.wrap{}
-
-div.main
+main
 {
-	margin-right:20em;
 }
 
-div.aside
+aside
 {
-	position:absolute;
-	right:0;
-	width:19em;
-	background:#DDDDDD;
-	border:solid 1px #CCCCCC;
-	border-radius:.25em;
-	margin:.25em;
-	padding:.25em;
 }
 
 div.advertisement
@@ -66,7 +55,7 @@ a[href]:hover
 	color:#0066FF;
 }
 
-ul.navbar
+nav
 {
 	margin:.25em;
 	padding:.25em;
@@ -78,15 +67,11 @@ ul.navbar
 	border-radius:.25em;
 }
 
-ul.navbar li
+nav a
 {
 	display:inline-block;
 	padding:.25em .5em .25em .5em;
 	margin:.25em .5em .25em .5em;
-}
-
-ul.navbar a
-{
 	text-decoration:none;
 }
 
@@ -103,15 +88,14 @@ ol.contents li
 	padding:.5em .5em .5em .5em;
 }
 
+footer
+{
+	text-align:center;
+}
+
 p
 {
 	word-wrap:break-word;
-}
-
-p.footer
-{
-	text-align:center;
-	font-size:smaller;
 }
 
 div.fileblock
@@ -120,14 +104,24 @@ div.fileblock
 	clear:both;
 }
 
-img.avatar{
+img.avatar
+{
 	float:left;
 	margin:0em .5em .5em 0em;
 }
 
 span.postername{}
 
-span.date{}
+table
+{
+	border:solid 1px #CCCCCC;
+	border-radius:.25em;
+}
+
+dt
+{
+	font-weight:bold;
+}
 
 p.codebox
 {
@@ -176,15 +170,4 @@ span.inisection
 span.assignment
 {
 	color:#FF0000;
-}
-
-table
-{
-	border:solid 1px #CCCCCC;
-	border-radius:.25em;
-}
-
-dt
-{
-	font-weight:bold;
 }

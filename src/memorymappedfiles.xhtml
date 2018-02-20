@@ -20,558 +20,571 @@
 
 <body>
 
-<ul class="navbar">
-	<li><a href="/">Главная</a></li>
-	<li><a href="/src/">Статьи</a></li>
-	<li><a href="/code/">Проекты</a></li>
-	<li><a href="/books/">Учебник</a></li>
-	<li><a href="/links.xhtml">Ссылки</a></li>
-	<li><a href="/about.xhtml">О сайте</a></li>
-</ul>
+<header>
+	
+	<nav>
+		<a href="/">Главная</a>
+		<a href="/src/">Статьи</a>
+		<a href="/code/">Проекты</a>
+		<a href="/books/">Учебник</a>
+		<a href="/links.xhtml">Ссылки</a>
+		<a href="/about.xhtml">О сайте</a>
+	</nav>
+	
+</header>
 
 
 <h1>Отображаемые в память файлы</h1>
 
-<p><span class="postername">Эрик Замабувараев‐Ёмолкуу</span> <span class="date">26.05.2016 23:30:14</span></p>
-
-<p>Операции с файлами — это то, что рано или поздно приходится делать практически во всех программах, и всегда это вызывает массу вопросов. Должно ли приложение просто открыть файл, прочитать данные и закрыть его, или открыть, прочитать фрагмент в буфер и перезаписать его в другую часть файла? В Windows многие из этих проблем решаются очень изящно: с помощью отображённых в память файлов.</p>
-
-<p>Отображение файла в память — это соединение содержания файла с частью виртуального адресного пространства процесса. К отображённому файлу обращаются так, будто это данные в оперативной памяти, а не через операции файлового ввода‐вывода.</p>
-
-<p>Где примененяются проецируемые файлы?</p>
-
-<ul>
-	<li>Система загружает с помощью этого механизма EXE и DLL файлы.</li>
-	<li>Доступ к данным файла на диске. Это позволяет обойтись без операций файлового ввода‐вывода и буферизации данных.</li>
-	<li>Разделение данных между несколькими процессами. В Windows всегда было много механизмов для совместного доступа разных процессов к одним данным: RPC, COM, OLE, DDE, оконные сообщения (особенно WM_COPYDATA), буфер обмена, почтовые ящики, сокеты и так далее. Самый низкоуровневый механизм совместного использования данных на одной машине — проецирование файла в память, на нём так или иначе базируются все перечисленные механизмы разделения данных. Если интересует максимальное быстродействие с минимумом издержек, лучше всего применять именно проецирование.</li>
-
-</ul>
-
-<p>На уровне ядра Windows это работает так. Когда процесс пытается считать или записать данные из отображённого файла, процессор уведомляет, что памяти не существует, ставит процесс на паузу и выкидывает ошибку страницы (page fault). Ядро перехватывает ошибку и помещает в память актуальные данные, чтобы приложение могло их считать. Затем процесс снимается с паузы и находит в соответствующем месте волшебным образом появившиеся данные.</p>
-
-<ol class="contents">
-	<li><a href="#c1">Функции</a>
-		<ol>
-			<li><a href="#c1c1">CreateFile</a></li>
-			<li><a href="#c1c2">CreateFileMapping</a></li>
-			<li><a href="#c1c3">OpenFileMapping</a></li>
-			<li><a href="#c1c4">MapViewOfFile</a></li>
-			<li><a href="#c1c5">UnmapViewOfFile</a></li>
-			<li><a href="#c1c6">CloseHandle</a></li>
-		</ol>
-	</li>
-	<li><a href="#c2">Примеры</a>
-		<ol>
-			<li><a href="#c2c1">Демонстрационная программа «Адресная книга»</a></li>
-			<li><a href="#c2c2">Межпроцессное взаимодействие</a></li>
-		</ol>
-	</li>
-</ol>
-
-<h2><a id="c1">Функции</a></h2>
-
-<p>Чтобы отобразить файл в память и использовать его, нам понядобятся следующие функции:</p>
-
-<ul>
-	<li><strong>CreateFile</strong> открывает файл;</li>
-	<li><strong>CreateFileMapping</strong> отображает файл в память;</li>
-	<li><strong>OpenFileMapping</strong> открывает уже отображённый в памяти файл;</li>
-	<li><strong>MapViewOfFile</strong> связывает отображённый файл с адресным пространством процесса;</li>
-	<li><strong>UnmapViewOfFile</strong> выгружает отображённые данные файла из адресного пространства;</li>
-	<li><strong>CloseHandle</strong> закрывает отображение файла.</li>
-</ul>
-
-<h3><a id="c1c1">CreateFile</a></h3>
-
-<p>В самом начале необходимо открыть файл функцией CreateFile. Вот её объявление из заголовочных файлов:</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> CreateFile <span class="keyword">Alias</span> <span class="string">&quot;CreateFileW&quot;</span>( _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> lpFileName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> dwDesiredAccess <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> dwShareMode <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> lpSecurityAttributes <span class="keyword">As</span> <span class="datatype">LPSECURITY_ATTRIBUTES</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> dwCreationDisposition <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> dwFlagsAndAttributes <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> hTemplateFile <span class="keyword">As</span> <span class="datatype">HANDLE</span>) _<br />
-<span class="keyword">As</span> <span class="datatype">HANDLE</span>
-</code></p>
-
-<p>Параметры.</p>
-
-<dl>
-<dt>lpFileName</dt>
-<dd>Указатель на строку с именем файла, который необходимо открыть.</dd>
-</dl>
-
-<dl>
-<dt>dwDesiredAccess</dt>
-<dd>Тип доступа к объекту, например, GENERIC_READ, GENERIC_WRITE или и то, и другое.</dd>
-</dl>
-
-<dl>
-<dt>dwShareMode</dt>
-<dd>Режим совместного доступа к файлу (из других процессов). Может быть 0, FILE_SHARE_READ, FILE_SHARE_WRITE или их комбинацией.</dd>
-</dl>
-
-<dl>
-<dt>lpSecurityAttributes</dt>
-<dd>Указатель на структуру SECURITY_ATTRIBUTES, устанавливающую, может ли возвращённый дескриптор быть унаследован дочерними процессами. В нашем случае это не важно, поэтому устанавливаем в NULL.</dd>
-</dl>
-
-<dl>
-<dt>dwCreationDisposition</dt>
-<dd>Выполняемые действия с файлами. CREATE_NEW — создать файл, если таковой уже существует, выйдет ошибка. CREATE_ALWAYS — всегда создавать или перезаписывать файл с нуля. OPEN_EXISTING — открыть существующий файл, если таковой не существует, вылезет ошибка. OPEN_ALWAYS — открыть существующий файл или создать. TRUNCATE_EXISTING — перезаписать с нуля существующий файл, или вывести ошибку, если файл не существует.</dd>
-</dl>
-
-<dl>
-<dt>dwFlagsAndAttributes</dt>
-<dd>Атрибуты файла, здесь необходим только флаг FILE_ATTRIBUTE_NORMAL.</dd>
-</dl>
-
-<dl>
-<dt>hTemplateFile</dt>
-<dd>Указатель на файл‐шаблон. Не используется и должен быть установлен в NULL.</dd>
-</dl>
-
-<p>Если функция завершается успешно, возвращаемое значение — открытый дескриптор заданного файла.</p>
-<p>Если функция завершается с ошибкой, возвращаемое значение — INVALID_HANDLE_VALUE.</p>
+<main>
+	<p class="postername">
+		<a href="/users/mabu.xhtml">
+			<img src="/avatars/mabu.jpg" alt="Аватар пользователя" width="50" height="50" class="avatar" />
+			&#32;
+			mabu
+		</a>
+		&#32;
+		<time pubdate="pubdate">2016-05-26T23:30:14+07:00</time>
+	</p>
+
+	<p>Операции с файлами — это то, что рано или поздно приходится делать практически во всех программах, и всегда это вызывает массу вопросов. Должно ли приложение просто открыть файл, прочитать данные и закрыть его, или открыть, прочитать фрагмент в буфер и перезаписать его в другую часть файла? В Windows многие из этих проблем решаются очень изящно: с помощью отображённых в память файлов.</p>
+
+	<p>Отображение файла в память — это соединение содержания файла с частью виртуального адресного пространства процесса. К отображённому файлу обращаются так, будто это данные в оперативной памяти, а не через операции файлового ввода‐вывода.</p>
+
+	<p>Где примененяются проецируемые файлы?</p>
+
+	<ul>
+		<li>Система загружает с помощью этого механизма EXE и DLL файлы.</li>
+		<li>Доступ к данным файла на диске. Это позволяет обойтись без операций файлового ввода‐вывода и буферизации данных.</li>
+		<li>Разделение данных между несколькими процессами. В Windows всегда было много механизмов для совместного доступа разных процессов к одним данным: RPC, COM, OLE, DDE, оконные сообщения (особенно WM_COPYDATA), буфер обмена, почтовые ящики, сокеты и так далее. Самый низкоуровневый механизм совместного использования данных на одной машине — проецирование файла в память, на нём так или иначе базируются все перечисленные механизмы разделения данных. Если интересует максимальное быстродействие с минимумом издержек, лучше всего применять именно проецирование.</li>
+
+	</ul>
+
+	<p>На уровне ядра Windows это работает так. Когда процесс пытается считать или записать данные из отображённого файла, процессор уведомляет, что памяти не существует, ставит процесс на паузу и выкидывает ошибку страницы (page fault). Ядро перехватывает ошибку и помещает в память актуальные данные, чтобы приложение могло их считать. Затем процесс снимается с паузы и находит в соответствующем месте волшебным образом появившиеся данные.</p>
+
+	<ol class="contents">
+		<li><a href="#c1">Функции</a>
+			<ol>
+				<li><a href="#c1c1">CreateFile</a></li>
+				<li><a href="#c1c2">CreateFileMapping</a></li>
+				<li><a href="#c1c3">OpenFileMapping</a></li>
+				<li><a href="#c1c4">MapViewOfFile</a></li>
+				<li><a href="#c1c5">UnmapViewOfFile</a></li>
+				<li><a href="#c1c6">CloseHandle</a></li>
+			</ol>
+		</li>
+		<li><a href="#c2">Примеры</a>
+			<ol>
+				<li><a href="#c2c1">Демонстрационная программа «Адресная книга»</a></li>
+				<li><a href="#c2c2">Межпроцессное взаимодействие</a></li>
+			</ol>
+		</li>
+	</ol>
+
+	<h2><a id="c1">Функции</a></h2>
+
+	<p>Чтобы отобразить файл в память и использовать его, нам понядобятся следующие функции:</p>
+
+	<ul>
+		<li><strong>CreateFile</strong> открывает файл;</li>
+		<li><strong>CreateFileMapping</strong> отображает файл в память;</li>
+		<li><strong>OpenFileMapping</strong> открывает уже отображённый в памяти файл;</li>
+		<li><strong>MapViewOfFile</strong> связывает отображённый файл с адресным пространством процесса;</li>
+		<li><strong>UnmapViewOfFile</strong> выгружает отображённые данные файла из адресного пространства;</li>
+		<li><strong>CloseHandle</strong> закрывает отображение файла.</li>
+	</ul>
+
+	<h3><a id="c1c1">CreateFile</a></h3>
+
+	<p>В самом начале необходимо открыть файл функцией CreateFile. Вот её объявление из заголовочных файлов:</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> CreateFile <span class="keyword">Alias</span> <span class="string">&quot;CreateFileW&quot;</span>( _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> lpFileName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> dwDesiredAccess <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> dwShareMode <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> lpSecurityAttributes <span class="keyword">As</span> <span class="datatype">LPSECURITY_ATTRIBUTES</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> dwCreationDisposition <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> dwFlagsAndAttributes <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> hTemplateFile <span class="keyword">As</span> <span class="datatype">HANDLE</span>) _<br />
+	<span class="keyword">As</span> <span class="datatype">HANDLE</span>
+	</code></p>
+
+	<p>Параметры.</p>
+
+	<dl>
+	<dt>lpFileName</dt>
+	<dd>Указатель на строку с именем файла, который необходимо открыть.</dd>
+	</dl>
+
+	<dl>
+	<dt>dwDesiredAccess</dt>
+	<dd>Тип доступа к объекту, например, GENERIC_READ, GENERIC_WRITE или и то, и другое.</dd>
+	</dl>
+
+	<dl>
+	<dt>dwShareMode</dt>
+	<dd>Режим совместного доступа к файлу (из других процессов). Может быть 0, FILE_SHARE_READ, FILE_SHARE_WRITE или их комбинацией.</dd>
+	</dl>
+
+	<dl>
+	<dt>lpSecurityAttributes</dt>
+	<dd>Указатель на структуру SECURITY_ATTRIBUTES, устанавливающую, может ли возвращённый дескриптор быть унаследован дочерними процессами. В нашем случае это не важно, поэтому устанавливаем в NULL.</dd>
+	</dl>
+
+	<dl>
+	<dt>dwCreationDisposition</dt>
+	<dd>Выполняемые действия с файлами. CREATE_NEW — создать файл, если таковой уже существует, выйдет ошибка. CREATE_ALWAYS — всегда создавать или перезаписывать файл с нуля. OPEN_EXISTING — открыть существующий файл, если таковой не существует, вылезет ошибка. OPEN_ALWAYS — открыть существующий файл или создать. TRUNCATE_EXISTING — перезаписать с нуля существующий файл, или вывести ошибку, если файл не существует.</dd>
+	</dl>
+
+	<dl>
+	<dt>dwFlagsAndAttributes</dt>
+	<dd>Атрибуты файла, здесь необходим только флаг FILE_ATTRIBUTE_NORMAL.</dd>
+	</dl>
 
-
-<h3><a id="c1c2"></a>CreateFileMapping</h3>
+	<dl>
+	<dt>hTemplateFile</dt>
+	<dd>Указатель на файл‐шаблон. Не используется и должен быть установлен в NULL.</dd>
+	</dl>
+
+	<p>Если функция завершается успешно, возвращаемое значение — открытый дескриптор заданного файла.</p>
+	<p>Если функция завершается с ошибкой, возвращаемое значение — INVALID_HANDLE_VALUE.</p>
+
+
+	<h3><a id="c1c2"></a>CreateFileMapping</h3>
 
-<p>После открытия файла необходимо создать отображённый в памяти файл функцией CreateFileMapping.</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> CreateFileMapping <span class="keyword">Alias</span> <span class="string">&quot;CreateFileMappingW&quot;</span>( _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> hFile <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> lpFileMappingAttributes <span class="keyword">As</span> LPSECURITY_ATTRIBUTES, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> flProtect <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> dwMaximumSizeHigh <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> dwMaximumSizeLow <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> lpName <span class="keyword">As</span> <span class="datayupe">LPCWSTR</span>) _<br />
-<span class="keyword">As</span> <span class="datatype">HANDLE</span>
-</code></p>
-
-<p>Параметры.</p>
-
-<dl>
-<dt>hFile</dt>
-<dd>Дескриптор файла, из которого создаётся отображённый файл. Можно также передать INVALID_HANDLE_VALUE, тогда отображённый файл создаётся из файла подкачки и пригоден для межпроцессного взаимодействия; в этом случае необходимо установить параметры dwMaximumSizeHigh и dwMaximumSizeLow.</dd>
-</dl>
-
-<dl>
-<dt>lpAttributes</dt>
-<dd>Указатель на структуру SECURITY_ATTRIBUTES, если требуется, чтобы дескриптор отображённого файла мог быть унаследован, иначе оставляем в NULL.</dd>
-</dl>
+	<p>После открытия файла необходимо создать отображённый в памяти файл функцией CreateFileMapping.</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> CreateFileMapping <span class="keyword">Alias</span> <span class="string">&quot;CreateFileMappingW&quot;</span>( _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> hFile <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> lpFileMappingAttributes <span class="keyword">As</span> LPSECURITY_ATTRIBUTES, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> flProtect <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> dwMaximumSizeHigh <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> dwMaximumSizeLow <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> lpName <span class="keyword">As</span> <span class="datayupe">LPCWSTR</span>) _<br />
+	<span class="keyword">As</span> <span class="datatype">HANDLE</span>
+	</code></p>
+
+	<p>Параметры.</p>
+
+	<dl>
+	<dt>hFile</dt>
+	<dd>Дескриптор файла, из которого создаётся отображённый файл. Можно также передать INVALID_HANDLE_VALUE, тогда отображённый файл создаётся из файла подкачки и пригоден для межпроцессного взаимодействия; в этом случае необходимо установить параметры dwMaximumSizeHigh и dwMaximumSizeLow.</dd>
+	</dl>
+
+	<dl>
+	<dt>lpAttributes</dt>
+	<dd>Указатель на структуру SECURITY_ATTRIBUTES, если требуется, чтобы дескриптор отображённого файла мог быть унаследован, иначе оставляем в NULL.</dd>
+	</dl>
 
-<dl>
-<dt>flProtect</dt>
-<dd>Вид защиты, необходимый для файла, когда он отображается. Нас интересует только пара значений: PAGE_READONLY для чтения и PAGE_READWRITE для чтения и записи. Этот параметр должен быть совместим с параметром dwDesiredAccess функции CreateFile.</dd>
-</dl>
+	<dl>
+	<dt>flProtect</dt>
+	<dd>Вид защиты, необходимый для файла, когда он отображается. Нас интересует только пара значений: PAGE_READONLY для чтения и PAGE_READWRITE для чтения и записи. Этот параметр должен быть совместим с параметром dwDesiredAccess функции CreateFile.</dd>
+	</dl>
 
-<dl>
-<dt>dwMaximumSizeHigh</dt>
-<dd>Старшее двойное слово максимального размера объекта «отображённый файл».</dd>
-</dl>
+	<dl>
+	<dt>dwMaximumSizeHigh</dt>
+	<dd>Старшее двойное слово максимального размера объекта «отображённый файл».</dd>
+	</dl>
 
-<dl>
-<dt>dwMaximumSizeLow</dt>
-<dd>Младшее двойное слово (DWORD) максимального размера объекта «отображённый файл». Если этот параметр и dwMaximumSizeHigh равняются нулю, максимальный размер объекта «отображённый файл» равен текущему размеру файла, идентифицированного hFile.</dd>
-</dl>
+	<dl>
+	<dt>dwMaximumSizeLow</dt>
+	<dd>Младшее двойное слово (DWORD) максимального размера объекта «отображённый файл». Если этот параметр и dwMaximumSizeHigh равняются нулю, максимальный размер объекта «отображённый файл» равен текущему размеру файла, идентифицированного hFile.</dd>
+	</dl>
 
-<p>Если dwMaximumSizeHigh и dwMaximumSizeHigh установлены в 0, то попытка отобразить в память файл с нулевой длиной завершается ошибкой с кодом ERROR_FILE_INVALID, в этом случае приложения должны обнаруживать файлы с нулевой длиной и отклонять их.</p>
+	<p>Если dwMaximumSizeHigh и dwMaximumSizeHigh установлены в 0, то попытка отобразить в память файл с нулевой длиной завершается ошибкой с кодом ERROR_FILE_INVALID, в этом случае приложения должны обнаруживать файлы с нулевой длиной и отклонять их.</p>
 
-<dl>
-<dt>lpName</dt>
-<dd>Указатель на строку с именем объекта «отображённый файл». Необходим для межпроцессного взаимодействия, в остальных случаях устанавливается в NULL.</dd>
-</dl>
+	<dl>
+	<dt>lpName</dt>
+	<dd>Указатель на строку с именем объекта «отображённый файл». Необходим для межпроцессного взаимодействия, в остальных случаях устанавливается в NULL.</dd>
+	</dl>
 
-<p>Если функция завершается успешно, то возвращается дескриптор, если возникла ошибка, то возвращается NULL.</p>
+	<p>Если функция завершается успешно, то возвращается дескриптор, если возникла ошибка, то возвращается NULL.</p>
 
 
-<h3><a id="c1c3"></a>OpenFileMapping</h3>
+	<h3><a id="c1c3"></a>OpenFileMapping</h3>
 
-<p>Функция OpenFileMapping открывает уже существующий именованный объект «отображённый файл».</p>
+	<p>Функция OpenFileMapping открывает уже существующий именованный объект «отображённый файл».</p>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> OpenFileMapping <span class="keyword">Alias</span> <span class="string">&quot;OpenFileMappingW&quot;</span>( _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> dwDesiredAccess <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> bInheritHandle <span class="keyword">As</span> <span class="datatype">WINBOOL</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> lpName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>) _<br />
-<span class="keyword">As</span> <span class="datatype">HANDLE</span>
-</code></p>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> OpenFileMapping <span class="keyword">Alias</span> <span class="string">&quot;OpenFileMappingW&quot;</span>( _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> dwDesiredAccess <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> bInheritHandle <span class="keyword">As</span> <span class="datatype">WINBOOL</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> lpName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>) _<br />
+	<span class="keyword">As</span> <span class="datatype">HANDLE</span>
+	</code></p>
 
-<p>Параметры</p>
-<dl>
-<dt>dwDesiredAccess</dt>
-<dd>Тип доступа к объекту, например, GENERIC_READ, GENERIC_WRITE или и то, и другое.</dd>
-</dl>
+	<p>Параметры</p>
+	<dl>
+	<dt>dwDesiredAccess</dt>
+	<dd>Тип доступа к объекту, например, GENERIC_READ, GENERIC_WRITE или и то, и другое.</dd>
+	</dl>
 
-<dl>
-<dt>bInheritHandle</dt>
-<dd>Если этот параметр истина (WinTrue), то процесс наследует дескриптор.</dd>
-</dl>
+	<dl>
+	<dt>bInheritHandle</dt>
+	<dd>Если этот параметр истина (WinTrue), то процесс наследует дескриптор.</dd>
+	</dl>
 
-<dl>
-<dt>lpName</dt>
-<dd>Указатель на строку с именем открываемого файла.</dd>
-</dl>
+	<dl>
+	<dt>lpName</dt>
+	<dd>Указатель на строку с именем открываемого файла.</dd>
+	</dl>
 
-<p>Если функция завершается успешно, возвращаемое значение — дескриптор заданного объекта «отображённый файл». Если функция завершается ошибкой, возвращаемое значение — NULL.</p>
+	<p>Если функция завершается успешно, возвращаемое значение — дескриптор заданного объекта «отображённый файл». Если функция завершается ошибкой, возвращаемое значение — NULL.</p>
 
-<h3><a id="c1c4"></a>MapViewOfFile</h3>
+	<h3><a id="c1c4"></a>MapViewOfFile</h3>
 
-<p>Функция MapViewOfFile отображает данные файла в адресное пространство процесса.</p>
+	<p>Функция MapViewOfFile отображает данные файла в адресное пространство процесса.</p>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> MapViewOfFile( _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> hFileMappingObject <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> dwDesiredAccess <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> dwFileOffsetHigh <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> dwFileOffsetLow <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> dwNumberOfBytesToMap <span class="keyword">As</span> <span class="datatype">SIZE_T_</span>) _<br />
-<span class="keyword">As</span> <span class="datatype">LPVOID</span>
-</code></p>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> MapViewOfFile( _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> hFileMappingObject <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> dwDesiredAccess <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> dwFileOffsetHigh <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> dwFileOffsetLow <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> dwNumberOfBytesToMap <span class="keyword">As</span> <span class="datatype">SIZE_T_</span>) _<br />
+	<span class="keyword">As</span> <span class="datatype">LPVOID</span>
+	</code></p>
 
-<dl>
-<dt>hFileMappingObject</dt>
-<dd>Дескриптор открытого объекта «отображённый файл».</dd>
-</dl>
+	<dl>
+	<dt>hFileMappingObject</dt>
+	<dd>Дескриптор открытого объекта «отображённый файл».</dd>
+	</dl>
 
-<dl>
-<dt>dwDesiredAccess</dt>
-<dd>Режим доступа. Нас интересуют только FILE_MAP_READ для чтения данных, FILE_MAP_WRITE для записи данных и FILE_MAP_ALL_ACCESS для чтения и записи. Не должен быть в противоречии с другими режимами.</dd>
-</dl>
+	<dl>
+	<dt>dwDesiredAccess</dt>
+	<dd>Режим доступа. Нас интересуют только FILE_MAP_READ для чтения данных, FILE_MAP_WRITE для записи данных и FILE_MAP_ALL_ACCESS для чтения и записи. Не должен быть в противоречии с другими режимами.</dd>
+	</dl>
 
-<dl>
-<dt>dwFileOffsetHigh</dt>
-<dd>Старшее двойное слово (DWORD) смещения файла, где начинается отображение.</dd>
-</dl>
+	<dl>
+	<dt>dwFileOffsetHigh</dt>
+	<dd>Старшее двойное слово (DWORD) смещения файла, где начинается отображение.</dd>
+	</dl>
 
-<dl>
-<dt>dwFileOffsetLow</dt>
-<dd>Младшее двойное слово (DWORD) смещения файла, где начинается отображение. Значение этого начального адреса должно быть кратным 64 Кбайт. Чтобы начало отображаемого участка совпадало с началом файла, dwFileOffsetHigh и dwFileOffsetLow следует задать равными 0.</dd>
-</dl>
+	<dl>
+	<dt>dwFileOffsetLow</dt>
+	<dd>Младшее двойное слово (DWORD) смещения файла, где начинается отображение. Значение этого начального адреса должно быть кратным 64 Кбайт. Чтобы начало отображаемого участка совпадало с началом файла, dwFileOffsetHigh и dwFileOffsetLow следует задать равными 0.</dd>
+	</dl>
 
-<dl>
-<dt>dwNumberOfBytesToMap</dt>
-<dd>Число отображаемых байтов файла. Если этот параметр равняется нулю, отображается весь файл.</dd>
-</dl>
+	<dl>
+	<dt>dwNumberOfBytesToMap</dt>
+	<dd>Число отображаемых байтов файла. Если этот параметр равняется нулю, отображается весь файл.</dd>
+	</dl>
 
-<p>При успехе функция возвращает указатель, по которому можно считывать и записывать данные. В случае ошибки функция возвращает NULL.</p>
+	<p>При успехе функция возвращает указатель, по которому можно считывать и записывать данные. В случае ошибки функция возвращает NULL.</p>
 
-<p>Если размер файла больше, чем адресное пространство процесса, то одновременно можно отобразить только небольшую часть файла.</p>
+	<p>Если размер файла больше, чем адресное пространство процесса, то одновременно можно отобразить только небольшую часть файла.</p>
 
 
-<h3><a id="c1c5"></a>UnmapViewOfFile</h3>
+	<h3><a id="c1c5"></a>UnmapViewOfFile</h3>
 
-<p>Функция UnmapViewOfFile отменяет отображение файла из адресного пространства процесса.</p>
+	<p>Функция UnmapViewOfFile отменяет отображение файла из адресного пространства процесса.</p>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> UnmapViewOfFile(<span class="keyword">ByVal</span> lpBaseAddress <span class="keyword">As</span> <span class="datatype">LPCVOID</span>)<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
-</code></p>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> UnmapViewOfFile(<span class="keyword">ByVal</span> lpBaseAddress <span class="keyword">As</span> <span class="datatype">LPCVOID</span>)<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
+	</code></p>
 
-<p>Параметры.</p>
-
-<dl>
-<dt>lpBaseAddress</dt>
-<dd>Указатель на адрес отображаемого представления файла, отображение которого должно быть прекращено.</dd>
-</dl>
-
-<p>Если функция завершается успешно, то возвращается не ноль. В случае ошибки возвращается ноль.</p>
-
-<p>Эту функцию мы будем использовать для выгрузки данных файла из памяти процесса (на самом деле данные выгрузятся тогда, когда будут отменены все отображения файла и закрыты отображаемые файлы).</p>
-
-<h3><a id="c1c6"></a>CloseHandle</h3>
-
-<p>Функция CloseHandle закрывает дескриптор открытого объекта.</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> CloseHandle(<span class="keyword">ByVal</span> hObject <span class="keyword">As</span> <span class="datatype">HANDLE</span>)<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
-</code></p>
-
-<p>Параметры.</p>
-
-<dl>
-<dt>hObject</dt>
-<dd>Дескриптор открытого объекта.</dd>
-</dl>
-
-<p>Если функция завершается успешно, величина возвращаемого значения — не ноль. Если функция завершается с ошибкой, величина возвращаемого значения — ноль.</p>
-
-<p>Эту функцию мы будем использовать для закрытия объекта «отображённый файл» и самого файла.</p>
-
-
-
-
-<h2><a id="c2"></a>Примеры</h2>
-
-
-
-
-<p>Для примера рассмотрим использование отображённых в память файлов для создания демонстрационной программы «Адресная книга» и межпроцессного взаимодействия.</p>
-
-<h3><a id="c2c1"></a>Демонстрационная программа «Адресная книга»</h3>
-
-<p>Задача. Необходимо написать программу «адресная книга». Программа должна хранить список из 50 адресов, уметь добавлять контакты, редактировать, удалять и выводить весь список. Для контактов можно использовать имя, фамилию, электронный адрес и телефон.</p>
-
-<p>Заголовочный файл «AddressBook.bi».</p>
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="preprocessor">#ifndef unicode</span><br />
-<span class="preprocessor">#define unicode</span><br />
-<span class="preprocessor">#endif</span><br />
-<br />
-<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
-<br />
-<span class="remark">&apos; Максимальное количество символов для строки</span><br />
-<span class="keyword">Const</span> MaxBytesCount <span class="keyword">As</span> <span class="datatype">Integer</span> = 265<br />
-<br />
-<span class="remark">&apos; Имя файла для отображения</span><br />
-<span class="keyword">Const</span> FileName = <span class="string">&quot;Адресная книга.dat&quot;</span><br />
-<br />
-<span class="remark">&apos; Длина массива структур</span><br />
-<span class="keyword">Const</span> ArrayLength <span class="keyword">As</span> <span class="datatype">Integer</span> = 10<br />
-<br />
-<span class="keyword">Const</span> Menu = <span class="string">!&quot;1.\tПоказать список контактов.\r\n2.\tДобавить контакт.\r\n3.\tРедактировать контакт.\r\n4.\tУдалить контакт.\r\n0.\tВыход.\r\n&quot;</span><br />
-<span class="keyword">Const</span> Hello = <span class="string">!&quot;Программа «Адресная книга»\r\nВыбери действие.\r\n\r\n&quot;</span><br />
-<br />
-<span class="keyword">Const</span> ContactsCountString = <span class="string">&quot;Количество контактов&quot;</span><br />
-<br />
-<span class="keyword">Type</span> <span class="datatype">Contact</span><br />
-&t;<span class="keyword">Dim</span> Name <span class="keyword">As</span> <span class="datatype">WString</span> * (MaxBytesCount + 1)<br />
-&t;<span class="keyword">Dim</span> Surname <span class="keyword">As</span> <span class="datatype">WString</span> * (MaxBytesCount + 1)<br />
-&t;<span class="keyword">Dim</span> Email <span class="keyword">As</span> <span class="datatype">WString</span> * (MaxBytesCount + 1)<br />
-&t;<span class="keyword">Dim</span> Phone <span class="keyword">As</span> <span class="datatype">WString</span> * (MaxBytesCount + 1)<br />
-<span class="keyword">End Type</span><br />
-<br />
-<span class="remark">&apos; Чтение данных с консоли</span><br />
-<span class="keyword">Declare</span> <span class="keyword">Function</span> ReadLine(<span class="keyword">ByRef</span> s <span class="keyword">As</span> <span class="datatype">WString</span>)<span class="keyword">As</span> <span class="datatype">Integer</span>
-</code></p>
-
-<p>Файл «AddressBook.bas».</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="preprocessor">#include once &quot;AddressBook.bi&quot;</span><br />
-<br />
-<span class="keyword">Function</span> ReadLine(<span class="keyword">ByRef</span> s <span class="keyword">As</span> <span class="datatype">WString</span>)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
-&t;<span class="keyword">Dim</span> InHandle <span class="keyword">As</span> <span class="datatype">HANDLE</span> = GetStdHandle(STD_INPUT_HANDLE)<br />
-&t;<span class="keyword">Dim</span> SymbolsCount <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
-&t;<span class="keyword">If</span> ReadConsole(InHandle, @s, MaxBytesCount, @SymbolsCount, 0) = 0 <span class="keyword">Then</span><br />
-&t;&t;ReadFile(InHandle, @s, MaxBytesCount, @SymbolsCount, 0)<br />
-&t;&t;SymbolsCount \= <span class="keyword">SizeOf</span>(<span class="datatype">WString</span>)<br />
-&t;<span class="keyword">End If</span><br />
-&t;s[SymbolsCount - 2] = 0<br />
-&t;<span class="keyword">Return</span> SymbolsCount<br />
-<span class="keyword">End Function</span><br />
-<br />
-<br />
-<span class="keyword">Print</span> Hello<br />
-<br />
-<span class="keyword">Dim</span> hFile <span class="keyword">As</span> <span class="datatype">HANDLE</span> = CreateFile(@FileName, GENERIC_READ + GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL)<br />
-<br />
-<span class="keyword">If</span> hFile = INVALID_HANDLE_VALUE <span class="keyword">Then</span><br />
-&t;<span class="remark">&apos; Ошибка</span><br />
-&t;<span class="keyword">Print</span> <span class="string">&quot;Ошибка открытия файла&quot;</span><br />
-&t;<span class="keyword">End</span>(1)<br />
-<span class="keyword">End If</span><br />
-<br />
-<span class="remark">&apos; Отобразить файл</span><br />
-<span class="keyword">Dim</span> hFileMap <span class="keyword">As</span> <span class="datatype">Handle</span> = CreateFileMapping(hFile, 0, PAGE_READWRITE, 0, <span class="keyword">SizeOf</span>(<span class="datatype">Integer</span>) + ArrayLength * <span class="keyword">SizeOf</span>(<span class="datatype">Contact</span>), 0)<br />
-<span class="keyword">If</span> hFileMap = 0 <span class="keyword">Then</span><br />
-&t;<span class="remark">&apos; Ошибка</span><br />
-&t;<span class="keyword">Print</span> <span class="string">&quot;Ошибка отображения файла&quot;</span><br />
-<span class="keyword">Else</span><br />
-&t;<span class="remark">&apos; Массив структур для записи в файл</span><br />
-&t;<span class="keyword">Dim</span> b <span class="keyword">As</span> <span class="datatype">Byte Ptr</span> = <span class="keyword">CPtr</span>(<span class="datatype">Byte Ptr</span>, MapViewOfFile(hFileMap, FILE_MAP_ALL_ACCESS, 0, 0, 0))<br />
-&t;<span class="keyword">If</span> b = 0 <span class="keyword">Then</span><br />
-&t;&t;<span class="remark">&apos; Ошибка</span><br />
-&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Ошибка проецирования файла&quot;</span><br />
-&t;<span class="keyword">Else</span><br />
-&t;&t;<span class="remark">&apos; Количество контактов</span><br />
-&t;&t;<span class="keyword">Dim</span> ContactsCount <span class="keyword">As</span> <span class="datatype">Integer Ptr</span> = <span class="keyword">CPtr</span>(<span class="datatype">Integer Ptr</span>, b)<br />
-&t;&t;<span class="remark">&apos; Список контактов</span><br />
-&t;&t;<span class="keyword">Dim</span> Contacts <span class="keyword">As</span> <span class="datatype">Contact Ptr</span> = <span class="keyword">CPtr</span>(<span class="datatype">Contact Ptr</span>, b + <span class="keyword">SizeOf</span>(<span class="datatype">Integer</span>))<br />
-<br />
-&t;&t;<span class="keyword">Do</span><br />
-&t;&t;&t;<span class="keyword">Print</span> Menu<br />
-&t;&t;&t;<span class="remark">&apos; Дождаться ввода действия</span><br />
-&t;&t;&t;<span class="keyword">Dim</span> Value <span class="keyword">As</span> <span class="datatype">WString</span> * (MaxBytesCount + 1) = <span class="keyword">Any</span><br />
-&t;&t;&t;<span class="keyword">Dim</span> ValueLength <span class="keyword">As</span> <span class="datatype">Integer</span> = ReadLine(Value)<br />
-&t;&t;&t;<span class="keyword">Print</span> Value<br />
-<br />
-&t;&t;&t;<span class="keyword">Select Case</span> <span class="keyword">CInt</span>(Value)<br />
-&t;&t;&t;&t;<span class="keyword">Case</span> 0<br />
-&t;&t;&t;&t;&t;<span class="keyword">Exit Do</span><br />
-&t;&t;&t;&t;<span class="keyword">Case</span> 1<br />
-&t;&t;&t;&t;&t;<span class="remark">&apos; Список контактов</span><br />
-&t;&t;&t;&t;&t;<span class="keyword">Print</span> ContactsCountString, *ContactsCount<br />
-&t;&t;&t;&t;&t;<span class="keyword">For</span> i <span class="keyword">As</span> <span class="datatype">Integer</span> = 0 <span class="keyword">To</span> ArrayLength - 1<br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">If</span> <span class="keyword">Len</span>(Contacts[i].Email) &gt; 0 <span class="keyword">Then</span><br />
-&t;&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Номер&quot;</span>, i<br />
-&t;&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Почта&quot;</span>, Contacts[i].Email<br />
-&t;&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Телефон&quot;</span>, Contacts[i].Phone<br />
-&t;&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Имя&quot;</span>, Contacts[i].Name<br />
-&t;&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Фамилия&quot;</span>, Contacts[i].Surname<br />
-&t;&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span><br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">End If</span><br />
-&t;&t;&t;&t;&t;<span class="keyword">Next</span><br />
-&t;&t;&t;&t;<span class="keyword">Case</span> 2<br />
-&t;&t;&t;&t;&t;<span class="remark">&apos; Добавить</span><br />
-&t;&t;&t;&t;&t;<span class="keyword">If</span> *ContactsCount &gt; ArrayLength <span class="keyword">Then</span><br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Адресная книга переполнена, необходимо удалить один из контактов&quot;</span><br />
-&t;&t;&t;&t;&t;<span class="keyword">Else</span><br />
-&t;&t;&t;&t;&t;&t;*ContactsCount += 1<br />
-&t;&t;&t;&t;&t;&t;<span class="remark">&apos; Найти пустой контакт</span><br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Dim</span> i <span class="keyword">As</span> <span class="datatype">Integer</span> = 0<br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Do</span> <span class="keyword">Until</span> <span class="keyword">Len</span>(Contacts[i].Email) = 0<br />
-&t;&t;&t;&t;&t;&t;&t;i += 1<br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Loop</span><br />
-&t;&t;&t;&t;&t;&t;<span class="remark">&apos; Нашли</span><br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи адрес электропочты&quot;</span><br />
-&t;&t;&t;&t;&t;&t;ValueLength = ReadLine(Contacts[i].Email)<br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи телефон&quot;</span><br />
-&t;&t;&t;&t;&t;&t;ValueLength = ReadLine(Contacts[i].Phone)<br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи имя&quot;</span><br />
-&t;&t;&t;&t;&t;&t;ValueLength = ReadLine(Contacts[i].Name)<br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи фамилию&quot;</span><br />
-&t;&t;&t;&t;&t;&t;ValueLength = ReadLine(Contacts[i].Surname)<br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Контакт создан под номером&quot;</span>, i<br />
-&t;&t;&t;&t;&t;<span class="keyword">End If</span><br />
-&t;&t;&t;&t;<span class="keyword">Case</span> 3<br />
-&t;&t;&t;&t;&t;<span class="remark">&apos; Редактировать</span><br />
-&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи номер контакта&quot;</span><br />
-&t;&t;&t;&t;&t;ValueLength = ReadLine(Value)<br />
-&t;&t;&t;&t;&t;<span class="keyword">Dim</span> Number <span class="keyword">As</span> <span class="datatype">UInteger</span> = <span class="keyword">CUInt</span>(Value)<br />
-&t;&t;&t;&t;&t;<span class="keyword">If</span> Number &gt;= ArrayLength <span class="keyword">Then</span><br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Номер контакта слишком большой&quot;</span><br />
-&t;&t;&t;&t;&t;<span class="keyword">Else</span><br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи адрес электропочты&quot;</span><br />
-&t;&t;&t;&t;&t;&t;ValueLength = ReadLine(Contacts[Number].Email)<br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи телефон&quot;</span><br />
-&t;&t;&t;&t;&t;&t;ValueLength = ReadLine(Contacts[Number].Phone)<br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи имя&quot;</span><br />
-&t;&t;&t;&t;&t;&t;ValueLength = ReadLine(Contacts[Number].Name)<br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи фамилию&quot;</span><br />
-&t;&t;&t;&t;&t;&t;ValueLength = ReadLine(Contacts[Number].Surname)<br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Контакт отредактирован&quot;</span><br />
-&t;&t;&t;&t;&t;<span class="keyword">End If</span><br />
-&t;&t;&t;&t;<span class="keyword">Case</span> 4<br />
-&t;&t;&t;&t;&t;<span class="remark">&apos; Удалить</span><br />
-&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи номер контакта&quot;</span><br />
-&t;&t;&t;&t;&t;ValueLength = ReadLine(Value)<br />
-&t;&t;&t;&t;&t;<span class="keyword">Dim</span> Number <span class="keyword">As</span> <span class="datatype">UInteger</span> = <span class="keyword">CUInt</span>(Value)<br />
-&t;&t;&t;&t;&t;<span class="keyword">If</span> Number &gt;= ArrayLength <span class="keyword">Then</span><br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Номер контакта слишком большой&quot;</span><br />
-&t;&t;&t;&t;&t;<span class="keyword">Else</span><br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">If</span> *ContactsCount &lt;&gt; 0 <span class="keyword">Then</span><br />
-&t;&t;&t;&t;&t;&t;&t;*ContactsCount -= 1<br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">End If</span><br />
-&t;&t;&t;&t;&t;&t;Contacts[Number].Email[0] = 0<br />
-&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Контакт удалён&quot;</span><br />
-&t;&t;&t;&t;&t;<span class="keyword">End If</span><br />
-&t;&t;&t;<span class="keyword">End Select</span><br />
-&t;&t;&t;<span class="keyword">Print</span><br />
-&t;&t;<span class="keyword">Loop</span><br />
-<br />
-&t;&t;<span class="remark">&apos; Закрыть</span><br />
-&t;&t;UnmapViewOfFile(b)<br />
-&t;<span class="keyword">End If</span><br />
-&t;CloseHandle(hFileMap)<br />
-<span class="keyword">End If</span><br />
-<span class="remark">&apos; Закрыть</span><br />
-CloseHandle(hFile)
-</code></p>
-
-
-<h3><a id="c2c2"></a>Межпроцессное взаимодействие</h3>
-
-<p>Первый процесс создаёт отображённый файл в памяти и записывает в него строку.</p>
-<p>Файл «proc1.bas».</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="preprocessor">#define unicode</span><br />
-<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
-<br />
-<span class="keyword">Const</span> MaxBytesCount <span class="keyword">As</span> <span class="datatype">Integer</span> = 256<br />
-<span class="keyword">Const</span> FileName = <span class="string">&quot;MyFileMappingObject&quot;</span><br />
-<span class="keyword">Const</span> MessageText = <span class="string">&quot;Сообщение из первого процесса&quot;</span><br />
-<br />
-<span class="remark">&apos; Открыть отображённый файл для чтения‐записи в файле подкачки</span><br />
-<span class="keyword">Dim</span> hMapFile <span class="keyword">As</span> <span class="datatype">Handle</span> = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, <span class="keyword">SizeOf</span>(<span class="datatype">WString</span>) * (MaxBytesCount + 1), @FileName)<br />
-<br />
-<span class="keyword">If</span> hMapFile = 0 <span class="keyword">OrElse</span> hMapFile = INVALID_HANDLE_VALUE <span class="keyword">Then</span><br />
-&t;<span class="keyword">Print</span> <span class="string">&quot;Не могу создать отображённый файл в памяти&quot;</span><br />
-&t;<span class="keyword">End</span>(1)<br />
-<span class="keyword">End If</span><br />
-<br />
-<span class="remark">&apos; Указатель для записи</span><br />
-<span class="keyword">Dim</span> b <span class="keyword">As</span> <span class="datatype">WString Ptr</span> = <span class="keyword">CPtr</span>(<span class="datatype">WString Ptr</span>, MapViewOfFile(hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, <span class="keyword">SizeOf</span>(<span class="datatype">WString</span>) * (MaxBytesCount + 1)))<br />
-<span class="keyword">If</span> b = 0 <span class="keyword">Then</span><br />
-&t;<span class="keyword">Print</span> <span class="string">&quot;Не могу отобразить файл&quot;</span><br />
-&t;<span class="keyword">End</span>(2)<br />
-<span class="keyword">End If</span><br />
-<br />
-<span class="remark">&apos; Запись текста, доступного другому процессу, по полученному указателю</span><br />
-*b = MessageText<br />
-<br />
-<span class="remark">&apos; Пауза, чтобы не закрыть объекты раньше времени</span><br />
-<span class="keyword">Sleep</span>()<br />
-<br />
-UnmapViewOfFile(b)<br />
-CloseHandle(hMapFile)
-</code></p>
-
-<p>Второй процесс открывает уже созданный отображённый файл и читает из него строку.</p>
-
-<p>Файл «proc2.bas».</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="preprocessor">#define unicode</span><br />
-<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
-<br />
-<span class="keyword">Const</span> MaxBytesCount <span class="keyword">As</span> <span class="datatype">Integer</span> = 256<br />
-<span class="keyword">Const</span> FileName = <span class="string">&quot;MyFileMappingObject&quot;</span><br />
-<br />
-<span class="keyword">Dim</span> hMapFile <span class="keyword">As</span> <span class="datatype">Handle</span> = OpenFileMapping(FILE_MAP_ALL_ACCESS, False, @FileName)<br />
-<br />
-<span class="keyword">If</span> hMapFile = 0 <span class="keyword">OrElse</span> hMapFile = INVALID_HANDLE_VALUE <span class="keyword">Then</span><br />
-&t;<span class="keyword">Print</span> <span class="string">&quot;Не могу открыть отображённый файл&quot;</span><br />
-&t;<span class="keyword">End</span>(1)<br />
-<span class="keyword">End If</span><br />
-<br />
-<span class="keyword">Dim</span> b <span class="keyword">As</span> <span class="datatype">WString Ptr</span> = <span class="keyword">CPtr</span>(<span class="datatype">WString Ptr</span>, MapViewOfFile(hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, <span class="keyword">SizeOf</span>(<span class="datatype">WString</span>) * (MaxBytesCount + 1)))<br />
-<span class="keyword">If</span> b = 0 <span class="keyword">Then</span><br />
-&t;<span class="keyword">Print</span> <span class="string">&quot;Не могу отобразить файл&quot;</span><br />
-&t;<span class="keyword">End</span>(2)<br />
-<span class="keyword">End If</span><br />
-<br />
-MessageBox(NULL, b, <span class="string">&quot;Process2&quot;</span>, MB_OK)<br />
-<br />
-UnmapViewOfFile(b)<br />
-CloseHandle(hMapFile)
-</code></p>
-
-
-<h2>Поделись ссылочкой в социальных сетях</h2>
-<div id="vk_share_button"></div>
-
+	<p>Параметры.</p>
+
+	<dl>
+	<dt>lpBaseAddress</dt>
+	<dd>Указатель на адрес отображаемого представления файла, отображение которого должно быть прекращено.</dd>
+	</dl>
+
+	<p>Если функция завершается успешно, то возвращается не ноль. В случае ошибки возвращается ноль.</p>
+
+	<p>Эту функцию мы будем использовать для выгрузки данных файла из памяти процесса (на самом деле данные выгрузятся тогда, когда будут отменены все отображения файла и закрыты отображаемые файлы).</p>
+
+	<h3><a id="c1c6"></a>CloseHandle</h3>
+
+	<p>Функция CloseHandle закрывает дескриптор открытого объекта.</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> CloseHandle(<span class="keyword">ByVal</span> hObject <span class="keyword">As</span> <span class="datatype">HANDLE</span>)<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
+	</code></p>
+
+	<p>Параметры.</p>
+
+	<dl>
+	<dt>hObject</dt>
+	<dd>Дескриптор открытого объекта.</dd>
+	</dl>
+
+	<p>Если функция завершается успешно, величина возвращаемого значения — не ноль. Если функция завершается с ошибкой, величина возвращаемого значения — ноль.</p>
+
+	<p>Эту функцию мы будем использовать для закрытия объекта «отображённый файл» и самого файла.</p>
+
+
+
+
+	<h2><a id="c2"></a>Примеры</h2>
+
+
+
+
+	<p>Для примера рассмотрим использование отображённых в память файлов для создания демонстрационной программы «Адресная книга» и межпроцессного взаимодействия.</p>
+
+	<h3><a id="c2c1"></a>Демонстрационная программа «Адресная книга»</h3>
+
+	<p>Задача. Необходимо написать программу «адресная книга». Программа должна хранить список из 50 адресов, уметь добавлять контакты, редактировать, удалять и выводить весь список. Для контактов можно использовать имя, фамилию, электронный адрес и телефон.</p>
+
+	<p>Заголовочный файл «AddressBook.bi».</p>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="preprocessor">#ifndef unicode</span><br />
+	<span class="preprocessor">#define unicode</span><br />
+	<span class="preprocessor">#endif</span><br />
+	<br />
+	<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
+	<br />
+	<span class="remark">&apos; Максимальное количество символов для строки</span><br />
+	<span class="keyword">Const</span> MaxBytesCount <span class="keyword">As</span> <span class="datatype">Integer</span> = 265<br />
+	<br />
+	<span class="remark">&apos; Имя файла для отображения</span><br />
+	<span class="keyword">Const</span> FileName = <span class="string">&quot;Адресная книга.dat&quot;</span><br />
+	<br />
+	<span class="remark">&apos; Длина массива структур</span><br />
+	<span class="keyword">Const</span> ArrayLength <span class="keyword">As</span> <span class="datatype">Integer</span> = 10<br />
+	<br />
+	<span class="keyword">Const</span> Menu = <span class="string">!&quot;1.\tПоказать список контактов.\r\n2.\tДобавить контакт.\r\n3.\tРедактировать контакт.\r\n4.\tУдалить контакт.\r\n0.\tВыход.\r\n&quot;</span><br />
+	<span class="keyword">Const</span> Hello = <span class="string">!&quot;Программа «Адресная книга»\r\nВыбери действие.\r\n\r\n&quot;</span><br />
+	<br />
+	<span class="keyword">Const</span> ContactsCountString = <span class="string">&quot;Количество контактов&quot;</span><br />
+	<br />
+	<span class="keyword">Type</span> <span class="datatype">Contact</span><br />
+	&t;<span class="keyword">Dim</span> Name <span class="keyword">As</span> <span class="datatype">WString</span> * (MaxBytesCount + 1)<br />
+	&t;<span class="keyword">Dim</span> Surname <span class="keyword">As</span> <span class="datatype">WString</span> * (MaxBytesCount + 1)<br />
+	&t;<span class="keyword">Dim</span> Email <span class="keyword">As</span> <span class="datatype">WString</span> * (MaxBytesCount + 1)<br />
+	&t;<span class="keyword">Dim</span> Phone <span class="keyword">As</span> <span class="datatype">WString</span> * (MaxBytesCount + 1)<br />
+	<span class="keyword">End Type</span><br />
+	<br />
+	<span class="remark">&apos; Чтение данных с консоли</span><br />
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> ReadLine(<span class="keyword">ByRef</span> s <span class="keyword">As</span> <span class="datatype">WString</span>)<span class="keyword">As</span> <span class="datatype">Integer</span>
+	</code></p>
+
+	<p>Файл «AddressBook.bas».</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="preprocessor">#include once &quot;AddressBook.bi&quot;</span><br />
+	<br />
+	<span class="keyword">Function</span> ReadLine(<span class="keyword">ByRef</span> s <span class="keyword">As</span> <span class="datatype">WString</span>)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+	&t;<span class="keyword">Dim</span> InHandle <span class="keyword">As</span> <span class="datatype">HANDLE</span> = GetStdHandle(STD_INPUT_HANDLE)<br />
+	&t;<span class="keyword">Dim</span> SymbolsCount <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
+	&t;<span class="keyword">If</span> ReadConsole(InHandle, @s, MaxBytesCount, @SymbolsCount, 0) = 0 <span class="keyword">Then</span><br />
+	&t;&t;ReadFile(InHandle, @s, MaxBytesCount, @SymbolsCount, 0)<br />
+	&t;&t;SymbolsCount \= <span class="keyword">SizeOf</span>(<span class="datatype">WString</span>)<br />
+	&t;<span class="keyword">End If</span><br />
+	&t;s[SymbolsCount - 2] = 0<br />
+	&t;<span class="keyword">Return</span> SymbolsCount<br />
+	<span class="keyword">End Function</span><br />
+	<br />
+	<br />
+	<span class="keyword">Print</span> Hello<br />
+	<br />
+	<span class="keyword">Dim</span> hFile <span class="keyword">As</span> <span class="datatype">HANDLE</span> = CreateFile(@FileName, GENERIC_READ + GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL)<br />
+	<br />
+	<span class="keyword">If</span> hFile = INVALID_HANDLE_VALUE <span class="keyword">Then</span><br />
+	&t;<span class="remark">&apos; Ошибка</span><br />
+	&t;<span class="keyword">Print</span> <span class="string">&quot;Ошибка открытия файла&quot;</span><br />
+	&t;<span class="keyword">End</span>(1)<br />
+	<span class="keyword">End If</span><br />
+	<br />
+	<span class="remark">&apos; Отобразить файл</span><br />
+	<span class="keyword">Dim</span> hFileMap <span class="keyword">As</span> <span class="datatype">Handle</span> = CreateFileMapping(hFile, 0, PAGE_READWRITE, 0, <span class="keyword">SizeOf</span>(<span class="datatype">Integer</span>) + ArrayLength * <span class="keyword">SizeOf</span>(<span class="datatype">Contact</span>), 0)<br />
+	<span class="keyword">If</span> hFileMap = 0 <span class="keyword">Then</span><br />
+	&t;<span class="remark">&apos; Ошибка</span><br />
+	&t;<span class="keyword">Print</span> <span class="string">&quot;Ошибка отображения файла&quot;</span><br />
+	<span class="keyword">Else</span><br />
+	&t;<span class="remark">&apos; Массив структур для записи в файл</span><br />
+	&t;<span class="keyword">Dim</span> b <span class="keyword">As</span> <span class="datatype">Byte Ptr</span> = <span class="keyword">CPtr</span>(<span class="datatype">Byte Ptr</span>, MapViewOfFile(hFileMap, FILE_MAP_ALL_ACCESS, 0, 0, 0))<br />
+	&t;<span class="keyword">If</span> b = 0 <span class="keyword">Then</span><br />
+	&t;&t;<span class="remark">&apos; Ошибка</span><br />
+	&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Ошибка проецирования файла&quot;</span><br />
+	&t;<span class="keyword">Else</span><br />
+	&t;&t;<span class="remark">&apos; Количество контактов</span><br />
+	&t;&t;<span class="keyword">Dim</span> ContactsCount <span class="keyword">As</span> <span class="datatype">Integer Ptr</span> = <span class="keyword">CPtr</span>(<span class="datatype">Integer Ptr</span>, b)<br />
+	&t;&t;<span class="remark">&apos; Список контактов</span><br />
+	&t;&t;<span class="keyword">Dim</span> Contacts <span class="keyword">As</span> <span class="datatype">Contact Ptr</span> = <span class="keyword">CPtr</span>(<span class="datatype">Contact Ptr</span>, b + <span class="keyword">SizeOf</span>(<span class="datatype">Integer</span>))<br />
+	<br />
+	&t;&t;<span class="keyword">Do</span><br />
+	&t;&t;&t;<span class="keyword">Print</span> Menu<br />
+	&t;&t;&t;<span class="remark">&apos; Дождаться ввода действия</span><br />
+	&t;&t;&t;<span class="keyword">Dim</span> Value <span class="keyword">As</span> <span class="datatype">WString</span> * (MaxBytesCount + 1) = <span class="keyword">Any</span><br />
+	&t;&t;&t;<span class="keyword">Dim</span> ValueLength <span class="keyword">As</span> <span class="datatype">Integer</span> = ReadLine(Value)<br />
+	&t;&t;&t;<span class="keyword">Print</span> Value<br />
+	<br />
+	&t;&t;&t;<span class="keyword">Select Case</span> <span class="keyword">CInt</span>(Value)<br />
+	&t;&t;&t;&t;<span class="keyword">Case</span> 0<br />
+	&t;&t;&t;&t;&t;<span class="keyword">Exit Do</span><br />
+	&t;&t;&t;&t;<span class="keyword">Case</span> 1<br />
+	&t;&t;&t;&t;&t;<span class="remark">&apos; Список контактов</span><br />
+	&t;&t;&t;&t;&t;<span class="keyword">Print</span> ContactsCountString, *ContactsCount<br />
+	&t;&t;&t;&t;&t;<span class="keyword">For</span> i <span class="keyword">As</span> <span class="datatype">Integer</span> = 0 <span class="keyword">To</span> ArrayLength - 1<br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">If</span> <span class="keyword">Len</span>(Contacts[i].Email) &gt; 0 <span class="keyword">Then</span><br />
+	&t;&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Номер&quot;</span>, i<br />
+	&t;&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Почта&quot;</span>, Contacts[i].Email<br />
+	&t;&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Телефон&quot;</span>, Contacts[i].Phone<br />
+	&t;&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Имя&quot;</span>, Contacts[i].Name<br />
+	&t;&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Фамилия&quot;</span>, Contacts[i].Surname<br />
+	&t;&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span><br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">End If</span><br />
+	&t;&t;&t;&t;&t;<span class="keyword">Next</span><br />
+	&t;&t;&t;&t;<span class="keyword">Case</span> 2<br />
+	&t;&t;&t;&t;&t;<span class="remark">&apos; Добавить</span><br />
+	&t;&t;&t;&t;&t;<span class="keyword">If</span> *ContactsCount &gt; ArrayLength <span class="keyword">Then</span><br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Адресная книга переполнена, необходимо удалить один из контактов&quot;</span><br />
+	&t;&t;&t;&t;&t;<span class="keyword">Else</span><br />
+	&t;&t;&t;&t;&t;&t;*ContactsCount += 1<br />
+	&t;&t;&t;&t;&t;&t;<span class="remark">&apos; Найти пустой контакт</span><br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Dim</span> i <span class="keyword">As</span> <span class="datatype">Integer</span> = 0<br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Do</span> <span class="keyword">Until</span> <span class="keyword">Len</span>(Contacts[i].Email) = 0<br />
+	&t;&t;&t;&t;&t;&t;&t;i += 1<br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Loop</span><br />
+	&t;&t;&t;&t;&t;&t;<span class="remark">&apos; Нашли</span><br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи адрес электропочты&quot;</span><br />
+	&t;&t;&t;&t;&t;&t;ValueLength = ReadLine(Contacts[i].Email)<br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи телефон&quot;</span><br />
+	&t;&t;&t;&t;&t;&t;ValueLength = ReadLine(Contacts[i].Phone)<br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи имя&quot;</span><br />
+	&t;&t;&t;&t;&t;&t;ValueLength = ReadLine(Contacts[i].Name)<br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи фамилию&quot;</span><br />
+	&t;&t;&t;&t;&t;&t;ValueLength = ReadLine(Contacts[i].Surname)<br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Контакт создан под номером&quot;</span>, i<br />
+	&t;&t;&t;&t;&t;<span class="keyword">End If</span><br />
+	&t;&t;&t;&t;<span class="keyword">Case</span> 3<br />
+	&t;&t;&t;&t;&t;<span class="remark">&apos; Редактировать</span><br />
+	&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи номер контакта&quot;</span><br />
+	&t;&t;&t;&t;&t;ValueLength = ReadLine(Value)<br />
+	&t;&t;&t;&t;&t;<span class="keyword">Dim</span> Number <span class="keyword">As</span> <span class="datatype">UInteger</span> = <span class="keyword">CUInt</span>(Value)<br />
+	&t;&t;&t;&t;&t;<span class="keyword">If</span> Number &gt;= ArrayLength <span class="keyword">Then</span><br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Номер контакта слишком большой&quot;</span><br />
+	&t;&t;&t;&t;&t;<span class="keyword">Else</span><br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи адрес электропочты&quot;</span><br />
+	&t;&t;&t;&t;&t;&t;ValueLength = ReadLine(Contacts[Number].Email)<br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи телефон&quot;</span><br />
+	&t;&t;&t;&t;&t;&t;ValueLength = ReadLine(Contacts[Number].Phone)<br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи имя&quot;</span><br />
+	&t;&t;&t;&t;&t;&t;ValueLength = ReadLine(Contacts[Number].Name)<br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи фамилию&quot;</span><br />
+	&t;&t;&t;&t;&t;&t;ValueLength = ReadLine(Contacts[Number].Surname)<br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Контакт отредактирован&quot;</span><br />
+	&t;&t;&t;&t;&t;<span class="keyword">End If</span><br />
+	&t;&t;&t;&t;<span class="keyword">Case</span> 4<br />
+	&t;&t;&t;&t;&t;<span class="remark">&apos; Удалить</span><br />
+	&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Введи номер контакта&quot;</span><br />
+	&t;&t;&t;&t;&t;ValueLength = ReadLine(Value)<br />
+	&t;&t;&t;&t;&t;<span class="keyword">Dim</span> Number <span class="keyword">As</span> <span class="datatype">UInteger</span> = <span class="keyword">CUInt</span>(Value)<br />
+	&t;&t;&t;&t;&t;<span class="keyword">If</span> Number &gt;= ArrayLength <span class="keyword">Then</span><br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Номер контакта слишком большой&quot;</span><br />
+	&t;&t;&t;&t;&t;<span class="keyword">Else</span><br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">If</span> *ContactsCount &lt;&gt; 0 <span class="keyword">Then</span><br />
+	&t;&t;&t;&t;&t;&t;&t;*ContactsCount -= 1<br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">End If</span><br />
+	&t;&t;&t;&t;&t;&t;Contacts[Number].Email[0] = 0<br />
+	&t;&t;&t;&t;&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Контакт удалён&quot;</span><br />
+	&t;&t;&t;&t;&t;<span class="keyword">End If</span><br />
+	&t;&t;&t;<span class="keyword">End Select</span><br />
+	&t;&t;&t;<span class="keyword">Print</span><br />
+	&t;&t;<span class="keyword">Loop</span><br />
+	<br />
+	&t;&t;<span class="remark">&apos; Закрыть</span><br />
+	&t;&t;UnmapViewOfFile(b)<br />
+	&t;<span class="keyword">End If</span><br />
+	&t;CloseHandle(hFileMap)<br />
+	<span class="keyword">End If</span><br />
+	<span class="remark">&apos; Закрыть</span><br />
+	CloseHandle(hFile)
+	</code></p>
+
+
+	<h3><a id="c2c2"></a>Межпроцессное взаимодействие</h3>
+
+	<p>Первый процесс создаёт отображённый файл в памяти и записывает в него строку.</p>
+	<p>Файл «proc1.bas».</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="preprocessor">#define unicode</span><br />
+	<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
+	<br />
+	<span class="keyword">Const</span> MaxBytesCount <span class="keyword">As</span> <span class="datatype">Integer</span> = 256<br />
+	<span class="keyword">Const</span> FileName = <span class="string">&quot;MyFileMappingObject&quot;</span><br />
+	<span class="keyword">Const</span> MessageText = <span class="string">&quot;Сообщение из первого процесса&quot;</span><br />
+	<br />
+	<span class="remark">&apos; Открыть отображённый файл для чтения‐записи в файле подкачки</span><br />
+	<span class="keyword">Dim</span> hMapFile <span class="keyword">As</span> <span class="datatype">Handle</span> = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, <span class="keyword">SizeOf</span>(<span class="datatype">WString</span>) * (MaxBytesCount + 1), @FileName)<br />
+	<br />
+	<span class="keyword">If</span> hMapFile = 0 <span class="keyword">OrElse</span> hMapFile = INVALID_HANDLE_VALUE <span class="keyword">Then</span><br />
+	&t;<span class="keyword">Print</span> <span class="string">&quot;Не могу создать отображённый файл в памяти&quot;</span><br />
+	&t;<span class="keyword">End</span>(1)<br />
+	<span class="keyword">End If</span><br />
+	<br />
+	<span class="remark">&apos; Указатель для записи</span><br />
+	<span class="keyword">Dim</span> b <span class="keyword">As</span> <span class="datatype">WString Ptr</span> = <span class="keyword">CPtr</span>(<span class="datatype">WString Ptr</span>, MapViewOfFile(hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, <span class="keyword">SizeOf</span>(<span class="datatype">WString</span>) * (MaxBytesCount + 1)))<br />
+	<span class="keyword">If</span> b = 0 <span class="keyword">Then</span><br />
+	&t;<span class="keyword">Print</span> <span class="string">&quot;Не могу отобразить файл&quot;</span><br />
+	&t;<span class="keyword">End</span>(2)<br />
+	<span class="keyword">End If</span><br />
+	<br />
+	<span class="remark">&apos; Запись текста, доступного другому процессу, по полученному указателю</span><br />
+	*b = MessageText<br />
+	<br />
+	<span class="remark">&apos; Пауза, чтобы не закрыть объекты раньше времени</span><br />
+	<span class="keyword">Sleep</span>()<br />
+	<br />
+	UnmapViewOfFile(b)<br />
+	CloseHandle(hMapFile)
+	</code></p>
+
+	<p>Второй процесс открывает уже созданный отображённый файл и читает из него строку.</p>
+
+	<p>Файл «proc2.bas».</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="preprocessor">#define unicode</span><br />
+	<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
+	<br />
+	<span class="keyword">Const</span> MaxBytesCount <span class="keyword">As</span> <span class="datatype">Integer</span> = 256<br />
+	<span class="keyword">Const</span> FileName = <span class="string">&quot;MyFileMappingObject&quot;</span><br />
+	<br />
+	<span class="keyword">Dim</span> hMapFile <span class="keyword">As</span> <span class="datatype">Handle</span> = OpenFileMapping(FILE_MAP_ALL_ACCESS, False, @FileName)<br />
+	<br />
+	<span class="keyword">If</span> hMapFile = 0 <span class="keyword">OrElse</span> hMapFile = INVALID_HANDLE_VALUE <span class="keyword">Then</span><br />
+	&t;<span class="keyword">Print</span> <span class="string">&quot;Не могу открыть отображённый файл&quot;</span><br />
+	&t;<span class="keyword">End</span>(1)<br />
+	<span class="keyword">End If</span><br />
+	<br />
+	<span class="keyword">Dim</span> b <span class="keyword">As</span> <span class="datatype">WString Ptr</span> = <span class="keyword">CPtr</span>(<span class="datatype">WString Ptr</span>, MapViewOfFile(hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, <span class="keyword">SizeOf</span>(<span class="datatype">WString</span>) * (MaxBytesCount + 1)))<br />
+	<span class="keyword">If</span> b = 0 <span class="keyword">Then</span><br />
+	&t;<span class="keyword">Print</span> <span class="string">&quot;Не могу отобразить файл&quot;</span><br />
+	&t;<span class="keyword">End</span>(2)<br />
+	<span class="keyword">End If</span><br />
+	<br />
+	MessageBox(NULL, b, <span class="string">&quot;Process2&quot;</span>, MB_OK)<br />
+	<br />
+	UnmapViewOfFile(b)<br />
+	CloseHandle(hMapFile)
+	</code></p>
+
+
+	<h2>Поделись ссылочкой в социальных сетях</h2>
+	<div id="vk_share_button"></div>
+
+</main>
 
 <hr />
 
-<p class="footer">Сайт создан по технологии XHTML</p>
-
-<p class="footer">
-	
-	<span id="pLiveInternet"></span>
-	
-	<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
-		<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
-	</a>
-	<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
-		<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
-	</a> 
-</p>
+<footer>
+	<p>Сайт создан по технологии XHTML</p>
+	<p>
+		<span id="pLiveInternet"></span>
+		<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
+			<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
+		</a>
+		<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
+			<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
+		</a> 
+	</p>
+</footer>
 
 <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
 <script type="text/javascript">var docUrl=document.URL.toString();document.getElementById("vk_share_button").innerHTML=VK.Share.button(docUrl, {type: "round"});</script>

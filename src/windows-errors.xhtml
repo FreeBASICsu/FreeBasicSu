@@ -20,181 +20,195 @@
 
 <body>
 
-<ul class="navbar">
-	<li><a href="/">Главная</a></li>
-	<li><a href="/src/">Статьи</a></li>
-	<li><a href="/code/">Проекты</a></li>
-	<li><a href="/books/">Учебник</a></li>
-	<li><a href="/links.xhtml">Ссылки</a></li>
-	<li><a href="/about.xhtml">О сайте</a></li>
-</ul>
+<header>
+	
+	<nav>
+		<a href="/">Главная</a>
+		<a href="/src/">Статьи</a>
+		<a href="/code/">Проекты</a>
+		<a href="/books/">Учебник</a>
+		<a href="/links.xhtml">Ссылки</a>
+		<a href="/about.xhtml">О сайте</a>
+	</nav>
+	
+</header>
 
 
 <h1>Обработка ошибок в Windows</h1>
 
-<p><span class="postername">Эрик Замабувараев‐Ёмолкуу</span> <span class="date">10.08.2017 12:49:07</span></p>
+<main>
+	
+	<p class="postername">
+		<a href="/users/mabu.xhtml">
+			<img src="/avatars/mabu.jpg" alt="Аватар пользователя" width="50" height="50" class="avatar" />
+			&#32;
+			mabu
+		</a>
+		&#32;
+		<time pubdate="pubdate">2017-08-10T12:49:07+07:00</time>
+	</p>
 
-<p>Когда ты вызываешь функцию Windows, она проверяет переданные ей параметры, а затем пытается выполнить свою работу. Если ты передал недопустимый параметр или если данную операцию нельзя выполнить по какой‐то другой причине, она возвращает значение, свидетельствующее об ошибке.</p>
+	<p>Когда ты вызываешь функцию Windows, она проверяет переданные ей параметры, а затем пытается выполнить свою работу. Если ты передал недопустимый параметр или если данную операцию нельзя выполнить по какой‐то другой причине, она возвращает значение, свидетельствующее об ошибке.</p>
 
-<ol class="contents">
-	<li><a href="#c1">Типы данных для возвращаемых значений</a></li>
-	<li><a href="#c2">Почему же произошла ошика?</a></li>
-	<li><a href="#c3">Ты тоже можешь это сделать</a></li>
-	<li><a href="#c4">Получение описания кода ошибки</a></li>
-</ol>
-
-
-<h2><a id="c1">Типы данных для возвращаемых значений</a></h2>
-
-<p>Большинство функций Windows возаращают следующие типы.</p>
-
-<dl>
-<dt>Процедуры</dt>
-<dd>Функции типа <code>Sub</code> (процедуры) не возвращают значений. Такие функции всегда (или почти всегда) выполняется успешно, хотя их количество в Windows очень мало. Пример: функция <code>ExitProcess</code>.</dd>
-</dl>
-
-<dl>
-<dt>Bool или Boolean</dt>
-<dd>Если вызов функции оканчивается неудачно, то возвращается 0 (он же <code>False</code>), в остальных случаях возвращается любое другое число, отличное от нуля. Однако не пытайся проверять его на <code>True</code>.</dd>
-</dl>
-
-<dl>
-<dt>Handle</dt>
-<dd>Если вызов функции оканчивается неудачно, то обычно возвращается <code>NULL</code>, в остальных случаях Handle идентифицирует объект, которым ты можешь манипулировать. Однако некоторые функции вместо <code>NULL</code> в случае ошибки возвращают <code>INVALID_HANDLE_VALUE</code>, например, <code>CreateFile</code>. В документации для каждой функции чётко указано, что именно она возвращает при ошибке: <code>NULL</code> или <code>INVALID_HANDLE_VALUE</code>.</dd>
-</dl>
-
-<dl>
-<dt>PVOID или Any Ptr</dt>
-<dd>Если вызов функции оканчивается неудачно, то возвращается <code>NULL</code>, в остальных случаях PVOID сообщает адрес блока данных в памяти.</dd>
-</dl>
-
-<dl>
-<dt>Integer, Long или DWORD</dt>
-<dd>Это значение — «крепкий орешек». Функции, которые возвращают значения каких‐либо счётчиков, обычно возвращают <code>Integer</code>, <code>Long</code>, или <code>DWORD</code>. Если по какой‐либо причине функция не сумела сосчитать то, что ты хотел, она обычно возвращает 0 или -1, всё зависит от конкретной функции. Если ты используешь одну из таких функций, проверь по документации, каким именно значением она уведомляет об ошибке.</dd>
-</dl>
+	<ol class="contents">
+		<li><a href="#c1">Типы данных для возвращаемых значений</a></li>
+		<li><a href="#c2">Почему же произошла ошика?</a></li>
+		<li><a href="#c3">Ты тоже можешь это сделать</a></li>
+		<li><a href="#c4">Получение описания кода ошибки</a></li>
+	</ol>
 
 
-<h2><a id="c2">Почему же произошла ошика?</a></h2>
+	<h2><a id="c1">Типы данных для возвращаемых значений</a></h2>
 
-<p>При возникновении ошибки необходимо разобраться почему вызов данной функции оказался неудачен. За каждой ошибкой закреплён свой код — 32‐битное целое число.</p>
+	<p>Большинство функций Windows возаращают следующие типы.</p>
 
-<p>Функция Windows, обнаружив ошибку, через механизм локальной памяти потока сопоставляет соответствующий код ошибки с вызывающим потоком. Это позволяет потокам работать независимо друг от друга, не вмешиваясь в чужие ошибки. Когда функция вернёт управление, её возвращаемое значение будет указывать на то, что произошла какая‐то ошибка. Какая именно — можно узнать, вызвав функцию <code>GetLastError</code>.</p>
+	<dl>
+	<dt>Процедуры</dt>
+	<dd>Функции типа <code>Sub</code> (процедуры) не возвращают значений. Такие функции всегда (или почти всегда) выполняется успешно, хотя их количество в Windows очень мало. Пример: функция <code>ExitProcess</code>.</dd>
+	</dl>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> GetLastError()<span class="keyword">As</span> <span class="datatype">DWORD</span>
-</code></p>
+	<dl>
+	<dt>Bool или Boolean</dt>
+	<dd>Если вызов функции оканчивается неудачно, то возвращается 0 (он же <code>False</code>), в остальных случаях возвращается любое другое число, отличное от нуля. Однако не пытайся сравнить это число с <code>True</code>, лучше просто сравнивать с нулём.</dd>
+	</dl>
 
-<p>Она просто возвращает числовое значение, характеризующее код ошибки.</p>
+	<dl>
+	<dt>Handle</dt>
+	<dd>Если вызов функции оканчивается неудачно, то обычно возвращается <code>NULL</code>, что эквивалентно нулю, в остальных случаях возвращаемое значение идентифицирует объект, которым ты можешь манипулировать. Однако некоторые функции вместо <code>NULL</code> в случае ошибки возвращают константу <code>INVALID_HANDLE_VALUE</code>, например, функция <code>CreateFile</code>. В документации для каждой функции чётко указано, что именно она возвращает при ошибке: <code>NULL</code> или <code>INVALID_HANDLE_VALUE</code>.</dd>
+	</dl>
 
-<p>Список кодов ошибок лежит в заголовочной файле <code>win\winerror.bi</code>. Здесь приведена его небольшая часть, чтобы примерно представлять, на что он похож.</p>
+	<dl>
+	<dt>PVOID или Any Ptr</dt>
+	<dd>Если вызов функции оканчивается неудачно, то возвращается <code>NULL</code>, в остальных случаях PVOID сообщает адрес блока данных в памяти.</dd>
+	</dl>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Const</span> ERROR_SUCCESS = 0<br />
-<span class="keyword">Const</span> NO_ERROR = 0<br />
-<span class="keyword">Const</span> SEC_E_OK = cast(HRESULT, &amp;h00000000)<br />
-<span class="keyword">Const</span> ERROR_INVALID_FUNCTION = 1<br />
-<span class="keyword">Const</span> ERROR_FILE_NOT_FOUND = 2<br />
-<span class="keyword">Const</span> ERROR_PATH_NOT_FOUND = 3<br />
-<span class="keyword">Const</span> ERROR_TOO_MANY_OPEN_FILES = 4<br />
-<span class="keyword">Const</span> ERROR_ACCESS_DENIED = 5<br />
-<span class="keyword">Const</span> ERROR_INVALID_HANDLE = 6
-</code></p>
-
-<p>Здесь показана лишь очень крошечная часть файла, на самом деле в нём более трёх с половиной тысяч строк.</p>
-
-<p>Функцию <code>GetLastError</code> необходимо вызывать сразу же после неудачного вызова функции Windows, иначе код ошибки может быть потерян.</p>
-
-<p>Некоторые функции Windows всегда завершаются успешно, но по разным причинам. Например, попытка создать объект ядра «событие» с определённым именем может быть успешна потому, что оно действительно создано, либо потому, что такой объект уже существует. Но иногда нужно знать причину успеха. Для возврата этой информации корпорация Microsoft предпочла использовать механизм установки кода последней ошибки. Так что и при успешном выполнении некоторых функций ты можешь использовать <code>GetLastError</code> и получать дополнительную информацию. К таким функциям относится, например, <code>CreateEvent</code>.</p>
-
-<p>Ты наверняка спросишь, составит ли корпорация Microsoft полный список всех кодов ошибок, возможных в каждой функции. Ответ: нет. Такого списка никогда не будет, уж слишком сложно его составлять и поддерживать для всё новых и новых версий системы.</p>
-
-<p>Проблема с подобным списком ещё и в том, что ты вызываешь одну функцию, а она может обратиться к другой, та — к следующей и так далее. Любая из этих функций может завершиться неудачно и по самым разным причинам. Иногда функция более высокого уровня сама справляется с ошибкой в одной из вызванных ею функций, и в конечном счёте выполняет то, что от неё хотели. В общем, для создания такого списка пришлось бы проследить цепочки вызовов в каждой функции, что очень трудно. А с появлением новой версии операционной системы цепочки вызовов пришлось бы пересматривать заново.</p>
+	<dl>
+	<dt>Integer, Long или DWORD</dt>
+	<dd>Это значение — «крепкий орешек». Функции, которые возвращают значения каких‐либо счётчиков, обычно возвращают <code>Integer</code>, <code>Long</code>, или <code>DWORD</code>. Если по какой‐либо причине функция не сумела сосчитать то, что ты хотел, она обычно возвращает 0 или -1, всё зависит от конкретной функции. Если ты используешь одну из таких функций, проверь по документации, каким именно значением она уведомляет об ошибке.</dd>
+	</dl>
 
 
-<h2><a id="c3">Ты тоже можешь это сделать</a></h2>
+	<h2><a id="c2">Почему же произошла ошика?</a></h2>
 
-<p>Механизм установки кода ошибки можно использовать и в собственных функциях. Предположим, ты пишешь библиотечную функцию, к которой будут обращаться другие части программы или вообще другие программы. Вызов этой функции по каким‐либо причинам может оказаться неудачным и тебе придётся тоже сообщать об этом. С этой целью ты просто устанавливаешь код последней ошибки в потоке и возвращаешь значение <code>False</code>, <code>INVALID_HANDLE_VALUE</code>, <code>NULL</code> или что‐то другое, более подходящее в твоём случае. Чтобы установить код последней ошибки вызывай функцию <code>SetLastError</code> и передай ей нужной число.</p>
+	<p>При возникновении ошибки необходимо разобраться почему вызов данной функции оказался неудачен. За каждой ошибкой закреплён свой код — 32‐битное целое число.</p>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Sub</span> SetLastError(<span class="keyword">ByVal</span> dwErrorCode <span class="keyword">As</span> <span class="datatype">DWORD</span>)
-</code></p>
+	<p>Функция Windows, обнаружив ошибку, через механизм локальной памяти потока сопоставляет соответствующий код ошибки с вызывающим потоком. Это позволяет потокам работать независимо друг от друга, не вмешиваясь в чужие ошибки. Когда функция вернёт управление, её возвращаемое значение будет указывать на то, что произошла какая‐то ошибка. Какая именно — можно узнать, вызвав функцию <code>GetLastError</code>.</p>
 
-<p>Можно использовать коды ошибок, уже определённые в <code>winerror.bi</code>, если они подходят. Если ты считаешь, что ни один из кодов ошибок из <code>winerror.bi</code> не годится для ошибки, возможной в твоей функции, можно определить свой код. Он представляет 32‐битное значение, которое разбито на поля:</p>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> GetLastError()<span class="keyword">As</span> <span class="datatype">DWORD</span>
+	</code></p>
 
+	<p>Она просто возвращает числовое значение, характеризующее код ошибки.</p>
 
-<dl>
-<dt>Биты с 0 по 15</dt>
-<dd>Код ошибки. Определяется корпорацией Microsoft или пользователем.</dd>
-</dl>
+	<p>Список кодов ошибок лежит в заголовочной файле <code>win\winerror.bi</code>. Здесь приведена его небольшая часть, чтобы примерно представлять, на что он похож.</p>
 
-<dl>
-<dt>Биты с 16 по 27</dt>
-<dd>Код подсистемы (facility code). Определяется корпорацией Microsoft.</dd>
-</dl>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Const</span> ERROR_SUCCESS = 0<br />
+	<span class="keyword">Const</span> NO_ERROR = 0<br />
+	<span class="keyword">Const</span> SEC_E_OK = cast(HRESULT, &amp;h00000000)<br />
+	<span class="keyword">Const</span> ERROR_INVALID_FUNCTION = 1<br />
+	<span class="keyword">Const</span> ERROR_FILE_NOT_FOUND = 2<br />
+	<span class="keyword">Const</span> ERROR_PATH_NOT_FOUND = 3<br />
+	<span class="keyword">Const</span> ERROR_TOO_MANY_OPEN_FILES = 4<br />
+	<span class="keyword">Const</span> ERROR_ACCESS_DENIED = 5<br />
+	<span class="keyword">Const</span> ERROR_INVALID_HANDLE = 6
+	</code></p>
 
-<dl>
-<dt>Бит 28</dt>
-<dd>Зарезервирован. Должен быть 0.</dd>
-</dl>
+	<p>Здесь показана лишь очень крошечная часть файла, на самом деле в нём более трёх с половиной тысяч строк.</p>
 
-<dl>
-<dt>Бит 29</dt>
-<dd>Корпорация Microsoft обещала, что никогда не будет его устанавливать. Следовательно, если ты определяешь собственный код ошибки, то запиши сюда 1, тогда будет гарантия, что код ошибки не будет конфликтовать с кодами, определёнными Microsoft.</dd>
-</dl>
+	<p>Функцию <code>GetLastError</code> необходимо вызывать сразу же после неудачного вызова функции Windows, иначе код ошибки может быть потерян.</p>
 
-<dl>
-<dt>Биты 30 и 31</dt>
-<dd>В двоичном виде: 00 — успех, 01 — информация, 10 — предупреждение, 11 — ошибка.</dd>
-</dl>
+	<p>Некоторые функции Windows всегда завершаются успешно, но по разным причинам. Например, попытка создать объект ядра «событие» с определённым именем может быть успешна потому, что оно действительно создано, либо потому, что такой объект уже существует. Но иногда нужно знать причину успеха. Для возврата этой информации корпорация Microsoft предпочла использовать механизм установки кода последней ошибки. Так что и при успешном выполнении некоторых функций ты можешь использовать <code>GetLastError</code> и получать дополнительную информацию. К таким функциям относится, например, <code>CreateEvent</code>.</p>
 
-<p>Подробнее об этих полях будет рассказано в следующих статьях. На данный момент единственное важное для тебя поле — это бит 29. Чтобы гарантировать непересекаемость кодов ошибок от Microsoft, установи его в 1. В переводе на числа это означает, что твой код ошибки должен быть больше, чем &amp;h20000000 или 536870912 в десятичном виде.</p>
+	<p>Ты наверняка спросишь, составит ли корпорация Microsoft полный список всех кодов ошибок, возможных в каждой функции. Ответ: нет. Такого списка никогда не будет, уж слишком сложно его составлять и поддерживать для всё новых и новых версий системы.</p>
+
+	<p>Проблема с подобным списком ещё и в том, что ты вызываешь одну функцию, а она может обратиться к другой, та — к следующей и так далее. Любая из этих функций может завершиться неудачно и по самым разным причинам. Иногда функция более высокого уровня сама справляется с ошибкой в одной из вызванных ею функций, и в конечном счёте выполняет то, что от неё хотели. В общем, для создания такого списка пришлось бы проследить цепочки вызовов в каждой функции, что очень трудно. А с появлением новой версии операционной системы цепочки вызовов пришлось бы пересматривать заново.</p>
 
 
-<h2><a id="c4">Получение описания кода ошибки</a></h2>
+	<h2><a id="c3">Ты тоже можешь это сделать</a></h2>
 
-<p>Для получения текстового описания ошибки подойдёт функция FormatMessage. Использовать её можно так:</p>
+	<p>Механизм установки кода ошибки можно использовать и в собственных функциях. Предположим, ты пишешь библиотечную функцию, к которой будут обращаться другие части программы или вообще другие программы. Вызов этой функции по каким‐либо причинам может оказаться неудачным и тебе придётся тоже сообщать об этом. С этой целью ты просто устанавливаешь код последней ошибки в потоке и возвращаешь значение <code>False</code>, <code>INVALID_HANDLE_VALUE</code>, <code>NULL</code> или что‐то другое, более подходящее в твоём случае. Чтобы установить код последней ошибки вызывай функцию <code>SetLastError</code> и передай ей нужной число.</p>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="preprocessor">#define unicode</span><br />
-<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
-<br />
-<span class="remark">&apos; Строка с ошибкой</span><br />
-<span class="keyword">Const</span> BufferLength <span class="keyword">As</span> <span class="datatype">Integer</span> = 4096 - 1<br />
-<span class="keyword">Dim</span> ErrorMessage <span class="keyword">As</span> <span class="datatype">WString</span> * (BufferLength + 1) = <span class="keyword">Any</span><br />
-<br />
-<span class="remark">&apos; Вызов функции с неправильным параметром</span><br />
-GetProcessId(NULL)<br />
-<br />
-<span class="remark">&apos; Получить код ошибки</span><br />
-<span class="keyword">Dim</span> dwError <span class="keyword">As</span> <span class="datatype">DWORD</span> = GetLastError()<br />
-<br />
-<span class="remark">&apos; Получить строку по коду ошибки</span><br />
-FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM + FORMAT_MESSAGE_IGNORE_INSERTS, NULL, dwError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), @ErrorMessage, BufferLength, NULL)<br />
-<br />
-<span class="keyword">Print</span> ErrorMessage
-</code></p>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Sub</span> SetLastError(<span class="keyword">ByVal</span> dwErrorCode <span class="keyword">As</span> <span class="datatype">DWORD</span>)
+	</code></p>
+
+	<p>Можно использовать коды ошибок, уже определённые в <code>winerror.bi</code>, если они подходят. Если ты считаешь, что ни один из кодов ошибок из <code>winerror.bi</code> не годится для ошибки, возможной в твоей функции, можно определить свой код. Он представляет 32‐битное значение, которое разбито на поля:</p>
 
 
+	<dl>
+	<dt>Биты с 0 по 15</dt>
+	<dd>Код ошибки. Определяется корпорацией Microsoft или пользователем.</dd>
+	</dl>
 
-<h2>Поделись ссылочкой в социальных сетях</h2>
-<div id="vk_share_button"></div>
+	<dl>
+	<dt>Биты с 16 по 27</dt>
+	<dd>Код подсистемы (facility code). Определяется корпорацией Microsoft.</dd>
+	</dl>
 
+	<dl>
+	<dt>Бит 28</dt>
+	<dd>Зарезервирован. Должен быть 0.</dd>
+	</dl>
+
+	<dl>
+	<dt>Бит 29</dt>
+	<dd>Корпорация Microsoft обещала, что никогда не будет его устанавливать. Следовательно, если ты определяешь собственный код ошибки, то запиши сюда 1, тогда будет гарантия, что код ошибки не будет конфликтовать с кодами, определёнными Microsoft.</dd>
+	</dl>
+
+	<dl>
+	<dt>Биты 30 и 31</dt>
+	<dd>В двоичном виде: 00 — успех, 01 — информация, 10 — предупреждение, 11 — ошибка.</dd>
+	</dl>
+
+	<p>Подробнее об этих полях будет рассказано в следующих статьях. На данный момент единственное важное для тебя поле — это бит 29. Чтобы гарантировать непересекаемость кодов ошибок от Microsoft, установи его в 1. В переводе на числа это означает, что твой код ошибки должен быть больше, чем &amp;h20000000 или 536870912 в десятичном виде.</p>
+
+
+	<h2><a id="c4">Получение описания кода ошибки</a></h2>
+
+	<p>Для получения текстового описания ошибки подойдёт функция FormatMessage. Использовать её можно так:</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="preprocessor">#define unicode</span><br />
+	<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
+	<br />
+	<span class="remark">&apos; Строка с ошибкой</span><br />
+	<span class="keyword">Const</span> BufferLength <span class="keyword">As</span> <span class="datatype">Integer</span> = 4096 - 1<br />
+	<span class="keyword">Dim</span> ErrorMessage <span class="keyword">As</span> <span class="datatype">WString</span> * (BufferLength + 1) = <span class="keyword">Any</span><br />
+	<br />
+	<span class="remark">&apos; Вызов функции с неправильным параметром</span><br />
+	GetProcessId(NULL)<br />
+	<br />
+	<span class="remark">&apos; Получить код ошибки</span><br />
+	<span class="keyword">Dim</span> dwError <span class="keyword">As</span> <span class="datatype">DWORD</span> = GetLastError()<br />
+	<br />
+	<span class="remark">&apos; Получить строку по коду ошибки</span><br />
+	FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM + FORMAT_MESSAGE_IGNORE_INSERTS, NULL, dwError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), @ErrorMessage, BufferLength, NULL)<br />
+	<br />
+	<span class="keyword">Print</span> ErrorMessage
+	</code></p>
+
+
+
+	<h2>Поделись ссылочкой в социальных сетях</h2>
+	<div id="vk_share_button"></div>
+
+</main>
 
 <hr />
 
-<p class="footer">Сайт создан по технологии XHTML</p>
-
-<p class="footer">
-	
-	<span id="pLiveInternet"></span>
-	
-	<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
-		<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
-	</a>
-	<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
-		<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
-	</a> 
-</p>
+<footer>
+	<p>Сайт создан по технологии XHTML</p>
+	<p>
+		<span id="pLiveInternet"></span>
+		<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
+			<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
+		</a>
+		<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
+			<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
+		</a> 
+	</p>
+</footer>
 
 <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
 <script type="text/javascript">var docUrl=document.URL.toString();document.getElementById("vk_share_button").innerHTML=VK.Share.button(docUrl, {type: "round"});</script>

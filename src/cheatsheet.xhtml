@@ -30,162 +30,176 @@
 
 <body>
 
-<ul class="navbar">
-	<li><a href="/">Главная</a></li>
-	<li><a href="/src/">Статьи</a></li>
-	<li><a href="/code/">Проекты</a></li>
-	<li><a href="/books/">Учебник</a></li>
-	<li><a href="/links.xhtml">Ссылки</a></li>
-	<li><a href="/about.xhtml">О сайте</a></li>
-</ul>
+<header>
+	
+	<nav>
+		<a href="/">Главная</a>
+		<a href="/src/">Статьи</a>
+		<a href="/code/">Проекты</a>
+		<a href="/books/">Учебник</a>
+		<a href="/links.xhtml">Ссылки</a>
+		<a href="/about.xhtml">О сайте</a>
+	</nav>
+	
+</header>
 
 
 <h1>Шпаргалка по FreeBASIC для новичков</h1>
 
-<p><span class="postername">Эрик Замабувараев‐Ёмолкуу</span> <span class="date">05.03.2016 23:25:31</span></p>
+<main>
+	<p class="postername">
+		<a href="/users/mabu.xhtml">
+			<img src="/avatars/mabu.jpg" alt="Аватар пользователя" width="50" height="50" class="avatar" />
+			&#32;
+			mabu
+		</a>
+		&#32;
+		<time pubdate="pubdate">2016-03-05T23:25:31+07:00</time>
+	</p>
 
-<p>В этой статье собран краткий справочник по функциям фрибейсика. Опытные пользователи могут подглядывать сюда, чтобы освежить память, новички — чтобы получить информацию быстро, не шарясь в многочисленных мануалах.</p>
+	<p>В этой статье собран краткий справочник по функциям фрибейсика. Опытные пользователи могут подглядывать сюда, чтобы освежить память, новички — чтобы получить информацию быстро, не шарясь в многочисленных мануалах.</p>
 
-<ol class="contents">
-	<li><a href="#c1">Переменные</a></li>
-</ol>
-
-
-<h2><a id="c1">Переменные</a></h2>
-
-<p>Однострочное объявление переменных:</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-Dim x As Integer = 15<br />
-</code></p>
-
-<p>Многострочное объявление переменных:</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-Dim As Integer x = 14, y = 15<br />
-</code></p>
-
-<p>Объявление переменной без указания типа, тип данных вычисляется компилятором автоматически:</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-var x = 14, y = 15<br />
-</code></p>
-
-<h3>Целочисленные переменные</h3>
-
-<table>
-<tr><th>Стандартные типы данных</th><th>Объём занимаемой памяти в байтах</th></tr>
-<tr><td>Byte</td><td>1</td></tr>
-<tr><td>UByte</td><td>1</td></tr>
-<tr><td>Short</td><td>2</td></tr>
-<tr><td>UShort</td><td>2</td></tr>
-<tr><td>Integer</td><td>4 на 32‐битной архитектуре и 8 на 64‐битной архитектуре</td></tr>
-<tr><td>UInteger</td><td>4 на 32‐битной архитектуре и 8 на 64‐битной архитектуре</td></tr>
-<tr><td>LongInt</td><td>8</td></tr>
-<tr><td>ULongInt</td><td>8</td></tr>
-<tr><td>Single</td><td>4</td></tr>
-<tr><td>Double</td><td>8</td></tr>
-</table>
-
-<p>Переменные типа указателя <code>Ptr</code> или <code>Pointer</code> занимают столько байт памяти, сколько процессор может адресовать байт регистром <code>eax</code>, то есть на 32‐битной архитектуре это 4 байта, на 64‐битной — 8 байт.</p>
-
-<h3>Указатели</h3>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-Dim x As Integer = 15<br />
-&apos; Указатель на переменную x<br />
-Dim pX As Integer Ptr = @x<br />
-&apos; Получение данных оттуда, куда указывает pX (разыменование указателя) и запись туда данных<br />
-*pX = 10
-</code></p>
+	<ol class="contents">
+		<li><a href="#c1">Переменные</a></li>
+	</ol>
 
 
-<h3>Строки</h3>
+	<h2><a id="c1">Переменные</a></h2>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-&apos; Неюникодная строка<br />
-Dim s As String<br />
-<br />
-&apos; Юникодная строка<br />
-Dim w1 As WString * 16<br />
-&apos; Указатель на юникодную строку<br />
-Dim w2 As WString Ptr<br />
-<br />
-&apos; Неюникодная строка фиксированной длины<br />
-Dim z1 As ZString * 16<br />
-&apos; Указатель на неюникодную строку<br />
-Dim z2 As ZString Ptr
-</code></p>
+	<p>Однострочное объявление переменных:</p>
 
-<h3>Константы</h3>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	Dim x As Integer = 15<br />
+	</code></p>
 
-<p>Обычные константы:</p>
+	<p>Многострочное объявление переменных:</p>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-&apos; Константа с плавающей запятой<br />
-Const Pi As Single = 3.141592653<br />
-&apos; Строковая константа<br />
-&apos; Если исходный файл сохранён в юникоде, то строка будет типа WString, иначе ZString<br />
-Const HelloWorld = &quot;Привет, мир!&quot;<br />
-</code></p>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	Dim As Integer x = 14, y = 15<br />
+	</code></p>
 
+	<p>Объявление переменной без указания типа, тип данных вычисляется компилятором автоматически:</p>
 
-<h3>Перечисления</h3>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	var x = 14, y = 15<br />
+	</code></p>
 
-<p>Нумерация начинается с нуля.</p>
+	<h3>Целочисленные переменные</h3>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-Enum Animals<br />
-&t;Cat<br />
-&t;&apos; Нумерацию можно изменить<br />
-&t;Dog = 4<br />
-&t;Frog<br />
-End Enum
-</code></p>
+	<table>
+	<tr><th>Стандартные типы данных</th><th>Объём занимаемой памяти в байтах</th></tr>
+	<tr><td>Byte</td><td>1</td></tr>
+	<tr><td>UByte</td><td>1</td></tr>
+	<tr><td>Short</td><td>2</td></tr>
+	<tr><td>UShort</td><td>2</td></tr>
+	<tr><td>Integer</td><td>4 на 32‐битной архитектуре и 8 на 64‐битной архитектуре</td></tr>
+	<tr><td>UInteger</td><td>4 на 32‐битной архитектуре и 8 на 64‐битной архитектуре</td></tr>
+	<tr><td>LongInt</td><td>8</td></tr>
+	<tr><td>ULongInt</td><td>8</td></tr>
+	<tr><td>Single</td><td>4</td></tr>
+	<tr><td>Double</td><td>8</td></tr>
+	</table>
 
-<p>Количество байт, занимаемой переменной типа перечисления всегда равно числу байт, занимаемому типом <code>Integer</code>.</p>
+	<p>Переменные типа указателя <code>Ptr</code> или <code>Pointer</code> занимают столько байт памяти, сколько процессор может адресовать байт регистром <code>eax</code>, то есть на 32‐битной архитектуре это 4 байта, на 64‐битной — 8 байт.</p>
 
+	<h3>Указатели</h3>
 
-<h3>Записи (структуры)</h3>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-Type Rectangle<br />
-&t;X As Integer<br />
-&t;Y As Integer<br />
-&t;Width As Integer<br />
-&t;Height As Integer<br />
-End Type
-</code></p>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	Dim x As Integer = 15<br />
+	&apos; Указатель на переменную x<br />
+	Dim pX As Integer Ptr = @x<br />
+	&apos; Получение данных оттуда, куда указывает pX (разыменование указателя) и запись туда данных<br />
+	*pX = 10
+	</code></p>
 
 
-<h3>Массивы</h3>
+	<h3>Строки</h3>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-Dim matrix() As Integer<br />
-</code></p>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	&apos; Неюникодная строка<br />
+	Dim s As String<br />
+	<br />
+	&apos; Юникодная строка<br />
+	Dim w1 As WString * 16<br />
+	&apos; Указатель на юникодную строку<br />
+	Dim w2 As WString Ptr<br />
+	<br />
+	&apos; Неюникодная строка фиксированной длины<br />
+	Dim z1 As ZString * 16<br />
+	&apos; Указатель на неюникодную строку<br />
+	Dim z2 As ZString Ptr
+	</code></p>
+
+	<h3>Константы</h3>
+
+	<p>Обычные константы:</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	&apos; Константа с плавающей запятой<br />
+	Const Pi As Single = 3.141592653<br />
+	&apos; Строковая константа<br />
+	&apos; Если исходный файл сохранён в юникоде, то строка будет типа WString, иначе ZString<br />
+	Const HelloWorld = &quot;Привет, мир!&quot;<br />
+	</code></p>
 
 
-<h2>Математические операции</h2>
+	<h3>Перечисления</h3>
 
-<h2>Поделись ссылочкой в социальных сетях</h2>
-<div id="vk_share_button"></div>
+	<p>Нумерация начинается с нуля.</p>
 
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	Enum Animals<br />
+	&t;Cat<br />
+	&t;&apos; Нумерацию можно изменить<br />
+	&t;Dog = 4<br />
+	&t;Frog<br />
+	End Enum
+	</code></p>
+
+	<p>Количество байт, занимаемой переменной типа перечисления всегда равно числу байт, занимаемому типом <code>Integer</code>.</p>
+
+
+	<h3>Записи (структуры)</h3>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	Type Rectangle<br />
+	&t;X As Integer<br />
+	&t;Y As Integer<br />
+	&t;Width As Integer<br />
+	&t;Height As Integer<br />
+	End Type
+	</code></p>
+
+
+	<h3>Массивы</h3>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	Dim matrix() As Integer<br />
+	</code></p>
+
+
+	<h2>Математические операции</h2>
+
+	<h2>Поделись ссылочкой в социальных сетях</h2>
+	<div id="vk_share_button"></div>
+
+
+</main>
 
 <hr />
 
-<p class="footer">Сайт создан по технологии XHTML</p>
-
-<p class="footer">
-	
-	<span id="pLiveInternet"></span>
-	
-	<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
-		<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
-	</a>
-	<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
-		<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
-	</a> 
-</p>
+<footer>
+	<p>Сайт создан по технологии XHTML</p>
+	<p>
+		<span id="pLiveInternet"></span>
+		<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
+			<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
+		</a>
+		<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
+			<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
+		</a> 
+	</p>
+</footer>
 
 <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
 <script type="text/javascript">var docUrl=document.URL.toString();document.getElementById("vk_share_button").innerHTML=VK.Share.button(docUrl, {type: "round"});</script>

@@ -20,79 +20,79 @@
 
 <body>
 
-<ul class="navbar">
-	<li>Главная</li>
-	<li><a href="/src/">Статьи</a></li>
-	<li><a href="/code/">Проекты</a></li>
-	<li><a href="/books/">Учебник</a></li>
-	<li><a href="/links.xhtml">Ссылки</a></li>
-	<li><a href="/about.xhtml">О сайте</a></li>
-</ul>
+<header>
+	
+	<nav>
+		<a href="/">Главная</a>
+		<a href="/src/">Статьи</a>
+		<a href="/code/">Проекты</a>
+		<a href="/books/">Учебник</a>
+		<a href="/links.xhtml">Ссылки</a>
+		<a href="/about.xhtml">О сайте</a>
+	</nav>
+	
+</header>
 
 <h1>Язык программирования FreeBASIC на русском</h1>
 
-<p>Добро пожаловать на неофициальный сайт, посвящённый языку программирования FreeBASIC.</p>
+<main>
+	
+	<p>Добро пожаловать на неофициальный сайт, посвящённый языку программирования FreeBASIC.</p>
+
+	<p>FreeBASIC — это свободная реализация компилятора языка программирования с BASIC‐совместимым синтаксисом для Microsoft Windows, DOS и Linux.</p>
+
+	<p>При использовании режима «QB», FreeBASIC обеспечивает высокий уровень совместимости с программами, написанными для QuickBASIC. Множество программ, написанных для QuickBASIC будут компилироваться и запускаться без каких‐либо изменений в коде. Однако для компиляции в режим по умолчанию «FreeBASIC» большинство программ потребует некоторых изменений.</p>
 
 
-<p>FreeBASIC — это свободная реализация компилятора языка программирования с BASIC‐совместимым синтаксисом для Microsoft Windows, DOS и Linux.</p>
+	<p>Простой пример, показывающий использование процедур:</p>
 
-<p>При использовании режима «QB», FreeBASIC обеспечивает высокий уровень совместимости с программами, написанными для QuickBASIC. Множество программ, написанных для QuickBASIC будут компилироваться и запускаться без каких‐либо изменений в коде. Однако для компиляции в режим по умолчанию «FreeBASIC» большинство программ потребует некоторых изменений.</p>
-
-
-
-
-<p>Простой пример, показывающий использование процедур:</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Function</span> AddNumbers(a <span class="keyword">As</span> <span class="datatype">Integer</span>, b <span class="keyword">As</span> <span class="datatype">Integer</span>)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
-&t;<span class="keyword">Return</span> a + b<br />
-<span class="keyword">End Function</span><br />
-<br />
-<span class="keyword">Sub</span> Hello()<br />
-&t;<span class="keyword">Print</span> <span class="string">&quot;Привет!&quot;</span><br />
-<span class="keyword">End Sub</span><br />
-<br />
-<span class="keyword">Declare</span> <span class="keyword">Sub</span> MyPrint(num <span class="keyword">As</span> <span class="datatype">Integer</span>)
-<br />
-<br />
-<span class="remark">&apos; Код вне любых функций и процедур считается главной точкой входа в программу</span><br />
-Hello()<br />
-<span class="keyword">Print</span> AddNumbers(1, 1)<br />
-MyPrint 5<br />
-<br />
-<span class="keyword">Sub</span> MyPrint(num <span class="keyword">As</span> <span class="datatype">Integer</span>)<br />
-&t;<span class="keyword">Print</span> num<br />
-<span class="keyword">End Sub</span>
-</code></p>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Function</span> AddNumbers(a <span class="keyword">As</span> <span class="datatype">Integer</span>, b <span class="keyword">As</span> <span class="datatype">Integer</span>)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+	&t;<span class="keyword">Return</span> a + b<br />
+	<span class="keyword">End Function</span><br />
+	<br />
+	<span class="keyword">Sub</span> Hello()<br />
+	&t;<span class="keyword">Print</span> <span class="string">&quot;Привет!&quot;</span><br />
+	<span class="keyword">End Sub</span><br />
+	<br />
+	<span class="keyword">Declare</span> <span class="keyword">Sub</span> MyPrint(num <span class="keyword">As</span> <span class="datatype">Integer</span>)
+	<br />
+	<br />
+	<span class="remark">&apos; Код вне любых функций и процедур считается главной точкой входа в программу</span><br />
+	Hello()<br />
+	<span class="keyword">Print</span> AddNumbers(1, 1)<br />
+	MyPrint 5<br />
+	<br />
+	<span class="keyword">Sub</span> MyPrint(num <span class="keyword">As</span> <span class="datatype">Integer</span>)<br />
+	&t;<span class="keyword">Print</span> num<br />
+	<span class="keyword">End Sub</span>
+	</code></p>
 
 
+	<p>FreeBASIC — это самодостаточный компилятор, способный скомпилировать самого себя. Благодаря использованию утилит GNU, он может создавать консольные и графические приложения, динамические и статические библиотеки, драйверы и операционные системы. FreeBASIC полностью поддерживает библиотеки языка Си и частично C++. Это позволяет программистам создавать библиотеки для Си и множества других языков. FreeBASIC поддерживает пропроцессор в стиле Си, например, многострочные макросы, условную компиляцию, включение файлов.</p>
 
+	<p>FreeBASIC создаёт программы, близкие по скорости создаваемыми мэйнстримовыми стредствами типа GCC.</p>
 
+	<p>FreeBASIC представляет собой кроссплатформенный набор инструментов для разработки, изначально созданный Andre Victor, состоящий из компилятора, GNU‐ассемблера, компоновщика, архиватора и библиотеки времени выполнения, включая графическую библиотеку. Компилятор <code>fbc</code> в настоящее время поддерживает создание приложений для i386‐подобной архитектуры процессора для DOS, Linux и Windows. Проект также содержит необходимые заголовочные файлы для некоторых популярных библиотек, например, библиотек времени выполнения Си, Allegro, SDL, OpenGL, GTK+, Windows API, а также примеры работы с ними.</p>
 
-<p>FreeBASIC — это самодостаточный компилятор, способный скомпилировать самого себя. Благодаря использованию утилит GNU, он может создавать консольные и графические приложения, динамические и статические библиотеки, драйверы и операционные системы. FreeBASIC полностью поддерживает библиотеки языка Си и частично C++. Это позволяет программистам создавать библиотеки для Си и множества других языков. FreeBASIC поддерживает пропроцессор в стиле Си, например, многострочные макросы, условную компиляцию, включение файлов.</p>
+	<p>FreeBASIC — это высокоуровнвый язык программирования, поддерживающий императивную, процедурную и объектно‐ориентированную  парадигмы  с синтаксисом, близким к Microsoft QuickBASIC. Фактически, FreeBASIC изначально был задуман как попытка создать совместимую бесплатную альтернативу к Microsoft QuickBASIC, но с тех пор превратился в мощное средство разработки. FreeBASIC можно использовать для расширения возможностей Microsoft QuickBASIC, используя больше типов данных, языковых конструкций, стилей программирования и современных платформ и API.</p>
 
-<p>FreeBASIC создаёт программы, близкие по скорости создаваемыми мэйнстримовыми стредствами типа GCC.</p>
-
-<p>FreeBASIC представляет собой кроссплатформенный набор инструментов для разработки, изначально созданный Andre Victor, состоящий из компилятора, GNU‐ассемблера, компоновщика, архиватора и библиотеки времени выполнения, включая графическую библиотеку. Компилятор <code>fbc</code> в настоящее время поддерживает создание приложений для i386‐подобной архитектуры процессора для DOS, Linux и Windows. Проект также содержит необходимые заголовочные файлы для некоторых популярных библиотек, например, библиотек времени выполнения Си, Allegro, SDL, OpenGL, GTK+, Windows API, а также примеры работы с ними.</p>
-
-<p>FreeBASIC — это высокоуровнвый язык программирования, поддерживающий императивную, процедурную и объектно‐ориентированную  парадигмы  с синтаксисом, близким к Microsoft QuickBASIC. Фактически, FreeBASIC изначально был задуман как попытка создать совместимую бесплатную альтернативу к Microsoft QuickBASIC, но с тех пор превратился в мощное средство разработки. FreeBASIC можно использовать для расширения возможностей Microsoft QuickBASIC, используя больше типов данных, языковых конструкций, стилей программирования и современных платформ и API.</p>
+</main>
 
 <hr />
 
-
-<p class="footer">Сайт создан по технологии XHTML</p>
-
-<p class="footer">
-	
-	<span id="pLiveInternet"></span>
-	
-	<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
-		<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
-	</a>
-	<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
-		<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
-	</a> 
-</p>
+<footer>
+	<p>Сайт создан по технологии XHTML</p>
+	<p>
+		<span id="pLiveInternet"></span>
+		<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
+			<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
+		</a>
+		<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
+			<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
+		</a> 
+	</p>
+</footer>
 
 <script type="text/javascript">var idL=document.getElementById("pLiveInternet");var idA=document.createElement("a");idA.href="//www.liveinternet.ru/stat/freebasic.su";idA.title="Счётчик посещений LiveInternet";var idImg=document.createElement("img");idImg.src="//counter.yadro.ru/hit?t44."+Math.round(1+18*Math.random())+";r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();idImg.alt="Логотип LiveInternet";idA.appendChild(idImg);idL.appendChild(idA);</script>
 

@@ -20,388 +20,401 @@
 
 <body>
 
-<ul class="navbar">
-	<li><a href="/">Главная</a></li>
-	<li><a href="/src/">Статьи</a></li>
-	<li><a href="/code/">Проекты</a></li>
-	<li><a href="/books/">Учебник</a></li>
-	<li><a href="/links.xhtml">Ссылки</a></li>
-	<li><a href="/about.xhtml">О сайте</a></li>
-</ul>
+<header>
+	
+	<nav>
+		<a href="/">Главная</a>
+		<a href="/src/">Статьи</a>
+		<a href="/code/">Проекты</a>
+		<a href="/books/">Учебник</a>
+		<a href="/links.xhtml">Ссылки</a>
+		<a href="/about.xhtml">О сайте</a>
+	</nav>
+	
+</header>
 
 
 <h1>Кодирование base64</h1>
 
-<p><span class="postername">Эрик Замабувараев‐Ёмолкуу</span> <span class="date">22.05.2016 0:46:54</span></p>
+<main>
+	<p class="postername">
+		<a href="/users/mabu.xhtml">
+			<img src="/avatars/mabu.jpg" alt="Аватар пользователя" width="50" height="50" class="avatar" />
+			&#32;
+			mabu
+		</a>
+		&#32;
+		<time pubdate="pubdate">2016-05-22T00:46:54+07:00</time>
+	</p>
 
-<p><strong>Base64</strong> буквально означает — позиционная система счисления с основанием 64. Здесь 64 — это число символов в алфавите кодирования, из которого формируется конечный буквенно‐цифровой текст на основе латинского алфавита. Число соответствует наибольшей степени двойки (2^6), которая может быть представлена с использованием печатных символов ASCII.</p>
+	<p><strong>Base64</strong> буквально означает — позиционная система счисления с основанием 64. Здесь 64 — это число символов в алфавите кодирования, из которого формируется конечный буквенно‐цифровой текст на основе латинского алфавита. Число соответствует наибольшей степени двойки (2^6), которая может быть представлена с использованием печатных символов ASCII.</p>
 
-<ol class="contents">
-	<li><a href="#c1">Зачем это нужно?</a></li>
-	<li><a href="#c2">Алгоритм</a></li>
-	<li><a href="#c3">Где же код?</a></li>
-	<li><a href="#c4">Использование</a></li>
-</ol>
-
-
-<h2><a id="c1">Зачем это нужно?</a></h2>
-
-<p>Так исторически сложилось, что многие форматы передачи и хранения данных (html, url схемы, xml, email и тому подобное) используют текст вместо бинарных кодов. Но если формат передачи данных текстовый, а передать необходимо бинарные данные (отдельно либо вместе с текстовыми данными) — тут на помощь приходит base64. Например:</p>
-<ul>
-	<li>data: URL схемы для изображений в CSS, HTML;</li>
-	<li>передача картинок и других данных внутри XML, не используя внешние файлы;</li>
-	<li>хранение изображений в базах данных;</li>
-	<li>вложения в электронной почте;</li>
-	<li>сертификаты, шифрование и электронные подписи.</li>
-</ul>
-
-<p>И это не исчепывающий список, где применяется base64.</p>
+	<ol class="contents">
+		<li><a href="#c1">Зачем это нужно?</a></li>
+		<li><a href="#c2">Алгоритм</a></li>
+		<li><a href="#c3">Где же код?</a></li>
+		<li><a href="#c4">Использование</a></li>
+	</ol>
 
 
-<h2><a id="c2">Алгоритм</a></h2>
+	<h2><a id="c1">Зачем это нужно?</a></h2>
 
-<p>Алгоритм кодирования прост. Берётся тройка октетов. 3 откета по 8 бит — это 24 бита. С другой стороны 24 бита — это 4 раза по 6 бит. Получившиеся четыре шестибитных числа представляют индексы символов в следующей строке:</p>
-<p class="codebox"><span></span> <span></span><br /><code>
-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
-</code></p>
+	<p>Так исторически сложилось, что многие форматы передачи и хранения данных (html, url схемы, xml, email и тому подобное) используют текст вместо бинарных кодов. Но если формат передачи данных текстовый, а передать необходимо бинарные данные (отдельно либо вместе с текстовыми данными) — тут на помощь приходит base64. Например:</p>
+	<ul>
+		<li>data: URL схемы для изображений в CSS, HTML;</li>
+		<li>передача картинок и других данных внутри XML, не используя внешние файлы;</li>
+		<li>хранение изображений в базах данных;</li>
+		<li>вложения в электронной почте;</li>
+		<li>сертификаты, шифрование и электронные подписи.</li>
+	</ul>
 
-<p>Для примера закодируем строку «Man» в base64.</p>
-
-<p>Исходные данные: строка «Man»</p>
-<p>Коды символов: 
-	<span class="memorygroup">
-		<span class="memorydata">77</span>
-		<span class="memorydata">97</span>
-		<span class="memorydata">110</span>
-	</span>
-</p>
-<p>Двоичный вид с группировкой по 8 бит: 
-	<span class="memorygroup">
-		<span class="memorydata">0</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">0</span>
-		<span class="memorydata">0</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">0</span>
-		<span class="memorydata">1</span>
-	</span>
-	<span class="memorygroup">
-		<span class="memorydata">0</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">0</span>
-		<span class="memorydata">0</span>
-		<span class="memorydata">0</span>
-		<span class="memorydata">0</span>
-		<span class="memorydata">1</span>
-	</span>
-	<span class="memorygroup">
-		<span class="memorydata">0</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">0</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">0</span>
-	</span>
-</p>
-<p>Двоичный вид с группировкой по 6 бит: 
-	<span class="memorygroup">
-		<span class="memorydata">0</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">0</span>
-		<span class="memorydata">0</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">1</span>
-	</span>
-	<span class="memorygroup">
-		<span class="memorydata">0</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">0</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">0</span>
-	</span>
-	<span class="memorygroup">
-		<span class="memorydata">0</span>
-		<span class="memorydata">0</span>
-		<span class="memorydata">0</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">0</span>
-		<span class="memorydata">1</span>
-	</span>
-	<span class="memorygroup">
-		<span class="memorydata">1</span>
-		<span class="memorydata">0</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">1</span>
-		<span class="memorydata">0</span>
-	</span>
-</p>
-<p>Полученные индексы в base64: 
-	<span class="memorygroup">
-		<span class="memorydata">19</span>
-		<span class="memorydata">22</span>
-		<span class="memorydata">5</span>
-		<span class="memorydata">46</span>
-	</span>
-</p>
-
-<p>Конечный результат в Base64: 
-	<span class="memorygroup">
-		<span class="memorydata">T</span>
-		<span class="memorydata">W</span>
-		<span class="memorydata">F</span>
-		<span class="memorydata">u</span>
-	</span>
-</p>
-
-<p>Если длина результирующей строки не кратна четырём, то её дополняют необходимым количеством символов «=».</p>
+	<p>И это не исчепывающий список, где применяется base64.</p>
 
 
-<h2><a id="c3">Где же код?</a></h2>
+	<h2><a id="c2">Алгоритм</a></h2>
 
-<p>Довольно теоретизирований, перейдём к коду.</p>
+	<p>Алгоритм кодирования прост. Берётся тройка октетов. 3 откета по 8 бит — это 24 бита. С другой стороны 24 бита — это 4 раза по 6 бит. Получившиеся четыре шестибитных числа представляют индексы символов в следующей строке:</p>
+	<p class="codebox"><span></span> <span></span><br /><code>
+	ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+	</code></p>
 
-<p>Заголовочный файл base64.bi:</p>
+	<p>Для примера закодируем строку «Man» в base64.</p>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="remark">&apos; Кодирование в Base64 и обратно</span><br />
-<span class="preprocessor">#ifndef unicode</span><br />
-&t;<span class="preprocessor">#define unicode</span><br />
-<span class="preprocessor">#endif</span><br />
-<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
-<span class="preprocessor">#include once &quot;win\shlwapi.bi&quot;</span><br />
-<br />
-<span class="keyword">Const</span> B64 = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;</span><br />
-<span class="keyword">Const</span> Base64StringLength <span class="keyword">As</span> <span class="keyword">Integer</span> = 19<br />
-<br />
-<span class="remark">&apos; Шифрует массив байт в base64</span><br />
-<span class="remark">&apos; sOut — указатель на буфер под результирующую строку</span><br />
-<span class="remark">&apos; sEncodedB — указатель на массив байт, которые нужно закодировать</span><br />
-<span class="remark">&apos; BytesCount — количество байт в массиве</span><br />
-<span class="remark">&apos; Функция может записать за выделенный буфер, если он будет слишком мал</span><br />
-<span class="remark">&apos; Размер требуемого буфера под результирующую строку должен быть не менее ((BytesCount \ 3) + 1) * 4 символов + 1 символ под нулевой</span><br />
-<span class="remark">&apos; Функция записывает завершающий ноль</span><br />
-<span class="remark">&apos; Возвращает количество символов (без учёта завершающего нуля)</span><br />
-<span class="keyword">Declare</span> <span class="keyword">Function</span> Encode64( _<br />
-&t;&t;<span class="keyword">ByVal</span> sOut <span class="keyword">As</span> <span class="keyword">WString Ptr</span>, _<br />
-&t;&t;<span class="keyword">ByVal</span> sEncodedB <span class="keyword">As</span> <span class="keyword">UByte</span> <span class="keyword">Ptr</span>, _<br />
-&t;&t;<span class="keyword">ByVal</span> BytesCount <span class="keyword">As</span> <span class="keyword">Integer</span>) _<br />
-<span class="keyword">As</span> <span class="keyword">Integer</span><br />
-<br />
-<span class="remark">&apos; Дешифрует из base64 в массив байт</span><br />
-<span class="remark">&apos; b — указатель на буфер, куда будет записан результат дешифровки</span><br />
-<span class="remark">&apos; s — указатель на base64‐строку</span><br />
-<span class="remark">&apos; Возвращает количество записанных в буфер байт</span><br />
-<span class="remark">&apos; Размер буфера должен быть достаточным для записи в него данных</span><br />
-<span class="keyword">Declare</span> <span class="keyword">Function</span> Decode64( _<br />
-&t;&t;<span class="keyword">ByVal</span> b <span class="keyword">As</span> <span class="keyword">UByte</span> <span class="keyword">Ptr</span>, _<br />
-&t;&t;<span class="keyword">ByVal</span> s <span class="keyword">As</span> <span class="keyword">WString Ptr</span>) _<br />
-<span class="keyword">As</span> <span class="keyword">Integer</span>
-</code></p>
+	<p>Исходные данные: строка «Man»</p>
+	<p>Коды символов: 
+		<span class="memorygroup">
+			<span class="memorydata">77</span>
+			<span class="memorydata">97</span>
+			<span class="memorydata">110</span>
+		</span>
+	</p>
+	<p>Двоичный вид с группировкой по 8 бит: 
+		<span class="memorygroup">
+			<span class="memorydata">0</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">0</span>
+			<span class="memorydata">0</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">0</span>
+			<span class="memorydata">1</span>
+		</span>
+		<span class="memorygroup">
+			<span class="memorydata">0</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">0</span>
+			<span class="memorydata">0</span>
+			<span class="memorydata">0</span>
+			<span class="memorydata">0</span>
+			<span class="memorydata">1</span>
+		</span>
+		<span class="memorygroup">
+			<span class="memorydata">0</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">0</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">0</span>
+		</span>
+	</p>
+	<p>Двоичный вид с группировкой по 6 бит: 
+		<span class="memorygroup">
+			<span class="memorydata">0</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">0</span>
+			<span class="memorydata">0</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">1</span>
+		</span>
+		<span class="memorygroup">
+			<span class="memorydata">0</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">0</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">0</span>
+		</span>
+		<span class="memorygroup">
+			<span class="memorydata">0</span>
+			<span class="memorydata">0</span>
+			<span class="memorydata">0</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">0</span>
+			<span class="memorydata">1</span>
+		</span>
+		<span class="memorygroup">
+			<span class="memorydata">1</span>
+			<span class="memorydata">0</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">1</span>
+			<span class="memorydata">0</span>
+		</span>
+	</p>
+	<p>Полученные индексы в base64: 
+		<span class="memorygroup">
+			<span class="memorydata">19</span>
+			<span class="memorydata">22</span>
+			<span class="memorydata">5</span>
+			<span class="memorydata">46</span>
+		</span>
+	</p>
 
-<p>Файл base64.bas:</p>
+	<p>Конечный результат в Base64: 
+		<span class="memorygroup">
+			<span class="memorydata">T</span>
+			<span class="memorydata">W</span>
+			<span class="memorydata">F</span>
+			<span class="memorydata">u</span>
+		</span>
+	</p>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-#include once &quot;base64.bi&quot;<br />
-<br />
-Function E0(ByVal v1 As UByte)As UByte<br />
-&t;&apos; Получить шесть левых бит числа<br />
-&t;Return v1 Shr 2<br />
-End Function<br />
-<br />
-Function E1(ByVal v1 As UByte, ByVal v2 As UByte)As UByte<br />
-&t;&apos; Получить два правых бита первого числа и четыре левых бита второго числа<br />
-&t;Return ((v1 And &amp;b00000011) Shl 4) + (v2 Shr 4)<br />
-End Function<br />
-<br />
-Function E2(ByVal v2 As UByte, ByVal v3 As UByte)As UByte<br />
-&t;&apos; Получить четыре правых бита первого числа и два левых бита второго числа<br />
-&t;Return ((v2 And &amp;b00001111) Shl 2) + (v3 Shr 6)<br />
-End Function<br />
-<br />
-Function E3(ByVal v3 As UByte)As UByte<br />
-&t;&apos; Получить шесть правых бит числа<br />
-&t;Return v3 And &amp;b00111111<br />
-End Function<br />
-<br />
-Function Encode64(ByVal sOut As WString Ptr, ByVal sEncodedB As UByte Ptr, ByVal BytesCount As Integer)As Integer<br />
-&t;Dim j As Integer = 0<br />
-&t;Dim k As Integer = 0<br />
-&t;&apos; Количество байт, не умещающихся в тройку байт<br />
-&t;Dim ELM3 As Integer = BytesCount Mod 3<br />
-&t;&apos; Идти через каждые три байта<br />
-&t;For j = 0 To BytesCount - ELM3 - 1 Step 3<br />
-&t;&t;sOut[k + 0] = (@B64 + E0(sEncodedB[j + 0]))[0]<br />
-&t;&t;sOut[k + 1] = (@B64 + E1(sEncodedB[j + 0], sEncodedB[j + 1]))[0]<br />
-&t;&t;sOut[k + 2] = (@B64 + E2(sEncodedB[j + 1], sEncodedB[j + 2]))[0]<br />
-&t;&t;sOut[k + 3] = (@B64 + E3(sEncodedB[j + 2]))[0]<br />
-&t;&t;k += 4<br />
-&t;Next<br />
-<br />
-&t;Select Case ELM3<br />
-&t;&t;Case 1<br />
-&t;&t;&t;sOut[k + 0] = (@B64 + E0(sEncodedB[j + 0]))[0]<br />
-&t;&t;&t;sOut[k + 1] = (@B64 + E1(sEncodedB[j + 0], sEncodedB[j + 1]))[0]<br />
-&t;&t;&t;sOut[k + 2] = &amp;h3D<br />
-&t;&t;&t;sOut[k + 3] = &amp;h3D<br />
-&t;&t;&t;k += 4<br />
-&t;&t;Case 2<br />
-&t;&t;&t;sOut[k + 0] = (@B64 + E0(sEncodedB[j + 0]))[0]<br />
-&t;&t;&t;sOut[k + 1] = (@B64 + E1(sEncodedB[j + 0], sEncodedB[j + 1]))[0]<br />
-&t;&t;&t;sOut[k + 2] = (@B64 + E2(sEncodedB[j + 1], sEncodedB[j + 2]))[0]<br />
-&t;&t;&t;sOut[k + 3] = &amp;h3D<br />
-&t;&t;&t;k += 4<br />
-&t;End Select<br />
-&t;&apos; Поставить завершающий ноль<br />
-&t;sOut[k] = 0<br />
-&t;Return k<br />
-End Function<br />
-<br />
-Function GetBase64Index(ByVal sChar As Integer)As Integer<br />
-&t;If sChar = 0 Then<br />
-&t;&t;Return -1<br />
-&t;End If<br />
-&t;Dim w As WString Ptr = StrChr(@B64, sChar)<br />
-&t;If w = 0 Then<br />
-&t;&t;Return -1<br />
-&t;End If<br />
-&t;Return w - @B64<br />
-End Function<br />
-<br />
-&apos; Пропускаем все символы не из набора<br />
-Function SkipWrongChar(ByVal s As WString Ptr)As Integer<br />
-&t;Dim i As Integer = 0<br />
-&t;Dim schar As Integer = s[i]<br />
-&t;Do Until schar = 0<br />
-&t;&t;If GetBase64Index(schar) &lt;&gt; -1 Then<br />
-&t;&t;&t;Exit Do<br />
-&t;&t;End If<br />
-&t;&t;i += 1<br />
-&t;&t;schar = s[i]<br />
-&t;Loop<br />
-&t;Return i<br />
-End Function<br />
-<br />
-Function CalculateString(ByVal b As UByte Ptr, ByVal BytesCount As Integer, ByVal w1 As Integer, ByVal w2 As Integer, ByVal w3 As Integer, ByVal w4 As Integer)As Integer<br />
-&t;If w2 &gt; -1 Then<br />
-&t;&t;b[BytesCount] = (w1 * 4 + w2 \ 16) And 255<br />
-&t;&t;BytesCount += 1<br />
-&t;End If<br />
-&t;If w3 &gt; -1 Then<br />
-&t;&t;b[BytesCount] = (w2 * 16 + w3 \ 4) And 255<br />
-&t;&t;BytesCount += 1<br />
-&t;End If<br />
-&t;If w4 &gt; -1 Then<br />
-&t;&t;b[BytesCount] = (w3 * 64 + w4) And 255<br />
-&t;&t;BytesCount += 1<br />
-&t;End If<br />
-&t;Return BytesCount<br />
-End Function<br />
-<br />
-Function Decode64(ByVal b As UByte Ptr, ByVal s As WString Ptr)As Integer<br />
-&t;Dim BytesCount As Integer = 0<br />
-&t;Dim length As Integer = lstrlen(s)<br />
-&t;For i As Integer = 0 To length - 1 Step 4<br />
-&t;&t;Dim ww As Integer = Any<br />
-&t;&t;&apos; Необходимо пропустить все символы не из набора<br />
-&t;&t;i += SkipWrongChar(s[i + 0])<br />
-&t;&t;If i &gt;= length - 0 Then<br />
-&t;&t;&t;Return BytesCount<br />
-&t;&t;End If<br />
-&t;&t;ww = s[i + 0]<br />
-&t;&t;Dim w1 As Integer = GetBase64Index(ww)<br />
-<br />
-&t;&t;i += SkipWrongChar(s[i + 1])<br />
-&t;&t;If i &gt;= length - 1 Then<br />
-&t;&t;&t;Return CalculateString(b, BytesCount, w1, 0, 0, 0)<br />
-&t;&t;End If<br />
-&t;&t;ww = s[i + 1]<br />
-&t;&t;Dim w2 As Integer = GetBase64Index(ww)<br />
-<br />
-&t;&t;i += SkipWrongChar(s[i + 2])<br />
-&t;&t;If i &gt;= length - 2 Then<br />
-&t;&t;&t;Return CalculateString(b, BytesCount, w1, w2, 0, 0)<br />
-&t;&t;End If<br />
-&t;&t;ww = s[i + 2]<br />
-&t;&t;Dim w3 As Integer = GetBase64Index(ww)<br />
-<br />
-&t;&t;i += SkipWrongChar(s[i + 3])<br />
-&t;&t;If i &gt;= length - 3 Then<br />
-&t;&t;&t;Return CalculateString(b, BytesCount, w1, w2, w3, 0)<br />
-&t;&t;End If<br />
-&t;&t;ww = s[i + 3]<br />
-&t;&t;Dim w4 As Integer = GetBase64Index(ww)<br />
-<br />
-&t;&t;BytesCount = CalculateString(b, BytesCount, w1, w2, w3, w4)<br />
-&t;Next<br />
-&t;Return BytesCount<br />
-End Function
-</code></p>
+	<p>Если длина результирующей строки не кратна четырём, то её дополняют необходимым количеством символов «=».</p>
 
 
-<h2><a id="c4">Использование</a></h2>
+	<h2><a id="c3">Где же код?</a></h2>
 
-<p>Функция Encode64 кодирует массив байт в base64‐строку. Для этого ей нужно передать указатель буфер под результирующую строку, указатель на массив байт и размер массива.</p>
+	<p>Довольно теоретизирований, перейдём к коду.</p>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="preprocessor">#ifndef unicode</span><br />
-<span class="preprocessor">#define unicode</span><br />
-<span class="preprocessor">#endif</span><br />
-<span class="remark">&apos; Для преобразования строки из utf-16 в utf-8</span><br />
-<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
-<br />
-<span class="keyword">Const</span> BufferLength <span class="keyword">As</span> <span class="keyword">Integer</span> = 1024<br />
-<span class="keyword">Const</span> StringToConvert = <span class="string">&quot;Всем привет! Это сообщение будет закодировано.&quot;</span><br />
-<br />
-<span class="remark">&apos; Строка, куда будет записана base64‐строка, плюс один символ под нулевой</span><br />
-<span class="keyword">Dim</span> base64 <span class="keyword">As</span> <span class="keyword">WString</span> * (BufferLength + 1) = <span class="keyword">Any</span><br />
-<br />
-<span class="remark">&apos; Массив байт</span><br />
-<span class="keyword">Dim</span> bytes(BufferLength * <span class="keyword">SizeOf</span>(<span class="keyword">WString</span>)) <span class="keyword">As</span> <span class="keyword">UByte</span> = <span class="keyword">Any</span><br />
-<br />
-<span class="remark">&apos; Нужно получить из строки массив байт</span><br />
-<span class="remark">&apos; Для этого её нужно преобразовать в utf-8</span><br />
-<span class="keyword">Dim</span> BytesCount <span class="keyword">As</span> <span class="keyword">Integer</span> = WideCharToMultiByte(CP_UTF8, 0, @StringToConvert, -1, @bytes(0), BufferLength * <span class="keyword">SizeOf</span>(<span class="keyword">WString</span>), 0, 0) - 1<br />
-<br />
-<span class="remark">&apos; Закодировать массив байт в bas64</span><br />
-Encode64(@base64, @bytes(0), BytesCount)<br />
-<span class="keyword">Print</span> base64<br />
-<br />
-<span class="remark">&apos; Преобразовать из base64 в массив байт</span><br />
-BytesCount = Decode64(@bytes(0), @base64)<br />
-<br />
-<span class="remark">&apos; Из массива байт в строку, результат будет в base64</span><br />
-bytes(BytesCount) = 0<br />
-MultiByteToWideChar(CP_UTF8, 0, @bytes(0), -1, base64, BufferLength)<br />
-<span class="keyword">Print</span> base64<br />
-</code></p>
+	<p>Заголовочный файл base64.bi:</p>
 
-<p>В примере используются функции <code>WideCharToMultiByte</code> и <code>MultiByteToWideChar</code> для преобразования строки в массив байт и обратно. Если у тебя есть уже заранее оформленный массив байт, например, данные файла, то эти функции использовать не нужно. В качестве домашнего задания предлагаю написать простую утилиту, кодирующую и декодирующую любые файлы в base64.</p>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="remark">&apos; Кодирование в Base64 и обратно</span><br />
+	<span class="preprocessor">#ifndef unicode</span><br />
+	&t;<span class="preprocessor">#define unicode</span><br />
+	<span class="preprocessor">#endif</span><br />
+	<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
+	<span class="preprocessor">#include once &quot;win\shlwapi.bi&quot;</span><br />
+	<br />
+	<span class="keyword">Const</span> B64 = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;</span><br />
+	<span class="keyword">Const</span> Base64StringLength <span class="keyword">As</span> <span class="keyword">Integer</span> = 19<br />
+	<br />
+	<span class="remark">&apos; Шифрует массив байт в base64</span><br />
+	<span class="remark">&apos; sOut — указатель на буфер под результирующую строку</span><br />
+	<span class="remark">&apos; sEncodedB — указатель на массив байт, которые нужно закодировать</span><br />
+	<span class="remark">&apos; BytesCount — количество байт в массиве</span><br />
+	<span class="remark">&apos; Функция может записать за выделенный буфер, если он будет слишком мал</span><br />
+	<span class="remark">&apos; Размер требуемого буфера под результирующую строку должен быть не менее ((BytesCount \ 3) + 1) * 4 символов + 1 символ под нулевой</span><br />
+	<span class="remark">&apos; Функция записывает завершающий ноль</span><br />
+	<span class="remark">&apos; Возвращает количество символов (без учёта завершающего нуля)</span><br />
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> Encode64( _<br />
+	&t;&t;<span class="keyword">ByVal</span> sOut <span class="keyword">As</span> <span class="keyword">WString Ptr</span>, _<br />
+	&t;&t;<span class="keyword">ByVal</span> sEncodedB <span class="keyword">As</span> <span class="keyword">UByte</span> <span class="keyword">Ptr</span>, _<br />
+	&t;&t;<span class="keyword">ByVal</span> BytesCount <span class="keyword">As</span> <span class="keyword">Integer</span>) _<br />
+	<span class="keyword">As</span> <span class="keyword">Integer</span><br />
+	<br />
+	<span class="remark">&apos; Дешифрует из base64 в массив байт</span><br />
+	<span class="remark">&apos; b — указатель на буфер, куда будет записан результат дешифровки</span><br />
+	<span class="remark">&apos; s — указатель на base64‐строку</span><br />
+	<span class="remark">&apos; Возвращает количество записанных в буфер байт</span><br />
+	<span class="remark">&apos; Размер буфера должен быть достаточным для записи в него данных</span><br />
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> Decode64( _<br />
+	&t;&t;<span class="keyword">ByVal</span> b <span class="keyword">As</span> <span class="keyword">UByte</span> <span class="keyword">Ptr</span>, _<br />
+	&t;&t;<span class="keyword">ByVal</span> s <span class="keyword">As</span> <span class="keyword">WString Ptr</span>) _<br />
+	<span class="keyword">As</span> <span class="keyword">Integer</span>
+	</code></p>
 
-<h2>Поделись ссылочкой в социальных сетях</h2>
-<div id="vk_share_button"></div>
+	<p>Файл base64.bas:</p>
 
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	#include once &quot;base64.bi&quot;<br />
+	<br />
+	Function E0(ByVal v1 As UByte)As UByte<br />
+	&t;&apos; Получить шесть левых бит числа<br />
+	&t;Return v1 Shr 2<br />
+	End Function<br />
+	<br />
+	Function E1(ByVal v1 As UByte, ByVal v2 As UByte)As UByte<br />
+	&t;&apos; Получить два правых бита первого числа и четыре левых бита второго числа<br />
+	&t;Return ((v1 And &amp;b00000011) Shl 4) + (v2 Shr 4)<br />
+	End Function<br />
+	<br />
+	Function E2(ByVal v2 As UByte, ByVal v3 As UByte)As UByte<br />
+	&t;&apos; Получить четыре правых бита первого числа и два левых бита второго числа<br />
+	&t;Return ((v2 And &amp;b00001111) Shl 2) + (v3 Shr 6)<br />
+	End Function<br />
+	<br />
+	Function E3(ByVal v3 As UByte)As UByte<br />
+	&t;&apos; Получить шесть правых бит числа<br />
+	&t;Return v3 And &amp;b00111111<br />
+	End Function<br />
+	<br />
+	Function Encode64(ByVal sOut As WString Ptr, ByVal sEncodedB As UByte Ptr, ByVal BytesCount As Integer)As Integer<br />
+	&t;Dim j As Integer = 0<br />
+	&t;Dim k As Integer = 0<br />
+	&t;&apos; Количество байт, не умещающихся в тройку байт<br />
+	&t;Dim ELM3 As Integer = BytesCount Mod 3<br />
+	&t;&apos; Идти через каждые три байта<br />
+	&t;For j = 0 To BytesCount - ELM3 - 1 Step 3<br />
+	&t;&t;sOut[k + 0] = (@B64 + E0(sEncodedB[j + 0]))[0]<br />
+	&t;&t;sOut[k + 1] = (@B64 + E1(sEncodedB[j + 0], sEncodedB[j + 1]))[0]<br />
+	&t;&t;sOut[k + 2] = (@B64 + E2(sEncodedB[j + 1], sEncodedB[j + 2]))[0]<br />
+	&t;&t;sOut[k + 3] = (@B64 + E3(sEncodedB[j + 2]))[0]<br />
+	&t;&t;k += 4<br />
+	&t;Next<br />
+	<br />
+	&t;Select Case ELM3<br />
+	&t;&t;Case 1<br />
+	&t;&t;&t;sOut[k + 0] = (@B64 + E0(sEncodedB[j + 0]))[0]<br />
+	&t;&t;&t;sOut[k + 1] = (@B64 + E1(sEncodedB[j + 0], sEncodedB[j + 1]))[0]<br />
+	&t;&t;&t;sOut[k + 2] = &amp;h3D<br />
+	&t;&t;&t;sOut[k + 3] = &amp;h3D<br />
+	&t;&t;&t;k += 4<br />
+	&t;&t;Case 2<br />
+	&t;&t;&t;sOut[k + 0] = (@B64 + E0(sEncodedB[j + 0]))[0]<br />
+	&t;&t;&t;sOut[k + 1] = (@B64 + E1(sEncodedB[j + 0], sEncodedB[j + 1]))[0]<br />
+	&t;&t;&t;sOut[k + 2] = (@B64 + E2(sEncodedB[j + 1], sEncodedB[j + 2]))[0]<br />
+	&t;&t;&t;sOut[k + 3] = &amp;h3D<br />
+	&t;&t;&t;k += 4<br />
+	&t;End Select<br />
+	&t;&apos; Поставить завершающий ноль<br />
+	&t;sOut[k] = 0<br />
+	&t;Return k<br />
+	End Function<br />
+	<br />
+	Function GetBase64Index(ByVal sChar As Integer)As Integer<br />
+	&t;If sChar = 0 Then<br />
+	&t;&t;Return -1<br />
+	&t;End If<br />
+	&t;Dim w As WString Ptr = StrChr(@B64, sChar)<br />
+	&t;If w = 0 Then<br />
+	&t;&t;Return -1<br />
+	&t;End If<br />
+	&t;Return w - @B64<br />
+	End Function<br />
+	<br />
+	&apos; Пропускаем все символы не из набора<br />
+	Function SkipWrongChar(ByVal s As WString Ptr)As Integer<br />
+	&t;Dim i As Integer = 0<br />
+	&t;Dim schar As Integer = s[i]<br />
+	&t;Do Until schar = 0<br />
+	&t;&t;If GetBase64Index(schar) &lt;&gt; -1 Then<br />
+	&t;&t;&t;Exit Do<br />
+	&t;&t;End If<br />
+	&t;&t;i += 1<br />
+	&t;&t;schar = s[i]<br />
+	&t;Loop<br />
+	&t;Return i<br />
+	End Function<br />
+	<br />
+	Function CalculateString(ByVal b As UByte Ptr, ByVal BytesCount As Integer, ByVal w1 As Integer, ByVal w2 As Integer, ByVal w3 As Integer, ByVal w4 As Integer)As Integer<br />
+	&t;If w2 &gt; -1 Then<br />
+	&t;&t;b[BytesCount] = (w1 * 4 + w2 \ 16) And 255<br />
+	&t;&t;BytesCount += 1<br />
+	&t;End If<br />
+	&t;If w3 &gt; -1 Then<br />
+	&t;&t;b[BytesCount] = (w2 * 16 + w3 \ 4) And 255<br />
+	&t;&t;BytesCount += 1<br />
+	&t;End If<br />
+	&t;If w4 &gt; -1 Then<br />
+	&t;&t;b[BytesCount] = (w3 * 64 + w4) And 255<br />
+	&t;&t;BytesCount += 1<br />
+	&t;End If<br />
+	&t;Return BytesCount<br />
+	End Function<br />
+	<br />
+	Function Decode64(ByVal b As UByte Ptr, ByVal s As WString Ptr)As Integer<br />
+	&t;Dim BytesCount As Integer = 0<br />
+	&t;Dim length As Integer = lstrlen(s)<br />
+	&t;For i As Integer = 0 To length - 1 Step 4<br />
+	&t;&t;Dim ww As Integer = Any<br />
+	&t;&t;&apos; Необходимо пропустить все символы не из набора<br />
+	&t;&t;i += SkipWrongChar(s[i + 0])<br />
+	&t;&t;If i &gt;= length - 0 Then<br />
+	&t;&t;&t;Return BytesCount<br />
+	&t;&t;End If<br />
+	&t;&t;ww = s[i + 0]<br />
+	&t;&t;Dim w1 As Integer = GetBase64Index(ww)<br />
+	<br />
+	&t;&t;i += SkipWrongChar(s[i + 1])<br />
+	&t;&t;If i &gt;= length - 1 Then<br />
+	&t;&t;&t;Return CalculateString(b, BytesCount, w1, 0, 0, 0)<br />
+	&t;&t;End If<br />
+	&t;&t;ww = s[i + 1]<br />
+	&t;&t;Dim w2 As Integer = GetBase64Index(ww)<br />
+	<br />
+	&t;&t;i += SkipWrongChar(s[i + 2])<br />
+	&t;&t;If i &gt;= length - 2 Then<br />
+	&t;&t;&t;Return CalculateString(b, BytesCount, w1, w2, 0, 0)<br />
+	&t;&t;End If<br />
+	&t;&t;ww = s[i + 2]<br />
+	&t;&t;Dim w3 As Integer = GetBase64Index(ww)<br />
+	<br />
+	&t;&t;i += SkipWrongChar(s[i + 3])<br />
+	&t;&t;If i &gt;= length - 3 Then<br />
+	&t;&t;&t;Return CalculateString(b, BytesCount, w1, w2, w3, 0)<br />
+	&t;&t;End If<br />
+	&t;&t;ww = s[i + 3]<br />
+	&t;&t;Dim w4 As Integer = GetBase64Index(ww)<br />
+	<br />
+	&t;&t;BytesCount = CalculateString(b, BytesCount, w1, w2, w3, w4)<br />
+	&t;Next<br />
+	&t;Return BytesCount<br />
+	End Function
+	</code></p>
+
+
+	<h2><a id="c4">Использование</a></h2>
+
+	<p>Функция Encode64 кодирует массив байт в base64‐строку. Для этого ей нужно передать указатель буфер под результирующую строку, указатель на массив байт и размер массива.</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="preprocessor">#ifndef unicode</span><br />
+	<span class="preprocessor">#define unicode</span><br />
+	<span class="preprocessor">#endif</span><br />
+	<span class="remark">&apos; Для преобразования строки из utf-16 в utf-8</span><br />
+	<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
+	<br />
+	<span class="keyword">Const</span> BufferLength <span class="keyword">As</span> <span class="keyword">Integer</span> = 1024<br />
+	<span class="keyword">Const</span> StringToConvert = <span class="string">&quot;Всем привет! Это сообщение будет закодировано.&quot;</span><br />
+	<br />
+	<span class="remark">&apos; Строка, куда будет записана base64‐строка, плюс один символ под нулевой</span><br />
+	<span class="keyword">Dim</span> base64 <span class="keyword">As</span> <span class="keyword">WString</span> * (BufferLength + 1) = <span class="keyword">Any</span><br />
+	<br />
+	<span class="remark">&apos; Массив байт</span><br />
+	<span class="keyword">Dim</span> bytes(BufferLength * <span class="keyword">SizeOf</span>(<span class="keyword">WString</span>)) <span class="keyword">As</span> <span class="keyword">UByte</span> = <span class="keyword">Any</span><br />
+	<br />
+	<span class="remark">&apos; Нужно получить из строки массив байт</span><br />
+	<span class="remark">&apos; Для этого её нужно преобразовать в utf-8</span><br />
+	<span class="keyword">Dim</span> BytesCount <span class="keyword">As</span> <span class="keyword">Integer</span> = WideCharToMultiByte(CP_UTF8, 0, @StringToConvert, -1, @bytes(0), BufferLength * <span class="keyword">SizeOf</span>(<span class="keyword">WString</span>), 0, 0) - 1<br />
+	<br />
+	<span class="remark">&apos; Закодировать массив байт в bas64</span><br />
+	Encode64(@base64, @bytes(0), BytesCount)<br />
+	<span class="keyword">Print</span> base64<br />
+	<br />
+	<span class="remark">&apos; Преобразовать из base64 в массив байт</span><br />
+	BytesCount = Decode64(@bytes(0), @base64)<br />
+	<br />
+	<span class="remark">&apos; Из массива байт в строку, результат будет в base64</span><br />
+	bytes(BytesCount) = 0<br />
+	MultiByteToWideChar(CP_UTF8, 0, @bytes(0), -1, base64, BufferLength)<br />
+	<span class="keyword">Print</span> base64<br />
+	</code></p>
+
+	<p>В примере используются функции <code>WideCharToMultiByte</code> и <code>MultiByteToWideChar</code> для преобразования строки в массив байт и обратно. Если у тебя есть уже заранее оформленный массив байт, например, данные файла, то эти функции использовать не нужно. В качестве домашнего задания предлагаю написать простую утилиту, кодирующую и декодирующую любые файлы в base64.</p>
+
+	<h2>Поделись ссылочкой в социальных сетях</h2>
+	<div id="vk_share_button"></div>
+
+</main>
 
 <hr />
 
-<p class="footer">Сайт создан по технологии XHTML</p>
-
-<p class="footer">
-	
-	<span id="pLiveInternet"></span>
-	
-	<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
-		<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
-	</a>
-	<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
-		<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
-	</a> 
-</p>
+<footer>
+	<p>Сайт создан по технологии XHTML</p>
+	<p>
+		<span id="pLiveInternet"></span>
+		<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
+			<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
+		</a>
+		<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
+			<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
+		</a> 
+	</p>
+</footer>
 
 <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
 <script type="text/javascript">var docUrl=document.URL.toString();document.getElementById("vk_share_button").innerHTML=VK.Share.button(docUrl, {type: "round"});</script>

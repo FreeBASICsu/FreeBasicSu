@@ -20,233 +20,245 @@
 
 <body>
 
-<ul class="navbar">
-	<li><a href="/">Главная</a></li>
-	<li><a href="/src/">Статьи</a></li>
-	<li><a href="/code/">Проекты</a></li>
-	<li><a href="/books/">Учебник</a></li>
-	<li><a href="/links.xhtml">Ссылки</a></li>
-	<li><a href="/about.xhtml">О сайте</a></li>
-</ul>
+<header>
+	
+	<nav>
+		<a href="/">Главная</a>
+		<a href="/src/">Статьи</a>
+		<a href="/code/">Проекты</a>
+		<a href="/books/">Учебник</a>
+		<a href="/links.xhtml">Ссылки</a>
+		<a href="/about.xhtml">О сайте</a>
+	</nav>
+	
+</header>
 
 
 <h1>Русские буквы и кириллица в консоли FreeBASIC</h1>
 
-<p><span class="postername">Эрик Замабувараев‐Ёмолкуу</span> <span class="date">30.05.2016 23:04:48</span></p>
+<main>
+	<p class="postername">
+		<a href="/users/mabu.xhtml">
+			<img src="/avatars/mabu.jpg" alt="Аватар пользователя" width="50" height="50" class="avatar" />
+			&#32;
+			mabu
+		</a>
+		&#32;
+		<time pubdate="pubdate">2016-05-30T23:04:48+07:00</time>
+	</p>
 
-<p>В самом начале работы с компилятором новички сталкиваются с проблемой: FreeBASIC не умеет выводить и вводить с консоли русские буквы. Если с выводом кириллицы можно обойтись стандартными средствами, то с вводом без WinAPI не обойтись. Разберём все средства подробно.</p>
+	<p>В самом начале работы с компилятором новички сталкиваются с проблемой: FreeBASIC не умеет выводить и вводить с консоли русские буквы. Если с выводом кириллицы можно обойтись стандартными средствами, то с вводом без WinAPI не обойтись. Разберём все средства подробно.</p>
 
-<ol class="contents">
-	<li><a href="#c0">Внутреннее устройство строк</a></li>
-	<li><a href="#c1">Правильный вывод юникодных строк</a>
-		<ol>
-			<li><a href="#c1c1">Вывод строк через WinAPI</a></li>
-		</ol>
-	</li>
-	<li><a href="#c2">Ввод юникодных строк</a></li>
-</ol>
+	<ol class="contents">
+		<li><a href="#c0">Внутреннее устройство строк</a></li>
+		<li><a href="#c1">Правильный вывод юникодных строк</a>
+			<ol>
+				<li><a href="#c1c1">Вывод строк через WinAPI</a></li>
+			</ol>
+		</li>
+		<li><a href="#c2">Ввод юникодных строк</a></li>
+	</ol>
 
-<h2><a id="c0">Внутреннее устройство строк</a></h2>
+	<h2><a id="c0">Внутреннее устройство строк</a></h2>
 
-<p>FreeBASIC поддерживает три типа строк: ZString, WString и «обычные» String. Каждый тип имеет свои особенности.</p>
+	<p>FreeBASIC поддерживает три типа строк: ZString, WString и «обычные» String. Каждый тип имеет свои особенности.</p>
 
-<p><strong>ZString</strong> представляет собой массив символов, заканчивающийся нулевым байтом. Размер символа SizeOf(ZString) составляет один байт. Для WinAPI — это ANSI строка.</p>
+	<p><strong>ZString</strong> представляет собой массив символов, заканчивающийся нулевым байтом. Размер символа SizeOf(ZString) составляет один байт. Для WinAPI — это ANSI строка.</p>
 
-<p><strong>WString</strong> аналогична ZString, но размер символа SizeOf(WString) здесь представляет два байта. Строка также оканчивается нулевым символом, в данном случае двумя нулевыми байтами. Для WinAPI — это UNICODE строка.</p>
+	<p><strong>WString</strong> аналогична ZString, но размер символа SizeOf(WString) здесь представляет два байта. Строка также оканчивается нулевым символом, в данном случае двумя нулевыми байтами. Для WinAPI — это UNICODE строка.</p>
 
-<p><strong>String</strong> представляет собой структуру из трёх полей: строка типа ZString, длина строки в символах и количество выделенных байт памяти. Как видно из внутреннего устройства, эта строка не может содержать в себе юникодные символы.</p>
+	<p><strong>String</strong> представляет собой структуру из трёх полей: строка типа ZString, длина строки в символах и количество выделенных байт памяти. Как видно из внутреннего устройства, эта строка не может содержать в себе юникодные символы.</p>
 
-<p>Несмотря на то, что тип String наиболее удобен в использовании, с его помощью нельзя вводить и выводить юникодные строки. Для этих целей необходимо использовать строки типа WString, хотя работать с ними не настолько легко.</p>
-
-
-<h2><a id="c1">Правильный вывод юникодных строк</a></h2>
-
-<p>Во‐первых, для строк необходимо использовать тип WString.</p>
-
-<p>Во‐вторых, исходный код необходимо сохранять в кодировке UTF-8 или UTF-16. Если используется редактор FBEdit — то UTF-16. В этом случае все строковые литералы будут сохраняться как строки типа WString.</p>
-
-<p>В‐третьих, необходимо включить режим <strong>UNICODE</strong>. Объявив константу «unicode», мы даём указание компилятору использовать WinAPI‐функции с буквой W на конце:</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="preprocessor">#define unicode</span>
-<span class="preprocessor">#include once &quot;windows.bi&quot;</span>
-</code></p>
-
-<p>Определение константы <strong>UNICODE</strong> необходимо ставить до подключения других заголовочного файла windows.bi.</p>
-
-<p>Эти три условия являются обязательными для дальнейшей работы.</p>
-
-<p>Теперь можно использовать встроенную функцию <strong>Print</strong>, а русские буквы будут корректно отображаться, без кракозябр:</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="remark">&apos; Можно так</span><br />
-<span class="keyword">Print</span> <span class="string">&quot;Привет, мир!&quot;</span><br />
-<br />
-<span class="remark">&apos; А лучше так</span><br />
-<span class="keyword">Const</span> Hello = <span class="string">&quot;Привет, мир!&quot;</span><br />
-<span class="keyword">Print</span> Hello
-</code></p>
+	<p>Несмотря на то, что тип String наиболее удобен в использовании, с его помощью нельзя вводить и выводить юникодные строки. Для этих целей необходимо использовать строки типа WString, хотя работать с ними не настолько легко.</p>
 
 
-<h3><a id="c1c1">Вывод строк через WinAPI</a></h3>
+	<h2><a id="c1">Правильный вывод юникодных строк</a></h2>
 
-<p>В качестве альтернативы рассмотрим вывод строк без встроенных функций, используя чистые WinAPI. Для этого есть высокоуровневая функция <strong>WriteConsole</strong>. Функция записывает в текущую позицию курсора консоли строку, позиция курсора продвигается вперёд, по мере написания символов. Вот её определение из заголовочных файлов:</p>
+	<p>Во‐первых, для строк необходимо использовать тип WString.</p>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> WriteConsole <span class="keyword">Alias</span> <span class="string">&quot;WriteConsoleW&quot;</span>( _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> hConsoleOutput <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> lpBuffer <span class="keyword">As</span> <span class="datatype">Const Any Ptr</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> nNumberOfCharsToWrite <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> lpNumberOfCharsWritten <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> lpReserved <span class="keyword">As</span> <span class="datatype">LPVOID</span>) _<br />
-<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
-</code></p>
+	<p>Во‐вторых, исходный код необходимо сохранять в кодировке UTF-8 или UTF-16. Если используется редактор FBEdit — то UTF-16. В этом случае все строковые литералы будут сохраняться как строки типа WString.</p>
 
-<p>Параметры этой функции означают следующее:</p>
+	<p>В‐третьих, необходимо включить режим <strong>UNICODE</strong>. Объявив константу «unicode», мы даём указание компилятору использовать WinAPI‐функции с буквой W на конце:</p>
 
-<dl>
-<dt>hConsoleOutput</dt>
-<dd>Дескриптор стандартного потока вывода консоли. Дескриптор не должен быть перенаправлен.</dd>
-</dl>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="preprocessor">#define unicode</span><br />
+	<span class="preprocessor">#include once &quot;windows.bi&quot;</span>
+	</code></p>
 
-<dl>
-<dt>lpBuffer</dt>
-<dd>Указатель на выводимую строку. Длина строки должна быть меньше, чем 32000 символов.</dd>
-</dl>
+	<p>Определение константы <strong>UNICODE</strong> необходимо ставить до подключения других заголовочного файла windows.bi.</p>
 
-<dl>
-<dt>nNumberOfCharsToWrite</dt>
-<dd>Размер выводимой строки в символах.</dd>
-</dl>
+	<p>Эти три условия являются обязательными для дальнейшей работы.</p>
 
-<dl>
-<dt>IpNumberOfCharsWritten</dt>
-<dd>Указатель на переменную, куда будет записано количество действительно выведенных символов.</dd>
-</dl>
+	<p>Теперь можно использовать встроенную функцию <strong>Print</strong>, а русские буквы будут корректно отображаться, без кракозябр:</p>
 
-<dl>
-<dt>lpReserved</dt>
-<dd>Зарезервировано, должно быть 0.</dd>
-</dl>
-
-<p>Если функция завершается успешно, величина возвращаемого значения — не ноль. Если функция завершается с ошибкой, величина возвращаемого значения — ноль.</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="preprocessor">#define unicode</span><br />
-<span class="preprocessor">#include &quot;windows.bi&quot;</span><br />
-<br />
-<span class="remark">&apos; Строка с русскими буквами для вывода на консоль</span><br />
-<span class="keyword">Const</span> Hello = <span class="string">&quot;Привет, мир!&quot;</span><br />
-<br />
-<span class="remark">&apos; Получить дескриптор вывода, необходим</span><br />
-<span class="keyword">Dim</span> OutHandle <span class="keyword">As</span> <span class="datatype">HANDLE</span> = GetStdHandle(STD_OUTPUT_HANDLE)<br />
-<br />
-<span class="remark">&apos; В эту переменную будет записано количество символов, которое было выведено, оно может быть меньше или равно длине выводимой строки</span><br />
-<span class="keyword">Dim</span> intSymbolsCount <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
-<br />
-<span class="keyword">If</span> WriteConsole(OutHandle, @Hello, <span class="keyword">Len</span>(Hello), @intSymbolsCount, 0) &lt;&gt; 0 <span class="keyword">Then</span><br />
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="remark">&apos; Ошибок нет</span><br />
-<span class="keyword">End</span> <span class="keyword">If</span>
-</code></p>
-
-<p>Функция WriteConsole после своей работы не переносит курсор на новую строку. Необходимо самостоятельно добавлять к строке символы CrLf или выводить их отдельным вызовом функции. Также функция завершается ошибкой, если вывод перенаправлен, например, в файл или трубу. Для перенаправленного вывода нужно использовать функцию WriteFile, которая имеет аналогичные параметры.</p>
-
-<h2><a id="c2">Ввод юникодных строк</a></h2>
-
-<p>Встроенная функция Input не работает с юникодом. Для этого придётся использовать комбинацию из Print для вывода строки‐приглашения и <strong>ReadConsole</strong> для ввода символов. Вот определение этой функции из заголовочных файлов:</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> ReadConsole <span class="keyword">Alias</span> <span class="string">&quot;ReadConsoleW&quot;</span>( _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> hConsoleInput <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> lpBuffer <span class="keyword">As</span> <span class="datatype">LPVOID</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> nNumberOfCharsToRead <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> lpNumberOfCharsRead <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-&t;&t;&t;<span class="keyword">ByVal</span> lpReserved <span class="keyword">As</span> <span class="datatype">LPVOID</span>) _<br />
-<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
-</code></p>
-
-<p>Параметры этой функции означают следующее:</p>
-
-<dl>
-<dt>hConsolelnput</dt>
-<dd>Дескриптор стандартного потока ввода консоли. Дескриптор не должен быть перенаправлен.</dd>
-</dl>
-
-<dl>
-<dt>IpBuffer</dt>
-<dd>Указатель на буфер, в который будет записана вводимая строка символов.</dd>
-</dl>
-
-<dl>
-<dt>nNumberOfCharsToRead</dt>
-<dd>Количество символов для чтения с консоли. Должно быть не больше размера буфера.</dd>
-</dl>
-
-<dl>
-<dt>ipNumberOfCharsRead</dt>
-<dd>Указатель на переменную, куда будет записано количество действительно введённых символов.</dd>
-</dl>
-
-<dl>
-<dt>lpReserved</dt>
-<dd>Зарезервировано, должно быть 0.</dd>
-</dl>
-
-<p>Если функция завершается успешно, величина возвращаемого значения — не ноль. Если функция завершается с ошибкой, величина возвращаемого значения — ноль.</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="preprocessor">#define unicode</span><br />
-<span class="preprocessor">#include &quot;windows.bi&quot;</span><br />
-<br />
-<span class="keyword">Const</span> BufferLength <span class="keyword">As</span> <span class="datatype">DWORD</span> = 4096 - 1<br />
-<span class="remark">&apos; Буфер для строки длиной 4096 символов, этого должно хватить для обычных операций ввода (+1 символ на нулевой)</span><br />
-<span class="keyword">Dim</span> Buffer <span class="keyword">As</span> <span class="datatype">WString</span> * (BufferLength + 1) = <span class="keyword">Any</span><br />
-<br />
-<span class="remark">&apos; Идентификатор вывода</span><br />
-<span class="keyword">Dim</span> InHandle <span class="keyword">As</span> <span class="datatype">HANDLE</span> = GetStdHandle(STD_INPUT_HANDLE)<br />
-<br />
-<span class="remark">&apos; В эту переменную будет записано фактическое количество введённых символов</span><br />
-<span class="keyword">Dim</span> intSymbolsCount <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
-<br />
-<span class="remark">&apos; Печатаем приглашение для ввода</span><br />
-<span class="keyword">Print</span> <span class="string">&quot;Введи строку&quot;</span><br />
-<br />
-<span class="keyword">If</span> ReadConsole(InHandle, @Buffer, BufferLength, @intSymbolsCount, 0) &lt;&gt; 0 <span class="keyword">Then</span><br />
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="remark">&apos; Ошибок нет</span><br />
-<span class="keyword">End If</span>
-</code></p>
-
-<p>Стоит заметить, что ReadConsole записывает в буфер CrLf. Если эти символы есть в строке, то пользователь нажал Enter и завершил ввод, если их там нет, необходимо ещё раз прочитать данные из консоли, до тех пор, пока на конце не встретятся символы CrLf или не получится ошибка.</p>
-
-<p>Если количество введённых символов два или более, то убрать символы CrLf из строки можно так:</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-Buffer[intSymbolsCount - 2] = 0
-</code></p>
-
-<p>Если ввод перенаправлен, то ReadConsole завершается ошибкой. В этом случае нужно использовать функцию ReadFile, имеющую аналогичные параметры.</p>
-
-<h2>Поделись ссылочкой в социальных сетях</h2>
-<div id="vk_share_button"></div>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="remark">&apos; Можно так</span><br />
+	<span class="keyword">Print</span> <span class="string">&quot;Привет, мир!&quot;</span><br />
+	<br />
+	<span class="remark">&apos; А лучше так</span><br />
+	<span class="keyword">Const</span> Hello = <span class="string">&quot;Привет, мир!&quot;</span><br />
+	<span class="keyword">Print</span> Hello
+	</code></p>
 
 
+	<h3><a id="c1c1">Вывод строк через WinAPI</a></h3>
+
+	<p>В качестве альтернативы рассмотрим вывод строк без встроенных функций, используя чистые WinAPI. Для этого есть высокоуровневая функция <strong>WriteConsole</strong>. Функция записывает в текущую позицию курсора консоли строку, позиция курсора продвигается вперёд, по мере написания символов. Вот её определение из заголовочных файлов:</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> WriteConsole <span class="keyword">Alias</span> <span class="string">&quot;WriteConsoleW&quot;</span>( _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> hConsoleOutput <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> lpBuffer <span class="keyword">As</span> <span class="datatype">Const Any Ptr</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> nNumberOfCharsToWrite <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> lpNumberOfCharsWritten <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> lpReserved <span class="keyword">As</span> <span class="datatype">LPVOID</span>) _<br />
+	<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
+	</code></p>
+
+	<p>Параметры этой функции означают следующее:</p>
+
+	<dl>
+	<dt>hConsoleOutput</dt>
+	<dd>Дескриптор стандартного потока вывода консоли. Дескриптор не должен быть перенаправлен.</dd>
+	</dl>
+
+	<dl>
+	<dt>lpBuffer</dt>
+	<dd>Указатель на выводимую строку. Длина строки должна быть меньше, чем 32000 символов.</dd>
+	</dl>
+
+	<dl>
+	<dt>nNumberOfCharsToWrite</dt>
+	<dd>Размер выводимой строки в символах.</dd>
+	</dl>
+
+	<dl>
+	<dt>IpNumberOfCharsWritten</dt>
+	<dd>Указатель на переменную, куда будет записано количество действительно выведенных символов.</dd>
+	</dl>
+
+	<dl>
+	<dt>lpReserved</dt>
+	<dd>Зарезервировано, должно быть 0.</dd>
+	</dl>
+
+	<p>Если функция завершается успешно, величина возвращаемого значения — не ноль. Если функция завершается с ошибкой, величина возвращаемого значения — ноль.</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="preprocessor">#define unicode</span><br />
+	<span class="preprocessor">#include &quot;windows.bi&quot;</span><br />
+	<br />
+	<span class="remark">&apos; Строка с русскими буквами для вывода на консоль</span><br />
+	<span class="keyword">Const</span> Hello = <span class="string">&quot;Привет, мир!&quot;</span><br />
+	<br />
+	<span class="remark">&apos; Получить дескриптор вывода, необходим</span><br />
+	<span class="keyword">Dim</span> OutHandle <span class="keyword">As</span> <span class="datatype">HANDLE</span> = GetStdHandle(STD_OUTPUT_HANDLE)<br />
+	<br />
+	<span class="remark">&apos; В эту переменную будет записано количество символов, которое было выведено, оно может быть меньше или равно длине выводимой строки</span><br />
+	<span class="keyword">Dim</span> intSymbolsCount <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
+	<br />
+	<span class="keyword">If</span> WriteConsole(OutHandle, @Hello, <span class="keyword">Len</span>(Hello), @intSymbolsCount, 0) &lt;&gt; 0 <span class="keyword">Then</span><br />
+	&nbsp;&nbsp;&nbsp;&nbsp;<span class="remark">&apos; Ошибок нет</span><br />
+	<span class="keyword">End</span> <span class="keyword">If</span>
+	</code></p>
+
+	<p>Функция WriteConsole после своей работы не переносит курсор на новую строку. Необходимо самостоятельно добавлять к строке символы CrLf или выводить их отдельным вызовом функции. Также функция завершается ошибкой, если вывод перенаправлен, например, в файл или трубу. Для перенаправленного вывода нужно использовать функцию WriteFile, которая имеет аналогичные параметры.</p>
+
+	<h2><a id="c2">Ввод юникодных строк</a></h2>
+
+	<p>Встроенная функция Input не работает с юникодом. Для этого придётся использовать комбинацию из Print для вывода строки‐приглашения и <strong>ReadConsole</strong> для ввода символов. Вот определение этой функции из заголовочных файлов:</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> ReadConsole <span class="keyword">Alias</span> <span class="string">&quot;ReadConsoleW&quot;</span>( _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> hConsoleInput <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> lpBuffer <span class="keyword">As</span> <span class="datatype">LPVOID</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> nNumberOfCharsToRead <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> lpNumberOfCharsRead <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+	&t;&t;&t;<span class="keyword">ByVal</span> lpReserved <span class="keyword">As</span> <span class="datatype">LPVOID</span>) _<br />
+	<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
+	</code></p>
+
+	<p>Параметры этой функции означают следующее:</p>
+
+	<dl>
+	<dt>hConsolelnput</dt>
+	<dd>Дескриптор стандартного потока ввода консоли. Дескриптор не должен быть перенаправлен.</dd>
+	</dl>
+
+	<dl>
+	<dt>IpBuffer</dt>
+	<dd>Указатель на буфер, в который будет записана вводимая строка символов.</dd>
+	</dl>
+
+	<dl>
+	<dt>nNumberOfCharsToRead</dt>
+	<dd>Количество символов для чтения с консоли. Должно быть не больше размера буфера.</dd>
+	</dl>
+
+	<dl>
+	<dt>ipNumberOfCharsRead</dt>
+	<dd>Указатель на переменную, куда будет записано количество действительно введённых символов.</dd>
+	</dl>
+
+	<dl>
+	<dt>lpReserved</dt>
+	<dd>Зарезервировано, должно быть 0.</dd>
+	</dl>
+
+	<p>Если функция завершается успешно, величина возвращаемого значения — не ноль. Если функция завершается с ошибкой, величина возвращаемого значения — ноль.</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="preprocessor">#define unicode</span><br />
+	<span class="preprocessor">#include &quot;windows.bi&quot;</span><br />
+	<br />
+	<span class="keyword">Const</span> BufferLength <span class="keyword">As</span> <span class="datatype">DWORD</span> = 4096 - 1<br />
+	<span class="remark">&apos; Буфер для строки длиной 4096 символов, этого должно хватить для обычных операций ввода (+1 символ на нулевой)</span><br />
+	<span class="keyword">Dim</span> Buffer <span class="keyword">As</span> <span class="datatype">WString</span> * (BufferLength + 1) = <span class="keyword">Any</span><br />
+	<br />
+	<span class="remark">&apos; Идентификатор вывода</span><br />
+	<span class="keyword">Dim</span> InHandle <span class="keyword">As</span> <span class="datatype">HANDLE</span> = GetStdHandle(STD_INPUT_HANDLE)<br />
+	<br />
+	<span class="remark">&apos; В эту переменную будет записано фактическое количество введённых символов</span><br />
+	<span class="keyword">Dim</span> intSymbolsCount <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
+	<br />
+	<span class="remark">&apos; Печатаем приглашение для ввода</span><br />
+	<span class="keyword">Print</span> <span class="string">&quot;Введи строку&quot;</span><br />
+	<br />
+	<span class="keyword">If</span> ReadConsole(InHandle, @Buffer, BufferLength, @intSymbolsCount, 0) &lt;&gt; 0 <span class="keyword">Then</span><br />
+	&nbsp;&nbsp;&nbsp;&nbsp;<span class="remark">&apos; Ошибок нет</span><br />
+	<span class="keyword">End If</span>
+	</code></p>
+
+	<p>Стоит заметить, что ReadConsole записывает в буфер CrLf. Если эти символы есть в строке, то пользователь нажал Enter и завершил ввод, если их там нет, необходимо ещё раз прочитать данные из консоли, до тех пор, пока на конце не встретятся символы CrLf или не получится ошибка.</p>
+
+	<p>Если количество введённых символов два или более, то убрать символы CrLf из строки можно так:</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	Buffer[intSymbolsCount - 2] = 0
+	</code></p>
+
+	<p>Если ввод перенаправлен, то ReadConsole завершается ошибкой. В этом случае нужно использовать функцию ReadFile, имеющую аналогичные параметры.</p>
+
+	<h2>Поделись ссылочкой в социальных сетях</h2>
+	<div id="vk_share_button"></div>
+
+
+</main>
 
 <hr />
 
-
-<p class="footer">Сайт создан по технологии XHTML</p>
-
-<p class="footer">
-	
-	<span id="pLiveInternet"></span>
-	
-	<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
-		<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
-	</a>
-	<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
-		<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
-	</a> 
-</p>
+<footer>
+	<p>Сайт создан по технологии XHTML</p>
+	<p>
+		<span id="pLiveInternet"></span>
+		<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
+			<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
+		</a>
+		<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
+			<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
+		</a> 
+	</p>
+</footer>
 
 <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
 <script type="text/javascript">var docUrl=document.URL.toString();document.getElementById("vk_share_button").innerHTML=VK.Share.button(docUrl, {type: "round"});</script>

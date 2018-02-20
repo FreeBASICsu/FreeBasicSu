@@ -19,110 +19,114 @@
 
 <body>
 
-<ul class="navbar">
-	<li><a href="/">Главная</a></li>
-	<li><a href="/src/">Статьи</a></li>
-	<li><a href="/code/">Проекты</a></li>
-	<li>Учебник</li>
-	<li><a href="/links.xhtml">Ссылки</a></li>
-	<li><a href="/about.xhtml">О сайте</a></li>
-</ul>
-
+<header>
+	
+	<nav>
+		<a href="/">Главная</a>
+		<a href="/src/">Статьи</a>
+		<a href="/code/">Проекты</a>
+		<a href="/books/">Учебник</a>
+		<a href="/links.xhtml">Ссылки</a>
+		<a href="/about.xhtml">О сайте</a>
+	</nav>
+	
+</header>
 
 <h1>Учебник — FreeBASIC на русском</h1>
 
-
-<ul class="contents">
-	<li><a href="#c1">Введение</a></li>
-	<li><a href="install.xhtml">Установка и настройка</a></li>
-	<li>Первая программа</li>
-	<li>Переменные</li>
-	<li>Выбор вариантов</li>
-	<li>Циклы</li>
+<main>
 	
-		<li>Методы отладки программы</li>
-		<li>Работа в графическом режиме</li>
-		<li>Структура программы</li>
-		<li>Анимация</li>
-		<li>Случайные и псевдослучайные числа</li>
+	<p>Язык программирования BASIC всегда славился простотой в освоении и лёгкостью в программировании.</p>
+	
+	<p>Фрибейсик — это язык программирования и наследник Microsoft QuickBasic, а также одноимённый компилятор для него. Появился в 2004 году. Разрабатывается так называемой The FreeBASIC Development Team под руководством Andre Victor. Изначально язык развивался как альтернатива и замена QuickBasic корпорации Microsoft, но быстро превратился в мощный инструмент.</p>
+
+	<p>Распространяется по лицензии GNU GPL, по которой является компилятором с открытыми исходными кодами.</p>
+
+	<p>Компилятор фрибейсика создаеё исполняемые файлы для нескольких основных платформ: DOS, Windows, Linux. Число платформ в будущем может увеличиться.</p>
+
+	<p>Несмотря на то, что компилятор имеет совместимость с QuickBASIC, в язык FreeBASIC было добавлено множество расширений и возможностей для соответствия основным современным требованиям.</p>
+
+	<p>Начиная с версии 0.17 пользователь может выбрать три режима компиляции (опция -lang): режим совместимости с QuickBASIC (qb), старыми версиями FreeBASIC (deprecated), и стандартный режим (fb), включающий в себя все последние изменения и возможности.</p>
+
+	<p>FreeBasic вбирает в себя, по мере своего развития, все наилучшее от языков Basic и c/c++. Вот некоторые нововведения:</p>
+
+	<ul>
+		<li>поддержка Unicode (как исходники, так и строки);</li>
+		<li>множество встроенных типов данных (Byte, UByte, Short, UShort, Integer, UInteger, LongInt, ULongInt, Single, Double, String, ZString, WString);</li>
+		<li>агрегатный тип данных (структура, запись);</li>
+		<li>указатели (указатели на любые типы данных, неограниченная косвенная адресация);</li>
+		<li>новые возможности при работе с массивами (до 2 ГБ размером, Redim Preserve);</li>
+		<li>перечисление Enum;</li>
+		<li>обработка ошибок;</li>
+		<li>пространства имён Namespace;</li>
+		<li>перегрузка функций и операторов;</li>
+		<li>необязательные аргументы функций;</li>
+		<li>встроенный ассемблер;</li>
+		<li>возможности препроцессора;</li>
+		<li>переопределения типов Typedefs;</li>
+		<li>многопоточность;</li>
+		<li>некоторая поддержка объектно‐ориентированного программирования (инкапсуляция, наследование, полиморфизм).</li>
+	</ul>
+
+	<p>Вместе с компилятором в комплект входят также заголовочные файлы для наиболее распространённых библиотек: OpenGL, GTK+, SDL, Allegro, ODE, Newton, BASS, Fmod, FreeImage, Zlib, SQLite, MySQL, PostgreSQL, Lua, LibXML и так далее.</p>
+	
+	<ul class="contents">
+		<li><a href="install.xhtml">Установка и настройка</a></li>
+		<li>Первая программа и обзор языка для новичков</li>
+		<li>Хранение информации в программе: переменные и константы</li>
+		<li>Выбор вариантов</li>
+		<li>Циклы</li>
+		<li>Массивы</li>
+		<!--
+			<li>Методы отладки программы</li>
+			<li>Работа в графическом режиме</li>
+			<li>Структура программы</li>
+			<li>Анимация</li>
+			<li>Случайные и псевдослучайные числа</li>
+		-->
+		<li>Структуры</li>
+		<li>Управление памятью</li>
+		<li>Символьные строки</li>
+		<li>Подпрограммы: процедуры и функции</li>
+		<li>Рекурсия</li>
 		
-	<li>Структуры</li>
-	<li>Указатели</li>
-	<li>Управление памятью</li>
-	<li>Массивы</li>
-	<li>Символьные строки</li>
-	<li>Процедуры</li>
-	<li>Функции</li>
-	<li>Рекурсия</li>
+		<li>Матрицы (двумерные массивы)</li>
+		
+		<li>Проектирование программ</li>
+		<li>Построение графиков и работа с ними</li>
+		<li>Вычислительные методы</li>
+		<li>Моделирование</li>
+		<li>Сложные проекты</li>
+		<li>Списки</li>
+		<li>Стеки, очереди, деки</li>
+		<li>Деревья</li>
+		<li>Графы</li>
+	</ul>
 	
-	<li>Матрицы (двумерные массивы)</li>
+	<h2>Поделись ссылочкой в социальных сетях</h2>
+	<div id="vk_share_button"></div>
 	
-	<li>Проектирование программ</li>
-	<li>Построение графиков и работа с ними</li>
-	<li>Вычислительные методы</li>
-	<li>Моделирование</li>
-	<li>Сложные проекты</li>
-	<li>Списки</li>
-	<li>Стеки, очереди, деки</li>
-	<li>Деревья</li>
-	<li>Графы</li>
-</ul>
-
-<h2><a id="c1">Введение</a></h2>
-
-<p>Фрибейсик — это язык программирования наследник Microsoft QuickBasic и компилятор для него. Появился в 2004 г. и разрабатывается так называемой The FreeBASIC Development Team под руководством Andre Victor. Изначально язык развивался как альтернатива и замена QuickBasic корпорации Microsoft, но быстро превратился в мощный инструмент. Фрибейсик сейчас развивается и его функциональные возможности увеличиваются с каждой новой версией.</p>
-
-<p>Фрибейсик распространяется по лицензии GNU GPL по которой является компилятором с открытыми исходными кодами.</p>
-
-<p>Компилятор фрибейсика, на данный момент, создает исполняемые файлы для нескольких основных платформ: DOS, Windows, Linux. Число платформ в будущем может увеличиться.</p>
-
-<p>Несмотря на то, что компилятор имеет совместимость с QuickBASIC, в язык FreeBASIC было добавлено множество расширений и возможностей для соответствия основным современным требованиям.</p>
-
-<p>Начиная с версии 0.17 пользователь может выбрать три режима компиляции (опция -lang): режим совместимости с QuickBASIC (qb), старыми версиями FreeBASIC (deprecated), и стандартный режим (fb), включающий в себя все последние изменения и возможности.</p>
-
-<p>FreeBasic вбирает в себя, по мере своего развития, все наилучшее от языков Basic и c/c++. Вот некоторые нововведения:</p>
-
-<ul>
-	<li>Поддержка Unicode (как исходники, так и строки).</li>
-	<li>Множество встроенных типов переменных (Byte, UByte, Short, UShort, Integer, UInteger, LongInt, ULongInt, Single, Double, String, ZString, WString).</li>
-	<li>Обработка ошибок.</li>
-	<li>Типы данных определяемые пользователем (бесконечная вложенность, Union, тип поля (array, function, bit fields)).</li>
-	<li>Пространства имён (Namespace).</li>
-	<li>Перечисление (Enum).</li>
-	<li>Новые возможности при работе с массивами (до 2 ГБ размером, Redim Preserve).</li>
-	<li>Указатели (указатели на любые типы данных, неограниченная косвенная адресация).</li>
-	<li>Перегрузка функций и операторов.</li>
-	<li>Необязательные аргументы функций.</li>
-	<li>Встроенный ассемблер (ассемблерные инструкции в исходном коде программы).</li>
-	<li>Возможности препроцессора.</li>
-	<li>Переопределения типов (Typedefs).</li>
-	<li>Многопоточность.</li>
-	<li>Некоторая поддержка объектно‐ориентированного программирования (инкапсуляция, наследование, полиморфизм).</li>
-</ul>
-
-<p>Вместе с компилятором в комплект входят также наиболее распространенные библиотеки (с подключаемыми заголовочными файлами):</p>
-
-<p>OpenGL, GTK+, SDL, Allegro, ODE, Newton, BASS, Fmod, FreeImage, Zlib, sqlite, MySQL, PostgreSQL, Lua, LibXML, и многие другие.</p>
-
-<p>Из всего этого можно сделать вывод, что FreeBASIC — это полноценный инструмент не только для начинающих, но и для профессиональных разработчиков. Язык программирования BASIC всегда славился простотой в освоении и лёгкостью в программировании.</p>
-
+</main>
 
 <hr />
 
-<p class="footer">Сайт создан по технологии XHTML</p>
+<footer>
+	<p>Сайт создан по технологии XHTML</p>
+	<p>
+		<span id="pLiveInternet"></span>
+		<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
+			<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
+		</a>
+		<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
+			<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
+		</a> 
+	</p>
+</footer>
 
-<p class="footer">
-	
-	<span id="pLiveInternet"></span>
-	
-	<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
-		<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
-	</a>
-	<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
-		<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
-	</a> 
-</p>
+<script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
+<script type="text/javascript">var docUrl=document.URL.toString();document.getElementById("vk_share_button").innerHTML=VK.Share.button(docUrl, {type: "round"});</script>
 
-<script type="text/javascript">var idL=document.getElementById("pLiveInternet");var idA=document.createElement("a");idA.href="//www.liveinternet.ru/stat/freebasic.su";idA.title="Счётчик посещений LiveInternet";var idImg=document.createElement("img");idImg.src="//counter.yadro.ru/hit?t44."+Math.round(1+18*Math.random())+";r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();idImg.alt="Логотип LiveInternet";idA.appendChild(idImg);idL.appendChild(idA);</script>
+
+<script type="text/javascript">var idL=document.getElementById("pLiveInternet");var idA=document.createElement("a");idA.href="//www.liveinternet.ru/stat/freebasic.su";idA.title="Счётчик посещений LiveInternet";var idImg=document.createElement("img");idImg.src="//counter.yadro.ru/hit?t44."+Math.round(1+18*Math.random())+";r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(docUrl)+";"+Math.random();idImg.alt="Логотип LiveInternet";idA.appendChild(idImg);idL.appendChild(idA);</script>
 
 </body></html>

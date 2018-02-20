@@ -21,402 +21,415 @@
 
 <body>
 
-<ul class="navbar">
-	<li><a href="/">Главная</a></li>
-	<li><a href="/src/">Статьи</a></li>
-	<li><a href="/code/">Проекты</a></li>
-	<li><a href="/books/">Учебник</a></li>
-	<li><a href="/links.xhtml">Ссылки</a></li>
-	<li><a href="/about.xhtml">О сайте</a></li>
-</ul>
+<header>
+	
+	<nav>
+		<a href="/">Главная</a>
+		<a href="/src/">Статьи</a>
+		<a href="/code/">Проекты</a>
+		<a href="/books/">Учебник</a>
+		<a href="/links.xhtml">Ссылки</a>
+		<a href="/about.xhtml">О сайте</a>
+	</nav>
+	
+</header>
 
 
 <h1>Карточные игры и библиотека cards.dll</h1>
 
-<p><span class="postername">Эрик Замабувараев‐Ёмолкуу</span> <span class="date">11.10.2016 22:42:14</span></p>
+<main>
+	<p class="postername">
+		<a href="/users/mabu.xhtml">
+			<img src="/avatars/mabu.jpg" alt="Аватар пользователя" width="50" height="50" class="avatar" />
+			&#32;
+			mabu
+		</a>
+		&#32;
+		<time pubdate="pubdate">2016-10-11T22:42:14+07:00</time>
+	</p>
 
-<p>Файл cards.dll входил в состав практически любой Windows, начиная с самых ранних Windows и до Windows 7. Но в каждой Windows использовались разные версии библиотеки, как 16‐битные, так и 32‐битные. Кроме того, иногда библиотека мела разные имена, например, cards32.dll. В нашем случае мы рассматриваем только библиотеку, поставляемую с Windows NT линейки 5 (2000, XP и 2003 сервер).</p>
+	<p>Файл cards.dll входил в состав практически любой Windows, начиная с самых ранних Windows и до Windows 7. Но в каждой Windows использовались разные версии библиотеки, как 16‐битные, так и 32‐битные. Кроме того, иногда библиотека мела разные имена, например, cards32.dll. В нашем случае мы рассматриваем только библиотеку, поставляемую с Windows NT линейки 5 (2000, XP и 2003 сервер).</p>
 
-<p>В Windows 10 эта библиотека отсуствует, однако её можно получить из LiveCD образа операционной системы ReactOS. Так как ReactOS является полноценным «клоном» Windows 2003, то разработчики написали cards.dll для этой системы. Достаточно скачать любой дистрибутив с образом системы, а библиотека будет лежать в образе по пути \reactos\system32\cards.dll. ReactOS — операционная система с открытым исходным кодом по лицензии GPL 2.0, поэтому её компоненты можно использовать в своих программах с открытым исходным кодом.</p>
+	<p>В Windows 10 эта библиотека отсуствует, однако её можно получить из LiveCD образа операционной системы ReactOS. Так как ReactOS является полноценным «клоном» Windows 2003, то разработчики написали cards.dll для этой системы. Достаточно скачать любой дистрибутив с образом системы, а библиотека будет лежать в образе по пути \reactos\system32\cards.dll. ReactOS — операционная система с открытым исходным кодом по лицензии GPL 2.0, поэтому её компоненты можно использовать в своих программах с открытым исходным кодом.</p>
 
-<ol class="contents">
-	<li><a href="#c1">Функции</a>
-		<ol>
-			<li><a href="#c1c1">cdtInit</a></li>
-			<li><a href="#c1c2">cdtDrawExt</a></li>
-			<li><a href="#c1c3">cdtTerm</a></li>
-		</ol>
-	</li>
-	<li><a href="#c2">Подробное описание</a>
-	</li>
-	<li><a href="#c3">Демонстрационная программа</a>
-		<ol>
-			<li><a href="#c3c1">Исходный код</a></li>
-			<li><a href="#c3c2">Результаты</a></li>
-		</ol>
-	</li>
-	<li><a href="#c4">Ссылки</a></li>
-</ol>
-
-
-<h2><a id="c1">Функции</a></h2>
-
-<p>cards.dll содержит несколько функций, из них нам понядобятся всего три:</p>
-<ul>
-	<li><strong>cdtInit</strong> — инициализирует ресурсы;</li>
-	<li><strong>cdtDrawExt</strong> — рисует карту;</li>
-	<li><strong>cdtTerm</strong> — освобождает память.</li>
-</ul>
-
-<h3><a id="c1c1">cdtInit</a></h3>
-
-<p>Инициализирует необходимые ресурсы для работы и возвращает стандартные размеры изображения карты из колоды.</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> cdtInit <span class="keyword">Alias</span> <span class="string">&quot;cdtInit&quot;</span>(<span class="keyword">ByVal</span> Width <span class="keyword">As</span> <span class="datatype">Integer Ptr</span>, <span class="keyword">ByVal</span> Height <span class="keyword">As</span> <span class="datatype">Integer Ptr</span>)<span class="keyword">As</span> <span class="datatype">Integer</span>
-</code></p>
-
-<p>Параметры.</p>
-
-<dl>
-<dt>Width</dt>
-<dd>Указатель на переменную, куда будет записана стандартная ширина карты.</dd>
-</dl>
-
-<dl>
-<dt>Height</dt>
-<dd>Указатель на переменную, куда будет записана стандартная высота карты.</dd>
-</dl>
+	<ol class="contents">
+		<li><a href="#c1">Функции</a>
+			<ol>
+				<li><a href="#c1c1">cdtInit</a></li>
+				<li><a href="#c1c2">cdtDrawExt</a></li>
+				<li><a href="#c1c3">cdtTerm</a></li>
+			</ol>
+		</li>
+		<li><a href="#c2">Подробное описание</a>
+		</li>
+		<li><a href="#c3">Демонстрационная программа</a>
+			<ol>
+				<li><a href="#c3c1">Исходный код</a></li>
+				<li><a href="#c3c2">Результаты</a></li>
+			</ol>
+		</li>
+		<li><a href="#c4">Ссылки</a></li>
+	</ol>
 
 
-<h3><a id="c1c2">cdtDrawExt</a></h3>
+	<h2><a id="c1">Функции</a></h2>
 
-<p>Выводит карту на экран</p>
+	<p>cards.dll содержит несколько функций, из них нам понядобятся всего три:</p>
+	<ul>
+		<li><strong>cdtInit</strong> — инициализирует ресурсы;</li>
+		<li><strong>cdtDrawExt</strong> — рисует карту;</li>
+		<li><strong>cdtTerm</strong> — освобождает память.</li>
+	</ul>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> cdtDrawExt <span class="keyword">Alias</span> <span class="string">&quot;cdtDrawExt&quot;</span>(<span class="keyword">ByVal</span> hDC <span class="keyword">As</span> <span class="datatype">HDC</span>, <span class="keyword">ByVal</span> X <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Y <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Width <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Height <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Card <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Suit <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Color <span class="keyword">As</span> <span class="datatype">DWORD</span>)<span class="keyword">As</span> <span class="datatype">Integer</span>
-</code></p>
+	<h3><a id="c1c1">cdtInit</a></h3>
 
-<p>Параметры.</p>
+	<p>Инициализирует необходимые ресурсы для работы и возвращает стандартные размеры изображения карты из колоды.</p>
 
-<dl>
-<dt>hDC</dt>
-<dd>Контекст устройства для рисования.</dd>
-</dl>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Declare</span> <span class="keyword">Function</span> cdtInit <span class="keyword">Alias</span> <span class="string">&quot;cdtInit&quot;</span>(<span class="keyword">ByVal</span> Width <span class="keyword">As</span> <span class="datatype">Integer Ptr</span>, <span class="keyword">ByVal</span> Height <span class="keyword">As</span> <span class="datatype">Integer Ptr</span>)<span class="keyword">As</span> <span class="datatype">Integer</span>
+	</code></p>
 
-<dl>
-<dt>X</dt>
-<dd>Координата X левой стороны карты.</dd>
-</dl>
+	<p>Параметры.</p>
 
-<dl>
-<dt>Y</dt>
-<dd>Координата Y верхней стороны карты.</dd>
-</dl>
+	<dl>
+	<dt>Width</dt>
+	<dd>Указатель на переменную, куда будет записана стандартная ширина карты.</dd>
+	</dl>
 
-<dl>
-<dt>Width</dt>
-<dd>Ширина карты.</dd>
-</dl>
-
-<dl>
-<dt>Height</dt>
-<dd>Высота карты.</dd>
-</dl>
-
-<dl>
-<dt>Card</dt>
-<dd>Число от 0 до 68, описывающее тип выводимой карты.</dd>
-</dl>
-
-<dl>
-<dt>Suit</dt>
-<dd>Значение, описывающее метод вывода карты.</dd>
-</dl>
-
-<dl>
-<dt>Color</dt>
-<dd>Инвертируемый цвет. Не используется в Windows XP, просто установи этот параметр в 0.</dd>
-</dl>
+	<dl>
+	<dt>Height</dt>
+	<dd>Указатель на переменную, куда будет записана стандартная высота карты.</dd>
+	</dl>
 
 
-<h3><a id="c1c3">cdtTerm</a></h3>
+	<h3><a id="c1c2">cdtDrawExt</a></h3>
 
-<p>Завершает работу с библиотекой cards.dll и освобождяет ресурсы памяти.</p>
+	<p>Выводит карту на экран</p>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Sub</span> cdtTerm <span class="keyword">Alias</span> <span class="string">&quot;cdtTerm&quot;</span>()
-</code></p>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> cdtDrawExt <span class="keyword">Alias</span> <span class="string">&quot;cdtDrawExt&quot;</span>(<span class="keyword">ByVal</span> hDC <span class="keyword">As</span> <span class="datatype">HDC</span>, <span class="keyword">ByVal</span> X <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Y <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Width <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Height <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Card <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Suit <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Color <span class="keyword">As</span> <span class="datatype">DWORD</span>)<span class="keyword">As</span> <span class="datatype">Integer</span>
+	</code></p>
 
-<p>Функция не имеет параметров.</p>
+	<p>Параметры.</p>
 
-<h2><a id="c2">Подробное описание</a></h2>
+	<dl>
+	<dt>hDC</dt>
+	<dd>Контекст устройства для рисования.</dd>
+	</dl>
 
-<p>Основная функция, с помощью которой рисуется карта — <code>cdtDrawExt</code>. Как известно, стандартная колода состоит из 52 карт. Карты имеют 4 масти по 13 наименований в каждой. Параметру <code>Card</code> функции <code>cdtDrawExt</code> соответствует число, определяющее достоинство карты. Числа в интервале 0-51 выводят одну из стандартных 52 карт колоды. Так, значение 0 соответствует тузу треф, 1 — тузу бубен, 2 — тузу червей, 3 — тузу пик и т.д. Последнее число 51 соответствует королю пик.</p>
+	<dl>
+	<dt>X</dt>
+	<dd>Координата X левой стороны карты.</dd>
+	</dl>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="remark">&apos; Масти карт</span><br />
-<span class="keyword">Enum</span> Suits<br />
-&t;Clubs = 0 <span class="remark">&apos; трефы</span><br />
-&t;Diamond = 1 <span class="remark">&apos; бубны</span><br />
-&t;Hearts = 2 <span class="remark">&apos;черви</span><br />
-&t;Spades = 3 <span class="remark">&apos; пики</span><br />
-<span class="keyword">End Enum</span><br />
-<br />
-<span class="remark">&apos; Номинал карты</span><br />
-<span class="keyword">Enum</span> Faces<br />
-&t;Ace = 0 <span class="remark">&apos; туз</span><br />
-&t;Two = 1 <span class="remark">&apos; двойка</span><br />
-&t;Three = 2 <span class="remark">&apos; тройка</span><br />
-&t;Four = 3 <span class="remark">&apos; четверка</span><br />
-&t;Five = 4 <span class="remark">&apos; пятерка</span><br />
-&t;Six = 5 <span class="remark">&apos; шестерка</span><br />
-&t;Seven = 6 <span class="remark">&apos; семерка</span><br />
-&t;Eight = 7 <span class="remark">&apos; восьмерка</span><br />
-&t;Nine  = 8 <span class="remark">&apos; девятка</span><br />
-&t;Ten  = 9 <span class="remark">&apos; десятка</span><br />
-&t;Jack  = 10 <span class="remark">&apos; валет</span><br />
-&t;Queen = 11 <span class="remark">&apos; дама</span><br />
-&t;King = 12 <span class="remark">&apos; король</span><br />
-<span class="keyword">End Enum</span>
-</code></p>
+	<dl>
+	<dt>Y</dt>
+	<dd>Координата Y верхней стороны карты.</dd>
+	</dl>
 
-<p>Чтобы получить номер нужной карты, надо знать волшебную формулу:</p>
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-Сard = Faces * 4 + Suits
-</code></p>
+	<dl>
+	<dt>Width</dt>
+	<dd>Ширина карты.</dd>
+	</dl>
 
-<p>Например, нужно получить номер пиковой дамы. Подставляем в формулу нужные значения:</p>
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-Card = Faces.Queen * 4 + Suits.Diamond
-</code></p>
+	<dl>
+	<dt>Height</dt>
+	<dd>Высота карты.</dd>
+	</dl>
 
-<p>Таким образом, пиковой даме соответствует номер 47 = (11 * 4 + 3).</p>
+	<dl>
+	<dt>Card</dt>
+	<dd>Число от 0 до 68, описывающее тип выводимой карты.</dd>
+	</dl>
 
-<p>Остальные числа от 52 до 68 выводят различные виды рубашек, а также несколько специальных картинок: X или O. Перечёркнутая красным крестом карта означает конец игры, зелёная O указывает, что ты можешь перемешать колоду для продолжения игры. Параметр Suit позволяет выводить различные состояния карты. Например, ты присвоил параметру Card значение от 0 до 51 (нормальный вид). В этом случае при значении 0 в параметре Suit выведется стандартный вид карты. Передавая значение 2, выведется эта же карта в инвертированном виде, показывая пользователю, что карта выбрана. Если же необходимо показать рубашку карты (обратную сторону), то используй значение 1 в параметре Suit при значениях Card в интервале от 53 до 68.</p>
+	<dl>
+	<dt>Suit</dt>
+	<dd>Значение, описывающее метод вывода карты.</dd>
+	</dl>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="remark">&apos; Картинки для рубашки</span><br />
-<span class="keyword">Enum</span> Backs<br />
-&t;Crosshatch = 53 <span class="remark">&apos; Сетка</span><br />
-&t;Sky = 54 <span class="remark">&apos; Небо</span><br />
-&t;Mineral = 55 <span class="remark">&apos; Минерал</span><br />
-&t;Fish = 56 <span class="remark">&apos; Рыба</span><br />
-&t;Frog = 57 <span class="remark">&apos; Лягушка</span><br />
-&t;Flower = 58 <span class="remark">&apos; Цветок</span><br />
-&t;Island = 59 <span class="remark">&apos; Остров с пальмами</span><br />
-&t;Sqiares = 60 <span class="remark">&apos; Квадраты</span><br />
-&t;Magenta = 61 <span class="remark">&apos; Фиолетовый узор</span><br />
-&t;Sanddunes = 62 <span class="remark">&apos; Песчаные дюны</span><br />
-&t;Space = 63 <span class="remark">&apos; Астронавт</span><br />
-&t;Lines = 64 <span class="remark">&apos; Линии</span><br />
-&t;Cars = 65 <span class="remark">&apos; Машинки</span><br />
-&t;Unused = 66 <span class="remark">&apos; Неиспользуемая карта</span><br />
-&t;X = 67 <span class="remark">&apos; Символ X</span><br />
-&t;O = 68 <span class="remark">&apos; Символ О</span><br />
-<span class="keyword">End Enum</span>
-</code></p>
-
-<h2><a id="c3">Демонстрационная программа</a></h2>
-
-<p>Программа создаёт окно и выводит на него бубнового валета, инвертированного бубнового валета и рубашку «Небо».</p>
-
-<h3><a id="c3c1">Исходный код</a></h3>
-
-<p>Собранный воедино заголовочный файл «cards.bi».</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="remark">&apos; Функции работы с картами</span><br />
-<span class="keyword">Declare</span> <span class="keyword">Function</span> cdtInit <span class="keyword">Alias</span> <span class="string">&quot;cdtInit&quot;</span>(<span class="keyword">ByVal</span> Width <span class="keyword">As</span> <span class="datatype">Integer Ptr</span>, <span class="keyword">ByVal</span> Height <span class="keyword">As</span> <span class="datatype">Integer Ptr</span>)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
-<span class="keyword">Declare</span> <span class="keyword">Function</span> cdtDrawExt <span class="keyword">Alias</span> <span class="string">&quot;cdtDrawExt&quot;</span>(<span class="keyword">ByVal</span> hDC <span class="keyword">As</span> <span class="datatype">HDC</span>, <span class="keyword">ByVal</span> X <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Y <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> dX <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> dY <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Card <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Suit <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Color <span class="keyword">As</span> <span class="datatype">DWORD</span>)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
-<span class="keyword">Declare</span> <span class="keyword">Sub</span> cdtTerm <span class="keyword">Alias</span> <span class="string">&quot;cdtTerm&quot;</span>()<br />
-<br />
-<span class="remark">&apos; Картинки для рубашки</span><br />
-<span class="keyword">Enum</span> Backs<br />
-&t;Crosshatch = 53 <span class="remark">&apos; Сетка</span><br />
-&t;Sky = 54 <span class="remark">&apos; Небо</span><br />
-&t;Mineral = 55 <span class="remark">&apos; Минерал</span><br />
-&t;Fish = 56 <span class="remark">&apos; Рыба</span><br />
-&t;Frog = 57 <span class="remark">&apos; Лягушка</span><br />
-&t;Flower = 58 <span class="remark">&apos; Цветок</span><br />
-&t;Island = 59 <span class="remark">&apos; Остров с пальмами</span><br />
-&t;Sqiares = 60 <span class="remark">&apos; Квадраты</span><br />
-&t;Magenta = 61 <span class="remark">&apos; Фиолетовый узор</span><br />
-&t;Sanddunes = 62 <span class="remark">&apos; Песчаные дюны</span><br />
-&t;Space = 63 <span class="remark">&apos; Астронавт</span><br />
-&t;Lines = 64 <span class="remark">&apos; Линии</span><br />
-&t;Cars = 65 <span class="remark">&apos; Машинки</span><br />
-&t;Unused = 66 <span class="remark">&apos; Неиспользуемая карта</span><br />
-&t;X = 67 <span class="remark">&apos; Символ X</span><br />
-&t;O = 68 <span class="remark">&apos; Символ О</span><br />
-<span class="keyword">End Enum</span><br />
-<br />
-<span class="remark">&apos; Масти карт</span><br />
-<span class="keyword">Enum</span> Suits<br />
-&t;Clubs = 0 <span class="remark">&apos; трефы</span><br />
-&t;Diamond = 1 <span class="remark">&apos; бубны</span><br />
-&t;Hearts = 2 <span class="remark">&apos;черви</span><br />
-&t;Spades = 3 <span class="remark">&apos; пики</span><br />
-<span class="keyword">End Enum</span><br />
-<br />
-<span class="remark">&apos; Номинал карты</span><br />
-<span class="keyword">Enum</span> Faces<br />
-&t;Ace = 0 <span class="remark">&apos; туз</span><br />
-&t;Two = 1 <span class="remark">&apos; двойка</span><br />
-&t;Three = 2 <span class="remark">&apos; тройка</span><br />
-&t;Four = 3 <span class="remark">&apos; четверка</span><br />
-&t;Five = 4 <span class="remark">&apos; пятерка</span><br />
-&t;Six = 5 <span class="remark">&apos; шестерка</span><br />
-&t;Seven = 6 <span class="remark">&apos; семерка</span><br />
-&t;Eight = 7 <span class="remark">&apos; восьмерка</span><br />
-&t;Nine  = 8 <span class="remark">&apos; девятка</span><br />
-&t;Ten  = 9 <span class="remark">&apos; десятка</span><br />
-&t;Jack  = 10 <span class="remark">&apos; валет</span><br />
-&t;Queen = 11 <span class="remark">&apos; дама</span><br />
-&t;King = 12 <span class="remark">&apos; король</span><br />
-<span class="keyword">End Enum</span><br />
-<br />
-<span class="remark">&apos; Тип отображения карты</span><br />
-<span class="keyword">Enum</span> Views<br />
-&t;Normal = 0 <span class="remark">&apos; Карта в нормальном виде</span><br />
-&t;Back = 1 <span class="remark">&apos; Рубашка карты</span><br />
-&t;Invert = 2 <span class="remark">&apos; Инвертированная карта</span><br />
-<span class="keyword">End Enum</span>
-</code></p>
+	<dl>
+	<dt>Color</dt>
+	<dd>Инвертируемый цвет. Не используется в Windows XP, просто установи этот параметр в 0.</dd>
+	</dl>
 
 
+	<h3><a id="c1c3">cdtTerm</a></h3>
 
-<p>Файл «cards.bas».</p>
+	<p>Завершает работу с библиотекой cards.dll и освобождяет ресурсы памяти.</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Sub</span> cdtTerm <span class="keyword">Alias</span> <span class="string">&quot;cdtTerm&quot;</span>()
+	</code></p>
+
+	<p>Функция не имеет параметров.</p>
+
+	<h2><a id="c2">Подробное описание</a></h2>
+
+	<p>Основная функция, с помощью которой рисуется карта — <code>cdtDrawExt</code>. Как известно, стандартная колода состоит из 52 карт. Карты имеют 4 масти по 13 наименований в каждой. Параметру <code>Card</code> функции <code>cdtDrawExt</code> соответствует число, определяющее достоинство карты. Числа в интервале 0-51 выводят одну из стандартных 52 карт колоды. Так, значение 0 соответствует тузу треф, 1 — тузу бубен, 2 — тузу червей, 3 — тузу пик и т.д. Последнее число 51 соответствует королю пик.</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="remark">&apos; Масти карт</span><br />
+	<span class="keyword">Enum</span> Suits<br />
+	&t;Clubs = 0 <span class="remark">&apos; трефы</span><br />
+	&t;Diamond = 1 <span class="remark">&apos; бубны</span><br />
+	&t;Hearts = 2 <span class="remark">&apos;черви</span><br />
+	&t;Spades = 3 <span class="remark">&apos; пики</span><br />
+	<span class="keyword">End Enum</span><br />
+	<br />
+	<span class="remark">&apos; Номинал карты</span><br />
+	<span class="keyword">Enum</span> Faces<br />
+	&t;Ace = 0 <span class="remark">&apos; туз</span><br />
+	&t;Two = 1 <span class="remark">&apos; двойка</span><br />
+	&t;Three = 2 <span class="remark">&apos; тройка</span><br />
+	&t;Four = 3 <span class="remark">&apos; четверка</span><br />
+	&t;Five = 4 <span class="remark">&apos; пятерка</span><br />
+	&t;Six = 5 <span class="remark">&apos; шестерка</span><br />
+	&t;Seven = 6 <span class="remark">&apos; семерка</span><br />
+	&t;Eight = 7 <span class="remark">&apos; восьмерка</span><br />
+	&t;Nine  = 8 <span class="remark">&apos; девятка</span><br />
+	&t;Ten  = 9 <span class="remark">&apos; десятка</span><br />
+	&t;Jack  = 10 <span class="remark">&apos; валет</span><br />
+	&t;Queen = 11 <span class="remark">&apos; дама</span><br />
+	&t;King = 12 <span class="remark">&apos; король</span><br />
+	<span class="keyword">End Enum</span>
+	</code></p>
+
+	<p>Чтобы получить номер нужной карты, надо знать волшебную формулу:</p>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	Сard = Faces * 4 + Suits
+	</code></p>
+
+	<p>Например, нужно получить номер пиковой дамы. Подставляем в формулу нужные значения:</p>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	Card = Faces.Queen * 4 + Suits.Diamond
+	</code></p>
+
+	<p>Таким образом, пиковой даме соответствует номер 47 = (11 * 4 + 3).</p>
+
+	<p>Остальные числа от 52 до 68 выводят различные виды рубашек, а также несколько специальных картинок: X или O. Перечёркнутая красным крестом карта означает конец игры, зелёная O указывает, что ты можешь перемешать колоду для продолжения игры. Параметр Suit позволяет выводить различные состояния карты. Например, ты присвоил параметру Card значение от 0 до 51 (нормальный вид). В этом случае при значении 0 в параметре Suit выведется стандартный вид карты. Передавая значение 2, выведется эта же карта в инвертированном виде, показывая пользователю, что карта выбрана. Если же необходимо показать рубашку карты (обратную сторону), то используй значение 1 в параметре Suit при значениях Card в интервале от 53 до 68.</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="remark">&apos; Картинки для рубашки</span><br />
+	<span class="keyword">Enum</span> Backs<br />
+	&t;Crosshatch = 53 <span class="remark">&apos; Сетка</span><br />
+	&t;Sky = 54 <span class="remark">&apos; Небо</span><br />
+	&t;Mineral = 55 <span class="remark">&apos; Минерал</span><br />
+	&t;Fish = 56 <span class="remark">&apos; Рыба</span><br />
+	&t;Frog = 57 <span class="remark">&apos; Лягушка</span><br />
+	&t;Flower = 58 <span class="remark">&apos; Цветок</span><br />
+	&t;Island = 59 <span class="remark">&apos; Остров с пальмами</span><br />
+	&t;Sqiares = 60 <span class="remark">&apos; Квадраты</span><br />
+	&t;Magenta = 61 <span class="remark">&apos; Фиолетовый узор</span><br />
+	&t;Sanddunes = 62 <span class="remark">&apos; Песчаные дюны</span><br />
+	&t;Space = 63 <span class="remark">&apos; Астронавт</span><br />
+	&t;Lines = 64 <span class="remark">&apos; Линии</span><br />
+	&t;Cars = 65 <span class="remark">&apos; Машинки</span><br />
+	&t;Unused = 66 <span class="remark">&apos; Неиспользуемая карта</span><br />
+	&t;X = 67 <span class="remark">&apos; Символ X</span><br />
+	&t;O = 68 <span class="remark">&apos; Символ О</span><br />
+	<span class="keyword">End Enum</span>
+	</code></p>
+
+	<h2><a id="c3">Демонстрационная программа</a></h2>
+
+	<p>Программа создаёт окно и выводит на него бубнового валета, инвертированного бубнового валета и рубашку «Небо».</p>
+
+	<h3><a id="c3c1">Исходный код</a></h3>
+
+	<p>Собранный воедино заголовочный файл «cards.bi».</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="remark">&apos; Функции работы с картами</span><br />
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> cdtInit <span class="keyword">Alias</span> <span class="string">&quot;cdtInit&quot;</span>(<span class="keyword">ByVal</span> Width <span class="keyword">As</span> <span class="datatype">Integer Ptr</span>, <span class="keyword">ByVal</span> Height <span class="keyword">As</span> <span class="datatype">Integer Ptr</span>)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> cdtDrawExt <span class="keyword">Alias</span> <span class="string">&quot;cdtDrawExt&quot;</span>(<span class="keyword">ByVal</span> hDC <span class="keyword">As</span> <span class="datatype">HDC</span>, <span class="keyword">ByVal</span> X <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Y <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> dX <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> dY <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Card <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Suit <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Color <span class="keyword">As</span> <span class="datatype">DWORD</span>)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+	<span class="keyword">Declare</span> <span class="keyword">Sub</span> cdtTerm <span class="keyword">Alias</span> <span class="string">&quot;cdtTerm&quot;</span>()<br />
+	<br />
+	<span class="remark">&apos; Картинки для рубашки</span><br />
+	<span class="keyword">Enum</span> Backs<br />
+	&t;Crosshatch = 53 <span class="remark">&apos; Сетка</span><br />
+	&t;Sky = 54 <span class="remark">&apos; Небо</span><br />
+	&t;Mineral = 55 <span class="remark">&apos; Минерал</span><br />
+	&t;Fish = 56 <span class="remark">&apos; Рыба</span><br />
+	&t;Frog = 57 <span class="remark">&apos; Лягушка</span><br />
+	&t;Flower = 58 <span class="remark">&apos; Цветок</span><br />
+	&t;Island = 59 <span class="remark">&apos; Остров с пальмами</span><br />
+	&t;Sqiares = 60 <span class="remark">&apos; Квадраты</span><br />
+	&t;Magenta = 61 <span class="remark">&apos; Фиолетовый узор</span><br />
+	&t;Sanddunes = 62 <span class="remark">&apos; Песчаные дюны</span><br />
+	&t;Space = 63 <span class="remark">&apos; Астронавт</span><br />
+	&t;Lines = 64 <span class="remark">&apos; Линии</span><br />
+	&t;Cars = 65 <span class="remark">&apos; Машинки</span><br />
+	&t;Unused = 66 <span class="remark">&apos; Неиспользуемая карта</span><br />
+	&t;X = 67 <span class="remark">&apos; Символ X</span><br />
+	&t;O = 68 <span class="remark">&apos; Символ О</span><br />
+	<span class="keyword">End Enum</span><br />
+	<br />
+	<span class="remark">&apos; Масти карт</span><br />
+	<span class="keyword">Enum</span> Suits<br />
+	&t;Clubs = 0 <span class="remark">&apos; трефы</span><br />
+	&t;Diamond = 1 <span class="remark">&apos; бубны</span><br />
+	&t;Hearts = 2 <span class="remark">&apos;черви</span><br />
+	&t;Spades = 3 <span class="remark">&apos; пики</span><br />
+	<span class="keyword">End Enum</span><br />
+	<br />
+	<span class="remark">&apos; Номинал карты</span><br />
+	<span class="keyword">Enum</span> Faces<br />
+	&t;Ace = 0 <span class="remark">&apos; туз</span><br />
+	&t;Two = 1 <span class="remark">&apos; двойка</span><br />
+	&t;Three = 2 <span class="remark">&apos; тройка</span><br />
+	&t;Four = 3 <span class="remark">&apos; четверка</span><br />
+	&t;Five = 4 <span class="remark">&apos; пятерка</span><br />
+	&t;Six = 5 <span class="remark">&apos; шестерка</span><br />
+	&t;Seven = 6 <span class="remark">&apos; семерка</span><br />
+	&t;Eight = 7 <span class="remark">&apos; восьмерка</span><br />
+	&t;Nine  = 8 <span class="remark">&apos; девятка</span><br />
+	&t;Ten  = 9 <span class="remark">&apos; десятка</span><br />
+	&t;Jack  = 10 <span class="remark">&apos; валет</span><br />
+	&t;Queen = 11 <span class="remark">&apos; дама</span><br />
+	&t;King = 12 <span class="remark">&apos; король</span><br />
+	<span class="keyword">End Enum</span><br />
+	<br />
+	<span class="remark">&apos; Тип отображения карты</span><br />
+	<span class="keyword">Enum</span> Views<br />
+	&t;Normal = 0 <span class="remark">&apos; Карта в нормальном виде</span><br />
+	&t;Back = 1 <span class="remark">&apos; Рубашка карты</span><br />
+	&t;Invert = 2 <span class="remark">&apos; Инвертированная карта</span><br />
+	<span class="keyword">End Enum</span>
+	</code></p>
 
 
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="preprocessor">#define unicode</span><br />
-<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
-<span class="preprocessor">#include once &quot;cards.bi&quot;</span><br />
-<br />
-<span class="keyword">Const</span> MainWindowClassName = <span class="string">&quot;Карты&quot;</span><br />
-<span class="keyword">Const</span> MainWindowTitle = <span class="string">&quot;Демонстрация вывода карт&quot;</span><br />
-<br />
-<span class="keyword">Declare</span> <span class="keyword">Function</span> WndProc(<span class="keyword">ByVal</span> hWnd <span class="keyword">As</span> <span class="datatype">HWND</span>, <span class="keyword">ByVal</span> wMsg <span class="keyword">As</span> <span class="datatype">UINT</span>, <span class="keyword">ByVal</span> wParam <span class="keyword">As</span> <span class="datatype">WPARAM</span>, <span class="keyword">ByVal</span> lParam <span class="keyword">As</span> <span class="datatype">LPARAM</span>)<span class="keyword">As</span> <span class="datatype">LRESULT</span><br />
-<br />
-<span class="remark">&apos; Размеры карты по умолчанию</span><br />
-<span class="keyword">Dim</span> <span class="keyword">Shared</span> mintWidth <span class="keyword">As</span> <span class="datatype">Integer</span><br />
-<span class="keyword">Dim</span> <span class="keyword">Shared</span> mintHeight <span class="keyword">As</span> <span class="datatype">Integer</span><br />
-<br />
-<span class="remark">&apos; Инициализация библиотеки</span><br />
-cdtInit(@mintWidth, @mintHeight)<br />
-<br />
-<span class="remark">&apos; Регистрация класса окна и создание</span><br />
-<br />
-<span class="keyword">Dim</span> hInstance <span class="keyword">As</span> <span class="datatype">HMODULE</span> = GetModuleHandle(0)<br />
-<span class="keyword">Dim</span> wcls <span class="keyword">As</span> <span class="datatype">WNDCLASS</span> = <span class="keyword">Any</span><br />
-<span class="keyword">With</span> wcls<br />
-&t;.style         = CS_HREDRAW <span class="keyword">Or</span> CS_VREDRAW<br />
-&t;.lpfnWndProc   = @WndProc<br />
-&t;.cbClsExtra    = 0<br />
-&t;.cbWndExtra    = 0<br />
-&t;.hInstance     = hInstance<br />
-&t;.hIcon         = 0<br />
-&t;.hCursor       = LoadCursor(0, IDC_ARROW)<br />
-&t;.hbrBackground = <span class="keyword">Cast</span>(HBRUSH, COLOR_BTNFACE + 1)<br />
-&t;.lpszMenuName  = 0<br />
-&t;.lpszClassName = @MainWindowClassName<br />
-<span class="keyword">End With</span><br />
-<br />
-<span class="keyword">If</span> RegisterClass(@wcls) = FALSE <span class="keyword">Then</span><br />
-&t;MessageBox(0, <span class="string">&quot;Не могу зарегистрировать класс окна&quot;</span>, @MainWindowTitle, MB_ICONERROR)<br />
-&t;<span class="keyword">End</span>(1)<br />
-<span class="keyword">End If</span><br />
-<br />
-<span class="keyword">Dim</span> hWndMain <span class="keyword">As</span> <span class="datatype">HWND</span> = CreateWindowEx(0, @MainWindowClassName, @MainWindowTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance, NULL)<br />
-<br />
-ShowWindow(hWndMain, SW_NORMAL)<br />
-UpdateWindow(hWndMain)<br />
-<br />
-<span class="keyword">Dim</span> wMsg <span class="keyword">As</span> <span class="datatype">MSG</span> = <span class="keyword">Any</span><br />
-<span class="keyword">Dim</span> bRet <span class="keyword">As</span> <span class="datatype">Integer</span> = GetMessage(@wMsg, NULL, 0, 0)<br />
-<span class="keyword">Do</span> <span class="keyword">While</span> bRet &lt;&gt; 0<br />
-&t;<span class="keyword">If</span> bRet = -1 <span class="keyword">Then</span><br />
-&t;&t;<span class="remark">&apos; Ошибка</span><br />
-&t;&t;<span class="keyword">Exit Do</span><br />
-&t;<span class="keyword">Else</span><br />
-&t;&t;TranslateMessage(@wMsg)<br />
-&t;&t;DispatchMessage(@wMsg)<br />
-&t;<span class="keyword">End If</span><br />
-&t;bRet = GetMessage(@wMsg, NULL, 0, 0)<br />
-<span class="keyword">Loop</span><br />
-<br />
-<span class="remark">&apos; Очистка</span><br />
-cdtTerm()<br />
-<br />
-<span class="keyword">End</span>(wMsg.wParam)<br />
-<br />
-<br />
-<span class="keyword">Function</span> WndProc(<span class="keyword">ByVal</span> hWin <span class="keyword">As</span> <span class="datatype">HWND</span>, <span class="keyword">ByVal</span> wMsg <span class="keyword">As</span> <span class="datatype">UINT</span>, <span class="keyword">ByVal</span> wParam <span class="keyword">As</span> <span class="datatype">WPARAM</span>, <span class="keyword">ByVal</span> lParam <span class="keyword">As</span> <span class="datatype">LPARAM</span>)<span class="keyword">As</span> <span class="datatype">LRESULT</span><br />
-&t;<span class="keyword">Select Case</span> wMsg<br />
-&t;&t;<span class="keyword">Case</span> WM_PAINT<br />
-&t;&t;&t;<span class="keyword">Dim</span> pnt <span class="keyword">As</span> <span class="datatype">PAINTSTRUCT</span><br />
-&t;&t;&t;<span class="keyword">Dim</span> hDC <span class="keyword">As</span> <span class="datatype">HDC</span><br />
-&t;&t;&t;hDC = BeginPaint(hWin, @pnt)<br />
-&t;&t;&t;<span class="remark">&apos; Рисуем бубнового валета</span><br />
-&t;&t;&t;cdtDrawExt(hDC, 10, 10, mintWidth, mintHeight, Faces.Jack * 4 + Suits.Diamond, Views.Normal, 0)<br />
-&t;&t;&t;<span class="remark">&apos; Рисуем инвертированного бубнового валета</span><br />
-&t;&t;&t;cdtDrawExt(hDC, 100, 10, mintWidth, mintHeight, Faces.Jack * 4 + Suits.Diamond, Views.Invert, 0)<br />
-&t;&t;&t;<span class="remark">&apos; Рисуем рубашку «Небо»</span><br />
-&t;&t;&t;cdtDrawExt(hDC, 200, 10, mintWidth, mintHeight, Backs.Sky, Views.Back, 0)<br />
-&t;&t;&t;EndPaint(hWin, @pnt)<br />
-<br />
-&t;&t;<span class="keyword">Case</span> WM_DESTROY<br />
-&t;&t;&t;PostQuitMessage(0)<br />
-<br />
-&t;&t;<span class="keyword">Case Else</span><br />
-&t;&t;&t;<span class="keyword">Return</span> DefWindowProc(hWin, wMsg, wParam, lParam)<br />
-&t;&t;<span class="keyword">End Select</span><br />
-<br />
-&t;<span class="keyword">Return</span> 0<br />
-<span class="keyword">End Function</span>
-</code></p>
+	<p>Файл «cards.bas».</p>
 
-<p>Компиляция</p>
-<p class="codebox"><span>Код</span> <span>Batch</span><br /><code>
-"%ProgramFiles%\FreeBASIC\fbc.exe" -s gui -l cards cards.bas
-</code></p>
 
-<p>Также для успешной компиляции файл cards.dll необходимо скопировать из «c:\windows\system32\» и положить рядом с исходным кодом.</p>
 
-<h3><a id="c3c2">Результаты</a></h3>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="preprocessor">#define unicode</span><br />
+	<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
+	<span class="preprocessor">#include once &quot;cards.bi&quot;</span><br />
+	<br />
+	<span class="keyword">Const</span> MainWindowClassName = <span class="string">&quot;Карты&quot;</span><br />
+	<span class="keyword">Const</span> MainWindowTitle = <span class="string">&quot;Демонстрация вывода карт&quot;</span><br />
+	<br />
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> WndProc(<span class="keyword">ByVal</span> hWnd <span class="keyword">As</span> <span class="datatype">HWND</span>, <span class="keyword">ByVal</span> wMsg <span class="keyword">As</span> <span class="datatype">UINT</span>, <span class="keyword">ByVal</span> wParam <span class="keyword">As</span> <span class="datatype">WPARAM</span>, <span class="keyword">ByVal</span> lParam <span class="keyword">As</span> <span class="datatype">LPARAM</span>)<span class="keyword">As</span> <span class="datatype">LRESULT</span><br />
+	<br />
+	<span class="remark">&apos; Размеры карты по умолчанию</span><br />
+	<span class="keyword">Dim</span> <span class="keyword">Shared</span> mintWidth <span class="keyword">As</span> <span class="datatype">Integer</span><br />
+	<span class="keyword">Dim</span> <span class="keyword">Shared</span> mintHeight <span class="keyword">As</span> <span class="datatype">Integer</span><br />
+	<br />
+	<span class="remark">&apos; Инициализация библиотеки</span><br />
+	cdtInit(@mintWidth, @mintHeight)<br />
+	<br />
+	<span class="remark">&apos; Регистрация класса окна и создание</span><br />
+	<br />
+	<span class="keyword">Dim</span> hInstance <span class="keyword">As</span> <span class="datatype">HMODULE</span> = GetModuleHandle(0)<br />
+	<span class="keyword">Dim</span> wcls <span class="keyword">As</span> <span class="datatype">WNDCLASS</span> = <span class="keyword">Any</span><br />
+	<span class="keyword">With</span> wcls<br />
+	&t;.style         = CS_HREDRAW <span class="keyword">Or</span> CS_VREDRAW<br />
+	&t;.lpfnWndProc   = @WndProc<br />
+	&t;.cbClsExtra    = 0<br />
+	&t;.cbWndExtra    = 0<br />
+	&t;.hInstance     = hInstance<br />
+	&t;.hIcon         = 0<br />
+	&t;.hCursor       = LoadCursor(0, IDC_ARROW)<br />
+	&t;.hbrBackground = <span class="keyword">Cast</span>(HBRUSH, COLOR_BTNFACE + 1)<br />
+	&t;.lpszMenuName  = 0<br />
+	&t;.lpszClassName = @MainWindowClassName<br />
+	<span class="keyword">End With</span><br />
+	<br />
+	<span class="keyword">If</span> RegisterClass(@wcls) = FALSE <span class="keyword">Then</span><br />
+	&t;MessageBox(0, <span class="string">&quot;Не могу зарегистрировать класс окна&quot;</span>, @MainWindowTitle, MB_ICONERROR)<br />
+	&t;<span class="keyword">End</span>(1)<br />
+	<span class="keyword">End If</span><br />
+	<br />
+	<span class="keyword">Dim</span> hWndMain <span class="keyword">As</span> <span class="datatype">HWND</span> = CreateWindowEx(0, @MainWindowClassName, @MainWindowTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance, NULL)<br />
+	<br />
+	ShowWindow(hWndMain, SW_NORMAL)<br />
+	UpdateWindow(hWndMain)<br />
+	<br />
+	<span class="keyword">Dim</span> wMsg <span class="keyword">As</span> <span class="datatype">MSG</span> = <span class="keyword">Any</span><br />
+	<span class="keyword">Dim</span> bRet <span class="keyword">As</span> <span class="datatype">Integer</span> = GetMessage(@wMsg, NULL, 0, 0)<br />
+	<span class="keyword">Do</span> <span class="keyword">While</span> bRet &lt;&gt; 0<br />
+	&t;<span class="keyword">If</span> bRet = -1 <span class="keyword">Then</span><br />
+	&t;&t;<span class="remark">&apos; Ошибка</span><br />
+	&t;&t;<span class="keyword">Exit Do</span><br />
+	&t;<span class="keyword">Else</span><br />
+	&t;&t;TranslateMessage(@wMsg)<br />
+	&t;&t;DispatchMessage(@wMsg)<br />
+	&t;<span class="keyword">End If</span><br />
+	&t;bRet = GetMessage(@wMsg, NULL, 0, 0)<br />
+	<span class="keyword">Loop</span><br />
+	<br />
+	<span class="remark">&apos; Очистка</span><br />
+	cdtTerm()<br />
+	<br />
+	<span class="keyword">End</span>(wMsg.wParam)<br />
+	<br />
+	<br />
+	<span class="keyword">Function</span> WndProc(<span class="keyword">ByVal</span> hWin <span class="keyword">As</span> <span class="datatype">HWND</span>, <span class="keyword">ByVal</span> wMsg <span class="keyword">As</span> <span class="datatype">UINT</span>, <span class="keyword">ByVal</span> wParam <span class="keyword">As</span> <span class="datatype">WPARAM</span>, <span class="keyword">ByVal</span> lParam <span class="keyword">As</span> <span class="datatype">LPARAM</span>)<span class="keyword">As</span> <span class="datatype">LRESULT</span><br />
+	&t;<span class="keyword">Select Case</span> wMsg<br />
+	&t;&t;<span class="keyword">Case</span> WM_PAINT<br />
+	&t;&t;&t;<span class="keyword">Dim</span> pnt <span class="keyword">As</span> <span class="datatype">PAINTSTRUCT</span><br />
+	&t;&t;&t;<span class="keyword">Dim</span> hDC <span class="keyword">As</span> <span class="datatype">HDC</span><br />
+	&t;&t;&t;hDC = BeginPaint(hWin, @pnt)<br />
+	&t;&t;&t;<span class="remark">&apos; Рисуем бубнового валета</span><br />
+	&t;&t;&t;cdtDrawExt(hDC, 10, 10, mintWidth, mintHeight, Faces.Jack * 4 + Suits.Diamond, Views.Normal, 0)<br />
+	&t;&t;&t;<span class="remark">&apos; Рисуем инвертированного бубнового валета</span><br />
+	&t;&t;&t;cdtDrawExt(hDC, 100, 10, mintWidth, mintHeight, Faces.Jack * 4 + Suits.Diamond, Views.Invert, 0)<br />
+	&t;&t;&t;<span class="remark">&apos; Рисуем рубашку «Небо»</span><br />
+	&t;&t;&t;cdtDrawExt(hDC, 200, 10, mintWidth, mintHeight, Backs.Sky, Views.Back, 0)<br />
+	&t;&t;&t;EndPaint(hWin, @pnt)<br />
+	<br />
+	&t;&t;<span class="keyword">Case</span> WM_DESTROY<br />
+	&t;&t;&t;PostQuitMessage(0)<br />
+	<br />
+	&t;&t;<span class="keyword">Case Else</span><br />
+	&t;&t;&t;<span class="keyword">Return</span> DefWindowProc(hWin, wMsg, wParam, lParam)<br />
+	&t;&t;<span class="keyword">End Select</span><br />
+	<br />
+	&t;<span class="keyword">Return</span> 0<br />
+	<span class="keyword">End Function</span>
+	</code></p>
 
-<p>Результат работы программы в Windows 2003 со стандартной библиотекой:</p>
-<p><img src="/res/cardswindows2003.png" alt="Изображение бубнового валета в Windows 2003" width="378" height="267" /></p>
+	<p>Компиляция</p>
+	<p class="codebox"><span>Код</span> <span>Batch</span><br /><code>
+	"%ProgramFiles%\FreeBASIC\fbc.exe" -s gui -l cards cards.bas
+	</code></p>
 
-<p>Результат работы программы в Windows 2003 с библиотекой из операционной системы ReactOS:</p>
-<p><img src="/res/cardsreactos.png" alt="Изображение бубнового валета в ReactOS" width="381" height="227" /></p>
+	<p>Также для успешной компиляции файл cards.dll необходимо скопировать из «c:\windows\system32\» и положить рядом с исходным кодом.</p>
 
-<h2><a id="c4">Ссылки</a></h2>
-<ul>
-<li><a href="//www.reactos.org/download">Дистрибутив ReactOS</a> — здесь можно получить образ ReactOS с библиотекой, если таковая отсутствует в операционной системе.</li>
-</ul>
+	<h3><a id="c3c2">Результаты</a></h3>
 
-<h2>Поделись ссылочкой в социальных сетях</h2>
-<div id="vk_share_button"></div>
+	<p>Результат работы программы в Windows 2003 со стандартной библиотекой:</p>
+	<p><img src="/res/cardswindows2003.png" alt="Изображение бубнового валета в Windows 2003" width="378" height="267" /></p>
 
+	<p>Результат работы программы в Windows 2003 с библиотекой из операционной системы ReactOS:</p>
+	<p><img src="/res/cardsreactos.png" alt="Изображение бубнового валета в ReactOS" width="381" height="227" /></p>
+
+	<h2><a id="c4">Ссылки</a></h2>
+	<ul>
+	<li><a href="//www.reactos.org/download">Дистрибутив ReactOS</a> — здесь можно получить образ ReactOS с библиотекой, если таковая отсутствует в операционной системе.</li>
+	</ul>
+
+	<h2>Поделись ссылочкой в социальных сетях</h2>
+	<div id="vk_share_button"></div>
+
+</main>
 
 <hr />
 
-<p class="footer">Сайт создан по технологии XHTML</p>
-
-<p class="footer">
-	
-	<span id="pLiveInternet"></span>
-	
-	<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
-		<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
-	</a>
-	<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
-		<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
-	</a> 
-</p>
+<footer>
+	<p>Сайт создан по технологии XHTML</p>
+	<p>
+		<span id="pLiveInternet"></span>
+		<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
+			<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
+		</a>
+		<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
+			<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
+		</a> 
+	</p>
+</footer>
 
 <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
 <script type="text/javascript">var docUrl=document.URL.toString();document.getElementById("vk_share_button").innerHTML=VK.Share.button(docUrl, {type: "round"});</script>
