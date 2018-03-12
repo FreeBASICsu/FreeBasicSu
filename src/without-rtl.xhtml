@@ -9,7 +9,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 
 <head>
-	<title>Пишем на FreeBASIC не используя библиотеки времени выполнения</title>
+	<title>Ручная компиляция</title>
 	<meta name="description" content="Пишем на FreeBASIC не используя runtime библиотеки, уменьшаем размер бинарника, делаем dll своими руками" />
 	<meta name="keywords" content="FreeBASIC, RTL, библиотеки времени выполнения, компиляция, параметры командной строки, WinAPI" />
 	
@@ -33,7 +33,7 @@
 	
 </header>
 
-<h1>Пишем на FreeBASIC не используя библиотеки времени выполнения</h1>
+<h1>Ручная компиляция</h1>
 
 <main>
 	
@@ -49,7 +49,7 @@
 
 	<p>Как‐то сравнивая HelloWorld на ассемблере и FreeBASIC, обнаружилось, что откомпилированные на FreeBASIC программы всегда получались больше. Так происходит из‐за того, что непосредственно перед нашим кодом идут разные инициализации критических секций, создание командной строки, кучи и так далее. Зачастую в простых программах это не нужно, к тому же иногда хочется удивить коллегу и сделать маленький бинарник или просто покопаться во внутренностях исполняемого файла.</p>
 
-	<p>Разработчики FreeBASIC предусмотрели параметр компиляции <code>-v</code>, он показывает все этапы компиляции, какие программы запускает и какие параметры им передаёт.</p>
+	<p>Разработчики FreeBASIC предусмотрели параметр компиляции <code>-v</code>, он показывает все этапы компиляции, какие программы запускаются и какие параметры им передаются.</p>
 
 	<p>Цель: сделать простую программу, выводящую строку «Привет, мир!», размером 2048 байт. Или даже меньше.</p>
 
@@ -88,21 +88,21 @@
 	<p>Наша программа будет очень простая, она будет выводить строку на консоль и завершаться. Но так как мы не будем использовать встроенные функции, то для вывода строки придётся использовать WinAPI.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-		#define unicode<br />
-		#include once &quot;windows.bi&quot;<br />
+		<span class="preprocessor">#define unicode</span><br />
+		<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
 		<br />
-		Const HelloWorld = !&quot;Привет, мир!\r\n&quot;<br />
-		Const HelloWorldLength As Integer = 14<br />
+		<span class="keyword">Const</span> HelloWorld = <span class="string">!&quot;Привет, мир!\r\n&quot;</span><br />
+		<span class="keyword">Const</span> HelloWorldLength <span class="keyword">As</span> <span class="datatype">Integer</span> = 14<br />
 		<br />
-		&apos; Это точка входа в программу<br />
-		&apos; Эту функцию вызовет операционная система при запуске<br />
-		Function EntryPoint Alias &quot;EntryPoint&quot;()As Integer<br />
-			&t;&apos; Напечатать HelloWorld<br />
-			&t;Dim CharsCount As DWORD = Any<br />
+		<span class="remark">&apos; Это точка входа в программу</span><br />
+		<span class="remark">&apos; Эту функцию вызовет операционная система при запуске</span><br />
+		<span class="keyword">Function</span> EntryPoint <span class="keyword">Alias</span> <span class="string">&quot;EntryPoint&quot;</span>()<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			&t;<span class="remark">&apos; Напечатать HelloWorld</span><br />
+			&t;<span class="keyword">Dim</span> CharsCount <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
 			&t;WriteConsole(GetStdHandle(STD_OUTPUT_HANDLE), @HelloWorld, HelloWorldLength, @CharsCount, 0)<br />
 		<br />
-		&t;Return 0<br />
-		End Function
+		&t;<span class="keyword">Return</span> 0<br />
+		<span class="keyword">End Function</span>
 	</code></p>
 
 	<p>Здесь в имени функции <code>EntryPoint</code> используется оператор <code>Alias</code>, указывающий правильное название функции, иначе без него в объектном файле она будет в верхнем регистре.</p>

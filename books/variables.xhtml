@@ -9,7 +9,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 
 <head>
-	<title>Хранение информации в программе: константы и переменные</title>
+	<title>Хранение информации в программе: переменные, константы и литералы</title>
 	<meta name="description" content="Описание статьи" />
 	<meta name="keywords" content="ключевые слова" />
 	
@@ -33,24 +33,508 @@
 	
 </header>
 
-<h1>Хранение информации в программе: константы и переменные</h1>
+<h1>Хранение информации в программе: переменные, константы и литералы</h1>
 
 <main>
 
-	<p>Преамбула.</p>
-
-	<ol class="contents">
-		<li><a href="#c1">Первая глава</a>
-			<ol>
-				<li><a href="#c1c1">Первая подглава</a></li>
-				<li><a href="#c1c2">Вторая подглава</a></li>
-				<li><a href="#c1c3">Третья подглава</a></li>
-			</ol>
-		</li>
-		<li><a href="#c2">Вторая глава</a></li>
-		<li><a href="#c3">Третья глава</a></li>
+	<p>Всё программирование сводится к тому, чтобы манипулировать какими‐нибудь данными. Данные хранятся не просто так «в воздухе», а физически размещаются в оперативной памяти компьютера. Области оперативной памяти, которым дали имя, — называются переменные и константы.</p>
+	
+	
+	<h2>Типы данных</h2>
+	
+	<p>Когда ты начинаешь изучать новый язык программирования, одной из первых вещей, которую ты должны вызубрить, являются типы данных языка. Практически каждая программа управляет данными, и для правильного управления этими данными ты должен полностью понимать доступные типы. Ошибки неправильного использования типа данных занимают второе место по сравнению с синтаксическими ошибками, но они намного сложнее. Компилятор может отлавливать синтаксические ошибки и некоторые ошибки неправильного приведения типа данных, но большинство ошибок возникают уже во время работы программы и часто только при использовании определённых типов данных. Такие прерывистые ошибки трудно найти и их трудно исправить. Знание вида, размера и ограничений данных поможет свести такие ошибки к минимуму.</p>
+	
+	<p>У FreeBASIC есть все стандартные числовые типы данных, которые ты ожидаешь для базового компилятора, а также указатели, которые обычно ты найдёшь только в языках низкого уровня, таких как Си.</p>
+	
+	<h3>Числовые типы данных</h3>
+	
+	<p>Знаковые типы данных могут содержать в себе ноль, отрицательные и положительные значения. Беззнаковые типы данных могут содержатьв себе только ноль или положительные значения. За счёт того, что один бит в числе используется для хранения знака (положительное или отрицательное число), диапазон максимальных и минимальных значений знаковых чисел в два раза меньше для соответствующих им беззнаковых чисел.</p>
+	
+	<h4>Знаковые целые</h4>
+	
+	<table>
+		<tr>
+			<th>Числовые типы данных</th>
+			<th>Занимаемый размер в памяти</th>
+			<th>Диапазон</th>
+		</tr>
+		<tr>
+			<td>Byte</td>
+			<td>8 бит, 1 байт, знаковый</td>
+			<td>От -128 до 127</td>
+		</tr>
+		<tr>
+			<td>Short</td>
+			<td>16 бит, 2 байта, знаковый</td>
+			<td>От -32768 до 32767</td>
+		</tr>
+		<tr>
+			<td>Integer</td>
+			<td>
+				<p>32 бита, 4 байта на 32‐битной архитектуре, знаковый</p>
+				<p>64 бита, 8 байт на 64‐битной архитектуре, знаковый</p>
+			</td>
+			<td>
+				<p>На 32‐битной архитектуре от -2147483648 до 2147483647</p>
+				<p>На 64‐битной архитектуре от -9223372036854775808 до 9223372036854775807</p>
+			</td>
+		</tr>
+		<tr>
+			<td>Long</td>
+			<td>32 бита, 4 байта, знаковый</td>
+			<td>От -2147483648 до 2147483647</td>
+		</tr>
+		<tr>
+			<td>LongInt</td>
+			<td>64 бита, 8 байт, знаковый</td>
+			<td>От -9223372036854775808 до 9223372036854775807</td>
+		</tr>
+	</table>
+	
+	<h4>Беззнаковые целые</h4>
+	
+	<table>
+		<tr>
+			<th>Числовые типы данных</th>
+			<th>Занимаемый размер в памяти</th>
+			<th>Диапазон</th>
+		</tr>
+		<tr>
+			<td>UByte</td>
+			<td>8 бит, 1 байт, беззнаковый</td>
+			<td>От 0 до 255</td>
+		</tr>
+		<tr>
+			<td>UShort</td>
+			<td>16 бит, 2 байта, беззнаковый</td>
+			<td>От 0 до 65535</td>
+		</tr>
+		<tr>
+			<td>UInteger</td>
+			<td>
+				<p>32 бита, 4 байта на 32‐битной архитектуре, беззнаковый</p>
+				<p>64 бита, 8 байт на 64‐битной архитектуре, беззнаковый</p>
+			</td>
+			<td>
+				<p>На 32‐битной архитектуре от 0 до 4294967295</p>
+				<p>На 64‐битной архитектуре от 0 до 18446744073709551615</p>
+			</td>
+		</tr>
+		<tr>
+			<td>ULongInt</td>
+			<td>64 бита, 8 байт, беззнаковый</td>
+			<td>От 0 до 18446744073709551615</td>
+		</tr>
+		<tr>
+			<td>Ptr или Pointer</td>
+			<td>
+				<p>32 бита, 4 байта на 32‐битной архитектуре, беззнаковый</p>
+				<p>64 бита, 8 байт на 64‐битной архитектуре, беззнаковый</p>
+			</td>
+			<td>
+				<p>На 32‐битной архитектуре от 0 до 4294967295</p>
+				<p>На 64‐битной архитектуре от 0 до 18446744073709551615</p>
+			</td>
+		</tr>
+	</table>
+	
+	<h4>Дробные типы</h4>
+	
+	<p>Типы данных с плавающей запятой, <code>Single</code> и <code>Double</code> могут хранить в себе дробные числа. Имей в виду, что такие числа подвержены ошибкам округления, которые накапливаются при длительных вычислениях. Очень плохая идея использовать такие числа для хранения денежных сумм.</p>
+	
+	<table>
+		<tr>
+			<th>Числовые типы данных</th>
+			<th>Занимаемый размер в памяти</th>
+			<th>Диапазон</th>
+		</tr>
+		<tr>
+			<td>Single</td>
+			<td>32 бита, 4 байта, знаковый</td>
+			<td>Число с плавающей запятой одинарной точности, от 1.1E-38 до 3.43E+38</td>
+		</tr>
+		<tr>
+			<td>Double</td>
+			<td>64 бита, 8 байт, знаковый</td>
+			<td>Число с плавающей запятой двойной точности, от -2.2E-308 до +1.7E+308</td>
+		</tr>
+	</table>
+	
+	<h4>Логический тип</h4>
+	
+	<p>Этот тип данных может принимать только два значения: истину <code>True</code> или ложь <code>False</code>. Технически представляет из себя целое число, все биты которого либо сброшены в 0, либо установлены в 1.</p>
+	
+	<table>
+		<tr>
+			<th>Числовые типы данных</th>
+			<th>Занимаемый размер в памяти</th>
+			<th>Диапазон</th>
+		</tr>
+		<tr>
+			<td>Boolean</td>
+			<td>8 бит, 1 байт</td>
+			<td>Может содержать в себе только одно из двух значений: истину <code>True</code> или ложь <code>False</code></td>
+		</tr>
+	</table>
+	
+	<p>Из‐за того, что это число можно трактовать как знаковое, вытекает интересное наблюдение. Будем считать, что 0 — это ложь <code>False</code>, тогда истина <code>True</code> определяется как отрицание лжи. Отрицание нуля — это обращение всех бит числа на противоположное значение, то есть в единицу. Знаковое число со всеми установленными битами — это -1. Ложь <code>False</code> равна нулю, а истина <code>True</code> минус единице.</p>
+	
+	
+	<h3>Какой тип данных выбрать</h3>
+	
+	<p>Существует несколько различных типов данных, как же выбрать правильный тип данных для любого конкретного приложения? Эмпирическое правило таково: использовать самый большой тип данных, который необходим для хранения ожидаемого диапазона значений. Это может показаться очевидным, но многие программы терпят неудачу, потому что программист не полностью понял диапазон данных в своей программе. Когда ты создаёшь программу, ты должен отображать не только логику программы, но и данные, связанные с каждым блоком логики. Когда ты наберёшь данные загодя, ты с меньшей вероятностью столкнёшься с ошибками типа данных.</p>
+	
+	<p>Например, если ты работаешь с кодами ASCII, которые варьируются от 0 до 255, то <code>UByte</code> будет хорошим выбором, так как диапазон <code>UByte</code> совпадает с диапазоном кодов ASCII, и ты используешь только 1 байт памяти. Однако есть ещё одно соображение: «естественный» размер данных компьютера. В 32‐битной системе размер естественных данных составляет 4 байта или <code>Integer</code>. Это означает, что компьютер оптимизирован для обработки <code>Integer</code> и делает это более эффективно, даже если ты «теряешь» 3 байта памяти, используя <code>Integer</code> для кода ASCII.</p>
+	
+	<p>В большинстве случаев <code>Integer</code> является хорошим универсальным выбором для целочисленных данных. Диапазон довольно велик, он обрабатывает как отрицательные, так и положительные числа, и тебе выгодно использовать естественный тип данных компьютера. Для данных с плавающей запятой <code>Double</code> является хорошим выбором, поскольку, как и <code>Integer</code>, он имеет хороший диапазон значений и лучшую точность, чем <code>Single</code>. Это только предложения; какой тип данных ты в конечном итоге используешь, будет определяться потребностями твоей программы.</p>
+	
+	
+	
+	
+	
+	<h2><a id="c1">Константы и литералы</a></h2>
+	
+	<h3>Литералы</h3>
+	
+	<p><strong>Литерал</strong> — это безымянная область памяти, которая не может изменяться. Это числа и строки, записанные в тексте программы как есть.</p>
+	
+	<p>Число (числовой литерал) может быть записан в десятичном виде. А также шестнадцатеричном, восьмеричном и двоичном, используя специальные префиксы.</p>
+	
+	<table>
+		<tr>
+			<th>Система счисления</th>
+			<th>Префикс</th>
+			<th>Пример</th>
+		</tr>
+		<tr>
+			<td>Десятеричная</td>
+			<td>Отсутствует</td>
+			<td>234</td>
+		</tr>
+		<tr>
+			<td>Шестнадцатеричная</td>
+			<td>&amp;h или &amp;H</td>
+			<td>&amp;hEA или &amp;HEA</td>
+		</tr>
+		<tr>
+			<td>Двоичная</td>
+			<td>&amp;b или &amp;B</td>
+			<td>&amp;b11101010 или &amp;b11101010</td>
+		</tr>
+		<tr>
+			<td>Восьмеричная</td>
+			<td>&amp;o или &amp;O</td>
+			<td>&amp;o352 или &amp;O352</td>
+		</tr>
+	</table>
+	
+	
+	<h3>Константы</h3>
+	
+	<p><strong>Константа</strong> — это именованная область памяти, которая не может изменяться.</p>
+	
+	<h4>Объявление</h4>
+	
+	<p>Константы объявляются в тексте программы через оператор <code>Const</code> по такой схеме:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Const</span> ИмяКонстанты [ <span class="keyword">As</span> <span class="datatype">ТипДанных</span> ] = Литерал
+	</code></p>
+	
+	<p>Константу необходимо объявлять сразу же с инициализирующим её значением, иначе компилятор сообщит об ошибке.</p>
+	
+	<h4>Примеры</h4>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Объявляем константу количества месяцев в году</span><br />
+		<span class="keyword">Const</span> MonthsInYear = 12<br />
+		<br />
+		<span class="remark">&apos; Объявляем константу числа пи</span><br />
+		<span class="keyword">Const</span> Pi = 3.141592356
+	</code></p>
+	
+	<p>В данном примере <code>MonthsInYear</code> и <code>Pi</code> являются константами, а <code>12</code> и <code>3.141592356</code> — литералы.</p>
+	
+	<p>Если попытаться присвоить константе какое‐нибудь значение, то это вызовет ошибку компиляции:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Объявляем константу количества секунд в минуте</span><br />
+		<span class="keyword">Const</span> SecondsInMinute = 60<br />
+		<br />
+		<span class="remark">&apos; Пробуем изменить её, но ничего не выходит:</span><br />
+		SecondsInMinute = 70 <span class="remark">&apos; ошибка компиляции</span>
+	</code></p>
+	
+	<p>Объявлять можно не только числовые константы, но и строковые:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Const</span> HelloWorld = <span class="string">&quot;Привет, мир!&quot;</span>
+	</code></p>
+	
+	<p><code>HelloWorld</code> — это константа, а строка <code>&quot;Привет, мир!&quot;</code> — литерал. Обрати внимание, что кавычки не являются частью литерала, а лишь ограничивают его. Как же в таком случае поместить кавычку внутрь литерала? Достаточно её удвоить:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Const</span> QuotationLiteral = <span class="string">&quot;Вот это &quot;&quot; кавычка внутри литерала&quot;</span>
+	</code></p>
+	
+	<p>Технически строковая константа представляет собой массив символов, в конце которого компилятор добавляет символ с кодом 0, чтобы программе можно было определить конец этого массива (конец строки).</p>
+	
+	<h4>Зачем нужны константы</h4>
+	
+	<p>Константы упростили процесс отладки и сопровождения программ:</p>
+	
+	<ul>
+		<li>исчезла необходимость помнить конкретные числа — имена запоминаются легче;</li>
+		<li>ошибки в именах выявляются компилятором автоматически;</li>
+		<li>упростился процесс внесения изменений: значение константы задано в программе всего в одном месте.</li>
+	</ul>
+	
+	
+	<h2><a id="c2">Переменные</a></h2>
+	
+	<p><strong>Переменная</strong> — это именованная область памяти, которую можно изменять.</p>
+	
+	<p>Любая переменная должна быть объявлена до её использования. Переменные объявляются через операторы <code>Dim</code> и <code>var</code>.</p>
+	
+	
+	<h3>Объявление переменных через оператор Dim</h3>
+	
+	<p>Переменные через оператор <code>Dim</code> объявляются по следующей схеме:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Dim</span> ИмяПеременной <span class="keyword">As</span> <span class="datatype">ТипДанных</span> [ = Выражение]
+	</code></p>
+	
+	<p>Выражением может быть любой литерал, константа, результат выполнения функции или другая переменная. Единственное здесь условие: типы данных переменной и выражения должны совпадать.</p>
+	
+	<p>Примеры:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Объявляем целочисленную переменную</span><br />
+		<span class="keyword">Dim</span> x <span class="keyword">As</span> <span class="datatype">Integer</span><br />
+		<br />
+		<span class="remark">&apos; Также переменные можно объявлять сразу же вместе с начальным значением</span><br />
+		<span class="keyword">Dim</span> y <span class="keyword">As</span> <span class="datatype">Integer</span> = 35
+	</code></p>
+		
+	<p>В одной строке можно объявлять несколько переменных через запятую. В таком случае спецификатор типа следует указывать вначале:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Dim</span> <span class="keyword">As</span> <span class="datatype">Integer</span> x, y
+	</code></p>
+	
+	<p>Если переменной не указывать инициализирующее значение, то она получит его по умолчанию. Для чисел — это ноль, для строк — это строка нулевой длины.</p>
+	
+	
+	<h3>Объявление переменных через оператор var</h3>
+	
+	<p>Через оператор <code>var</code> переменные должны объявляться без указания типа данных, но сразу же с инициализирующим значением. Это не значит, что будет создана переменная без типа данных, просто тип переменной автоматически определится из инициализирующего выражения.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">var</span> ИмяПеременной = Выражение
+	</code></p>
+	
+	<p>Это удобно и немного сокращает код:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Объявим переменную, в которой будет храниться длина</span><br />
+		<span class="keyword">var</span> length = 5<br />
+	</code></p>
+	
+	<p>Через оператор <code>var</code> можно объявить несколько переменных сразу через запятую:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Объявим несколько переменных в одной строке</span><br />
+		<span class="keyword">var</span> UserId = 251994, Rational = 2.54<br />
+	</code></p>
+	
+	<p>Переменная <code>UserId</code> будет типа <code>Integer</code>, переменная <code>Rational</code> будет типа <code>Double</code>.</p>
+	
+	
+	<h2>Указатели</h2>
+	
+	<p>Данные хранятся в памяти компьютера. Память можно представить как последовательный набор пронумерованных коробок начиная от нуля и размером в 1 байт. Обращаться к данным в этих коробках можно по их номеру.</p>
+	
+	<p><strong>Указатель</strong> — это переменная, которая хранит в себе «номер коробки» (адрес) где находятся данные.</p>
+	
+	<p>Фактически, обычная переменная позволяет обращаться к данным по имени, а указатель — по номеру (адресу).</p>
+	
+	<h3>Объявление указателей</h3>
+	
+	<p>Указатель, как и любая переменная, должен быть объявлен. Они объявляются почти также, как и обычные переменные, но с добавлением ключевых слов <code>Ptr</code> или <code>Pointer</code>. Указатели можно объявлять через оператор <code>Dim</code> или <code>var</code> по таким схемам:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Первый вариант</span><br />
+		<span class="keyword">Dim</span> ИмяУказателя <span class="keyword">As</span> <span class="datatype">ТипДанных Ptr</span> [ = Выражение]<br />
+		<br />
+		<span class="remark">&apos; Второй вариант, менее распространён</span><br />
+		<span class="keyword">Dim</span> ИмяУказателя <span class="keyword">As</span> <span class="datatype">ТипДанных Pointer</span> [ = Выражение]
+	</code></p>
+	
+	<p>Указатель указывает на номер коробки, в которой хранятся данные определённого типа. Какого именно типа — определяется при объявлении указателя:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Объявим указатель на целочисленные данные</span><br />
+		<span class="keyword">Dim</span> pInt <span class="keyword">As</span> <span class="datatype">Integer Ptr</span><br />
+		<br />
+		<span class="remark">&apos; Объявим указатель на байт</span><br />
+		<span class="keyword">Dim</span> pByte <span class="keyword">As</span> <span class="datatype">Byte Ptr</span><br />
+		<br />
+		<span class="remark">&apos; Можно объявлять указатель, который будет указывать на другой адрес, где хранятся данные</span><br />
+		<span class="keyword">Dim</span> pIntInt <span class="keyword">As</span> <span class="datatype">Integer Ptr Ptr</span>
+	</code></p>
+	
+	<h3>Получение адреса переменной</h3>
+	
+	<p>Каждая переменная в памяти имеет свой адрес — номер первой коробки, где она расположена, а также своё значение. Как же получить адрес данных, которые хранятся в переменной?</p>
+	
+	<p>Для этого существует оператор <code>@</code> — он возвращает адрес объекта.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Объявим целую переменную и запишем туда данные</span><br />
+		<span class="keyword">Dim</span> Days <span class="keyword">As</span> <span class="datatype">Integer</span> = 15<br />
+		<br />
+		<span class="remark">&apos; Объявим указатель и получим адрес переменной</span><br />
+		<span class="keyword">Dim</span> pDays <span class="keyword">As</span> <span class="datatype">Integer Ptr</span> = @Days<br />
+		<br />
+		<span class="remark">&apos; Распечатаем адрес</span><br />
+		<span class="keyword">Print</span> <span class="string">&quot;pDays = &quot;</span>; pDays
+	</code></p>
+	
+	<div class="fileblock">
+		<svg:svg width="30em" height="10em">
+			<svg:rect x="0" y="0" width="100%" height="100%" fill="black" stroke="green" />
+			<svg:rect x="0" y="0" width="100%" height="2em" fill="white" stroke="black" />
+			
+			<svg:rect x="24em" y="0" width="2em" height="2em" fill="white" stroke="black" />
+			<svg:text x="25em" y="1.25em" fill="#000000"><svg:tspan style="font-family: monospace;">_</svg:tspan></svg:text>
+			<svg:rect x="26em" y="0" width="2em" height="2em" fill="white" stroke="black" />
+			<svg:text x="27em" y="1.25em" fill="#000000"><svg:tspan style="font-family: monospace;">□</svg:tspan></svg:text>
+			<svg:rect x="28em" y="0" width="2em" height="2em" fill="white" stroke="black" />
+			<svg:text x="29em" y="1.25em" fill="#000000"><svg:tspan style="font-family: monospace;">☓</svg:tspan></svg:text>
+			
+			<svg:text x="0.25em" y="1.25em" fill="#000000"><svg:tspan style="font-family: monospace;">C:\WINDOWS\system32\cmd.exe</svg:tspan></svg:text>
+			
+			<svg:text x="0" y="3em" fill="#C0C0C0"><svg:tspan style="font-family: monospace;">C:\Program Files\FreeBASIC>Pointers.exe</svg:tspan></svg:text>
+			<svg:text x="0" y="4em" fill="#C0C0C0"><svg:tspan style="font-family: monospace;">pDays = 1375800</svg:tspan></svg:text>
+			<svg:text x="0" y="6em" fill="#C0C0C0"><svg:tspan style="font-family: monospace;">C:\Program Files\FreeBASIC>_</svg:tspan></svg:text>
+		</svg:svg>
+	</div>
+	
+	<p>Как видно, данные в переменной <code>Days</code> находятся в коробке номер 1375800. У тебя этот адрес наверняка будет другим, потому что программы могут загружаться в оперативную память по разным адресам.</p>
+	
+	
+	<h3>Получение данных по адресу</h3>
+	
+	<p>Для того, чтобы извлечь данные, на которые ссылается указатель, существует оператор <code>*</code> — он возвращает данные по указателю. Такая операция называется «разыменование указателя». Не следует путать операцию разыменования и умножение, которое тоже обозначается звёздочкой.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Объявим целую переменную и запишем туда данные</span><br />
+		<span class="keyword">Dim</span> Days <span class="keyword">As</span> <span class="datatype">Integer</span> = 15<br />
+		<br />
+		<span class="remark">&apos; Объявим указатель и получим адрес переменной</span><br />
+		<span class="keyword">Dim</span> pDays <span class="keyword">As</span> <span class="datatype">Integer Ptr</span> = @Days<br />
+		<br />
+		<span class="remark">&apos; Получим данные, которые хранятся по адресу указателя</span><br />
+		<span class="keyword">Dim</span> OriginalDays <span class="keyword">As</span> <span class="datatype">Integer</span> = *pDays<br />
+		<span class="keyword">Print</span> <span class="string">&quot;OriginalDays = &quot;</span>; OriginalDays<br />
+		<br />
+		<span class="remark">&apos; Распечатаем данные, на которые ссылается указатель</span><br />
+		<span class="keyword">Print</span> <span class="string">&quot;*pDays = &quot;</span>; *pDays<br />
+		<br />
+		<span class="remark">&apos; Перезапишем данные по указателю</span><br />
+		*pDays = 20<br />
+		<br />
+		<span class="remark">&apos; Посмотрим на оригинальную переменную, её значение будет изменено</span><br />
+		<span class="keyword">Print</span> <span class="string">&quot;Days = &quot;</span>; Days
+	</code></p>
+	
+	<div class="fileblock">
+		<svg:svg width="30em" height="10em">
+			<svg:rect x="0" y="0" width="100%" height="100%" fill="black" stroke="green" />
+			<svg:rect x="0" y="0" width="100%" height="2em" fill="white" stroke="black" />
+			
+			<svg:rect x="24em" y="0" width="2em" height="2em" fill="white" stroke="black" />
+			<svg:text x="25em" y="1.25em" fill="#000000"><svg:tspan style="font-family: monospace;">_</svg:tspan></svg:text>
+			<svg:rect x="26em" y="0" width="2em" height="2em" fill="white" stroke="black" />
+			<svg:text x="27em" y="1.25em" fill="#000000"><svg:tspan style="font-family: monospace;">□</svg:tspan></svg:text>
+			<svg:rect x="28em" y="0" width="2em" height="2em" fill="white" stroke="black" />
+			<svg:text x="29em" y="1.25em" fill="#000000"><svg:tspan style="font-family: monospace;">☓</svg:tspan></svg:text>
+			
+			<svg:text x="0.25em" y="1.25em" fill="#000000"><svg:tspan style="font-family: monospace;">C:\WINDOWS\system32\cmd.exe</svg:tspan></svg:text>
+			
+			<svg:text x="0" y="3em" fill="#C0C0C0"><svg:tspan style="font-family: monospace;">C:\Program Files\FreeBASIC>Pointers.exe</svg:tspan></svg:text>
+			<svg:text x="0" y="4em" fill="#C0C0C0"><svg:tspan style="font-family: monospace;">OriginalDays =  15</svg:tspan></svg:text>
+			<svg:text x="0" y="5em" fill="#C0C0C0"><svg:tspan style="font-family: monospace;">*pDays =  15</svg:tspan></svg:text>
+			<svg:text x="0" y="6em" fill="#C0C0C0"><svg:tspan style="font-family: monospace;">Days =  20</svg:tspan></svg:text>
+			<svg:text x="0" y="8em" fill="#C0C0C0"><svg:tspan style="font-family: monospace;">C:\Program Files\FreeBASIC>_</svg:tspan></svg:text>
+		</svg:svg>
+	</div>
+	
+	<p>Типы данных переменной и указателя должны совпадать.</p>
+	
+	<h3>Нулевой указатель</h3>
+	
+	<p>При объявлении численной переменной без инициализации компилятор инициализирует её автоматически и помещает в неё 0. Указатель также является целочисленной беззнаковой переменной, поэтому он тоже будет инициализироваться нулём.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Объявим указатель без инициализации</span><br />
+		<span class="keyword">Dim</span> pDays <span class="keyword">As</span> <span class="datatype">Integer Ptr</span><br />
+		<br />
+		<span class="remark">&apos; В нём находится ноль</span><br />
+		<span class="keyword">Print</span> <span class="string">&quot;pDays = &quot;</span>; pDays
+	</code></p>
+	
+	<div class="fileblock">
+		<svg:svg width="30em" height="10em">
+			<svg:rect x="0" y="0" width="100%" height="100%" fill="black" stroke="green" />
+			<svg:rect x="0" y="0" width="100%" height="2em" fill="white" stroke="black" />
+			
+			<svg:rect x="24em" y="0" width="2em" height="2em" fill="white" stroke="black" />
+			<svg:text x="25em" y="1.25em" fill="#000000"><svg:tspan style="font-family: monospace;">_</svg:tspan></svg:text>
+			<svg:rect x="26em" y="0" width="2em" height="2em" fill="white" stroke="black" />
+			<svg:text x="27em" y="1.25em" fill="#000000"><svg:tspan style="font-family: monospace;">□</svg:tspan></svg:text>
+			<svg:rect x="28em" y="0" width="2em" height="2em" fill="white" stroke="black" />
+			<svg:text x="29em" y="1.25em" fill="#000000"><svg:tspan style="font-family: monospace;">☓</svg:tspan></svg:text>
+			
+			<svg:text x="0.25em" y="1.25em" fill="#000000"><svg:tspan style="font-family: monospace;">C:\WINDOWS\system32\cmd.exe</svg:tspan></svg:text>
+			
+			<svg:text x="0" y="3em" fill="#C0C0C0"><svg:tspan style="font-family: monospace;">C:\Program Files\FreeBASIC>Pointers.exe</svg:tspan></svg:text>
+			<svg:text x="0" y="4em" fill="#C0C0C0"><svg:tspan style="font-family: monospace;">pDays = 0</svg:tspan></svg:text>
+			<svg:text x="0" y="6em" fill="#C0C0C0"><svg:tspan style="font-family: monospace;">C:\Program Files\FreeBASIC>_</svg:tspan></svg:text>
+		</svg:svg>
+	</div>
+	
+	<p>Ноль — это специальный зарезервированный адрес для указания особой области памяти, что указатель не ссылается на действительный адрес. При любой операции к такой памяти процессор генерирует специальное прерывание, операционная система перехватывает это прерывание и завершает вызвавший его процесс с ошибкой времени выполнения: «Программа выполнила недопустимую операцию и будет закрыта».</p>
+	
+	<p>Разыменование нулевого указателя является операцией с неопределённым поведением. Это значит, что может произойти всё, что угодно: обращение к непредназначенной для использования данной программой памяти, запись в непринадлежащие программе данные, завершение процесса, зависание всей системы или что угодно другое.</p>
+	
+	<p>Поэтому нельзя разыменовывать неинициализированные действительным адресом указатели.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Так как указателю не присвоен действительный адрес</span><br />
+		<span class="keyword">Dim</span> p <span class="keyword">As</span> <span class="datatype">Integer Ptr</span><br />
+		<br />
+		<span class="remark">&apos; Так делать нельзя</span><br />
+		<span class="keyword">Print</span> *p
+	</code></p>
+	
+	
+	<h2>Упражнения</h2>
+	
+	<ol>
+		<li>Какой тип данных будет лучшим для хранения числа 196?</li>
+		<li>Какой тип данных будет лучшим для хранения числа 2.134?</li>
+		<li>Какой тип данных является наилучшим для общего использования в 32‐битных системах? А в 64‐битных системах?</li>
+		<li>В чём разница между знаковыми и беззнаковыми типами данных?</li>
+		<li>Какой префикс ты будешь использовать для обозначения двоичного числа?</li>
+		<li>Какой префикс ты будешь использовать для обозначения шестнадцатеричного числа?</li>
+		<li>Какие буквы допускаются в шестнадцатеричном числе?</li>
+		<li>Дано шестнадцатеричное число: 1AF. Переведи в десятичное число.</li>
 	</ol>
-
+	
+	
+	
 	<h2>Поделись ссылочкой в социальных сетях</h2>
 	<div id="vk_share_button"></div>
 	

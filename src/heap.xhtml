@@ -78,8 +78,17 @@
 				<li><a href="#c3c5">Уничтожение куч</a></li>
 			</ol>
 		</li>
-		<li><a href="#c4">Утечки памяти</a></li>
-		<li><a href="#c5">Примеры</a></li>
+		<li><a href="#c4">Ошибки при использовании динамической памяти</a>
+			<ol>
+				<li><a href="#c4c1">Отсутствие проверки успешного выделения памяти</a></li>
+				<li><a href="#c4c2">Утечки памяти</a></li>
+				<li><a href="#c4c3">Повторное освобождение</a></li>
+				<li><a href="#c4c4">Освобождение памяти не своей функцией</a></li>
+				<li><a href="#c4c5">Обращение к неинициализированному указателю</a></li>
+				<li><a href="#c4c6">Освобождение нединамической памяти</a></li>
+			</ol>
+		</li>
+		<li><a href="#c5">Пример</a></li>
 	</ol>
 	
 	
@@ -474,17 +483,34 @@
 	
 	<h4>Описание</h4>
 	
-	<p>Обращение к этой функции приводит к освобождению всех блоков памяти внутри кучи и возврату её системе. Это удобно, когда требуется уничтожить какой‐нибудь список или дерево, целиком располагающеися в одной куче: в таком случае вместо последовательных вызовов освобождения памяти для каждого элемента списка, достаточно один раз вызвать <code>HeapDestroy</code>. Все переменные, которые ранее ссылались на блоки памяти в уничтоженной куче, теперь будут указывать на недействительные адреса.</p>
+	<p>Это действие уничтожает дополнительну кучу и лишает законной силы описатель кучи, который больше не может использоваться программой. Когда куча разрушается, то освобождаются все выделенные из неё блоки памяти и возвращаются системе.</p>
 	
-	<p>Если не уничтожать кучу самостоятельно, то операционная система уничтожит её автоматически, но только при завершении процесса. Кучи, созданные в других потоках, тоже будут уничтожены только при завершении всего процесса, поэтому хорошей практикой является уничтожение кучи, когда она больше не нужна.</p>
+	<p>Это удобно, когда требуется уничтожить какой‐нибудь список или дерево, целиком располагающеися в одной куче: в таком случае вместо последовательных вызовов освобождения памяти для каждого элемента списка, достаточно один раз вызвать <code>HeapDestroy</code>. Все переменные, которые ранее ссылались на блоки памяти в уничтоженной куче, теперь будут указывать на недействительные адреса.</p>
+	
+	<p>Если не уничтожать кучу самостоятельно, то операционная система уничтожит её автоматически, но только при завершении процесса. Кучи, созданные в других потоках, тоже будут уничтожены только при завершении всего процесса, поэтому хорошей практикой является уничтожение кучи сразу же как только она уже не нужна.</p>
 	
 	<p>Система не позволит уничтожить стандартную кучу процесса: она уничтожается только при завершении процесса. Если ты передашь указатель стандартной кучи процесса в функцию <code>HeapDestroy</code>, то система проигнорирует такой вызов.</p>
 	
 	
+	<h2><a id="c4">Ошибки при использовании динамической памяти</a></h2>
 	
-	<h2><a id="c4">Утечки памяти</a></h2>
+	<p>При работе с динамической памятью можно совершить большое количество ошибок разной степени тяжести. Последствия наступают не сразу при возникновении ошибки, а через некоторое время в процессе выполнения программы. Такие ошибки трудно находить, и потому они особенно опасны.</p>
 	
-	<p>Динамическая память является ограниченным ресурсом. Утечки памяти приводят к тому, что потребление памяти программой неконтролируемо возрастает, в результате рано или поздно вступают в действие архитектурные ограничения операционной системы, и тогда новое выделение памяти становится невозможным. В этой ситуации в программе, которая запрашивает память, обычно происходит аварийная остановка.</p>
+	<h3><a id="c4c1">Отсутствие проверки успешного выделения памяти</a></h3>
+	
+	<p>Библиотечные функции <code>Allocate</code> или <code>New</code> используют стандартную кучу процесса для выделения памяти. Если затребованный размер памяти слишком большой, то операционная система не будет выделять память и тогда функции вернут нулевое значение. Если это нулевое значение будет присвоено указателю, к которому впоследствии будет применён оператор разыменования указателя или оператор индексирования, то операционная система аварийно завершит работу программы с ошибкой сегментации (Segmentation Fault). Для того чтобы избежать таких ошибок необходимо сразу после выделения памяти проверять возвращаемое значение функций на ноль.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Const</span> MaxLength <span class="keyword">As</span> <span class="datatype">Integer</span> = 1000000000<br />
+		<span class="keyword">Dim</span> p <span class="keyword">As</span> <span class="datatype">Integer Ptr</span> = <span class="keyword">Allocate</span>(MaxLength * <span class="keyword">SizeOf</span>(<span class="datatype">Integer</span>))<br />
+		<span class="keyword">If</span> p = 0 <span class="keyword">Then</span><br />
+			&t;<span class="keyword">Print</span> <span class="string">&quot;Требуемая память не выделена&quot;</span><br />
+		<span class="keyword">End If</span>
+	</code></p>
+	
+	<h3><a id="c4c2">Утечки памяти</a></h3>
+	
+	<p>Данная ошибка возникает, когда память не освобождается, но перестаёт контролироваться указателем. Подобную ошибку называют утечкой памяти, поскольку такую память невозможно освободить. Ошибка труднонаходима, она не сказывается на работе приложения. Однако при систематических утечках программа требует всё больше памяти у операционной системы. Рано или поздно вступают в действие архитектурные ограничения операционной системы, и тогда новое выделение памяти становится невозможным. В этой ситуации в программе, которая запрашивает память, обычно происходит аварийная остановка.</p>
 	
 	<p>Утечки памяти происходят по следующим причинам:</p>
 	
@@ -495,8 +521,162 @@
 		<li>есть выделение памяти из кучи, но нет соответствующего ему освобождения.</li>
 	</ul>
 	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Dim</span> p <span class="keyword">As</span> <span class="datatype">Integer Ptr</span> = <span class="keyword">New</span> <span class="datatype">Integer</span><br />
+		*p = 55<br />
+		<span class="remark">&apos; Выделяется новый кусок памяти в тот же указатель</span><br />
+		p = <span class="keyword">New</span> <span class="datatype">Integer</span><br />
+		<span class="remark">&apos; Доступ к старой памяти невозможен, теперь её невозможно освободить, произошла утечка</span>
+	</code></p>
 	
-	<h2><a id="c5">Примеры</a></h2>
+	<h3><a id="c4c3">Повторное освобождение</a></h3>
+	
+	<p>Попытка передать в функцию указатель на память, которая ранее была освобождена, приведёт к неопределённому поведению. На практике это означает, что может произойти всё, что угодно: программа упадёт, закричит, перестанет отвечать, повредятся важные данные или что‐нибудь ещё.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Создаём динамическтй массив из 20 целых чисел</span><br />
+		<span class="keyword">Dim</span> p <span class="keyword">As</span> <span class="datatype">Integer Ptr</span> = <span class="keyword">New</span> <span class="datatype">Integer[20]</span><br />
+		<span class="remark">&apos; Освобождаем память</span><br />
+		<span class="keyword">Delete</span>[] p<br />
+		<span class="remark">&apos; Повторно освобождать память нельзя, это приводит к неопрделённому поведению</span><br />
+		<span class="keyword">Delete</span>[] p
+	</code></p>
+	
+	<h3><a id="c4c4">Освобождение памяти не своей функцией</a></h3>
+	
+	<p>Освобождение памяти следует производить соответствующей парной функцией:</p>
+	
+	<ul>
+		<li>для <code>Allocate</code> — <code>Deallocate</code>;</li>
+		<li>для <code>New</code> — <code>Delete</code>;</li>
+		<li>для <code>New[]</code> — <code>Delete[]</code>;</li>
+	</ul>
+	
+	<p>Нельзя смешивать эти функции, так как это приводит к неопределённому поведению.</p>
+	
+	<h3><a id="c4c5">Обращение к неинициализированному указателю</a></h3>
+	
+	<p>Нельзя обращаться к указателю, которому не присвоен действительный адрес памяти:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Dim</span> p <span class="keyword">As</span> <span class="datatype">Integer Ptr</span><br />
+		<span class="remark">&apos; Освобождение невыделенной памяти — это ошибка</span><br />
+		<span class="keyword">Delete</span> p
+	</code></p>
+	
+	<h3><a id="c4c6">Освобождение нединамической памяти</a></h3>
+	
+	<p>Нельзя освобождать память, которая не выделена динамически:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Dim</span> Size <span class="keyword">As</span> <span class="datatype">Integer</span> = 42<br />
+		<span class="keyword">Dim</span> p <span class="keyword">As</span> <span class="datatype">Integer Ptr</span> = @Size<br />
+		<span class="remark">&apos; Овсобождение нединамической памяти — это ошибка</span><br />
+		<span class="keyword">Delete</span> p
+	</code></p>
+	
+	
+	
+	<h2><a id="c5">Пример</a></h2>
+	
+	<p>Рассмотрим программу, которая сортирует слова, переданные в командной строке, по алфавиту с помощью двоичного дерева.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="preprocessor">#define unicode</span><br />
+		<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
+		<span class="preprocessor">#include once &quot;win\shellapi.bi&quot;</span><br />
+		<br />
+		<span class="remark">&apos; Размер буфера под строку</span><br />
+		<span class="keyword">Const</span> NodeDataBufferSize <span class="keyword">As</span> <span class="datatype">Integer</span> = 256<br />
+		<br />
+		<span class="remark">&apos; Узел дерева</span><br />
+		<span class="keyword">Type</span> <span class="datatype">Node</span><br />
+		&t;<span class="remark">&apos; Левая ветка</span><br />
+		&t;<span class="keyword">Dim</span> LeftNode <span class="keyword">As</span> <span class="datatype">Node Ptr</span><br />
+		&t;<span class="remark">&apos; Правая ветка</span><br />
+		&t;<span class="keyword">Dim</span> RightNode <span class="keyword">As</span> <span class="datatype">Node Ptr</span><br />
+		&t;<span class="remark">&apos; Данные</span><br />
+		&t;<span class="keyword">Dim</span> Data <span class="keyword">As</span> <span class="datatype">WString</span> * (NodeDataBufferSize + 1)<br />
+		<span class="keyword">End Type</span><br />
+		<br />
+		<span class="remark">&apos; Создание узла</span><br />
+		<span class="keyword">Function</span> CreateNode(<span class="keyword">ByVal</span> hHeap <span class="keyword">As</span> <span class="datatype">Handle</span>)<span class="keyword">As</span> <span class="datatype">Node Ptr</span><br />
+		&t;<span class="remark">&apos; Выделить память в куче под объект</span><br />
+		&t;<span class="keyword">Dim</span> pNode <span class="keyword">As</span> <span class="datatype">Node Ptr</span> = HeapAlloc(hHeap, HEAP_NO_SERIALIZE, <span class="keyword">SizeOf</span>(<span class="datatype">Node</span>))<br />
+		&t;<span class="keyword">If</span> pNode &lt;&gt; 0 <span class="keyword">Then</span><br />
+		&t;&t;<span class="remark">&apos; Обнулить поля, потому что в них сейчас мусор</span><br />
+		&t;&t;pNode-&gt;LeftNode = 0<br />
+		&t;&t;pNode-&gt;RightNode = 0<br />
+		&t;&t;pNode-&gt;Data[0] = 0<br />
+		&t;<span class="keyword">End If</span><br />
+		&t;<span class="keyword">Return</span> pNode<br />
+		<span class="keyword">End Function</span><br />
+		<br />
+		<span class="remark">&apos; Добавление данных</span><br />
+		<span class="keyword">Sub</span> AddNode(<span class="keyword">ByVal</span> pNode <span class="keyword">As</span> <span class="datatype">Node Ptr</span>, <span class="keyword">ByVal</span> hHeap <span class="keyword">As</span> <span class="datatype">Handle</span>, <span class="keyword">ByVal</span> s <span class="keyword">As</span> <span class="datatype">WString Ptr</span>)<br />
+		&t;<span class="keyword">If</span> <span class="keyword">Len</span>(pNode-&gt;Data) = 0 <span class="keyword">Then</span><br />
+		&t;&t;<span class="remark">&apos; В узле нет данных, добавить</span><br />
+		&t;&t;pNode-&gt;Data = *s<br />
+		&t;<span class="keyword">Else</span><br />
+		&t;&t;<span class="keyword">Select</span> <span class="keyword">Case</span> lstrcmp(s, @pNode-&gt;Data)<br />
+		&t;&t;&t;<span class="keyword">Case</span> <span class="keyword">Is</span> &gt; 0<br />
+		&t;&t;&t;&t;<span class="remark">&apos; Добавить в правую ветку</span><br />
+		&t;&t;&t;&t;<span class="keyword">If</span> pNode-&gt;RightNode = 0 <span class="keyword">Then</span><br />
+		&t;&t;&t;&t;&t;pNode-&gt;RightNode = CreateNode(hHeap)<br />
+		&t;&t;&t;&t;<span class="keyword">End If</span><br />
+		&t;&t;&t;&t;<span class="keyword">If</span> pNode-&gt;RightNode &lt;&gt; 0 <span class="keyword">Then</span><br />
+		&t;&t;&t;&t;&t;AddNode(pNode-&gt;RightNode, hHeap, s)<br />
+		&t;&t;&t;&t;<span class="keyword">End If</span><br />
+		&t;&t;&t;<span class="keyword">Case</span> 0<br />
+		&t;&t;&t;&t;<span class="remark">&apos; Не добавлять дубликат</span><br />
+		&t;&t;&t;<span class="keyword">Case</span> <span class="keyword">Is</span> &lt; 0<br />
+		&t;&t;&t;&t;<span class="remark">&apos; Добавить в левую ветку</span><br />
+		&t;&t;&t;&t;<span class="keyword">If</span> pNode-&gt;LeftNode = 0 <span class="keyword">Then</span><br />
+		&t;&t;&t;&t;&t;pNode-&gt;LeftNode = CreateNode(hHeap)<br />
+		&t;&t;&t;&t;<span class="keyword">End If</span><br />
+		&t;&t;&t;&t;<span class="keyword">If</span> pNode-&gt;LeftNode &lt;&gt; 0 <span class="keyword">Then</span><br />
+		&t;&t;&t;&t;&t;AddNode(pNode-&gt;LeftNode, hHeap, s)<br />
+		&t;&t;&t;&t;<span class="keyword">End If</span><br />
+		&t;&t;<span class="keyword">End Select</span><br />
+		&t;<span class="keyword">End If</span><br />
+		<span class="keyword">End Sub</span><br />
+		<br />
+		<span class="remark">&apos; Печать дерева</span><br />
+		<span class="keyword">Sub</span> PrintTree(<span class="keyword">ByVal</span> pNode <span class="keyword">As</span> <span class="datatype">Node Ptr</span>)<br />
+		&t;<span class="keyword">If</span> pNode &lt;&gt; 0 <span class="keyword">Then</span><br />
+		&t;&t;<span class="remark">&apos; Печать левой ветки</span><br />
+		&t;&t;PrintTree(pNode-&gt;LeftNode)<br />
+		&t;&t;<span class="remark">&apos; Печать данных</span><br />
+		&t;&t;<span class="keyword">Print</span> pNode-&gt;Data<br />
+		&t;&t;<span class="remark">&apos; Печать правой ветки</span><br />
+		&t;&t;PrintTree(pNode-&gt;RightNode)<br />
+		&t;<span class="keyword">End If</span><br />
+		<span class="keyword">End Sub</span><br />
+		<br />
+		<span class="remark">&apos; Разбить командную строку на пробелы</span><br />
+		<span class="keyword">Dim</span> ArgsCount <span class="keyword">As</span> <span class="datatype">Long</span> = <span class="keyword">Any</span><br />
+		<span class="keyword">Dim</span> Args <span class="keyword">As</span> <span class="datatype">WString Ptr Ptr</span> = CommandLineToArgvW(GetCommandLine(), @ArgsCount)<br />
+		<br />
+		<span class="remark">&apos; Создать кучу</span><br />
+		<span class="keyword">Dim</span> hHeap <span class="keyword">As</span> <span class="datatype">Handle</span> = HeapCreate(HEAP_NO_SERIALIZE, 0, 0)<br />
+		<span class="keyword">If</span> hHeap &lt;&gt; 0 <span class="keyword">Then</span><br />
+		&t;<span class="remark">&apos; Дерево</span><br />
+		&t;<span class="keyword">Dim</span> Tree <span class="keyword">As</span> <span class="datatype">Node Ptr</span> = CreateNode(hHeap)<br />
+		&t;<span class="keyword">If</span> Tree &lt;&gt; 0 <span class="keyword">Then</span><br />
+		&t;&t;<span class="remark">&apos; Добавление данных</span><br />
+		&t;&t;<span class="keyword">For</span> i <span class="keyword">As</span> <span class="datatype">Integer</span> = 1 <span class="keyword">To</span> ArgsCount - 1<br />
+		&t;&t;&t;AddNode(Tree, hHeap, Args[i])<br />
+		&t;&t;<span class="keyword">Next</span><br />
+		&t;&t;<span class="remark">&apos; Показать результат</span><br />
+		&t;&t;PrintTree(Tree)<br />
+		&t;<span class="keyword">End If</span><br />
+		<br />
+		&t;<span class="remark">&apos; Удаление дерева простым уничтожением кучи, в которой оно размещалось</span><br />
+		&t;HeapDestroy(hHeap)<br />
+		<span class="keyword">End If</span><br />
+		<br />
+		LocalFree(Args)
+	</code></p>
 	
 	
 	

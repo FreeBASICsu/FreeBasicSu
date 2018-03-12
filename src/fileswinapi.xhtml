@@ -20,580 +20,592 @@
 
 <body>
 
-<ul class="navbar">
-	<li><a href="/">Главная</a></li>
-	<li><a href="/src/">Статьи</a></li>
-	<li><a href="/code/">Проекты</a></li>
-	<li><a href="/books/">Учебник</a></li>
-	<li><a href="/links.xhtml">Ссылки</a></li>
-	<li><a href="/about.xhtml">О сайте</a></li>
-</ul>
+<header>
+	
+	<nav>
+		<a href="/">Главная</a>
+		<a href="/src/">Статьи</a>
+		<a href="/code/">Проекты</a>
+		<a href="/books/">Учебник</a>
+		<a href="/links.xhtml">Ссылки</a>
+		<a href="/about.xhtml">О сайте</a>
+	</nav>
+	
+</header>
 
 <h1>Работа с файлами средствами WinAPI</h1>
 
-<p><span class="postername">Эрик Замабувараев‐Ёмолкуу</span> <span class="date">26.11.2016 17:19:56</span></p>
+<main>
+	<p class="postername">
+		<a href="/users/mabu.xhtml">
+			<img src="/avatars/mabu.jpg" alt="Аватар пользователя" width="50" height="50" class="avatar" />
+			&#32;
+			mabu
+		</a>
+		&#32;
+		<time pubdate="pubdate">2016-11-05T17:19:56+07:00</time>
+	</p>
 
-<p>Как ни хороши встроенные функции <code>Open</code>, <code>Input</code>, <code>Print</code>, <code>Dir</code> и прочие для работы с файлами, но всё же они имеют некоторые недостатки и не так гибки, как функции операционной системы.</p>
+	<p>Как ни хороши встроенные функции <code>Open</code>, <code>Input</code>, <code>Print</code>, <code>Dir</code> и прочие для работы с файлами, но всё же они имеют некоторые недостатки и не так гибки, как функции операционной системы.</p>
 
-<ol class="contents">
-	<li><a href="#c1">Функции</a>
-		<ol>
-			<li><a href="#c1c1">CreateFile</a></li>
-			<li><a href="#c1c2">CreateDirectory</a></li>
-			<li><a href="#c1c4">ReadFile</a></li>
-			<li><a href="#c1c5">WriteFile</a></li>
-			<li><a href="#c1c6">CloseHandle</a></li>
-			
-			<li><a href="#c1c7">GetFileSizeEx</a></li>
-			<!-- 
-			<li><a href="#c1c7">SetFilePointerEx</a></li>
-			<li><a href="#c1c7">SetEndOfFile</a></li>
-			<li><a href="#c1c7">DeleteFile</a></li>
-			<li><a href="#c1c8">RemoveDirectory</a></li>
-			<li><a href="#c1c9">CopyFile</a></li>
-			<li><a href="#c1c10">GetCurrentDirectory</a></li>
-			<li><a href="#c1c11">SetCurrentDirectory</a></li>
-			<li><a href="#c1c12">FindFirstFile</a></li>
-			<li><a href="#c1c13">FindNextFile</a></li>
-			<li><a href="#c1c14">FindClose</a></li>
-			-->
-		</ol>
-	</li>
-	<li><a href="#c2">Примеры</a>
-		<ol>
-			<li><a href="#c2c1">Запись текстовых файлов</a></li>
-			<li><a href="#c2c2">Чтение текстовых файлов</a></li>
-		</ol>
-	</li>
-	<li><a href="#c3">Ссылки</a></li>
-</ol>
+	<ol class="contents">
+		<li><a href="#c1">Функции</a>
+			<ol>
+				<li><a href="#c1c1">CreateFile</a></li>
+				<li><a href="#c1c2">CreateDirectory</a></li>
+				<li><a href="#c1c4">ReadFile</a></li>
+				<li><a href="#c1c5">WriteFile</a></li>
+				<li><a href="#c1c6">CloseHandle</a></li>
+				
+				<li><a href="#c1c7">GetFileSizeEx</a></li>
+				<!-- 
+				<li><a href="#c1c7">SetFilePointerEx</a></li>
+				<li><a href="#c1c7">SetEndOfFile</a></li>
+				<li><a href="#c1c7">DeleteFile</a></li>
+				<li><a href="#c1c8">RemoveDirectory</a></li>
+				<li><a href="#c1c9">CopyFile</a></li>
+				<li><a href="#c1c10">GetCurrentDirectory</a></li>
+				<li><a href="#c1c11">SetCurrentDirectory</a></li>
+				<li><a href="#c1c12">FindFirstFile</a></li>
+				<li><a href="#c1c13">FindNextFile</a></li>
+				<li><a href="#c1c14">FindClose</a></li>
+				-->
+			</ol>
+		</li>
+		<li><a href="#c2">Примеры</a>
+			<ol>
+				<li><a href="#c2c1">Запись текстовых файлов</a></li>
+				<li><a href="#c2c2">Чтение текстовых файлов</a></li>
+			</ol>
+		</li>
+		<li><a href="#c3">Ссылки</a></li>
+	</ol>
 
-<h2><a id="c1">Функции</a></h2>
+	<h2><a id="c1">Функции</a></h2>
 
-<h3><a id="c1c1">CreateFile</a></h3>
+	<h3><a id="c1c1">CreateFile</a></h3>
 
-<p>Открывает или создаёт файл или устройство ввода‐вывода, такие как файл, директория, диск, том, буфер консоли (CONIN$ или CONOUT$), накопитель на магнитной ленте, почтовый слот, ресурс связи, именованный канал и прочее.</p>
+	<p>Открывает или создаёт файл или устройство ввода‐вывода, такие как файл, директория, диск, том, буфер консоли (CONIN$ или CONOUT$), накопитель на магнитной ленте, почтовый слот, ресурс связи, именованный канал и прочее.</p>
 
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> CreateFile <span class="keyword">Alias</span> <span class="string">&quot;CreateFileW&quot;</span>( _<br />
-&t;<span class="keyword">ByVal</span> lpFileName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
-&t;<span class="keyword">ByVal</span> dwDesiredAccess <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;<span class="keyword">ByVal</span> dwShareMode <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;<span class="keyword">ByVal</span> lpSecurityAttributes <span class="keyword">As</span> <span class="datatype">LPSECURITY_ATTRIBUTES</span>, _<br />
-&t;<span class="keyword">ByVal</span> dwCreationDisposition <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;<span class="keyword">ByVal</span> dwFlagsAndAttributes <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;<span class="keyword">ByVal</span> hTemplateFile <span class="keyword">As</span> <span class="datatype">HANDLE</span>) _<br />
-<span class="keyword">As</span> <span class="datatype">HANDLE</span>
-</code></p>
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> CreateFile <span class="keyword">Alias</span> <span class="string">&quot;CreateFileW&quot;</span>( _<br />
+	&t;<span class="keyword">ByVal</span> lpFileName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+	&t;<span class="keyword">ByVal</span> dwDesiredAccess <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;<span class="keyword">ByVal</span> dwShareMode <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;<span class="keyword">ByVal</span> lpSecurityAttributes <span class="keyword">As</span> <span class="datatype">LPSECURITY_ATTRIBUTES</span>, _<br />
+	&t;<span class="keyword">ByVal</span> dwCreationDisposition <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;<span class="keyword">ByVal</span> dwFlagsAndAttributes <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;<span class="keyword">ByVal</span> hTemplateFile <span class="keyword">As</span> <span class="datatype">HANDLE</span>) _<br />
+	<span class="keyword">As</span> <span class="datatype">HANDLE</span>
+	</code></p>
 
 
-<h4>Параметры</h4>
+	<h4>Параметры</h4>
 
-<dl>
-<dt>lpFileName</dt>
-<dd>Указатель на строку с именем объекта, который необходимо создать или открыть. В Windows NT/2000/XP ANSI‐версия этой функции ограничивает число символов имени объекта значением MAX_PATH (что‐то около 260 символов). Чтобы выйти за это ограничение и использовать строку длиной 32767 символов, необходимо вызывать юникодную версию этой функции и присоединить слева от имени объекта «\\?\».</dd>
-</dl>
+	<dl>
+	<dt>lpFileName</dt>
+	<dd>Указатель на строку с именем объекта, который необходимо создать или открыть. В Windows NT/2000/XP ANSI‐версия этой функции ограничивает число символов имени объекта значением MAX_PATH (что‐то около 260 символов). Чтобы выйти за это ограничение и использовать строку длиной 32767 символов, необходимо вызывать юникодную версию этой функции и присоединить слева от имени объекта «\\?\».</dd>
+	</dl>
 
-<dl>
-<dt>dwDesiredAccess</dt>
-<dd>Тип доступа к объекту. Может принимать комбинацию следующих значений:
+	<dl>
+	<dt>dwDesiredAccess</dt>
+	<dd>Тип доступа к объекту. Может принимать комбинацию следующих значений:
+		<ul>
+			<li><code>GENERIC_READ</code> — объект будут использовать для чтения;</li>
+			<li><code>GENERIC_WRITE</code> — объект будут использовать для записи;</li>
+			<li>0 — открываемый объект нельзя читать или записывать, такой режим открытия объекта удобен для проверки его существования.</li>
+		</ul>
+	</dd>
+	</dl>
+
+	<dl>
+	<dt>dwShareMode</dt>
+	<dd>Режим совместного доступа к файлу (из других процессов). Может принимать значения из списка или быть их кобминацией:
+		<ul>
+			<li><code>0</code> — другим процессам запрещены операции чтения, записи или удаления объекта;</li>
+			<li><code>FILE_SHARE_DELETE</code> — другим процессам можно удалять объект;</li>
+			<li><code>FILE_SHARE_READ</code> — другие процессы могут выполнять операции чтения;</li>
+			<li><code>FILE_SHARE_WRITE</code> — другие процессы могут выполнять операции записи.</li>
+		</ul>
+	</dd>
+	</dl>
+
+	<dl>
+	<dt>lpSecurityAttributes</dt>
+	<dd>Указатель на структуру <code>SECURITY_ATTRIBUTES</code>, устанавливающую, может ли возвращённый дескриптор быть унаследован дочерними процессами. Если установлено в <code>NULL</code>, то дескриптор не может быть унаследован.</dd>
+	</dl>
+
+	<dl>
+	<dt>dwCreationDisposition</dt>
+	<dd>Выполняемые действия с файлами. Параметр может принимать одно из следующих значений без комбинаций:
+		<ul>
+			<li><code>CREATE_NEW</code> — создание файла, но если такой уже существует, то выйдет ошибка;</li>
+			<li><code>CREATE_ALWAYS</code> — создание файла или перезапись уже существующего;</li>
+			<li><code>OPEN_EXISTING</code> — открытие существующего файла, а если такой файл не существует, выйдет ошибка;</li>
+			<li><code>OPEN_ALWAYS</code> — открытие файла, а если его не существует, то он будет создан;</li>
+			<li><code>TRUNCATE_EXISTING</code> — перезапись с нуля существующего файла, или возвращениние ошибки, если файла не существует.</li>
+		</ul>
+		 Если открывается устройство, то необходимо использовать константу <code>OPEN_EXISTING</code>.
+	</dd>
+	</dl>
+
+	<dl>
+	<dt>dwFlagsAndAttributes</dt>
+	<dd>Атрибуты файла, флаг <code>FILE_ATTRIBUTE_NORMAL</code> подходит для большинства операций. Все другие атрибуты переопределяют атрибут <code>FILE_ATTRIBUTE_NORMAL</code>.  Этот параметр может быть любой комбинацией из следующих констант:
+		<ul>
+			<li><code>FILE_ATTRIBUTE_NORMAL</code>;</li>
+			<li><code>FILE_ATTRIBUTE_ARCHIVE</code>;</li>
+			<li><code>FILE_ATTRIBUTE_ENCRYPTED</code>;</li>
+			<li><code>FILE_ATTRIBUTE_HIDDEN</code>;</li>
+			<li><code>FILE_ATTRIBUTE_OFFLINE</code>;</li>
+			<li><code>FILE_ATTRIBUTE_READONLY</code>;</li>
+			<li><code>FILE_ATTRIBUTE_SYSTEM</code>;</li>
+			<li><code>FILE_ATTRIBUTE_TEMPORARY</code>.</li>
+		</ul>
+		Также можно использовать комбинацию из флагов, наиболее интересные из них:
+		<ul>
+			<li><code>FILE_FLAG_BACKUP_SEMANTICS</code> — файл открывается для резервного копирования или восстановления, также этот флаг нужно указывать при открытии каталога;</li>
+			<li><code>FILE_FLAG_DELETE_ON_CLOSE</code> — система немедленно удалит файл после того, как будут закрыты все его дескрипторы;</li>
+			<li><code>FILE_FLAG_NO_BUFFERING</code> — запрещает кеширование файлов для операций чтения и записи;</li>
+			<li><code>FILE_FLAG_OVERLAPPED</code> — файл открывается для асинхронных операций чтения и записи;</li>
+			<li><code>FILE_FLAG_RANDOM_ACCESS</code> — файл открывается преимущественно для операций чтения и записи по случайным областям;</li>
+			<li><code>FILE_FLAG_SEQUENTIAL_SCAN</code> — файл открывается преимущественно для операций последовательного чтения или записи;</li>
+			<li><code>FILE_FLAG_WRITE_THROUGH</code> — запись в файл будет идти непосредственно на диск, минуя кеш.</li>
+		</ul>
+	</dd>
+	</dl>
+
+	<dl>
+	<dt>hTemplateFile</dt>
+	<dd>Указатель на файл‐шаблон. Обычно не используется и может быть установлен в <code>NULL</code>. При открытии существующего файла этот параметр игнорируется.</dd>
+	</dl>
+
+
+	<h4>Возвращаемое значение</h4>
+
+	<p>Если функция завершается успешно, возвращаемое значение — открытый дескриптор заданного файла.</p>
+
+	<p>Если функция завершается с ошибкой, возвращаемое значение — <code>INVALID_HANDLE_VALUE</code>. Для получения кода ошибки можно вызвать функцию <code>GetLastError</code>.</p>
+
+
+	<h3><a id="c1c2">CreateDirectory</a></h3>
+
+	<p>Создаёт папку на диске.</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> CreateDirectory <span class="keyword">Alias</span> <span class="string">&quot;CreateDirectoryW&quot;</span>( _<br />
+	&t;<span class="keyword">ByVal</span> lpPathName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+	&t;<span class="keyword">ByVal</span> lpSecurityAttributes <span class="keyword">As</span> <span class="datatype">LPSECURITY_ATTRIBUTES</span>) _<br />
+	<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
+	</code></p>
+
+
+	<h4>Параметры</h4>
+
+	<dl>
+	<dt>lpPathName</dt>
+	<dd>Указатель на строку с именем каталога, который необходимо создать. В Windows NT/2000/XP ANSI‐версия этой функции ограничивает число символов имени объекта значением MAX_PATH (что‐то около 260 символов). Чтобы выйти за это ограничение и использовать строку длиной 32767 символов, необходимо вызывать юникодную версию этой функции и присоединить слева от имени объекта «\\?\».</dd>
+	</dl>
+
+	<dl>
+	<dt>lpSecurityAttributes</dt>
+	<dd>Указатель на структуру <code>SECURITY_ATTRIBUTES</code>, устанавливающую атрибуты защиты созданного каталога. Если установлено в <code>NULL</code>, то атрибуты защиты наследуются от родительского каталога.</dd>
+	</dl>
+
+
+	<h4>Возвращаемое значение</h4>
+
+	<p>Если функция выполнилась успешно, то возвращаемое значение не равно нулю.</p>
+
+	<p>Если функция завершилась ошибкой, то возвращаемое значение равно нулю. Для получения кода ошибки можно вызвать функцию <code>GetLastError</code>.</p>
+
+
+	<h3><a id="c1c4">ReadFile</a></h3>
+
+	<p>Читает данные из файла или устройства ввода‐вывода.</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> ReadFile( _<br />
+	&t;<span class="keyword">ByVal</span> hFile <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
+	&t;<span class="keyword">ByVal</span> lpBuffer <span class="keyword">As</span> <span class="datatype">LPVOID</span>, _<br />
+	&t;<span class="keyword">ByVal</span> nNumberOfBytesToRead <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;<span class="keyword">ByVal</span> lpNumberOfBytesRead <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+	&t;<span class="keyword">ByVal</span> lpOverlapped <span class="keyword">As</span> <span class="datatype">LPOVERLAPPED</span>) _<br />
+	<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
+	</code></p>
+
+
+	<h4>Параметры</h4>
+
+	<dl>
+	<dt>hFile</dt>
+	<dd>Идентификатор устройства, например, файл, диск, том, буфер консоли, сокет, почтовый слот, канал и прочее.</dd>
+	</dl>
+
+	<dl>
+	<dt>lpBuffer</dt>
+	<dd>Указатель на буфер, куда будут записаны данные.</dd>
+	</dl>
+
+	<dl>
+	<dt>nNumberOfBytesToRead</dt>
+	<dd>Количество требуемых для чтения байт.</dd>
+	</dl>
+
+	<dl>
+	<dt>lpNumberOfBytesRead</dt>
+	<dd>Указатель на переменную, куда будет записано количество действительно прочитанных байт. Число действительно прочитанных байт может отличаться от количества требуемых байт, например, когда требуется прочитать больше байт, чем осталось в файле. Если количество прочитанных байт равно нулю, то достигнут конец файла. Этот параметр можно оставлять в NULL только в случае асинхронных операций.</dd>
+	</dl>
+
+	<dl>
+	<dt>lpOverlapped</dt>
+	<dd>Указатель на структуру <code>OVERLAPPED</code>. Требуется только для асинхронных операций, для этого файл должен быть открыт с флагом <code>FILE_FLAG_OVERLAPPED</code>, в обычных случаях устанавливай в <code>NULL</code>.</dd>
+	</dl>
+
+
+	<h4>Возвращаемое значение</h4>
+
+	<p>Если функция выполнилась успешно, то возвращаемое значение не ноль.</p>
+
+	<p>Если функция выдала ошибку или вызвана в асинхронном режиме, то возвращаемое значение — ноль. Для получения кода ошибки можно вызвать функцию <code>GetLastError</code>.</p>
+
+
+	<h4>Замечания</h4>
+
+	<p>Функция немедленно возвращает значение при наступлении условий:</p>
+
 	<ul>
-		<li><code>GENERIC_READ</code> — объект будут использовать для чтения;</li>
-		<li><code>GENERIC_WRITE</code> — объект будут использовать для записи;</li>
-		<li>0 — открываемый объект нельзя читать или записывать, такой режим открытия объекта удобен для проверки его существования.</li>
+		<li>прочитано требуемое количество байт или сколько осталось в файле;</li>
+		<li>на канале выполнена операция записи;</li>
+		<li>функция выполнена асинхронно;</li>
+		<li>при ошибке чтения.</li>
 	</ul>
-</dd>
-</dl>
 
-<dl>
-<dt>dwShareMode</dt>
-<dd>Режим совместного доступа к файлу (из других процессов). Может принимать значения из списка или быть их кобминацией:
+	<p>Также нужно заметить, что если функция выполняется успешно при чтении файла, если достигнут его конец.</p>
+
+
+	<h3><a id="c1c5">WriteFile</a></h3>
+
+	<p>Записывает данные в файл или устройство ввода‐вывода.</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> WriteFile( _<br />
+	&t;<span class="keyword">ByVal</span> hFile <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
+	&t;<span class="keyword">ByVal</span> lpBuffer <span class="keyword">As</span> <span class="datatype">LPCVOID</span>, _<br />
+	&t;<span class="keyword">ByVal</span> nNumberOfBytesToWrite <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+	&t;<span class="keyword">ByVal</span> lpNumberOfBytesWritten <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+	&t;<span class="keyword">ByVal</span> lpOverlapped <span class="keyword">As</span> <span class="datatype">LPOVERLAPPED</span>) _<br />
+	<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
+	</code></p>
+
+
+	<h4>Параметры</h4>
+
+	<dl>
+	<dt>hFile</dt>
+	<dd>Идентификатор устройства, например, файл, диск, том, буфер консоли, сокет, почтовый слот, канал и прочее.</dd>
+	</dl>
+
+	<dl>
+	<dt>lpBuffer</dt>
+	<dd>Указатель на буфер, откуда будут записаны данные.</dd>
+	</dl>
+
+	<dl>
+	<dt>nNumberOfBytesToWrite</dt>
+	<dd>Количество записываемых байт.</dd>
+	</dl>
+
+	<dl>
+	<dt>lpNumberOfBytesWritten</dt>
+	<dd>Количество действительно записанных байт.</dd>
+	</dl>
+
+	<dl>
+	<dt>lpOverlapped</dt>
+	<dd>Указатель на структуру <code>OVERLAPPED</code>. Требуется только для асинхронных операций, для этого файл должен быть открыт с флагом <code>FILE_FLAG_OVERLAPPED</code>, в обычных случаях устанавливай в <code>NULL</code>.</dd>
+	</dl>
+
+	<h4>Возвращаемое значение</h4>
+
+	<p>Если функция завершилась успешно, то возвращаемое значение не ноль.</p>
+
+	<p>Если функция выдала ошибку или вызвана в асинхронном режиме, то возвращаемое значение — ноль. Для получения кода ошибки можно вызвать функцию <code>GetLastError</code>.</p>
+
+
+	<h3><a id="c1c6">CloseHandle</a></h3>
+
+	<p>Закрывает объект ядра и освобождает занимаемую им память.</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> CloseHandle( _<br />
+	&t;<span class="keyword">ByVal</span> hObject <span class="keyword">As</span> <span class="datatype">HANDLE</span>) _<br />
+	<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
+	</code></p>
+
+
+	<h4>Параметры</h4>
+
+	<dl>
+	<dt>hFile</dt>
+	<dd>Идентификатор объекта ядра, например, «файл».</dd>
+	</dl>
+
+
+	<h4>Возвращаемое значение</h4>
+
+	<p>Если функция завершилась успешно, то возвращаемое значение не ноль.</p>
+
+	<p>Если функция выдала ошибку, то возвращаемое значение — ноль. Для получения кода ошибки можно вызвать функцию <code>GetLastError</code>.</p>
+
+
+	<h4>Замечания</h4>
+
+	<p>Функция аннулирует заданный дескриптор объекта и уменьшает счётчик ссылок на объект. После того, как последний дескриптор объекта закрывается, объект удаляется из системы.</p>
+
+
+	<h3><a id="c1c7">GetFileSizeEx</a></h3>
+
+	<p>Получает размер файла.</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> GetFileSizeEx( _<br />
+	&t;<span class="keyword">ByVal</span> hFile <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
+	&t;<span class="keyword">ByVal</span> lpFileSize <span class="keyword">As</span> <span class="datatype">PLARGE_INTEGER</span>) _<br />
+	<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
+	</code></p>
+
+
+	<h4>Параметры</h4>
+
+	<dl>
+	<dt>hFile</dt>
+	<dd>Идентификатор файла.</dd>
+	</dl>
+
+	<dl>
+	<dt>PLARGE_INTEGER</dt>
+	<dd>Указатель на структуру <code>LARGE_INTEGER</code>, куда будет записан размер файла.</dd>
+	</dl>
+
+
+	<h4>Возвращаемое значение</h4>
+
+	<p>Если функция завершилась успешно, то возвращаемое значение не равно нулю.</p>
+
+	<p>Если функция завершилась ошибкой, то возвращаемое значение — ноль.</p>
+
+
+	<h4>Замечания</h4>
+
+	<p><code>LARGE_INTEGER</code> — это специальная структура для хранения больших чисел. Из неё нам требуется только поле <code>QuadPart</code>, представляющее знаковое 64‐битное число типа <code>LongInt</code>. В нём содержится размер файла в байтах. Обращаться к полю структуры, как обычно, нужно через точку.</p>
+
+
+	<h2><a id="c2">Примеры</a></h2>
+
+	<h3><a id="c2c1">Запись текстовых файлов</a></h3>
+
+	<p>Некоторое неудобство текстовых файлов в том, что всегда приходится иметь дело с кодировкой символов. Рассмотрим пример записи нескольких строк в текстовый файл.</p>
+
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="preprocessor">#define unicode</span><br />
+	<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
+	<br />
+	<span class="remark">&apos; Имя текстового файла, куда будет записана информация</span><br />
+	<span class="keyword">Const</span> FileName = <span class="string">&quot;Привет.txt&quot;</span><br />
+	<br />
+	<span class="remark">&apos; Эта фраза будет записана в файл</span><br />
+	<span class="remark">&apos; В файле она будет выглядеть как две строки</span><br />
+	<span class="keyword">Const</span> HelloWorld = <span class="string">!&quot;Привет\r\nмир&quot;</span><br />
+	<br />
+	<span class="remark">&apos; Для начала нужно создать файла</span><br />
+	<span class="keyword">Dim</span> hFile <span class="keyword">As</span> <span class="datatype">Handle</span> = CreateFile( _<br />
+	&t;@FileName, _ <span class="remark">/&apos; имя создаваемого файла &apos;/</span><br />
+	&t;GENERIC_WRITE, _ <span class="remark">/&apos; файл открывается для записи &apos;/</span><br />
+	&t;FILE_SHARE_READ, _ <span class="remark">/&apos; разрешено читать данные другим процессам &apos;/</span><br />
+	&t;NULL, _ <span class="remark">/&apos; используем атрибуты безопасности по умолчанию &apos;/</span><br />
+	&t;CREATE_ALWAYS, _ <span class="remark">/&apos; создадим файл или перезапишем уже существующий &apos;/</span><br />
+	&t;FILE_ATTRIBUTE_NORMAL, _ <span class="remark">/&apos; файл не будет иметь специальных атрибутов &apos;/</span><br />
+	&t;NULL _ <span class="remark">/' без файлов‐шаблонов '/</span><br />
+	)<br />
+	<br />
+	<span class="keyword">If</span> hFile = INVALID_HANDLE_VALUE <span class="keyword">Then</span><br />
+	&t;<span class="remark">&apos; Произошла ошибка, нужно закрыть файл и выйти</span><br />
+	&t;CloseHandle(hFile)<br />
+	&t;<span class="keyword">End</span>(1)<br />
+	<span class="keyword">End If</span><br />
+	<br />
+	<span class="remark">&apos; Теперь необходимо определиться с кодировкой символов</span><br />
+	<span class="remark">&apos; Будем писать в UTF-16</span><br />
+	<br />
+	<span class="remark">&apos; Но сначала необходимо записать в файл специальную метку,</span><br />
+	<span class="remark">&apos; показывающую, что используется кодировка UTF-16</span><br />
+	<span class="keyword">Dim</span> BOM16LE <span class="keyword">As</span> <span class="datatype">ZString</span> * 2 = <span class="datatype">Any</span><br />
+	BOM16LE[0] = 255<br />
+	BOM16LE[1] = 254<br />
+	<br />
+	<span class="keyword">Dim</span> WritedBytesCount <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="datatype">Any</span><br />
+	<span class="keyword">Dim</span> Result <span class="keyword">As</span> <span class="datatype">Integer</span> = WriteFile(hFile, @BOM16LE, 2, @WritedBytesCount, 0)<br />
+	<br />
+	<span class="remark">&apos; Теперь можно записать в файл фразу</span><br />
+	Result = WriteFile(hFile, @HelloWorld, <span class="keyword">Len</span>(HelloWorld) * <span class="keyword">SizeOf</span>(<span class="datatype">WString</span>), @WritedBytesCount, 0)<br />
+	<br />
+	<span class="remark">&apos; После всех манипуляций необходимо закрыть файл</span><br />
+	CloseHandle(hFile)
+	</code></p>
+
+	<p>После запуска программы рядом должен появиться файл «Привет.txt». Если открыть его блокнотом, то там будут две строки: «Привет» и «мир».</p>
+
+
+
+	<h3><a id="c2c2">Чтение текстовых файлов</a></h3>
+
+	<p>При чтении текстового файла хлопот больше, так как нам неизвестна длина строки. Чтобы хранить промежуточные результаты чтения придётся создавать буфер.</p>
+	<p>Для простоты будем считать, что текстовый файл будет в кодировке UTF-16 LE.</p>
+
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	<span class="preprocessor">#define unicode</span><br />
+	<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
+	<span class="remark">&apos; Для функции StrStr</span><br />
+	<span class="preprocessor">#include once &quot;win\shlwapi.bi&quot;</span><br />
+	<br />
+	<span class="remark">&apos; Имя текстового файла, откуда будет считываться текст</span><br />
+	<span class="keyword">Const</span> FileName = <span class="string">&quot;Привет.txt&quot;</span><br />
+	<span class="remark">&apos; Символы перевода строки</span><br />
+	<span class="keyword">Const</span> vbCrLf = <span class="string">!"\r\n"</span><br />
+	<br />
+	<span class="remark">&apos; Размер буфера для хранения данных 64 кибайт</span><br />
+	<span class="keyword">Const</span> MaxBufferLength <span class="keyword">As</span> <span class="datatype">Integer</span> = 64 * 1024<br />
+	<br />
+	<span class="remark">&apos; Для начала нужно создать файла</span><br />
+	<span class="keyword">Dim</span> hFile <span class="keyword">As</span> <span class="datatype">Handle</span> = CreateFile( _<br />
+	&t;@FileName, _ <span class="remark">/&apos; имя создаваемого файла &apos;/</span><br />
+	&t;GENERIC_READ, _ <span class="remark">/&apos; файл открывается для записи &apos;/</span><br />
+	&t;FILE_SHARE_READ, _ <span class="remark">/&apos; разрешено читать данные другим процессам &apos;/</span><br />
+	&t;NULL, _ <span class="remark">/&apos; используем атрибуты безопасности по умолчанию &apos;/</span><br />
+	&t;OPEN_EXISTING, _ <span class="remark">/&apos; открыть существующий файл &apos;/</span><br />
+	&t;FILE_ATTRIBUTE_NORMAL, _ <span class="remark">/&apos; файл не будет иметь специальных атрибутов &apos;/</span><br />
+	&t;NULL _ <span class="remark">/&apos; без файлов‐шаблонов &apos;/</span><br />
+	)<br />
+	<br />
+	<span class="keyword">If</span> hFile = INVALID_HANDLE_VALUE <span class="keyword">Then</span><br />
+	&t;<span class="remark">&apos; Произошла ошибка, выйти</span><br />
+	&t;<span class="keyword">Print</span> <span class="string">&quot;Ошибка открытия файла&quot;</span><br />
+	&t;<span class="keyword">End</span>(1)<br />
+	<span class="keyword">End If</span><br />
+	<br />
+	<span class="remark">&apos; Буфер для хранения данных чтения</span><br />
+	<span class="keyword">Dim</span> Buffer <span class="keyword">As</span> <span class="datatype">ZString</span> * (MaxBufferLength + <span class="keyword">SizeOf</span>(<span class="datatype">WString</span>)) = <span class="keyword">Any</span><br />
+	<br />
+	<span class="remark">&apos; Читаем данные файла</span><br />
+	<span class="keyword">Dim</span> ReadBytesCount <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
+	<span class="keyword">If</span> ReadFile(hFile, @Buffer, MaxBufferLength, @ReadBytesCount, 0) = 0 <span class="keyword">Then</span><br />
+	&t;<span class="remark">&apos; Ошибка чтения файла</span><br />
+	&t;<span class="keyword">Print</span> <span class="string">&quot;Не могу прочитать данные файла&quot;</span><br />
+	&t;CloseHandle(hFile)<br />
+	&t;<span class="keyword">End</span>(0)<br />
+	<span class="keyword">End If</span><br />
+	<span class="remark">&apos; Ставим нулевой символ, чтобы строка была валидной</span><br />
+	Buffer[ReadBytesCount] = 0<br />
+	Buffer[ReadBytesCount + 1] = 0<br />
+	<br />
+	<span class="remark">&apos; Будем считать, что кодировка текста UTF-16 с меткой BOM</span><br />
+	<span class="keyword">If</span> ReadBytesCount &lt; 2 <span class="keyword">Then</span><br />
+	&t;<span class="remark">&apos; Кодировка не та</span><br />
+	&t;<span class="keyword">Print</span> <span class="string">&quot;Для чтения файла нужна кодировка UTF-16 LE&quot;</span><br />
+	&t;CloseHandle(hFile)<br />
+	&t;<span class="keyword">End</span>(0)<br />
+	<span class="keyword">End If</span><br />
+	<br />
+	<span class="keyword">If</span> Buffer[0] &lt;&gt; 255 <span class="keyword">OrElse</span> Buffer[1] &lt;&gt; 254 <span class="keyword">Then</span><br />
+	&t;<span class="keyword">Print</span> <span class="string">&quot;Для чтения файла нужна кодировка UTF-16 LE&quot;</span><br />
+	&t;CloseHandle(hFile)<br />
+	&t;<span class="keyword">End</span>(0)<br />
+	<span class="keyword">End If</span><br />
+	<br />
+	<span class="keyword">Dim</span> wLine <span class="keyword">As</span> <span class="datatype">WString Ptr</span> = <span class="keyword">CPtr</span>(<span class="datatype">WString Ptr</span>, @Buffer[2])<br />
+	<span class="keyword">Dim</span> ReadedBytesCount <span class="keyword">As</span> <span class="datatype">Integer</span> = 0<br />
+	<span class="keyword">Dim</span> Result2 <span class="keyword">As</span> <span class="datatype">Integer</span> = 1<br />
+	<span class="keyword">Do</span><br />
+	&t;<span class="remark">&apos; Найти в буфере CrLf</span><br />
+	&t;<span class="keyword">Dim</span> wCrLf <span class="keyword">As</span> <span class="datatype">WString Ptr</span> = StrStr(wLine, @vbCrLf)<br />
+	&t;<span class="keyword">Do</span> <span class="keyword">While</span> wCrLf = NULL<br />
+	&t;&t;<span class="remark">&apos; Проверить буфер на переполнение</span><br />
+	&t;&t;<span class="keyword">If</span> ReadedBytesCount &gt;= MaxBufferLength <span class="keyword">Then</span><br />
+	&t;&t;&t;<span class="remark">&apos; Буфер заполнен, будем читать данные в следующий раз</span><br />
+	&t;&t;&t;Buffer[MaxBufferLength] = 0<br />
+	&t;&t;&t;Buffer[MaxBufferLength + 1] = 0<br />
+	&t;&t;&t;<span class="keyword">Exit Do</span><br />
+	&t;&t;<span class="keyword">End If</span><br />
+	<br />
+	&t;&t;<span class="remark">&apos; Если CrLf в буфере нет, то читать данные с файла</span><br />
+	&t;&t;Result2 = ReadFile(hFile, @Buffer + ReadedBytesCount, MaxBufferLength - ReadedBytesCount, @ReadBytesCount, 0)<br />
+	&t;&t;<span class="keyword">If</span> Result2 = 0 <span class="keyword">OrElse</span> ReadBytesCount = 0 <span class="keyword">Then</span><br />
+	&t;&t;&t;<span class="remark">&apos; Ошибка или данные прочитаны, выйти</span><br />
+	&t;&t;&t;<span class="keyword">Exit Do</span><br />
+	&t;&t;<span class="keyword">End If</span><br />
+	&t;&t;<span class="remark">&apos; Прочитанный байт всего</span><br />
+	&t;&t;ReadedBytesCount += ReadBytesCount<br />
+	&t;&t;<span class="remark">&apos; Ставим нулевой символ, чтобы строка была валидной</span><br />
+	&t;&t;Buffer[ReadBytesCount] = 0<br />
+	&t;&t;Buffer[ReadBytesCount + 1] = 0<br />
+	&t;&t;<span class="remark">&apos; Искать CrLf заново</span><br />
+	&t;&t;wCrLf = StrStr(wLine, @vbCrLf)<br />
+	&t;<span class="keyword">Loop</span><br />
+	&t;<span class="remark">&apos; CrLf найдено или произошла ошибка, его необходимо убрать</span><br />
+	&t;<span class="keyword">If</span> wCrLf &lt;&gt; 0 <span class="keyword">Then</span><br />
+	&t;&t;wCrLf[0] = 0<br />
+	&t;<span class="keyword">End If</span><br />
+	&t;<span class="remark">&apos; Вывести на консоль что было в буфере</span><br />
+	&t;<span class="keyword">Print</span> *wLine<br />
+	&t;<span class="keyword">If</span> wCrLf &lt;&gt; 0 <span class="keyword">Then</span><br />
+	&t;&t;<span class="remark">&apos; Переместить правее CrLf</span><br />
+	&t;&t;wLine = wCrLf + 2<br />
+	&t;&t;<span class="remark">&apos; Передвинуть данные в буфере влево</span><br />
+	&t;&t;<span class="keyword">Dim</span> tmpBuffer <span class="keyword">As</span> <span class="datatype">ZString</span> * (MaxBufferLength + <span class="keyword">SizeOf</span>(<span class="datatype">WString</span>)) = <span class="keyword">Any</span><br />
+	&t;&t;lstrcpy(<span class="keyword">CPtr</span>(<span class="datatype">WString Ptr</span>, @tmpBuffer), wLine)<br />
+	&t;&t;lstrcpy(<span class="keyword">CPtr</span>(<span class="datatype">WString Ptr</span>, @Buffer), <span class="keyword">CPtr</span>(<span class="datatype">WString Ptr</span>, @tmpBuffer))<br />
+	&t;&t;wLine = <span class="keyword">CPtr</span>(<span class="datatype">WString Ptr</span>, @Buffer)<br />
+	&t;<span class="keyword">End If</span><br />
+	&t;ReadedBytesCount = 0<br />
+	<span class="keyword">Loop</span> <span class="keyword">While</span> Result2 &lt;&gt; 0 <span class="keyword">And</span> ReadBytesCount &lt;&gt; 0<br />
+	<br />
+	<span class="remark">&apos; После всех манипуляций необходимо закрыть идентификатор</span><br />
+	CloseHandle(hFile)
+	</code></p>
+
+
+
+
+
+
+
+	<h2><a id="c3">Ссылки</a></h2>
 	<ul>
-		<li><code>0</code> — другим процессам запрещены операции чтения, записи или удаления объекта;</li>
-		<li><code>FILE_SHARE_DELETE</code> — другим процессам можно удалять объект;</li>
-		<li><code>FILE_SHARE_READ</code> — другие процессы могут выполнять операции чтения;</li>
-		<li><code>FILE_SHARE_WRITE</code> — другие процессы могут выполнять операции записи.</li>
+	<li><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa363858(v=vs.85).aspx">Функция CreateFile на MSDN</a>.</li>
+
 	</ul>
-</dd>
-</dl>
 
-<dl>
-<dt>lpSecurityAttributes</dt>
-<dd>Указатель на структуру <code>SECURITY_ATTRIBUTES</code>, устанавливающую, может ли возвращённый дескриптор быть унаследован дочерними процессами. Если установлено в <code>NULL</code>, то дескриптор не может быть унаследован.</dd>
-</dl>
-
-<dl>
-<dt>dwCreationDisposition</dt>
-<dd>Выполняемые действия с файлами. Параметр может принимать одно из следующих значений без комбинаций:
-	<ul>
-		<li><code>CREATE_NEW</code> — создание файла, но если такой уже существует, то выйдет ошибка;</li>
-		<li><code>CREATE_ALWAYS</code> — создание файла или перезапись уже существующего;</li>
-		<li><code>OPEN_EXISTING</code> — открытие существующего файла, а если такой файл не существует, выйдет ошибка;</li>
-		<li><code>OPEN_ALWAYS</code> — открытие файла, а если его не существует, то он будет создан;</li>
-		<li><code>TRUNCATE_EXISTING</code> — перезапись с нуля существующего файла, или возвращениние ошибки, если файла не существует.</li>
-	</ul>
-	 Если открывается устройство, то необходимо использовать константу <code>OPEN_EXISTING</code>.
-</dd>
-</dl>
-
-<dl>
-<dt>dwFlagsAndAttributes</dt>
-<dd>Атрибуты файла, флаг <code>FILE_ATTRIBUTE_NORMAL</code> подходит для большинства операций. Все другие атрибуты переопределяют атрибут <code>FILE_ATTRIBUTE_NORMAL</code>.  Этот параметр может быть любой комбинацией из следующих констант:
-	<ul>
-		<li><code>FILE_ATTRIBUTE_NORMAL</code>;</li>
-		<li><code>FILE_ATTRIBUTE_ARCHIVE</code>;</li>
-		<li><code>FILE_ATTRIBUTE_ENCRYPTED</code>;</li>
-		<li><code>FILE_ATTRIBUTE_HIDDEN</code>;</li>
-		<li><code>FILE_ATTRIBUTE_OFFLINE</code>;</li>
-		<li><code>FILE_ATTRIBUTE_READONLY</code>;</li>
-		<li><code>FILE_ATTRIBUTE_SYSTEM</code>;</li>
-		<li><code>FILE_ATTRIBUTE_TEMPORARY</code>.</li>
-	</ul>
-	Также можно использовать комбинацию из флагов, наиболее интересные из них:
-	<ul>
-		<li><code>FILE_FLAG_BACKUP_SEMANTICS</code> — файл открывается для резервного копирования или восстановления, также этот флаг нужно указывать при открытии каталога;</li>
-		<li><code>FILE_FLAG_DELETE_ON_CLOSE</code> — система немедленно удалит файл после того, как будут закрыты все его дескрипторы;</li>
-		<li><code>FILE_FLAG_NO_BUFFERING</code> — запрещает кеширование файлов для операций чтения и записи;</li>
-		<li><code>FILE_FLAG_OVERLAPPED</code> — файл открывается для асинхронных операций чтения и записи;</li>
-		<li><code>FILE_FLAG_RANDOM_ACCESS</code> — файл открывается преимущественно для операций чтения и записи по случайным областям;</li>
-		<li><code>FILE_FLAG_SEQUENTIAL_SCAN</code> — файл открывается преимущественно для операций последовательного чтения или записи;</li>
-		<li><code>FILE_FLAG_WRITE_THROUGH</code> — запись в файл будет идти непосредственно на диск, минуя кеш.</li>
-	</ul>
-</dd>
-</dl>
-
-<dl>
-<dt>hTemplateFile</dt>
-<dd>Указатель на файл‐шаблон. Обычно не используется и может быть установлен в <code>NULL</code>. При открытии существующего файла этот параметр игнорируется.</dd>
-</dl>
-
-
-<h4>Возвращаемое значение</h4>
-
-<p>Если функция завершается успешно, возвращаемое значение — открытый дескриптор заданного файла.</p>
-
-<p>Если функция завершается с ошибкой, возвращаемое значение — <code>INVALID_HANDLE_VALUE</code>. Для получения кода ошибки можно вызвать функцию <code>GetLastError</code>.</p>
-
-
-<h3><a id="c1c2">CreateDirectory</a></h3>
-
-<p>Создаёт папку на диске.</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> CreateDirectory <span class="keyword">Alias</span> <span class="string">&quot;CreateDirectoryW&quot;</span>( _<br />
-&t;<span class="keyword">ByVal</span> lpPathName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
-&t;<span class="keyword">ByVal</span> lpSecurityAttributes <span class="keyword">As</span> <span class="datatype">LPSECURITY_ATTRIBUTES</span>) _<br />
-<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
-</code></p>
-
-
-<h4>Параметры</h4>
-
-<dl>
-<dt>lpPathName</dt>
-<dd>Указатель на строку с именем каталога, который необходимо создать. В Windows NT/2000/XP ANSI‐версия этой функции ограничивает число символов имени объекта значением MAX_PATH (что‐то около 260 символов). Чтобы выйти за это ограничение и использовать строку длиной 32767 символов, необходимо вызывать юникодную версию этой функции и присоединить слева от имени объекта «\\?\».</dd>
-</dl>
-
-<dl>
-<dt>lpSecurityAttributes</dt>
-<dd>Указатель на структуру <code>SECURITY_ATTRIBUTES</code>, устанавливающую атрибуты защиты созданного каталога. Если установлено в <code>NULL</code>, то атрибуты защиты наследуются от родительского каталога.</dd>
-</dl>
-
-
-<h4>Возвращаемое значение</h4>
-
-<p>Если функция выполнилась успешно, то возвращаемое значение не равно нулю.</p>
-
-<p>Если функция завершилась ошибкой, то возвращаемое значение равно нулю. Для получения кода ошибки можно вызвать функцию <code>GetLastError</code>.</p>
-
-
-<h3><a id="c1c4">ReadFile</a></h3>
-
-<p>Читает данные из файла или устройства ввода‐вывода.</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> ReadFile( _<br />
-&t;<span class="keyword">ByVal</span> hFile <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
-&t;<span class="keyword">ByVal</span> lpBuffer <span class="keyword">As</span> <span class="datatype">LPVOID</span>, _<br />
-&t;<span class="keyword">ByVal</span> nNumberOfBytesToRead <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;<span class="keyword">ByVal</span> lpNumberOfBytesRead <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-&t;<span class="keyword">ByVal</span> lpOverlapped <span class="keyword">As</span> <span class="datatype">LPOVERLAPPED</span>) _<br />
-<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
-</code></p>
-
-
-<h4>Параметры</h4>
-
-<dl>
-<dt>hFile</dt>
-<dd>Идентификатор устройства, например, файл, диск, том, буфер консоли, сокет, почтовый слот, канал и прочее.</dd>
-</dl>
-
-<dl>
-<dt>lpBuffer</dt>
-<dd>Указатель на буфер, куда будут записаны данные.</dd>
-</dl>
-
-<dl>
-<dt>nNumberOfBytesToRead</dt>
-<dd>Количество требуемых для чтения байт.</dd>
-</dl>
-
-<dl>
-<dt>lpNumberOfBytesRead</dt>
-<dd>Указатель на переменную, куда будет записано количество действительно прочитанных байт. Число действительно прочитанных байт может отличаться от количества требуемых байт, например, когда требуется прочитать больше байт, чем осталось в файле. Если количество прочитанных байт равно нулю, то достигнут конец файла. Этот параметр можно оставлять в NULL только в случае асинхронных операций.</dd>
-</dl>
-
-<dl>
-<dt>lpOverlapped</dt>
-<dd>Указатель на структуру <code>OVERLAPPED</code>. Требуется только для асинхронных операций, для этого файл должен быть открыт с флагом <code>FILE_FLAG_OVERLAPPED</code>, в обычных случаях устанавливай в <code>NULL</code>.</dd>
-</dl>
-
-
-<h4>Возвращаемое значение</h4>
-
-<p>Если функция выполнилась успешно, то возвращаемое значение не ноль.</p>
-
-<p>Если функция выдала ошибку или вызвана в асинхронном режиме, то возвращаемое значение — ноль. Для получения кода ошибки можно вызвать функцию <code>GetLastError</code>.</p>
-
-
-<h4>Замечания</h4>
-
-<p>Функция немедленно возвращает значение при наступлении условий:</p>
-
-<ul>
-	<li>прочитано требуемое количество байт или сколько осталось в файле;</li>
-	<li>на канале выполнена операция записи;</li>
-	<li>функция выполнена асинхронно;</li>
-	<li>при ошибке чтения.</li>
-</ul>
-
-<p>Также нужно заметить, что если функция выполняется успешно при чтении файла, если достигнут его конец.</p>
-
-
-<h3><a id="c1c5">WriteFile</a></h3>
-
-<p>Записывает данные в файл или устройство ввода‐вывода.</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> WriteFile( _<br />
-&t;<span class="keyword">ByVal</span> hFile <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
-&t;<span class="keyword">ByVal</span> lpBuffer <span class="keyword">As</span> <span class="datatype">LPCVOID</span>, _<br />
-&t;<span class="keyword">ByVal</span> nNumberOfBytesToWrite <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-&t;<span class="keyword">ByVal</span> lpNumberOfBytesWritten <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-&t;<span class="keyword">ByVal</span> lpOverlapped <span class="keyword">As</span> <span class="datatype">LPOVERLAPPED</span>) _<br />
-<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
-</code></p>
-
-
-<h4>Параметры</h4>
-
-<dl>
-<dt>hFile</dt>
-<dd>Идентификатор устройства, например, файл, диск, том, буфер консоли, сокет, почтовый слот, канал и прочее.</dd>
-</dl>
-
-<dl>
-<dt>lpBuffer</dt>
-<dd>Указатель на буфер, откуда будут записаны данные.</dd>
-</dl>
-
-<dl>
-<dt>nNumberOfBytesToWrite</dt>
-<dd>Количество записываемых байт.</dd>
-</dl>
-
-<dl>
-<dt>lpNumberOfBytesWritten</dt>
-<dd>Количество действительно записанных байт.</dd>
-</dl>
-
-<dl>
-<dt>lpOverlapped</dt>
-<dd>Указатель на структуру <code>OVERLAPPED</code>. Требуется только для асинхронных операций, для этого файл должен быть открыт с флагом <code>FILE_FLAG_OVERLAPPED</code>, в обычных случаях устанавливай в <code>NULL</code>.</dd>
-</dl>
-
-<h4>Возвращаемое значение</h4>
-
-<p>Если функция завершилась успешно, то возвращаемое значение не ноль.</p>
-
-<p>Если функция выдала ошибку или вызвана в асинхронном режиме, то возвращаемое значение — ноль. Для получения кода ошибки можно вызвать функцию <code>GetLastError</code>.</p>
-
-
-<h3><a id="c1c6">CloseHandle</a></h3>
-
-<p>Закрывает объект ядра и освобождает занимаемую им память.</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> CloseHandle( _<br />
-&t;<span class="keyword">ByVal</span> hObject <span class="keyword">As</span> <span class="datatype">HANDLE</span>) _<br />
-<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
-</code></p>
-
-
-<h4>Параметры</h4>
-
-<dl>
-<dt>hFile</dt>
-<dd>Идентификатор объекта ядра, например, «файл».</dd>
-</dl>
-
-
-<h4>Возвращаемое значение</h4>
-
-<p>Если функция завершилась успешно, то возвращаемое значение не ноль.</p>
-
-<p>Если функция выдала ошибку, то возвращаемое значение — ноль. Для получения кода ошибки можно вызвать функцию <code>GetLastError</code>.</p>
-
-
-<h4>Замечания</h4>
-
-<p>Функция аннулирует заданный дескриптор объекта и уменьшает счётчик ссылок на объект. После того, как последний дескриптор объекта закрывается, объект удаляется из системы.</p>
-
-
-<h3><a id="c1c7">GetFileSizeEx</a></h3>
-
-<p>Получает размер файла.</p>
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="keyword">Declare</span> <span class="keyword">Function</span> GetFileSizeEx( _<br />
-&t;<span class="keyword">ByVal</span> hFile <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
-&t;<span class="keyword">ByVal</span> lpFileSize <span class="keyword">As</span> <span class="datatype">PLARGE_INTEGER</span>) _<br />
-<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
-</code></p>
-
-
-<h4>Параметры</h4>
-
-<dl>
-<dt>hFile</dt>
-<dd>Идентификатор файла.</dd>
-</dl>
-
-<dl>
-<dt>PLARGE_INTEGER</dt>
-<dd>Указатель на структуру <code>LARGE_INTEGER</code>, куда будет записан размер файла.</dd>
-</dl>
-
-
-<h4>Возвращаемое значение</h4>
-
-<p>Если функция завершилась успешно, то возвращаемое значение не равно нулю.</p>
-
-<p>Если функция завершилась ошибкой, то возвращаемое значение — ноль.</p>
-
-
-<h4>Замечания</h4>
-
-<p><code>LARGE_INTEGER</code> — это специальная структура для хранения больших чисел. Из неё нам требуется только поле <code>QuadPart</code>, представляющее знаковое 64‐битное число типа <code>LongInt</code>. В нём содержится размер файла в байтах. Обращаться к полю структуры, как обычно, нужно через точку.</p>
-
-
-<h2><a id="c2">Примеры</a></h2>
-
-<h3><a id="c2c1">Запись текстовых файлов</a></h3>
-
-<p>Некоторое неудобство текстовых файлов в том, что всегда приходится иметь дело с кодировкой символов. Рассмотрим пример записи нескольких строк в текстовый файл.</p>
-
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="preprocessor">#define unicode</span><br />
-<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
-<br />
-<span class="remark">&apos; Имя текстового файла, куда будет записана информация</span><br />
-<span class="keyword">Const</span> FileName = <span class="string">&quot;Привет.txt&quot;</span><br />
-<br />
-<span class="remark">&apos; Эта фраза будет записана в файл</span><br />
-<span class="remark">&apos; В файле она будет выглядеть как две строки</span><br />
-<span class="keyword">Const</span> HelloWorld = <span class="string">!&quot;Привет\r\nмир&quot;</span><br />
-<br />
-<span class="remark">&apos; Для начала нужно создать файла</span><br />
-<span class="keyword">Dim</span> hFile <span class="keyword">As</span> <span class="datatype">Handle</span> = CreateFile( _<br />
-&t;@FileName, _ <span class="remark">/&apos; имя создаваемого файла &apos;/</span><br />
-&t;GENERIC_WRITE, _ <span class="remark">/&apos; файл открывается для записи &apos;/</span><br />
-&t;FILE_SHARE_READ, _ <span class="remark">/&apos; разрешено читать данные другим процессам &apos;/</span><br />
-&t;NULL, _ <span class="remark">/&apos; используем атрибуты безопасности по умолчанию &apos;/</span><br />
-&t;CREATE_ALWAYS, _ <span class="remark">/&apos; создадим файл или перезапишем уже существующий &apos;/</span><br />
-&t;FILE_ATTRIBUTE_NORMAL, _ <span class="remark">/&apos; файл не будет иметь специальных атрибутов &apos;/</span><br />
-&t;NULL _ <span class="remark">/' без файлов‐шаблонов '/</span><br />
-)<br />
-<br />
-<span class="keyword">If</span> hFile = INVALID_HANDLE_VALUE <span class="keyword">Then</span><br />
-&t;<span class="remark">&apos; Произошла ошибка, нужно закрыть файл и выйти</span><br />
-&t;CloseHandle(hFile)<br />
-&t;<span class="keyword">End</span>(1)<br />
-<span class="keyword">End If</span><br />
-<br />
-<span class="remark">&apos; Теперь необходимо определиться с кодировкой символов</span><br />
-<span class="remark">&apos; Будем писать в UTF-16</span><br />
-<br />
-<span class="remark">&apos; Но сначала необходимо записать в файл специальную метку,</span><br />
-<span class="remark">&apos; показывающую, что используется кодировка UTF-16</span><br />
-<span class="keyword">Dim</span> BOM16LE <span class="keyword">As</span> <span class="datatype">ZString</span> * 2 = <span class="datatype">Any</span><br />
-BOM16LE[0] = 255<br />
-BOM16LE[1] = 254<br />
-<br />
-<span class="keyword">Dim</span> WritedBytesCount <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="datatype">Any</span><br />
-<span class="keyword">Dim</span> Result <span class="keyword">As</span> <span class="datatype">Integer</span> = WriteFile(hFile, @BOM16LE, 2, @WritedBytesCount, 0)<br />
-<br />
-<span class="remark">&apos; Теперь можно записать в файл фразу</span><br />
-Result = WriteFile(hFile, @HelloWorld, <span class="keyword">Len</span>(HelloWorld) * <span class="keyword">SizeOf</span>(<span class="datatype">WString</span>), @WritedBytesCount, 0)<br />
-<br />
-<span class="remark">&apos; После всех манипуляций необходимо закрыть файл</span><br />
-CloseHandle(hFile)
-</code></p>
-
-<p>После запуска программы рядом должен появиться файл «Привет.txt». Если открыть его блокнотом, то там будут две строки: «Привет» и «мир».</p>
-
-
-
-<h3><a id="c2c2">Чтение текстовых файлов</a></h3>
-
-<p>При чтении текстового файла хлопот больше, так как нам неизвестна длина строки. Чтобы хранить промежуточные результаты чтения придётся создавать буфер.</p>
-<p>Для простоты будем считать, что текстовый файл будет в кодировке UTF-16 LE.</p>
-
-
-<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-<span class="preprocessor">#define unicode</span><br />
-<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
-<span class="remark">&apos; Для функции StrStr</span><br />
-<span class="preprocessor">#include once &quot;win\shlwapi.bi&quot;</span><br />
-<br />
-<span class="remark">&apos; Имя текстового файла, откуда будет считываться текст</span><br />
-<span class="keyword">Const</span> FileName = <span class="string">&quot;Привет.txt&quot;</span><br />
-<span class="remark">&apos; Символы перевода строки</span><br />
-<span class="keyword">Const</span> vbCrLf = <span class="string">!"\r\n"</span><br />
-<br />
-<span class="remark">&apos; Размер буфера для хранения данных 64 кибайт</span><br />
-<span class="keyword">Const</span> MaxBufferLength <span class="keyword">As</span> <span class="datatype">Integer</span> = 64 * 1024<br />
-<br />
-<span class="remark">&apos; Для начала нужно создать файла</span><br />
-<span class="keyword">Dim</span> hFile <span class="keyword">As</span> <span class="datatype">Handle</span> = CreateFile( _<br />
-&t;@FileName, _ <span class="remark">/&apos; имя создаваемого файла &apos;/</span><br />
-&t;GENERIC_READ, _ <span class="remark">/&apos; файл открывается для записи &apos;/</span><br />
-&t;FILE_SHARE_READ, _ <span class="remark">/&apos; разрешено читать данные другим процессам &apos;/</span><br />
-&t;NULL, _ <span class="remark">/&apos; используем атрибуты безопасности по умолчанию &apos;/</span><br />
-&t;OPEN_EXISTING, _ <span class="remark">/&apos; открыть существующий файл &apos;/</span><br />
-&t;FILE_ATTRIBUTE_NORMAL, _ <span class="remark">/&apos; файл не будет иметь специальных атрибутов &apos;/</span><br />
-&t;NULL _ <span class="remark">/&apos; без файлов‐шаблонов &apos;/</span><br />
-)<br />
-<br />
-<span class="keyword">If</span> hFile = INVALID_HANDLE_VALUE <span class="keyword">Then</span><br />
-&t;<span class="remark">&apos; Произошла ошибка, выйти</span><br />
-&t;<span class="keyword">Print</span> <span class="string">&quot;Ошибка открытия файла&quot;</span><br />
-&t;<span class="keyword">End</span>(1)<br />
-<span class="keyword">End If</span><br />
-<br />
-<span class="remark">&apos; Буфер для хранения данных чтения</span><br />
-<span class="keyword">Dim</span> Buffer <span class="keyword">As</span> <span class="datatype">ZString</span> * (MaxBufferLength + <span class="keyword">SizeOf</span>(<span class="datatype">WString</span>)) = <span class="keyword">Any</span><br />
-<br />
-<span class="remark">&apos; Читаем данные файла</span><br />
-<span class="keyword">Dim</span> ReadBytesCount <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
-<span class="keyword">If</span> ReadFile(hFile, @Buffer, MaxBufferLength, @ReadBytesCount, 0) = 0 <span class="keyword">Then</span><br />
-&t;<span class="remark">&apos; Ошибка чтения файла</span><br />
-&t;<span class="keyword">Print</span> <span class="string">&quot;Не могу прочитать данные файла&quot;</span><br />
-&t;CloseHandle(hFile)<br />
-&t;<span class="keyword">End</span>(0)<br />
-<span class="keyword">End If</span><br />
-<span class="remark">&apos; Ставим нулевой символ, чтобы строка была валидной</span><br />
-Buffer[ReadBytesCount] = 0<br />
-Buffer[ReadBytesCount + 1] = 0<br />
-<br />
-<span class="remark">&apos; Будем считать, что кодировка текста UTF-16 с меткой BOM</span><br />
-<span class="keyword">If</span> ReadBytesCount &lt; 2 <span class="keyword">Then</span><br />
-&t;<span class="remark">&apos; Кодировка не та</span><br />
-&t;<span class="keyword">Print</span> <span class="string">&quot;Для чтения файла нужна кодировка UTF-16 LE&quot;</span><br />
-&t;CloseHandle(hFile)<br />
-&t;<span class="keyword">End</span>(0)<br />
-<span class="keyword">End If</span><br />
-<br />
-<span class="keyword">If</span> Buffer[0] &lt;&gt; 255 <span class="keyword">OrElse</span> Buffer[1] &lt;&gt; 254 <span class="keyword">Then</span><br />
-&t;<span class="keyword">Print</span> <span class="string">&quot;Для чтения файла нужна кодировка UTF-16 LE&quot;</span><br />
-&t;CloseHandle(hFile)<br />
-&t;<span class="keyword">End</span>(0)<br />
-<span class="keyword">End If</span><br />
-<br />
-<span class="keyword">Dim</span> wLine <span class="keyword">As</span> <span class="datatype">WString Ptr</span> = <span class="keyword">CPtr</span>(<span class="datatype">WString Ptr</span>, @Buffer[2])<br />
-<span class="keyword">Dim</span> ReadedBytesCount <span class="keyword">As</span> <span class="datatype">Integer</span> = 0<br />
-<span class="keyword">Dim</span> Result2 <span class="keyword">As</span> <span class="datatype">Integer</span> = 1<br />
-<span class="keyword">Do</span><br />
-&t;<span class="remark">&apos; Найти в буфере CrLf</span><br />
-&t;<span class="keyword">Dim</span> wCrLf <span class="keyword">As</span> <span class="datatype">WString Ptr</span> = StrStr(wLine, @vbCrLf)<br />
-&t;<span class="keyword">Do</span> <span class="keyword">While</span> wCrLf = NULL<br />
-&t;&t;<span class="remark">&apos; Проверить буфер на переполнение</span><br />
-&t;&t;<span class="keyword">If</span> ReadedBytesCount &gt;= MaxBufferLength <span class="keyword">Then</span><br />
-&t;&t;&t;<span class="remark">&apos; Буфер заполнен, будем читать данные в следующий раз</span><br />
-&t;&t;&t;Buffer[MaxBufferLength] = 0<br />
-&t;&t;&t;Buffer[MaxBufferLength + 1] = 0<br />
-&t;&t;&t;<span class="keyword">Exit Do</span><br />
-&t;&t;<span class="keyword">End If</span><br />
-<br />
-&t;&t;<span class="remark">&apos; Если CrLf в буфере нет, то читать данные с файла</span><br />
-&t;&t;Result2 = ReadFile(hFile, @Buffer + ReadedBytesCount, MaxBufferLength - ReadedBytesCount, @ReadBytesCount, 0)<br />
-&t;&t;<span class="keyword">If</span> Result2 = 0 <span class="keyword">OrElse</span> ReadBytesCount = 0 <span class="keyword">Then</span><br />
-&t;&t;&t;<span class="remark">&apos; Ошибка или данные прочитаны, выйти</span><br />
-&t;&t;&t;<span class="keyword">Exit Do</span><br />
-&t;&t;<span class="keyword">End If</span><br />
-&t;&t;<span class="remark">&apos; Прочитанный байт всего</span><br />
-&t;&t;ReadedBytesCount += ReadBytesCount<br />
-&t;&t;<span class="remark">&apos; Ставим нулевой символ, чтобы строка была валидной</span><br />
-&t;&t;Buffer[ReadBytesCount] = 0<br />
-&t;&t;Buffer[ReadBytesCount + 1] = 0<br />
-&t;&t;<span class="remark">&apos; Искать CrLf заново</span><br />
-&t;&t;wCrLf = StrStr(wLine, @vbCrLf)<br />
-&t;<span class="keyword">Loop</span><br />
-&t;<span class="remark">&apos; CrLf найдено или произошла ошибка, его необходимо убрать</span><br />
-&t;<span class="keyword">If</span> wCrLf &lt;&gt; 0 <span class="keyword">Then</span><br />
-&t;&t;wCrLf[0] = 0<br />
-&t;<span class="keyword">End If</span><br />
-&t;<span class="remark">&apos; Вывести на консоль что было в буфере</span><br />
-&t;<span class="keyword">Print</span> *wLine<br />
-&t;<span class="keyword">If</span> wCrLf &lt;&gt; 0 <span class="keyword">Then</span><br />
-&t;&t;<span class="remark">&apos; Переместить правее CrLf</span><br />
-&t;&t;wLine = wCrLf + 2<br />
-&t;&t;<span class="remark">&apos; Передвинуть данные в буфере влево</span><br />
-&t;&t;<span class="keyword">Dim</span> tmpBuffer <span class="keyword">As</span> <span class="datatype">ZString</span> * (MaxBufferLength + <span class="keyword">SizeOf</span>(<span class="datatype">WString</span>)) = <span class="keyword">Any</span><br />
-&t;&t;lstrcpy(<span class="keyword">CPtr</span>(<span class="datatype">WString Ptr</span>, @tmpBuffer), wLine)<br />
-&t;&t;lstrcpy(<span class="keyword">CPtr</span>(<span class="datatype">WString Ptr</span>, @Buffer), <span class="keyword">CPtr</span>(<span class="datatype">WString Ptr</span>, @tmpBuffer))<br />
-&t;&t;wLine = <span class="keyword">CPtr</span>(<span class="datatype">WString Ptr</span>, @Buffer)<br />
-&t;<span class="keyword">End If</span><br />
-&t;ReadedBytesCount = 0<br />
-<span class="keyword">Loop</span> <span class="keyword">While</span> Result2 &lt;&gt; 0 <span class="keyword">And</span> ReadBytesCount &lt;&gt; 0<br />
-<br />
-<span class="remark">&apos; После всех манипуляций необходимо закрыть идентификатор</span><br />
-CloseHandle(hFile)
-</code></p>
-
-
-
-
-
-
-
-<h2><a id="c3">Ссылки</a></h2>
-<ul>
-<li><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa363858(v=vs.85).aspx">Функция CreateFile</a>.</li>
-
-</ul>
-
-<h2>Поделись ссылочкой в социальных сетях</h2>
-<div id="vk_share_button"></div>
+	<h2>Поделись ссылочкой в социальных сетях</h2>
+	<div id="vk_share_button"></div>
 
 
 <hr />
 
-<p class="footer">Сайт создан по технологии XHTML</p>
-
-<p class="footer">
-	
-	<span id="pLiveInternet"></span>
-	
-	<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
-		<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
-	</a>
-	<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
-		<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
-	</a> 
-</p>
+<footer>
+	<p>Сайт создан по технологии XHTML</p>
+	<p>
+		<span id="pLiveInternet"></span>
+		<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
+			<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
+		</a>
+		<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
+			<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
+		</a> 
+	</p>
+</footer>
 
 <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
 <script type="text/javascript">var docUrl=document.URL.toString();document.getElementById("vk_share_button").innerHTML=VK.Share.button(docUrl, {type: "round"});</script>

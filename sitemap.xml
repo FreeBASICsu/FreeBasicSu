@@ -12,11 +12,6 @@
 	
 	
 	<url>
-		<loc>http://www.freebasic.su/users/mabu.xhtml</loc>
-	</url>
-	
-	
-	<url>
 		<loc>http://www.freebasic.su/src/</loc>
 	</url>
 	<url>
@@ -64,18 +59,29 @@
 	<url>
 		<loc>http://www.freebasic.su/src/registry.xhtml</loc>
 	</url>
-
-
+	<url>
+		<loc>http://www.freebasic.su/src/heap.xhtml</loc>
+	</url>
+	
+	
 	<url>
 		<loc>http://www.freebasic.su/code/</loc>
 	</url>
-	<url>
-		<loc>http://www.freebasic.su/code/freebasic-webserver/</loc>
-	</url>
-
+	
 	
 	<url>
 		<loc>http://www.freebasic.su/books/</loc>
 	</url>
-
+	<url>
+		<loc>http://www.freebasic.su/books/install.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/books/variables.xhtml</loc>
+	</url>
+	
+	
+	<url>
+		<loc>http://www.freebasic.su/users/mabu.xhtml</loc>
+	</url>
+	
 </urlset>

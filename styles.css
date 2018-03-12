@@ -4,57 +4,6 @@ html
 	font-family:sans-serif;
 }
 
-main
-{
-}
-
-aside
-{
-}
-
-div.advertisement
-{
-	background:#DDDDDD;
-	border:solid 1px #CCCCCC;
-	border-radius:.25em;
-}
-
-h1
-{
-	color:#FF6600;
-}
-
-h2
-{
-	color:#0088FF;
-}
-
-h3
-{
-	color:#0000FF;
-}
-
-h4
-{
-	color:#004000;
-}
-
-hr
-{
-	border-color:#BBBBBB;
-	margin:1em 0 1em 0;
-}
-
-a[href]
-{
-	color:#FF6600;
-}
-
-a[href]:hover
-{
-	color:#0066FF;
-}
-
 nav
 {
 	margin:.25em;
@@ -88,9 +37,41 @@ ol.contents li
 	padding:.5em .5em .5em .5em;
 }
 
-footer
+h1
 {
-	text-align:center;
+	color:#FF6600;
+}
+
+h2
+{
+	color:#0088FF;
+}
+
+h3
+{
+	color:#0000FF;
+}
+
+h4
+{
+	color:#004000;
+}
+
+hr
+{
+	border-color:#BBBBBB;
+	margin:1em 0 1em 0;
+	clear:both;
+}
+
+a[href]
+{
+	color:#FF6600;
+}
+
+a[href]:hover
+{
+	color:#0066FF;
 }
 
 p
@@ -116,6 +97,16 @@ table
 {
 	border:solid 1px #CCCCCC;
 	border-radius:.25em;
+}
+
+th
+{
+	border:solid 1px #CCCCCC;
+}
+
+td
+{
+	border:solid 1px #CCCCCC;
 }
 
 dt
@@ -170,4 +161,9 @@ span.inisection
 span.assignment
 {
 	color:#FF0000;
+}
+
+footer
+{
+	text-align:center;
 }
