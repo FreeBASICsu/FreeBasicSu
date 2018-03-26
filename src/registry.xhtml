@@ -11,7 +11,7 @@
 <head>
 	<title>Реестр Windows</title>
 	<meta name="description" content="Работа с реестром Windows" />
-	<meta name="keywords" content="реестр, winapi" />
+	<meta name="keywords" content="реестр, freebasic, winapi" />
 	
 	<link href="/styles.css" type="text/css" rel="stylesheet" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -194,13 +194,13 @@
 	<p>Открывает существующий раздел реестра.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	<span class="keyword">Declare</span> <span class="keyword">Function</span> RegOpenKeyEx <span class="keyword">Alias</span> <span class="string">&quot;RegOpenKeyExW&quot;</span>( _<br />
-	&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpSubKey <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> ulOptions <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> samDesired <span class="keyword">As</span> <span class="datatype">REGSAM</span>, _<br />
-	&t;<span class="keyword">ByVal</span> phkResult <span class="keyword">As</span> <span class="datatype">PHKEY</span>) _<br />
-	<span class="keyword">As</span> <span class="datatype">LONG</span>
+		<span class="keyword">Declare</span> <span class="keyword">Function</span> RegOpenKeyEx <span class="keyword">Alias</span> <span class="string">&quot;RegOpenKeyExW&quot;</span>( _<br />
+		&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpSubKey <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+		&t;<span class="keyword">ByVal</span> ulOptions <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> samDesired <span class="keyword">As</span> <span class="datatype">REGSAM</span>, _<br />
+		&t;<span class="keyword">ByVal</span> phkResult <span class="keyword">As</span> <span class="datatype">PHKEY</span>) _<br />
+		<span class="keyword">As</span> <span class="datatype">LONG</span>
 	</code></p>
 
 
@@ -260,17 +260,17 @@
 	<p>Создаёт подраздел в реестре. Если подразле уще существует, то функция открывает его.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	<span class="keyword">Declare</span> <span class="keyword">Function</span> RegCreateKeyEx <span class="keyword">Alias</span> <span class="string">&quot;RegCreateKeyExW&quot;</span>( _<br />
-	&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpSubKey <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> Reserved <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpClass <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> dwOptions <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> samDesired <span class="keyword">As</span> <span class="datatype">REGSAM</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpSecurityAttributes <span class="keyword">As</span> <span class="datatype">LPSECURITY_ATTRIBUTES</span>, _<br />
-	&t;<span class="keyword">ByVal</span> phkResult <span class="keyword">As</span> <span class="datatype">PHKEY</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpdwDisposition <span class="keyword">As</span> <span class="datatype">LPDWORD</span>) _<br />
-	<span class="keyword">As</span> <span class="datatype">LONG</span>
+		<span class="keyword">Declare</span> <span class="keyword">Function</span> RegCreateKeyEx <span class="keyword">Alias</span> <span class="string">&quot;RegCreateKeyExW&quot;</span>( _<br />
+		&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpSubKey <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+		&t;<span class="keyword">ByVal</span> Reserved <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpClass <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
+		&t;<span class="keyword">ByVal</span> dwOptions <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> samDesired <span class="keyword">As</span> <span class="datatype">REGSAM</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpSecurityAttributes <span class="keyword">As</span> <span class="datatype">LPSECURITY_ATTRIBUTES</span>, _<br />
+		&t;<span class="keyword">ByVal</span> phkResult <span class="keyword">As</span> <span class="datatype">PHKEY</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpdwDisposition <span class="keyword">As</span> <span class="datatype">LPDWORD</span>) _<br />
+		<span class="keyword">As</span> <span class="datatype">LONG</span>
 	</code></p>
 
 
@@ -372,20 +372,20 @@
 	<p>Получает информацию о разделе реестра: имя класса, поличество подразделов и параметров, дату последней модификации.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	<span class="keyword">Declare</span> <span class="keyword">Function</span> RegQueryInfoKey <span class="keyword">Alias</span> <span class="string">&quot;RegQueryInfoKeyW&quot;</span>( _<br />
-	&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpClass <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpcchClass <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpReserved <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpcSubKeys <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpcbMaxSubKeyLen <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpcbMaxClassLen <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpcValues <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpcbMaxValueNameLen <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpcbMaxValueLen <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpcbSecurityDescriptor <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpftLastWriteTime <span class="keyword">As</span> <span class="datatype">PFILETIME</span>) _<br />
-	<span class="keyword">As</span> <span class="datatype">LONG</span>
+		<span class="keyword">Declare</span> <span class="keyword">Function</span> RegQueryInfoKey <span class="keyword">Alias</span> <span class="string">&quot;RegQueryInfoKeyW&quot;</span>( _<br />
+		&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpClass <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpcchClass <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpReserved <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpcSubKeys <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpcbMaxSubKeyLen <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpcbMaxClassLen <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpcValues <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpcbMaxValueNameLen <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpcbMaxValueLen <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpcbSecurityDescriptor <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpftLastWriteTime <span class="keyword">As</span> <span class="datatype">PFILETIME</span>) _<br />
+		<span class="keyword">As</span> <span class="datatype">LONG</span>
 	</code></p>
 
 
@@ -464,14 +464,14 @@
 	<p>Получает значение параметра раздела реестра.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	<span class="keyword">Declare</span> <span class="keyword">Function</span> RegQueryValueEx <span class="keyword">Alias</span> <span class="string">&quot;RegQueryValueExW&quot;</span>( _<br />
-	&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpValueName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpReserved <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpType <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpData <span class="keyword">As</span> <span class="datatype">LPBYTE</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpcbData <span class="keyword">As</span> <span class="datatype">LPDWORD</span>) _<br />
-	<span class="keyword">As</span> <span class="datatype">LONG</span>
+		<span class="keyword">Declare</span> <span class="keyword">Function</span> RegQueryValueEx <span class="keyword">Alias</span> <span class="string">&quot;RegQueryValueExW&quot;</span>( _<br />
+		&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpValueName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpReserved <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpType <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpData <span class="keyword">As</span> <span class="datatype">LPBYTE</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpcbData <span class="keyword">As</span> <span class="datatype">LPDWORD</span>) _<br />
+		<span class="keyword">As</span> <span class="datatype">LONG</span>
 	</code></p>
 
 
@@ -525,14 +525,14 @@
 	<p>Устанавливает значение параметра реестра. Если такого параметра не существовало в подразделе реестра, то он будет создан.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	<span class="keyword">Declare</span> <span class="keyword">Function</span> RegSetValueEx <span class="keyword">Alias</span> <span class="string">&quot;RegSetValueExW&quot;</span>( _<br />
-	&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpValueName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> Reserved <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> dwType <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpData <span class="keyword">As</span> <span class="datatype">Const UBYTE Ptr</span>, _<br />
-	&t;<span class="keyword">ByVal</span> cbData <span class="keyword">As</span> <span class="datatype">DWORD</span>) _<br />
-	<span class="keyword">As</span> <span class="datatype">LONG</span>
+		<span class="keyword">Declare</span> <span class="keyword">Function</span> RegSetValueEx <span class="keyword">Alias</span> <span class="string">&quot;RegSetValueExW&quot;</span>( _<br />
+		&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpValueName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+		&t;<span class="keyword">ByVal</span> Reserved <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> dwType <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpData <span class="keyword">As</span> <span class="datatype">Const UBYTE Ptr</span>, _<br />
+		&t;<span class="keyword">ByVal</span> cbData <span class="keyword">As</span> <span class="datatype">DWORD</span>) _<br />
+		<span class="keyword">As</span> <span class="datatype">LONG</span>
 	</code></p>
 
 
@@ -588,16 +588,16 @@
 	<p>Перечисляет подразделы раздела реестра.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	<span class="keyword">Declare</span> <span class="keyword">Function</span> RegEnumKeyEx <span class="keyword">Alias</span> <span class="string">&quot;RegEnumKeyExW&quot;</span>( _<br />
-	&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
-	&t;<span class="keyword">ByVal</span> dwIndex <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpName <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpcchName <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpReserved <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpClass <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpcchClass <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpftLastWriteTime <span class="keyword">As</span> <span class="datatype">PFILETIME</span>) _<br />
-	<span class="keyword">As</span> <span class="datatype">LONG</span>
+		<span class="keyword">Declare</span> <span class="keyword">Function</span> RegEnumKeyEx <span class="keyword">Alias</span> <span class="string">&quot;RegEnumKeyExW&quot;</span>( _<br />
+		&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
+		&t;<span class="keyword">ByVal</span> dwIndex <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpName <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpcchName <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpReserved <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpClass <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpcchClass <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpftLastWriteTime <span class="keyword">As</span> <span class="datatype">PFILETIME</span>) _<br />
+		<span class="keyword">As</span> <span class="datatype">LONG</span>
 	</code></p>
 
 
@@ -663,16 +663,16 @@
 	<p>Перечисляет параметры раздела реестра.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	<span class="keyword">Declare</span> <span class="keyword">Function</span> RegEnumValue <span class="keyword">Alias</span> <span class="string">&quot;RegEnumValueW&quot;</span>( _<br />
-	&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
-	&t;<span class="keyword">ByVal</span> dwIndex <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpValueName <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpcchValueName <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpReserved <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpType <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpData <span class="keyword">As</span> <span class="datatype">LPBYTE</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpcbData <span class="keyword">As</span> <span class="datatype">LPDWORD</span>) _<br />
-	<span class="keyword">As</span> <span class="datatype">LONG</span>
+		<span class="keyword">Declare</span> <span class="keyword">Function</span> RegEnumValue <span class="keyword">Alias</span> <span class="string">&quot;RegEnumValueW&quot;</span>( _<br />
+		&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
+		&t;<span class="keyword">ByVal</span> dwIndex <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpValueName <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpcchValueName <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpReserved <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpType <span class="keyword">As</span> <span class="datatype">LPDWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpData <span class="keyword">As</span> <span class="datatype">LPBYTE</span>, _<br />
+		&t;<span class="keyword">ByVal</span> lpcbData <span class="keyword">As</span> <span class="datatype">LPDWORD</span>) _<br />
+		<span class="keyword">As</span> <span class="datatype">LONG</span>
 	</code></p>
 
 
@@ -742,13 +742,13 @@
 	<p>Уведомляет приложение об изменении в разделе реестра.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	<span class="keyword">Declare</span> <span class="keyword">Function</span> RegNotifyChangeKeyValue( _<br />
-	&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
-	&t;<span class="keyword">ByVal</span> bWatchSubtree <span class="keyword">As</span> <span class="datatype">WINBOOL</span>, _<br />
-	&t;<span class="keyword">ByVal</span> dwNotifyFilter <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> hEvent <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
-	&t;<span class="keyword">ByVal</span> fAsynchronous <span class="keyword">As</span> <span class="datatype">WINBOOL</span>) _<br />
-	<span class="keyword">As</span> <span class="datatype">LONG</span>
+		<span class="keyword">Declare</span> <span class="keyword">Function</span> RegNotifyChangeKeyValue( _<br />
+		&t;<span class="keyword">ByVal</span> hKey <span class="keyword">As</span> <span class="datatype">HKEY</span>, _<br />
+		&t;<span class="keyword">ByVal</span> bWatchSubtree <span class="keyword">As</span> <span class="datatype">WINBOOL</span>, _<br />
+		&t;<span class="keyword">ByVal</span> dwNotifyFilter <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+		&t;<span class="keyword">ByVal</span> hEvent <span class="keyword">As</span> <span class="datatype">HANDLE</span>, _<br />
+		&t;<span class="keyword">ByVal</span> fAsynchronous <span class="keyword">As</span> <span class="datatype">WINBOOL</span>) _<br />
+		<span class="keyword">As</span> <span class="datatype">LONG</span>
 	</code></p>
 
 
@@ -807,81 +807,79 @@
 	<p>В этом примере сохраним и считаем из реестра имя пользователя и размеры окна приложения «Офис» вымышленной корпорации «Большие программы» в профиле пользователя.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	#ifndef unicode<br />
-	#define unicode<br />
-	#endif<br />
-	#include once &quot;windows.bi&quot;<br />
-	<br />
-	Const RegSection = &quot;Software\Большие программы\Офис&quot;<br />
-	Const UserNameKey = &quot;Пользователь&quot;<br />
-	Const WidthKey = &quot;Width&quot;<br />
-	Const HeightKey = &quot;Height&quot;<br />
-	<br />
-	&apos; Запись параметров<br />
-	Scope<br />
-	&t;Dim reg As HKEY = Any<br />
-	&t;Dim lpdwDisposition As DWORD = Any<br />
-	<br />
-	&t;&apos; Открыть раздел реестра в профиле текущего пользователя<br />
-	&t;Dim hr As Long = RegCreateKeyEx(HKEY_CURRENT_USER, @RegSection, 0, 0, 0, KEY_SET_VALUE, NULL, @reg, @lpdwDisposition)<br />
-	<br />
-	&t;If hr &lt;&gt; ERROR_SUCCESS Then<br />
-	&t;&t;End(1)<br />
-	&t;End If<br />
-	<br />
-	&t;&apos; Записать ширину окна<br />
-	&t;Dim WindowWidth As DWORD = 640<br />
-	&t;hr = RegSetValueEx(reg, @WidthKey, 0, REG_DWORD, CPtr(Byte Ptr, @WindowWidth), SizeOf(DWORD))<br />
-	<br />
-	&t;&apos; Записать высоту окна<br />
-	&t;Dim WindowHeight As DWORD = 480<br />
-	&t;hr = RegSetValueEx(reg, @HeightKey, 0, REG_DWORD, CPtr(Byte Ptr, @WindowHeight), SizeOf(DWORD))<br />
-	<br />
-	&t;&apos; Записать имя пользователя<br />
-	&t;Dim UserName As WString Ptr = @&quot;Алексей&quot;<br />
-	&t;hr = RegSetValueEx(reg, @UserNameKey, 0, REG_SZ, CPtr(Byte Ptr, UserName), (Len(UserName) + 1) * SizeOf(WString))<br />
-	<br />
-	&t;RegCloseKey(reg)<br />
-	End Scope<br />
-	<br />
-	&apos; Чтение параметров<br />
-	Scope<br />
-	&t;Dim reg As HKEY = Any<br />
-	&t;Dim lpdwDisposition As DWORD = Any<br />
-	&t;Dim hr As Long = RegCreateKeyEx(HKEY_CURRENT_USER, @RegSection, 0, 0, 0, KEY_QUERY_VALUE, NULL, @reg, @lpdwDisposition)<br />
-	<br />
-	&t;If hr &lt;&gt; ERROR_SUCCESS Then<br />
-	&t;&t;End(1)<br />
-	&t;End If<br />
-	<br />
-	&t;Scope<br />
-	&t;&t;Dim WindowWidth As DWORD = Any<br />
-	&t;&t;Dim BufferLength As DWORD = SizeOf(DWORD)<br />
-	&t;&t;hr = RegQueryValueEx(reg, @WidthKey, 0, NULL, CPtr(Byte Ptr, @WindowWidth), @BufferLength)<br />
-	&t;&t;Print &quot;Ширина окна&quot;, WindowWidth<br />
-	&t;End Scope<br />
-	<br />
-	&t;Scope<br />
-	&t;&t;Dim WindowHeight As DWORD = Any<br />
-	&t;&t;Dim BufferLength As DWORD = SizeOf(DWORD)<br />
-	&t;&t;hr = RegQueryValueEx(reg, @HeightKey, 0, NULL, CPtr(Byte Ptr, @WindowHeight), @BufferLength)<br />
-	&t;&t;Print &quot;Высота окна&quot;, WindowHeight<br />
-	&t;End Scope<br />
-	<br />
-	&t;Scope<br />
-	&t;&t;&apos; Определить размер требуемого буфера для имени пользователя<br />
-	&t;&t;Dim BufferLength As DWORD = Any<br />
-	&t;&t;hr = RegQueryValueEx(reg, @UserNameKey, 0, NULL, NULL, @BufferLength)<br />
-	&t;&t;Print &quot;Размер буфера под имя пользователя в байтах&quot;, BufferLength<br />
-	<br />
-	&t;&t;Dim UserName As WString Ptr = Allocate(BufferLength)<br />
-	&t;&t;hr = RegQueryValueEx(reg, @UserNameKey, 0, NULL, CPtr(Byte Ptr, UserName), @BufferLength)<br />
-	&t;&t;Print &quot;Имя пользователя&quot;, *UserName<br />
-	&t;&t;DeAllocate(UserName)<br />
-	&t;End Scope<br />
-	<br />
-	&t;RegCloseKey(reg)<br />
-	End Scope
+		<span class="preprocessor">#define unicode</span><br />
+		<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
+		<br />
+		<span class="keyword">Const</span> RegSection = <span class="string">&quot;Software\Большие программы\Офис&quot;</span><br />
+		<span class="keyword">Const</span> UserNameKey = <span class="string">&quot;Пользователь&quot;</span><br />
+		<span class="keyword">Const</span> WidthKey = <span class="string">&quot;Width&quot;</span><br />
+		<span class="keyword">Const</span> HeightKey = <span class="string">&quot;Height&quot;</span><br />
+		<br />
+		<span class="remark">&apos; Запись параметров</span><br />
+		<span class="keyword">Scope</span><br />
+			&t;<span class="keyword">Dim</span> reg <span class="keyword">As</span> <span class="datatype">HKEY</span> = <span class="keyword">Any</span><br />
+			&t;<span class="keyword">Dim</span> lpdwDisposition <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
+			<br />
+			&t;<span class="remark">&apos; Открыть раздел реестра в профиле текущего пользователя</span><br />
+			&t;<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">Long</span> = RegCreateKeyEx(HKEY_CURRENT_USER, @RegSection, 0, 0, 0, KEY_SET_VALUE, NULL, @reg, @lpdwDisposition)<br />
+			<br />
+			&t;<span class="keyword">If</span> hr &lt;&gt; ERROR_SUCCESS <span class="keyword">Then</span><br />
+			&t;&t;<span class="keyword">End</span>(1)<br />
+			&t;<span class="keyword">End If</span><br />
+			<br />
+			&t;<span class="remark">&apos; Записать ширину окна</span><br />
+			&t;<span class="keyword">Dim</span> WindowWidth <span class="keyword">As</span> <span class="datatype">DWORD</span> = 640<br />
+			&t;hr = RegSetValueEx(reg, @WidthKey, 0, REG_DWORD, <span class="keyword">CPtr</span>(<span class="datatype">Byte Ptr</span>, @WindowWidth), <span class="keyword">SizeOf</span>(<span class="datatype">DWORD</span>))<br />
+			<br />
+			&t;<span class="remark">&apos; Записать высоту окна</span><br />
+			&t;<span class="keyword">Dim</span> WindowHeight <span class="keyword">As</span> <span class="datatype">DWORD</span> = 480<br />
+			&t;hr = RegSetValueEx(reg, @HeightKey, 0, REG_DWORD, <span class="keyword">CPtr</span>(<span class="datatype">Byte Ptr</span>, @WindowHeight), <span class="keyword">SizeOf</span>(<span class="datatype">DWORD</span>))<br />
+			<br />
+			&t;<span class="remark">&apos; Записать имя пользователя</span><br />
+			&t;<span class="keyword">Dim</span> UserName <span class="keyword">As</span> <span class="datatype">WString Ptr</span> = @<span class="string">&quot;Алексей&quot;</span><br />
+			&t;hr = RegSetValueEx(reg, @UserNameKey, 0, REG_SZ, <span class="keyword">CPtr</span>(<span class="datatype">Byte Ptr</span>, UserName), (<span class="keyword">Len</span>(UserName) + 1) * <span class="keyword">SizeOf</span>(<span class="datatype">WString</span>))<br />
+			<br />
+			&t;RegCloseKey(reg)<br />
+		<span class="keyword">End Scope</span><br />
+		<br />
+		<span class="remark">&apos; Чтение параметров</span><br />
+		<span class="keyword">Scope</span><br />
+			&t;<span class="keyword">Dim</span> reg <span class="keyword">As</span> <span class="datatype">HKEY</span> = <span class="keyword">Any</span><br />
+			&t;<span class="keyword">Dim</span> lpdwDisposition <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
+			&t;<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">Long</span> = RegCreateKeyEx(HKEY_CURRENT_USER, @RegSection, 0, 0, 0, KEY_QUERY_VALUE, NULL, @reg, @lpdwDisposition)<br />
+			<br />
+			&t;<span class="keyword">If</span> hr &lt;&gt; ERROR_SUCCESS <span class="keyword">Then</span><br />
+			&t;&t;<span class="keyword">End</span>(1)<br />
+			&t;<span class="keyword">End If</span><br />
+			<br />
+			&t;<span class="keyword">Scope</span><br />
+			&t;&t;<span class="keyword">Dim</span> WindowWidth <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
+			&t;&t;<span class="keyword">Dim</span> BufferLength <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">SizeOf</span>(<span class="datatype">DWORD</span>)<br />
+			&t;&t;hr = RegQueryValueEx(reg, @WidthKey, 0, NULL, <span class="keyword">CPtr</span>(<span class="datatype">Byte Ptr</span>, @WindowWidth), @BufferLength)<br />
+			&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Ширина окна&quot;</span>, WindowWidth<br />
+		&t;<span class="keyword">End Scope</span><br />
+		<br />
+		&t;<span class="keyword">Scope</span><br />
+			&t;&t;<span class="keyword">Dim</span> WindowHeight <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
+			&t;&t;<span class="keyword">Dim</span> BufferLength <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">SizeOf</span>(<span class="datatype">DWORD</span>)<br />
+			&t;&t;hr = RegQueryValueEx(reg, @HeightKey, 0, NULL, <span class="keyword">CPtr</span>(<span class="datatype">Byte Ptr</span>, @WindowHeight), @BufferLength)<br />
+			&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Высота окна&quot;</span>, WindowHeight<br />
+		&t;<span class="keyword">End Scope</span><br />
+		<br />
+		&t;<span class="keyword">Scope</span><br />
+			&t;&t;<span class="remark">&apos; Определить размер требуемого буфера для имени пользователя</span><br />
+			&t;&t;<span class="keyword">Dim</span> BufferLength <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
+			&t;&t;hr = RegQueryValueEx(reg, @UserNameKey, 0, NULL, NULL, @BufferLength)<br />
+			&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Размер буфера под имя пользователя в байтах&quot;</span>, BufferLength<br />
+			<br />
+			&t;&t;<span class="keyword">Dim</span> UserName <span class="keyword">As</span> <span class="datatype">WString Ptr</span> = <span class="keyword">Allocate</span>(BufferLength)<br />
+			&t;&t;hr = RegQueryValueEx(reg, @UserNameKey, 0, NULL, <span class="keyword">CPtr</span>(<span class="datatype">Byte Ptr</span>, UserName), @BufferLength)<br />
+			&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Имя пользователя&quot;</span>, *UserName<br />
+			&t;&t;<span class="keyword">Deallocate</span>(UserName)<br />
+			&t;<span class="keyword">End Scope</span><br />
+			<br />
+			&t;RegCloseKey(reg)<br />
+		<span class="keyword">End Scope</span>
 	</code></p>
 
 
@@ -890,67 +888,65 @@
 	<p>В этом примере перечислим все подразделы в разделе «Software» для всех пользователей.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	#ifndef unicode<br />
-	#define unicode<br />
-	#endif<br />
-	#include once &quot;windows.bi&quot;<br />
-	<br />
-	Const RegSection = &quot;Software&quot;<br />
-	<br />
-	&apos; Получить список подразделов<br />
-	<br />
-	Dim reg As HKEY = Any<br />
-	Dim lpdwDisposition As DWORD = Any<br />
-	<br />
-	&apos; Открыть раздел реестра общий для всех пользователей<br />
-	Dim hr As Long = RegCreateKeyEx(HKEY_LOCAL_MACHINE, @RegSection, 0, 0, 0, KEY_QUERY_VALUE + KEY_ENUMERATE_SUB_KEYS, NULL, @reg, @lpdwDisposition)<br />
-	<br />
-	If hr &lt;&gt; ERROR_SUCCESS Then<br />
-	&t;End(1)<br />
-	End If<br />
-	<br />
-	Dim strClassName As WString * 512 = Any<br />
-	Dim ClassNameLength As DWORD = 511<br />
-	<br />
-	Dim SubKeysCount As DWORD = Any<br />
-	Dim MaxSubKeyLength As DWORD = Any<br />
-	Dim MaxClassNameLength As DWORD = Any<br />
-	<br />
-	Dim ValuesCount As DWORD = Any<br />
-	Dim MaxValueDataLength As DWORD = Any<br />
-	Dim MaxValueNameLength As DWORD = Any<br />
-	<br />
-	Dim LastWriteTime As FILETIME = Any<br />
-	<br />
-	&apos; Информация о разделе реестра<br />
-	hr = RegQueryInfoKey(reg, @strClassName, @ClassNameLength, 0, @SubKeysCount, @MaxSubKeyLength, @MaxClassNameLength, @ValuesCount, @MaxValueNameLength, @MaxValueDataLength, NULL, @LastWriteTime)<br />
-	If hr &lt;&gt; ERROR_SUCCESS Then<br />
-	&t;End(1)<br />
-	End If<br />
-	<br />
-	Print &quot;ClassNameLength&quot;, ClassNameLength<br />
-	Print &quot;SubKeysCount&quot;, SubKeysCount<br />
-	Print &quot;MaxSubKeyLength&quot;, MaxSubKeyLength<br />
-	Print &quot;MaxClassNameLength&quot;, MaxClassNameLength<br />
-	Print &quot;ValuesCount&quot;, ValuesCount<br />
-	Print &quot;MaxValueNameLength&quot;, MaxValueNameLength<br />
-	Print &quot;MaxValueDataLength&quot;, MaxValueDataLength<br />
-	<br />
-	Dim SubKeyName As WString Ptr = Allocate((SizeOf(WString) + 1) * MaxSubKeyLength)<br />
-	<br />
-	&apos; Перечисление подразделов<br />
-	For i As DWORD = 0 To SubKeysCount - 1<br />
-	&t;Dim MaxSubKeyLength1 As DWORD = MaxSubKeyLength + 1<br />
-	&t;hr = RegEnumKeyEx(reg, i, SubKeyName, @MaxSubKeyLength1, 0, NULL, 0, @LastWriteTime)<br />
-	&t;If hr &lt;&gt; ERROR_SUCCESS Then<br />
-	&t;&t;Print &quot;Ошибка перечисления&quot;, hr<br />
-	&t;&t;Exit For<br />
-	&t;End If<br />
-	&t;Print *SubKeyName<br />
-	Next<br />
-	<br />
-	DeAllocate(SubKeyName)<br />
-	RegCloseKey(reg)
+		<span class="preprocessor">#define unicode</span><br />
+		<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
+		<br />
+		<span class="keyword">Const</span> RegSection = <span class="string">&quot;Software&quot;</span><br />
+		<br />
+		<span class="remark">&apos; Получить список подразделов</span><br />
+		<br />
+		<span class="keyword">Dim</span> reg <span class="keyword">As</span> <span class="datatype">HKEY</span> = <span class="keyword">Any</span><br />
+		<span class="keyword">Dim</span> lpdwDisposition <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
+		<br />
+		<span class="remark">&apos; Открыть раздел реестра общий для всех пользователей</span><br />
+		<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">Long</span> = RegCreateKeyEx(HKEY_LOCAL_MACHINE, @RegSection, 0, 0, 0, KEY_QUERY_VALUE + KEY_ENUMERATE_SUB_KEYS, NULL, @reg, @lpdwDisposition)<br />
+		<br />
+		<span class="keyword">If</span> hr &lt;&gt; ERROR_SUCCESS <span class="keyword">Then</span><br />
+		&t;<span class="keyword">End</span>(1)<br />
+		<span class="keyword">End If</span><br />
+		<br />
+		<span class="keyword">Dim</span> strClassName <span class="keyword">As</span> <span class="datatype">WString</span> * 512 = <span class="keyword">Any</span><br />
+		<span class="keyword">Dim</span> ClassNameLength <span class="keyword">As</span> <span class="datatype">DWORD</span> = 511<br />
+		<br />
+		<span class="keyword">Dim</span> SubKeysCount <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
+		<span class="keyword">Dim</span> MaxSubKeyLength <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
+		<span class="keyword">Dim</span> MaxClassNameLength <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
+		<br />
+		<span class="keyword">Dim</span> ValuesCount <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
+		<span class="keyword">Dim</span> MaxValueDataLength <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
+		<span class="keyword">Dim</span> MaxValueNameLength <span class="keyword">As</span> <span class="datatype">DWORD</span> = <span class="keyword">Any</span><br />
+		<br />
+		<span class="keyword">Dim</span> LastWriteTime <span class="keyword">As</span> <span class="datatype">FILETIME</span> = <span class="keyword">Any</span><br />
+		<br />
+		<span class="remark">&apos; Информация о разделе реестра</span><br />
+		hr = RegQueryInfoKey(reg, @strClassName, @ClassNameLength, 0, @SubKeysCount, @MaxSubKeyLength, @MaxClassNameLength, @ValuesCount, @MaxValueNameLength, @MaxValueDataLength, NULL, @LastWriteTime)<br />
+		<span class="keyword">If</span> hr &lt;&gt; ERROR_SUCCESS <span class="keyword">Then</span><br />
+		&t;<span class="keyword">End</span>(1)<br />
+		<span class="keyword">End If</span><br />
+		<br />
+		<span class="keyword">Print</span> <span class="string">&quot;ClassNameLength&quot;</span>, ClassNameLength<br />
+		<span class="keyword">Print</span> <span class="string">&quot;SubKeysCount&quot;</span>, SubKeysCount<br />
+		<span class="keyword">Print</span> <span class="string">&quot;MaxSubKeyLength&quot;</span>, MaxSubKeyLength<br />
+		<span class="keyword">Print</span> <span class="string">&quot;MaxClassNameLength&quot;</span>, MaxClassNameLength<br />
+		<span class="keyword">Print</span> <span class="string">&quot;ValuesCount&quot;</span>, ValuesCount<br />
+		<span class="keyword">Print</span> <span class="string">&quot;MaxValueNameLength&quot;</span>, MaxValueNameLength<br />
+		<span class="keyword">Print</span> <span class="string">&quot;MaxValueDataLength&quot;</span>, MaxValueDataLength<br />
+		<br />
+		<span class="keyword">Dim</span> SubKeyName <span class="keyword">As</span> <span class="datatype">WString Ptr</span> = <span class="keyword">Allocate</span>((<span class="keyword">SizeOf</span>(<span class="datatype">WString</span>) + 1) * MaxSubKeyLength)<br />
+		<br />
+		<span class="remark">&apos; Перечисление подразделов</span><br />
+		<span class="keyword">For</span> i <span class="keyword">As</span> <span class="datatype">DWORD</span> = 0 <span class="keyword">To</span> SubKeysCount - 1<br />
+			&t;<span class="keyword">Dim</span> MaxSubKeyLength1 <span class="keyword">As</span> <span class="datatype">DWORD</span> = MaxSubKeyLength + 1<br />
+			&t;hr = RegEnumKeyEx(reg, i, SubKeyName, @MaxSubKeyLength1, 0, NULL, 0, @LastWriteTime)<br />
+			&t;<span class="keyword">If</span> hr &lt;&gt; ERROR_SUCCESS <span class="keyword">Then</span><br />
+			&t;&t;<span class="keyword">Print</span> <span class="string">&quot;Ошибка перечисления&quot;</span>, hr<br />
+			&t;&t;<span class="keyword">Exit For</span><br />
+			&t;<span class="keyword">End If</span><br />
+			&t;<span class="keyword">Print</span> *SubKeyName<br />
+		<span class="keyword">Next</span><br />
+		<br />
+		<span class="keyword">Deallocate</span>(SubKeyName)<br />
+		RegCloseKey(reg)
 	</code></p>
 
 

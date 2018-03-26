@@ -86,10 +86,13 @@
 	<p>Инициализирует необходимые ресурсы для работы и возвращает стандартные размеры изображения карты из колоды.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-		<span class="keyword">Declare</span> <span class="keyword">Function</span> cdtInit <span class="keyword">Alias</span> <span class="string">&quot;cdtInit&quot;</span>(<span class="keyword">ByVal</span> Width <span class="keyword">As</span> <span class="datatype">Integer Ptr</span>, <span class="keyword">ByVal</span> Height <span class="keyword">As</span> <span class="datatype">Integer Ptr</span>)<span class="keyword">As</span> <span class="datatype">Integer</span>
+		<span class="keyword">Declare</span> <span class="keyword">Function</span> cdtInit <span class="keyword">Alias</span> <span class="string">&quot;cdtInit&quot;</span>( _<br />
+			&t;<span class="keyword">ByVal</span> Width <span class="keyword">As</span> <span class="datatype">Integer Ptr</span>, _<br />	
+			&t;<span class="keyword">ByVal</span> Height <span class="keyword">As</span> <span class="datatype">Integer Ptr</span> _<br />
+			)<span class="keyword">As</span> <span class="datatype">Integer</span>
 	</code></p>
 
-	<p>Параметры.</p>
+	<h4>Параметры</h4>
 
 	<dl>
 	<dt>Width</dt>
@@ -104,13 +107,22 @@
 
 	<h3><a id="c1c2">cdtDrawExt</a></h3>
 
-	<p>Выводит карту на экран</p>
+	<p>Выводит карту на экран.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	<span class="keyword">Declare</span> <span class="keyword">Function</span> cdtDrawExt <span class="keyword">Alias</span> <span class="string">&quot;cdtDrawExt&quot;</span>(<span class="keyword">ByVal</span> hDC <span class="keyword">As</span> <span class="datatype">HDC</span>, <span class="keyword">ByVal</span> X <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Y <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Width <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Height <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Card <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Suit <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Color <span class="keyword">As</span> <span class="datatype">DWORD</span>)<span class="keyword">As</span> <span class="datatype">Integer</span>
+	<span class="keyword">Declare</span> <span class="keyword">Function</span> cdtDrawExt <span class="keyword">Alias</span> <span class="string">&quot;cdtDrawExt&quot;</span>( _<br />
+		&t;<span class="keyword">ByVal</span> hDC <span class="keyword">As</span> <span class="datatype">HDC</span>, _<br />
+		&t;<span class="keyword">ByVal</span> X <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+		&t;<span class="keyword">ByVal</span> Y <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+		&t;<span class="keyword">ByVal</span> Width <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+		&t;<span class="keyword">ByVal</span> Height <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+		&t;<span class="keyword">ByVal</span> Card <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+		&t;<span class="keyword">ByVal</span> Suit <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+		&t;<span class="keyword">ByVal</span> Color <span class="keyword">As</span> <span class="datatype">DWORD</span> _<br />
+		)<span class="keyword">As</span> <span class="datatype">Integer</span>
 	</code></p>
 
-	<p>Параметры.</p>
+	<h4>Параметры</h4>
 
 	<dl>
 	<dt>hDC</dt>
@@ -160,7 +172,9 @@
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
 	<span class="keyword">Declare</span> <span class="keyword">Sub</span> cdtTerm <span class="keyword">Alias</span> <span class="string">&quot;cdtTerm&quot;</span>()
 	</code></p>
-
+	
+	<h4>Параметры</h4>
+	
 	<p>Функция не имеет параметров.</p>
 
 	<h2><a id="c2">Подробное описание</a></h2>
@@ -168,40 +182,42 @@
 	<p>Основная функция, с помощью которой рисуется карта — <code>cdtDrawExt</code>. Как известно, стандартная колода состоит из 52 карт. Карты имеют 4 масти по 13 наименований в каждой. Параметру <code>Card</code> функции <code>cdtDrawExt</code> соответствует число, определяющее достоинство карты. Числа в интервале 0-51 выводят одну из стандартных 52 карт колоды. Так, значение 0 соответствует тузу треф, 1 — тузу бубен, 2 — тузу червей, 3 — тузу пик и т.д. Последнее число 51 соответствует королю пик.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	<span class="remark">&apos; Масти карт</span><br />
-	<span class="keyword">Enum</span> Suits<br />
-	&t;Clubs = 0 <span class="remark">&apos; трефы</span><br />
-	&t;Diamond = 1 <span class="remark">&apos; бубны</span><br />
-	&t;Hearts = 2 <span class="remark">&apos;черви</span><br />
-	&t;Spades = 3 <span class="remark">&apos; пики</span><br />
-	<span class="keyword">End Enum</span><br />
-	<br />
-	<span class="remark">&apos; Номинал карты</span><br />
-	<span class="keyword">Enum</span> Faces<br />
-	&t;Ace = 0 <span class="remark">&apos; туз</span><br />
-	&t;Two = 1 <span class="remark">&apos; двойка</span><br />
-	&t;Three = 2 <span class="remark">&apos; тройка</span><br />
-	&t;Four = 3 <span class="remark">&apos; четверка</span><br />
-	&t;Five = 4 <span class="remark">&apos; пятерка</span><br />
-	&t;Six = 5 <span class="remark">&apos; шестерка</span><br />
-	&t;Seven = 6 <span class="remark">&apos; семерка</span><br />
-	&t;Eight = 7 <span class="remark">&apos; восьмерка</span><br />
-	&t;Nine  = 8 <span class="remark">&apos; девятка</span><br />
-	&t;Ten  = 9 <span class="remark">&apos; десятка</span><br />
-	&t;Jack  = 10 <span class="remark">&apos; валет</span><br />
-	&t;Queen = 11 <span class="remark">&apos; дама</span><br />
-	&t;King = 12 <span class="remark">&apos; король</span><br />
-	<span class="keyword">End Enum</span>
+		<span class="remark">&apos; Масти карт</span><br />
+		<span class="keyword">Enum</span> <span class="datatype">Suits</span><br />
+			&t;Clubs = 0 <span class="remark">&apos; трефы</span><br />
+			&t;Diamond = 1 <span class="remark">&apos; бубны</span><br />
+			&t;Hearts = 2 <span class="remark">&apos;черви</span><br />
+			&t;Spades = 3 <span class="remark">&apos; пики</span><br />
+		<span class="keyword">End Enum</span><br />
+		<br />
+		<span class="remark">&apos; Номинал карты</span><br />
+		<span class="keyword">Enum</span> <span class="datatype">Faces</span><br />
+			&t;Ace = 0 <span class="remark">&apos; туз</span><br />
+			&t;Two = 1 <span class="remark">&apos; двойка</span><br />
+			&t;Three = 2 <span class="remark">&apos; тройка</span><br />
+			&t;Four = 3 <span class="remark">&apos; четверка</span><br />
+			&t;Five = 4 <span class="remark">&apos; пятерка</span><br />
+			&t;Six = 5 <span class="remark">&apos; шестерка</span><br />
+			&t;Seven = 6 <span class="remark">&apos; семерка</span><br />
+			&t;Eight = 7 <span class="remark">&apos; восьмерка</span><br />
+			&t;Nine  = 8 <span class="remark">&apos; девятка</span><br />
+			&t;Ten  = 9 <span class="remark">&apos; десятка</span><br />
+			&t;Jack  = 10 <span class="remark">&apos; валет</span><br />
+			&t;Queen = 11 <span class="remark">&apos; дама</span><br />
+			&t;King = 12 <span class="remark">&apos; король</span><br />
+		<span class="keyword">End Enum</span>
 	</code></p>
 
 	<p>Чтобы получить номер нужной карты, надо знать волшебную формулу:</p>
+	
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	Сard = Faces * 4 + Suits
+		Сard = Faces * 4 + Suits
 	</code></p>
 
 	<p>Например, нужно получить номер пиковой дамы. Подставляем в формулу нужные значения:</p>
+	
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	Card = Faces.Queen * 4 + Suits.Diamond
+		Card = Faces.Queen * 4 + Suits.Diamond
 	</code></p>
 
 	<p>Таким образом, пиковой даме соответствует номер 47 = (11 * 4 + 3).</p>
@@ -209,25 +225,25 @@
 	<p>Остальные числа от 52 до 68 выводят различные виды рубашек, а также несколько специальных картинок: X или O. Перечёркнутая красным крестом карта означает конец игры, зелёная O указывает, что ты можешь перемешать колоду для продолжения игры. Параметр Suit позволяет выводить различные состояния карты. Например, ты присвоил параметру Card значение от 0 до 51 (нормальный вид). В этом случае при значении 0 в параметре Suit выведется стандартный вид карты. Передавая значение 2, выведется эта же карта в инвертированном виде, показывая пользователю, что карта выбрана. Если же необходимо показать рубашку карты (обратную сторону), то используй значение 1 в параметре Suit при значениях Card в интервале от 53 до 68.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	<span class="remark">&apos; Картинки для рубашки</span><br />
-	<span class="keyword">Enum</span> Backs<br />
-	&t;Crosshatch = 53 <span class="remark">&apos; Сетка</span><br />
-	&t;Sky = 54 <span class="remark">&apos; Небо</span><br />
-	&t;Mineral = 55 <span class="remark">&apos; Минерал</span><br />
-	&t;Fish = 56 <span class="remark">&apos; Рыба</span><br />
-	&t;Frog = 57 <span class="remark">&apos; Лягушка</span><br />
-	&t;Flower = 58 <span class="remark">&apos; Цветок</span><br />
-	&t;Island = 59 <span class="remark">&apos; Остров с пальмами</span><br />
-	&t;Sqiares = 60 <span class="remark">&apos; Квадраты</span><br />
-	&t;Magenta = 61 <span class="remark">&apos; Фиолетовый узор</span><br />
-	&t;Sanddunes = 62 <span class="remark">&apos; Песчаные дюны</span><br />
-	&t;Space = 63 <span class="remark">&apos; Астронавт</span><br />
-	&t;Lines = 64 <span class="remark">&apos; Линии</span><br />
-	&t;Cars = 65 <span class="remark">&apos; Машинки</span><br />
-	&t;Unused = 66 <span class="remark">&apos; Неиспользуемая карта</span><br />
-	&t;X = 67 <span class="remark">&apos; Символ X</span><br />
-	&t;O = 68 <span class="remark">&apos; Символ О</span><br />
-	<span class="keyword">End Enum</span>
+		<span class="remark">&apos; Картинки для рубашки</span><br />
+		<span class="keyword">Enum</span> <span class="datatype">Backs</span><br />
+			&t;Crosshatch = 53 <span class="remark">&apos; Сетка</span><br />
+			&t;Sky = 54 <span class="remark">&apos; Небо</span><br />
+			&t;Mineral = 55 <span class="remark">&apos; Минерал</span><br />
+			&t;Fish = 56 <span class="remark">&apos; Рыба</span><br />
+			&t;Frog = 57 <span class="remark">&apos; Лягушка</span><br />
+			&t;Flower = 58 <span class="remark">&apos; Цветок</span><br />
+			&t;Island = 59 <span class="remark">&apos; Остров с пальмами</span><br />
+			&t;Sqiares = 60 <span class="remark">&apos; Квадраты</span><br />
+			&t;Magenta = 61 <span class="remark">&apos; Фиолетовый узор</span><br />
+			&t;Sanddunes = 62 <span class="remark">&apos; Песчаные дюны</span><br />
+			&t;Space = 63 <span class="remark">&apos; Астронавт</span><br />
+			&t;Lines = 64 <span class="remark">&apos; Линии</span><br />
+			&t;Cars = 65 <span class="remark">&apos; Машинки</span><br />
+			&t;Unused = 66 <span class="remark">&apos; Неиспользуемая карта</span><br />
+			&t;X = 67 <span class="remark">&apos; Символ X</span><br />
+			&t;O = 68 <span class="remark">&apos; Символ О</span><br />
+		<span class="keyword">End Enum</span>
 	</code></p>
 
 	<h2><a id="c3">Демонстрационная программа</a></h2>
@@ -239,62 +255,62 @@
 	<p>Собранный воедино заголовочный файл «cards.bi».</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	<span class="remark">&apos; Функции работы с картами</span><br />
-	<span class="keyword">Declare</span> <span class="keyword">Function</span> cdtInit <span class="keyword">Alias</span> <span class="string">&quot;cdtInit&quot;</span>(<span class="keyword">ByVal</span> Width <span class="keyword">As</span> <span class="datatype">Integer Ptr</span>, <span class="keyword">ByVal</span> Height <span class="keyword">As</span> <span class="datatype">Integer Ptr</span>)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
-	<span class="keyword">Declare</span> <span class="keyword">Function</span> cdtDrawExt <span class="keyword">Alias</span> <span class="string">&quot;cdtDrawExt&quot;</span>(<span class="keyword">ByVal</span> hDC <span class="keyword">As</span> <span class="datatype">HDC</span>, <span class="keyword">ByVal</span> X <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Y <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> dX <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> dY <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Card <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Suit <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Color <span class="keyword">As</span> <span class="datatype">DWORD</span>)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
-	<span class="keyword">Declare</span> <span class="keyword">Sub</span> cdtTerm <span class="keyword">Alias</span> <span class="string">&quot;cdtTerm&quot;</span>()<br />
-	<br />
-	<span class="remark">&apos; Картинки для рубашки</span><br />
-	<span class="keyword">Enum</span> Backs<br />
-	&t;Crosshatch = 53 <span class="remark">&apos; Сетка</span><br />
-	&t;Sky = 54 <span class="remark">&apos; Небо</span><br />
-	&t;Mineral = 55 <span class="remark">&apos; Минерал</span><br />
-	&t;Fish = 56 <span class="remark">&apos; Рыба</span><br />
-	&t;Frog = 57 <span class="remark">&apos; Лягушка</span><br />
-	&t;Flower = 58 <span class="remark">&apos; Цветок</span><br />
-	&t;Island = 59 <span class="remark">&apos; Остров с пальмами</span><br />
-	&t;Sqiares = 60 <span class="remark">&apos; Квадраты</span><br />
-	&t;Magenta = 61 <span class="remark">&apos; Фиолетовый узор</span><br />
-	&t;Sanddunes = 62 <span class="remark">&apos; Песчаные дюны</span><br />
-	&t;Space = 63 <span class="remark">&apos; Астронавт</span><br />
-	&t;Lines = 64 <span class="remark">&apos; Линии</span><br />
-	&t;Cars = 65 <span class="remark">&apos; Машинки</span><br />
-	&t;Unused = 66 <span class="remark">&apos; Неиспользуемая карта</span><br />
-	&t;X = 67 <span class="remark">&apos; Символ X</span><br />
-	&t;O = 68 <span class="remark">&apos; Символ О</span><br />
-	<span class="keyword">End Enum</span><br />
-	<br />
-	<span class="remark">&apos; Масти карт</span><br />
-	<span class="keyword">Enum</span> Suits<br />
-	&t;Clubs = 0 <span class="remark">&apos; трефы</span><br />
-	&t;Diamond = 1 <span class="remark">&apos; бубны</span><br />
-	&t;Hearts = 2 <span class="remark">&apos;черви</span><br />
-	&t;Spades = 3 <span class="remark">&apos; пики</span><br />
-	<span class="keyword">End Enum</span><br />
-	<br />
-	<span class="remark">&apos; Номинал карты</span><br />
-	<span class="keyword">Enum</span> Faces<br />
-	&t;Ace = 0 <span class="remark">&apos; туз</span><br />
-	&t;Two = 1 <span class="remark">&apos; двойка</span><br />
-	&t;Three = 2 <span class="remark">&apos; тройка</span><br />
-	&t;Four = 3 <span class="remark">&apos; четверка</span><br />
-	&t;Five = 4 <span class="remark">&apos; пятерка</span><br />
-	&t;Six = 5 <span class="remark">&apos; шестерка</span><br />
-	&t;Seven = 6 <span class="remark">&apos; семерка</span><br />
-	&t;Eight = 7 <span class="remark">&apos; восьмерка</span><br />
-	&t;Nine  = 8 <span class="remark">&apos; девятка</span><br />
-	&t;Ten  = 9 <span class="remark">&apos; десятка</span><br />
-	&t;Jack  = 10 <span class="remark">&apos; валет</span><br />
-	&t;Queen = 11 <span class="remark">&apos; дама</span><br />
-	&t;King = 12 <span class="remark">&apos; король</span><br />
-	<span class="keyword">End Enum</span><br />
-	<br />
-	<span class="remark">&apos; Тип отображения карты</span><br />
-	<span class="keyword">Enum</span> Views<br />
-	&t;Normal = 0 <span class="remark">&apos; Карта в нормальном виде</span><br />
-	&t;Back = 1 <span class="remark">&apos; Рубашка карты</span><br />
-	&t;Invert = 2 <span class="remark">&apos; Инвертированная карта</span><br />
-	<span class="keyword">End Enum</span>
+		<span class="remark">&apos; Функции работы с картами</span><br />
+		<span class="keyword">Declare</span> <span class="keyword">Function</span> cdtInit <span class="keyword">Alias</span> <span class="string">&quot;cdtInit&quot;</span>(<span class="keyword">ByVal</span> Width <span class="keyword">As</span> <span class="datatype">Integer Ptr</span>, <span class="keyword">ByVal</span> Height <span class="keyword">As</span> <span class="datatype">Integer Ptr</span>)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+		<span class="keyword">Declare</span> <span class="keyword">Function</span> cdtDrawExt <span class="keyword">Alias</span> <span class="string">&quot;cdtDrawExt&quot;</span>(<span class="keyword">ByVal</span> hDC <span class="keyword">As</span> <span class="datatype">HDC</span>, <span class="keyword">ByVal</span> X <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Y <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> dX <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> dY <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Card <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Suit <span class="keyword">As</span> <span class="datatype">Integer</span>, <span class="keyword">ByVal</span> Color <span class="keyword">As</span> <span class="datatype">DWORD</span>)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+		<span class="keyword">Declare</span> <span class="keyword">Sub</span> cdtTerm <span class="keyword">Alias</span> <span class="string">&quot;cdtTerm&quot;</span>()<br />
+		<br />
+		<span class="remark">&apos; Картинки для рубашки</span><br />
+		<span class="keyword">Enum</span> Backs<br />
+		&t;Crosshatch = 53 <span class="remark">&apos; Сетка</span><br />
+		&t;Sky = 54 <span class="remark">&apos; Небо</span><br />
+		&t;Mineral = 55 <span class="remark">&apos; Минерал</span><br />
+		&t;Fish = 56 <span class="remark">&apos; Рыба</span><br />
+		&t;Frog = 57 <span class="remark">&apos; Лягушка</span><br />
+		&t;Flower = 58 <span class="remark">&apos; Цветок</span><br />
+		&t;Island = 59 <span class="remark">&apos; Остров с пальмами</span><br />
+		&t;Sqiares = 60 <span class="remark">&apos; Квадраты</span><br />
+		&t;Magenta = 61 <span class="remark">&apos; Фиолетовый узор</span><br />
+		&t;Sanddunes = 62 <span class="remark">&apos; Песчаные дюны</span><br />
+		&t;Space = 63 <span class="remark">&apos; Астронавт</span><br />
+		&t;Lines = 64 <span class="remark">&apos; Линии</span><br />
+		&t;Cars = 65 <span class="remark">&apos; Машинки</span><br />
+		&t;Unused = 66 <span class="remark">&apos; Неиспользуемая карта</span><br />
+		&t;X = 67 <span class="remark">&apos; Символ X</span><br />
+		&t;O = 68 <span class="remark">&apos; Символ О</span><br />
+		<span class="keyword">End Enum</span><br />
+		<br />
+		<span class="remark">&apos; Масти карт</span><br />
+		<span class="keyword">Enum</span> Suits<br />
+		&t;Clubs = 0 <span class="remark">&apos; трефы</span><br />
+		&t;Diamond = 1 <span class="remark">&apos; бубны</span><br />
+		&t;Hearts = 2 <span class="remark">&apos;черви</span><br />
+		&t;Spades = 3 <span class="remark">&apos; пики</span><br />
+		<span class="keyword">End Enum</span><br />
+		<br />
+		<span class="remark">&apos; Номинал карты</span><br />
+		<span class="keyword">Enum</span> Faces<br />
+		&t;Ace = 0 <span class="remark">&apos; туз</span><br />
+		&t;Two = 1 <span class="remark">&apos; двойка</span><br />
+		&t;Three = 2 <span class="remark">&apos; тройка</span><br />
+		&t;Four = 3 <span class="remark">&apos; четверка</span><br />
+		&t;Five = 4 <span class="remark">&apos; пятерка</span><br />
+		&t;Six = 5 <span class="remark">&apos; шестерка</span><br />
+		&t;Seven = 6 <span class="remark">&apos; семерка</span><br />
+		&t;Eight = 7 <span class="remark">&apos; восьмерка</span><br />
+		&t;Nine  = 8 <span class="remark">&apos; девятка</span><br />
+		&t;Ten  = 9 <span class="remark">&apos; десятка</span><br />
+		&t;Jack  = 10 <span class="remark">&apos; валет</span><br />
+		&t;Queen = 11 <span class="remark">&apos; дама</span><br />
+		&t;King = 12 <span class="remark">&apos; король</span><br />
+		<span class="keyword">End Enum</span><br />
+		<br />
+		<span class="remark">&apos; Тип отображения карты</span><br />
+		<span class="keyword">Enum</span> Views<br />
+		&t;Normal = 0 <span class="remark">&apos; Карта в нормальном виде</span><br />
+		&t;Back = 1 <span class="remark">&apos; Рубашка карты</span><br />
+		&t;Invert = 2 <span class="remark">&apos; Инвертированная карта</span><br />
+		<span class="keyword">End Enum</span>
 	</code></p>
 
 

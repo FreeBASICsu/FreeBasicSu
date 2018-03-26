@@ -11,7 +11,7 @@
 <head>
 	<title>Операторы в языке FreeBASIC — FreeBASIC на русском</title>
 	<meta name="description" content="В языке есть много операторов: математические, логические, присваивания, преобразования типов данных" />
-	<meta name="keywords" content="установка, настройка, FreeBASIC, WinAPI, программирование, статьи, исходники, библиотеки" />
+	<meta name="keywords" content="операторы FreeBASIC, программирование, статьи, исходники, библиотеки" />
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link href="/styles.css" type="text/css" rel="stylesheet" />
@@ -37,15 +37,94 @@
 
 <main>
 	
-	<p>Над объектами во фрибейсике могут выполняться различные операции:</p>
+	<p>Над переменными во фрибейсике могут выполняться различные операции:</p>
 	
 	<ul>
 		<li>операции присваивания;</li>
+		<li>математические операции;</li>
+		<li>операции преобразования типов данных;</li>
 		<li>операции отношения;</li>
-		<li>арифметические;</li>
 		<li>логические;</li>
 		<li>сдвиговые операции.</li>
 	</ul>
+	
+	<h2>Операции присваивания</h2>
+	
+	<p>Операция присваивания обозначается символом <code>=</code> и выполняется в два шага:</p>
+	
+	<ul>
+		<li>вычисляется выражение в правой части;</li>
+		<li>вычисленное значение заносится в левую часть.</li>
+	</ul>
+	
+	<p>Схема такова:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		Переменная = Выражение
+	</code></p>
+	
+	<p>Выражение — это всё, что угодно, другая переменная, литерал, константа, результат вызова функции или их комбинации с математическими операторами.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Объявим переменную</span><br />
+		<span class="keyword">Dim</span> Flowers <span class="keyword">As</span> <span class="datatype">Integer</span><br />
+		<br />
+		<span class="remark">&apos; И присвоим ей какое‐нибудь значение</span><br />
+		Flowers = 16<br />
+	</code></p>
+	
+	<p>Операция присваивания создаёт копию вычисленного выражения справа от знака равенства и заносит её в переменную слева. При операции присваивания выражение справа не изменяется:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Объявляем константу числа пи</span><br />
+		<span class="keyword">Const</span> Pi = 3.141592653<br />
+		<br />
+		<span class="remark">&apos; Запишем её значение в другую переменную</span><br />
+		<span class="keyword">Dim</span> Pi2 <span class="keyword">As</span> <span class="datatype">Double</span> = Pi<br />
+		<br />
+		<span class="remark">&apos; Теперь  в Pi2 находится копия константы Pi</span><br />
+	</code></p>
+	
+	<p>Логическим переменным можно присваивать либо истину <code>True</code>, либо ложь <code>False</code>:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Логическая переменная</span><br />
+		<span class="keyword">Dim</span> IAmLiar <span class="keyword">As</span> <span class="datatype">Boolean</span> = False<br />
+		<br />
+		IAmLiar = True
+	</code></p>
+	
+	<p>Указателям обычно не присваивают значения «просто так», в указатели записывают адреса переменных:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Объявим указатель</span><br />
+		<span class="keyword">Dim</span> pPensCount <span class="keyword">As</span> <span class="datatype">Integer Ptr</span><br />
+		<br />
+		<span class="remark">&apos; Объявим переменную</span><br />
+		<span class="keyword">Dim</span> PensCount <span class="keyword">As</span> <span class="datatype">Integer</span><br />
+		<br />
+		<span class="remark">&apos; Запишем в переменную значение</span><br />
+		PensCount = 5<br />
+		<br />
+		<span class="remark">&apos; Получим адрес переменной и запишем его в указатель</span><br />
+		pPensCount = @PensCount<br />
+	</code></p>
+	
+	
+	<h2>Математические операторы</h2>
+	
+	<p></p>
+	
+	<ul>
+		<li>* — умножение;</li>
+		<li>/ — деление</li>
+		<li>\ — целочисленное деление, остаток отбрасывается;</li>
+		<li>+ — сложение;</li>
+		<li>- — вычитание;</li>
+		<li>Mod — остаток от деления;</li>
+		<li>^ возведение в степень.</li>
+	</ul>
+	
 	
 	
 	
