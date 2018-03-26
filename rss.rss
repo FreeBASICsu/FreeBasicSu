@@ -8,6 +8,15 @@
 		
 		
 		<item>
+			<pubDate>Mon, 26 Mar 2018 18:07:54 GMT</pubDate>
+			<title>Интерфейсы простыми средствами</title>
+			<link>http://www.freebasic.su/src/interface.xhtml</link>
+			<description>Несмотря на то, что во фрибейсике отсутствует ключевое слово Interface, которое бы облегчало написание интерфейсов, мы справимся с этой задачей и сами голыми руками (печальный удел холостяка). Для демонстрации серьёзности намерений напишем какой‐нибудь бесполезный интерфейс, например, содержащий простые математические функции, и реализуем его.</description>
+			<guid isPermaLink="false">{33B80BF1-321E-4838-8512-8F7DFC492A51}</guid>
+		</item>
+		
+		
+		<item>
 			<pubDate>Sun, 11 Mar 2018 14:18:02 GMT</pubDate>
 			<title>Учебник: первая программа</title>
 			<link>http://www.freebasic.su/books/install.xhtml</link>
@@ -84,15 +93,6 @@
 			<link>http://www.freebasic.su/</link>
 			<description>Первое: на сайте появился рекламный баннер. Второе: страница со статьями переехала в свой раздел, а на глагне теперь визиткая карточка языка.</description>
 			<guid isPermaLink="false">{056766A0-2DCE-4900-8639-61AF09D1DE46}</guid>
-		</item>
-		
-		
-		<item>
-			<pubDate>Wed, 02 Nov 2016 07:11:15 GMT</pubDate>
-			<title>Дополнение советов</title>
-			<link>http://www.freebasic.su/src/tips.xhtml#c1c3</link>
-			<description>Добавил параграф про получение символа в строке по индексу в массиве и обход строки без предварительного вычисления её длины.</description>
-			<guid isPermaLink="false">{EEF31AF4-F7CD-4CC2-81B5-E87304C83F94}</guid>
 		</item>
 		
 	</channel>

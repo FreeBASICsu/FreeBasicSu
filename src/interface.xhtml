@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd"[
+
+	<!ENTITY nbsp "&#160;">
+	<!ENTITY t "&#160;&#160;&#160;&#160;">
+	
+]>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<head>
+	<title>Интерфейсы простыми средствами</title>
+	<meta name="description" content="Некоторые приёмы объектно‐ориентированного программирования: создание интерфейсов" />
+	<meta name="keywords" content="Interface, наследование, реализация, виртуальная таблица методов, ООП" />
+	
+	<link href="/styles.css" type="text/css" rel="stylesheet" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+</head>
+
+<body>
+
+<header>
+	
+	<nav>
+		<a href="/">Главная</a>
+		<a href="/src/">Статьи</a>
+		<a href="/code/">Проекты</a>
+		<a href="/books/">Учебник</a>
+		<a href="/links.xhtml">Ссылки</a>
+		<a href="/about.xhtml">О сайте</a>
+	</nav>
+	
+</header>
+
+<h1>Интерфейсы простыми средствами</h1>
+
+<main>
+	<p class="postername">
+		<a href="/users/mabu.xhtml">
+			<img src="/avatars/mabu.jpg" alt="Аватар пользователя" width="50" height="50" class="avatar" />
+			&#32;
+			mabu
+		</a>
+		&#32;
+		<time pubdate="pubdate">2018-03-26T18:07:54+07:00</time>
+	</p>
+	
+	<p>Интерфейс — это набор функций, которые следует обязательно реализовать. В терминологии объектно‐ориентированного программирования такие функции называются методами.</p>
+	
+	<p>Во фрибейсике нет ключевого слова <code>Interface</code>, которое бы облегчало написание интерфейсов, но мы справимся с этой задачей и сами голыми руками. Для демонстрации серьёзности намерений напишем  какой‐нибудь бесполезный интерфейс, например, содержащий простые математические функции, и реализуем его.</p>
+	
+	<ol class="contents">
+		<li><a href="#c1">Построение интерфейса</a>
+			<ol>
+				<li><a href="#c1c1">Интерфейс как тип данных</a></li>
+				<li><a href="#c1c2">Добавление контекста вызова</a></li>
+				<li><a href="#c1c3">Таблица виртуальных методов</a></li>
+				<li><a href="#c1c4">Разрешение циклических ссылок</a></li>
+			</ol>
+		</li>
+		<li><a href="#c2">Наследование от интерфейса</a>
+			<ol>
+				<li><a href="#c2c1">Реализация функций</a></li>
+				<li><a href="#c2c2">Таблица виртуальных методов</a></li>
+				<li><a href="#c2c3">Класс, наследующий интерфейс</a></li>
+			</ol>
+		</li>
+		<li><a href="#c3">Создание объектов</a></li>
+	</ol>
+	
+	<h2><a id="c1">Построение интерфейса</a></h2>
+	
+	<p>Обычно имя интерфейса строится по правилу «I&lt;Имя&gt;», то есть состоит из написанного с заглавной буквы осмысленного имени, которому предшествует заглавная латинская буква I (<code>IUnknown</code>, <code>IDispatch</code>, <code>IStringList</code> и тому подобное).</p>
+	
+	<h3><a id="c1c1">Интерфейс как тип данных</a></h3>
+	
+	<p>Определим набор функций для операций над двумя числами: сложение, вычитание, умножение, деление. Этот набор — указатели на функции, завёрнутые в структуру.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Type</span> <span class="datatype">IMath</span><br />
+			&t;<span class="keyword">Dim</span> Add <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="keyword">Dim</span> Substract <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="keyword">Dim</span> Multiply <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="keyword">Dim</span> Divide <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+		<span class="keyword">End Type</span>
+	</code></p>
+	
+	<h3><a id="c1c2">Добавление контекста вызова</a></h3>
+	
+	<p>Чтобы функции интерфейса знали, какой объект их вызывает, придётся добавить в них указатель на объект, реализующий наш интерфейс, первым параметром:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Type</span> <span class="datatype">IMath</span><br />
+			&t;<span class="keyword">Dim</span> Add <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="keyword">Dim</span> Substract <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="keyword">Dim</span> Multiply <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="keyword">Dim</span> Divide <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+		<span class="keyword">End Type</span>
+	</code></p>
+	
+	<h3><a id="c1c3">Таблица виртуальных методов</a></h3>
+	
+	<p>На практике набор функций интерфейса выделяют в отдельную структуру, которую теперь называеют таблицей виртуальных методов, а в самом интерфейсе оставляют ссылку на неё. Это позволяет использовать одну и ту же таблицу для разных объектов, реализующих один и тот же интерфейс, экономя память. Название <code>VirtualTable</code> часто сокращают до <code>vtable</code> или даже <code>vtbl</code>, но мы будет использовать полный вариант.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Type</span> <span class="datatype">IMathVirtualTable</span><br />
+			&t;<span class="keyword">Dim</span> Add <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="keyword">Dim</span> Substract <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="keyword">Dim</span> Multiply <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="keyword">Dim</span> Divide <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+		<span class="keyword">End Type</span><br />
+		<br />
+		<span class="keyword">Type</span> <span class="datatype">IMath</span><br />
+			&t;<span class="keyword">Dim</span> VirtualTable <span class="keyword">As</span> <span class="datatype">IMathVirtualTable Ptr</span><br />
+		<span class="keyword">End Type</span>
+	</code></p>
+	
+	<h3><a id="c1c4">Разрешение циклических ссылок</a></h3>
+	
+	<p>Пытаемся всё скомпилировать, но компилятор почему‐то сопротивляется такому коду. Дело в том, что виртуальная таблица <code>IMathVirtualTable</code> ссылается на интерфейс <code>IMath</code>, объявленный позднее, а интерфейс <code>IMath</code> ссылается на виртуальную таблицу <code>IMathVirtualTable</code>, и как их не меняй местами, ссылаться друг на друга от этого они не перестают. Выйти из ситуации поможет дополнительное имя для нашего интерфейса, введённое оператором <code>Type</code>, а к названию оригинального интерфейса добавим подчёркивание.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Type</span> <span class="datatype">IMath</span> <span class="keyword">As</span> <span class="datatype">IMath_</span><br />
+		<br />
+		<span class="keyword">Type</span> <span class="datatype">IMathVirtualTable</span><br />
+			&t;<span class="keyword">Dim</span> Add <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="keyword">Dim</span> Substract <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="keyword">Dim</span> Multiply <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="keyword">Dim</span> Divide <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+		<span class="keyword">End Type</span><br />
+		<br />
+		<span class="keyword">Type</span> <span class="datatype">IMath_</span><br />
+			&t;<span class="keyword">Dim</span> VirtualTable <span class="keyword">As</span> <span class="datatype">IMathVirtualTable Ptr</span><br />
+		<span class="keyword">End Type</span>
+	</code></p>
+	
+	<p>Ну вот теперь‐то описание нашего интерфейса готово.</p>
+	
+	
+	<h2><a id="c2">Наследование от интерфейса</a></h2>
+	
+	<p>Наследование от интерфейса есть его реализация в производном классе. Здесь нам нужно написать функции, создать таблицу и объявить класс‐наследник.</p>
+	
+	<h3><a id="c2c1">Реализация функций</a></h3>
+	
+	<p>Во всей этой мешанине виртуальных таблиц ты ещё не забыл, что интерфейс — это набор функций? Как раз пора приняться за них вплотную.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Function</span> Add( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="keyword">Return</span> LeftOperand + RightOperand<br />
+		<span class="keyword">End Function</span><br />
+		<br />
+		<span class="keyword">Function</span> Substract( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="keyword">Return</span> LeftOperand - RightOperand<br />
+		<span class="keyword">End Function</span><br />
+		<br />
+		<span class="keyword">Function</span> Multiply( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="keyword">Return</span> LeftOperand * RightOperand<br />
+		<span class="keyword">End Function</span><br />
+		<br />
+		<span class="keyword">Function</span> Divide( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="keyword">Return</span> LeftOperand \ RightOperand<br />
+		<span class="keyword">End Function</span>
+	</code></p>
+	
+	<p>Параметр <code>this</code> представляет собой указатель на объект, который вызвал функцию интерфейса.</p>
+	
+	<h3><a id="c2c2">Таблица виртуальных методов</a></h3>
+	
+	<p>Создадим таблицу виртуальных функций, это требуется делать всего один раз вначале, она будет общая для всех объектов.</p>
+
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Dim Shared</span> GlobalIMathVirtualTable <span class="keyword">As</span> <span class="datatype">IMathVirtualTable</span><br />
+		GlobalIMathVirtualTable.Add = @Add<br />
+		GlobalIMathVirtualTable.Substract = @Substract<br />
+		GlobalIMathVirtualTable.Multiply = @Multiply<br />
+		GlobalIMathVirtualTable.Divide = @Divide
+	</code></p>
+	
+	<h3><a id="c2c3">Класс, наследующий интерфейс</a></h3>
+	
+	<p>Теперь объявим класс, наследующий наш интерфейс:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Type</span> <span class="datatype">Math</span><br />
+			&t;<span class="keyword">Dim</span> VirtualTable <span class="keyword">As</span> <span class="datatype">IMathVirtualTable Ptr</span><br />
+		<span class="keyword">End Type</span>
+	</code></p>
+	
+	<p>Ты спросишь: почему здесь указана таблица виртуальных функций <code>IMathVirtualTable</code> вместо интерфейса <code>IMath</code>, если класс наследуется от <code>IMath</code>? Всё просто: все наследники интерфейса должны реализовывать все его методы, а сделать это можно объявив виртуальную таблицу функций этого интерфейса внутри класса.</p>
+	
+	
+	<h2><a id="c3">Создание объектов</a></h2>
+	
+	<p>Вся прелесть интерфейсов в том, что какой бы ни был объект, но если он реализует наш интерфейс, то у него всегда будут требуемые нам методы. Для их вызова достаточно использовать переменную‐указатель на наш интерфейс, инициализированную объектом, унаследованным от требуемого интерфейса.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Выделяем память под объект, унаследованный от IMath</span><br />
+		<span class="keyword">Dim</span> objMath <span class="keyword">As</span> <span class="datatype">IMath Ptr</span> = <span class="keyword">Allocate</span>(<span class="keyword">SizeOf</span>(<span class="datatype">Math</span>))<br />
+		<br />
+		<span class="remark">&apos; Обязательно проверяем на успешность выделения памяти</span><br />
+		<span class="keyword">If</span> objMath = 0 <span class="keyword">Then</span><br />
+			&t;<span class="keyword">Print</span> <span class="string">&quot;Не удалось выделить память под объект&quot;</span><br />
+			&t;<span class="keyword">End</span>(1)<br />
+		<span class="keyword">End If</span><br />
+		<br />
+		<span class="remark">&apos; Назначаем объекту таблицу виртуальных фукнций</span><br />
+		objMath->VirtualTable = @GlobalIMathVirtualTable
+	</code></p>
+	
+	<p>Вызываем методы интерфейса у объекта:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Print</span> objMath-&gt;VirtualTable-&gt;Add(objMath, 3, 5)<br />
+		<span class="keyword">Print</span> objMath-&gt;VirtualTable-&gt;Substract(objMath, 8, 4)<br />
+		<span class="keyword">Print</span> objMath-&gt;VirtualTable-&gt;Multiply(objMath, 16, 5)<br />
+		<span class="keyword">Print</span> objMath-&gt;VirtualTable-&gt;Divide(objMath, 9, 3)<br />
+		<br />
+		<span class="remark">&apos; Удаляем ненужные объекты</span><br />
+		<span class="keyword">Deallocate</span>(objMath)
+	</code></p>
+	
+	<p>Так как мы определили виртуальную таблицу функций явно, то код получился немного громоздким. В высокоуровневых языках программирования типа C++ виртуальная таблица существует неявно и скрыто от программиста.</p>
+	
+	
+	
+	
+	
+	
+	<!--
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+	</code></p>
+	-->
+	
+	
+	<h2>Поделись ссылочкой в социальных сетях</h2>
+	<div id="vk_share_button"></div>
+	
+</main>
+
+<hr />
+
+<footer>
+	<p>Сайт создан по технологии XHTML</p>
+	<p>
+		<span id="pLiveInternet"></span>
+		<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
+			<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
+		</a>
+		<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
+			<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
+		</a> 
+	</p>
+</footer>
+
+<script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
+<script type="text/javascript">var docUrl=document.URL.toString();document.getElementById("vk_share_button").innerHTML=VK.Share.button(docUrl, {type: "round"});</script>
+
+
+<script type="text/javascript">var idL=document.getElementById("pLiveInternet");var idA=document.createElement("a");idA.href="//www.liveinternet.ru/stat/freebasic.su";idA.title="Счётчик посещений LiveInternet";var idImg=document.createElement("img");idImg.src="//counter.yadro.ru/hit?t44."+Math.round(1+18*Math.random())+";r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(docUrl)+";"+Math.random();idImg.alt="Логотип LiveInternet";idA.appendChild(idImg);idL.appendChild(idA);</script>
+
+</body></html>
