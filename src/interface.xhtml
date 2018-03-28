@@ -64,9 +64,16 @@
 				<li><a href="#c2c1">Реализация функций</a></li>
 				<li><a href="#c2c2">Таблица виртуальных методов</a></li>
 				<li><a href="#c2c3">Класс, наследующий интерфейс</a></li>
+				<li><a href="#c2c3">Создание объектов</a></li>
 			</ol>
 		</li>
-		<li><a href="#c3">Создание объектов</a></li>
+		<li><a href="#c3">Пример интерфейса ICloneable для клонирования объектов</a>
+			<ol>
+				<li><a href="#c3c1">Интерфейс ICloneable</a></li>
+				<li><a href="#c3c2">Класс Monster</a></li>
+				<li><a href="#c3c3">Соединяем всё вместе</a></li>
+			</ol>
+		</li>
 	</ol>
 	
 	<h2><a id="c1">Построение интерфейса</a></h2>
@@ -135,7 +142,7 @@
 	
 	<h3><a id="c1c3">Таблица виртуальных методов</a></h3>
 	
-	<p>На практике набор функций интерфейса выделяют в отдельную структуру, которую теперь называеют таблицей виртуальных методов, а в самом интерфейсе оставляют ссылку на неё. Это позволяет использовать одну и ту же таблицу для разных объектов, реализующих один и тот же интерфейс, экономя память. Название <code>VirtualTable</code> часто сокращают до <code>vtable</code> или даже <code>vtbl</code>, но мы будет использовать полный вариант.</p>
+	<p>На практике набор функций интерфейса выделяют в отдельную структуру, которую теперь называеют таблицей виртуальных методов, а в самом интерфейсе оставляют ссылку на неё. Это позволяет использовать одну и ту же таблицу для разных объектов одного класса, реализующих один и тот же интерфейс, экономя память. Название <code>VirtualTable</code> часто сокращают до <code>vtable</code> или даже <code>vtbl</code>, но мы будет использовать полный вариант.</p>
 	
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
 		<span class="keyword">Type</span> <span class="datatype">IMathVirtualTable</span><br />
@@ -260,14 +267,14 @@
 	
 	<h3><a id="c2c2">Таблица виртуальных методов</a></h3>
 	
-	<p>Создадим таблицу виртуальных функций, это требуется делать всего один раз вначале, она будет общая для всех объектов.</p>
+	<p>Создадим таблицу виртуальных функций класса <code>Math</code>, это требуется делать всего один раз вначале, она будет общая для всех объектов.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-		<span class="keyword">Dim Shared</span> GlobalIMathVirtualTable <span class="keyword">As</span> <span class="datatype">IMathVirtualTable</span><br />
-		GlobalIMathVirtualTable.Add = @Add<br />
-		GlobalIMathVirtualTable.Substract = @Substract<br />
-		GlobalIMathVirtualTable.Multiply = @Multiply<br />
-		GlobalIMathVirtualTable.Divide = @Divide
+		<span class="keyword">Dim Shared</span> GlobalMathVirtualTable <span class="keyword">As</span> <span class="datatype">IMathVirtualTable</span><br />
+		GlobalMathVirtualTable.Add = @Add<br />
+		GlobalMathVirtualTable.Substract = @Substract<br />
+		GlobalMathVirtualTable.Multiply = @Multiply<br />
+		GlobalMathVirtualTable.Divide = @Divide
 	</code></p>
 	
 	<h3><a id="c2c3">Класс, наследующий интерфейс</a></h3>
@@ -283,7 +290,7 @@
 	<p>Ты спросишь: почему здесь указана таблица виртуальных функций <code>IMathVirtualTable</code> вместо интерфейса <code>IMath</code>, если класс наследуется от <code>IMath</code>? Всё просто: все наследники интерфейса должны реализовывать все его методы, а сделать это можно объявив виртуальную таблицу функций этого интерфейса внутри класса.</p>
 	
 	
-	<h2><a id="c3">Создание объектов</a></h2>
+	<h3><a id="c2c4">Создание объектов</a></h3>
 	
 	<p>Вся прелесть интерфейсов в том, что какой бы ни был объект, но если он реализует наш интерфейс, то у него всегда будут требуемые нам методы. Для их вызова достаточно использовать переменную‐указатель на наш интерфейс, инициализированную объектом, унаследованным от требуемого интерфейса.</p>
 	
@@ -298,7 +305,7 @@
 		<span class="keyword">End If</span><br />
 		<br />
 		<span class="remark">&apos; Назначаем объекту таблицу виртуальных фукнций</span><br />
-		objMath->VirtualTable = @GlobalIMathVirtualTable
+		objMath-&gt;VirtualTable = @GlobalMathVirtualTable
 	</code></p>
 	
 	<p>Вызываем методы интерфейса у объекта:</p>
@@ -313,17 +320,174 @@
 		<span class="keyword">Deallocate</span>(objMath)
 	</code></p>
 	
-	<p>Так как мы определили виртуальную таблицу функций явно, то код получился немного громоздким. В высокоуровневых языках программирования типа C++ виртуальная таблица существует неявно и скрыто от программиста.</p>
+	<p>Так как мы определили виртуальную таблицу функций явно, то код получился немного громоздким. В высокоуровневых языках программирования типа C++ виртуальная таблица и контекст вызова существуют неявно и скрыто от программиста.</p>
 	
 	
+	<h2><a id="c3">Пример интерфейса ICloneable для клонирования объектов</a></h2>
 	
+	<p>В играх есть специальные места, где монстры должны появляться регулярно. Такие логова монстров могут каждый раз создавать нового монстра, но гораздо выгоднее клонировать уже существующего как шаблон. В этом случае точке возрождения не нужно знать какой‐нибудь информации о монстре, достаточно запросить у самого монстра создать свою копию.</p>
 	
+	<h3><a id="c3c1">Интерфейс ICloneable</a></h3>
 	
+	<p>Интерфейс <code>ICloneable</code> предоставляет возможность объекту самому создавать собственную копию. Он должен содержать один метод <code>Clone</code>.</p>
 	
-	<!--
+	<p>Пример заголовочного файла <code>ICloneable.bi</code>:</p>
+	
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="preprocessor">#ifndef ICLONEABLE_BI</span><br />
+		<span class="preprocessor">#define ICLONEABLE_BI</span><br />
+		<br />
+		<span class="keyword">Type</span> <span class="datatype">ICloneable</span> <span class="keyword">As</span> <span class="datatype">ICloneable_</span><br />
+		<br />
+		<span class="keyword">Type</span> <span class="datatype">ICloneableVirtualTable</span><br />
+			&t;<span class="keyword">Dim</span> Clone <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">ICloneable Ptr</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">ICloneable Ptr</span><br />
+		<span class="keyword">End Type</span><br />
+		<br />
+		<span class="keyword">Type</span> <span class="datatype">ICloneable_</span><br />
+			&t;<span class="keyword">Dim</span> VirtualTable <span class="keyword">As</span> <span class="datatype">ICloneableVirtualTable Ptr</span><br />
+		<span class="keyword">End Type</span><br />
+		<br />
+		<span class="preprocessor">#endif</span>
 	</code></p>
-	-->
+	
+	<h3><a id="c3c2">Класс Monster</a></h3>
+	
+	<h4>Объявление</h4>
+	
+	<p>Теперь объявим класс <code>Monster</code> и унаследуем его от интерфейса <code>ICloneable</code> в заголовочном файле <code>Monster.bi</code>:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="preprocessor">#ifndef MONSTER_BI</span><br />
+		<span class="preprocessor">#define MONSTER_BI</span><br />
+		<br />
+		<span class="preprocessor">#include &quot;ICloneable.bi&quot;</span><br />
+		<br />
+		<span class="keyword">Type</span> <span class="datatype">Monster</span><br />
+			&t;<span class="remark">&apos; Виртуальная таблица</span><br />
+			&t;<span class="keyword">Dim</span> VirtualTable <span class="keyword">As</span> <span class="datatype">ICloneableVirtualTable Ptr</span><br />
+			<br />
+			&t;<span class="remark">&apos; Параметры монстра</span><br />
+			<br />
+			&t;<span class="remark">&apos; Координаты на игровом поле</span><br />
+			&t;<span class="keyword">Dim</span> X <span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			&t;<span class="keyword">Dim</span> Y <span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="remark">&apos; Сила удара монстра</span><br />
+			&t;<span class="keyword">Dim</span> Power <span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="remark">&apos; Здоровье монстра</span><br />
+			&t;<span class="keyword">Dim</span> Health <span class="keyword">As</span> <span class="datatype">Integer</span><br />
+			<br />
+			&t;<span class="remark">&apos; Отображаемое имя</span><br />
+			&t;<span class="keyword">Dim</span> CharacterName <span class="keyword">As</span> <span class="datatype">WString Ptr</span><br />
+		<span class="keyword">End Type</span><br />
+		<br />
+		<span class="keyword">Declare</span> <span class="keyword">Function</span> Clone( _<br />
+			&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">Monster Ptr</span> _<br />
+		)<span class="keyword">As</span> <span class="datatype">Monster Ptr</span><br />
+		<br />
+		<span class="preprocessor">#endif</span>
+	</code></p>
+	
+	<h4>Реализация</h4>
+	
+	<p>Посмотрим на реализацию клонирования монстра в файле <code>Monster.bas</code>:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="preprocessor">#include &quot;Monster.bi&quot;</span><br />
+		<br />
+		<span class="keyword">Function</span> Clone( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">Monster Ptr</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">Monster Ptr</span><br />
+			<br />
+			&t;<span class="remark">&apos; Выделяем память под монстра</span><br />
+			&t;<span class="keyword">Dim</span> pMonster <span class="keyword">As</span> <span class="datatype">Monster Ptr</span> = <span class="keyword">Allocate</span>(<span class="keyword">SizeOf</span>(<span class="datatype">Monster</span>))<br />
+			&t;<span class="keyword">If</span> pMonster = 0 <span class="keyword">Then</span><br />
+				&t;&t;<span class="keyword">Return</span> 0<br />
+			&t;<span class="keyword">End If</span><br />
+			<br />
+			&t;<span class="remark">&apos; Клонирование имени монстра</span><br />
+			&t;<span class="keyword">Dim</span> CharacterNameLength <span class="keyword">As</span> <span class="datatype">Integer</span> = <span class="keyword">Len</span>(*this-&gt;CharacterName)<br />
+			&t;<span class="keyword">Dim</span> pCharacterName <span class="keyword">As</span> <span class="datatype">WString Ptr</span> = <span class="keyword">Allocate</span>((CharacterNameLength + 1) * <span class="keyword">SizeOf</span>(<span class="datatype">WString</span>))<br />
+			&t;<span class="keyword">If</span> pCharacterName = 0 <span class="keyword">Then</span><br />
+				&t;&t;<span class="keyword">Deallocate</span>(pMonster)<br />
+				&t;&t;<span class="keyword">Return</span> 0<br />
+			&t;<span class="keyword">End If</span><br />
+			&t;*pCharacterName = *this-&gt;CharacterName<br />
+			<br />
+			&t;<span class="remark">&apos; Клонирование самих себя</span><br />
+			&t;pMonster-&gt;VirtualTable = this-&gt;VirtualTable<br />
+			&t;pMonster-&gt;X = this-&gt;X<br />
+			&t;pMonster-&gt;Y = this-&gt;Y<br />
+			&t;pMonster-&gt;Power = this-&gt;Power<br />
+			&t;pMonster-&gt;Health = this-&gt;Health<br />
+			&t;pMonster-&gt;CharacterName = pCharacterName<br />
+			<br />
+			&t;<span class="keyword">Return</span> pMonster<br />
+		<span class="keyword">End Function</span>
+	</code></p>
+	
+	<h3><a id="c3c3">Соединяем всё вместе</a></h3>
+	
+	<p>В этом примере создадим десять клонированных монстров на основе уже существующего.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="preprocessor">#include &quot;ICloneable.bi&quot;</span><br />
+		<span class="preprocessor">#include &quot;Monster.bi&quot;</span><br />
+		<br />
+		<span class="remark">&apos; Виртуальная таблица функций монстра</span><br />
+		<span class="keyword">Dim</span> <span class="keyword">Shared</span> GlobalMonsterVirtualTable <span class="keyword">As</span> <span class="datatype">ICloneableVirtualTable</span><br />
+		GlobalMonsterVirtualTable.Clone = <span class="keyword">CPtr</span>(<span class="datatype">Any Ptr</span>, @Clone)<br />
+		<br />
+		<span class="remark">&apos; Шаблон монстра для клонирования</span><br />
+		<span class="keyword">Dim</span> objMainMonster <span class="keyword">As</span> <span class="datatype">Monster Ptr</span> = <span class="keyword">Allocate</span>(<span class="keyword">SizeOf</span>(<span class="datatype">Monster</span>))<br />
+		<br />
+		<span class="remark">&apos; Обязательно проверяем на успешность выделения памяти</span><br />
+		<span class="keyword">If</span> objMainMonster = 0 <span class="keyword">Then</span><br />
+			&t;<span class="keyword">Print</span> <span class="string">&quot;Не удалось выделить память под объект&quot;</span><br />
+			&t;<span class="keyword">End</span>(1)<br />
+		<span class="keyword">End If</span><br />
+		<br />
+		<span class="remark">&apos; Назначаем объекту таблицу виртуальных фукнций</span><br />
+		objMainMonster-&gt;VirtualTable = @GlobalMonsterVirtualTable<br />
+		<br />
+		<span class="remark">&apos; Параметры монстра</span><br />
+		objMainMonster-&gt;X = 25<br />
+		objMainMonster-&gt;Y = 40<br />
+		objMainMonster-&gt;Power = 67<br />
+		objMainMonster-&gt;Health = 100<br />
+		objMainMonster-&gt;CharacterName = @&quot;Ужасный маленький монстр&quot;<br />
+		<br />
+		<span class="remark">&apos; Десять дополнительных клонов</span><br />
+		<span class="keyword">Dim</span> Clones(9) <span class="keyword">As</span> <span class="datatype">ICloneable Ptr</span><br />
+		<span class="keyword">For</span> i <span class="keyword">As</span> <span class="datatype">Integer</span> = 0 <span class="keyword">To</span> 9<br />
+			&t;Clones(i) = <span class="keyword">CPtr</span>(<span class="datatype">ICloneable Ptr</span>, objMainMonster-&gt;VirtualTable-&gt;Clone(<span class="keyword">CPtr</span>(<span class="datatype">ICloneable Ptr</span>, objMainMonster)))<br />
+		<span class="keyword">Next</span><br />
+		<br />
+		<span class="remark">&apos; Проверяем работоспособность клонов</span><br />
+		<span class="keyword">For</span> i <span class="keyword">As</span> <span class="datatype">Integer</span> = 0 <span class="keyword">To</span> 9<br />
+			&t;<span class="keyword">Dim</span> pMonster <span class="keyword">As</span> <span class="datatype">Monster Ptr</span> = <span class="keyword">CPtr</span>(<span class="datatype">Monster Ptr</span>, Clones(i))<br />
+			&t;<span class="keyword">Print</span> pMonster-&gt;X,<br />
+			&t;<span class="keyword">Print</span> pMonster-&gt;Y,<br />
+			&t;<span class="keyword">Print</span> pMonster-&gt;Power,<br />
+			&t;<span class="keyword">Print</span> pMonster-&gt;Health,<br />
+			&t;<span class="keyword">Print</span> *pMonster-&gt;CharacterName<br />
+		<span class="keyword">Next</span><br />
+		<br />
+		<span class="remark">&apos; Удаляем клонов</span><br />
+		<span class="keyword">For</span> i <span class="keyword">As</span> <span class="datatype">Integer</span> = 0 <span class="keyword">To</span> 9<br />
+			&t;<span class="keyword">Dim</span> pMonster <span class="keyword">As</span> <span class="datatype">Monster Ptr</span> = <span class="keyword">CPtr</span>(<span class="datatype">Monster Ptr</span>, Clones(i))<br />
+			&t;<span class="keyword">Deallocate</span>(pMonster-&gt;CharacterName)<br />
+			&t;<span class="keyword">Deallocate</span>(pMonster)<br />
+		<span class="keyword">Next</span><br />
+		<br />
+		<span class="remark">&apos; Удаляем шаблонный объект</span><br />
+		<span class="keyword">Deallocate</span>(objMainMonster)
+	</code></p>
+	
+	<p>Можно видеть, что клонирование не зависит от типа объекта. Это могут быть разные монстры, предметы, оружие. Клонировать можно что угодно, если оно реализует интерфейс <code>ICloneable</code>.</p>
 	
 	
 	<h2>Поделись ссылочкой в социальных сетях</h2>
