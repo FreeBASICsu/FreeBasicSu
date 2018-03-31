@@ -8,6 +8,15 @@
 		
 		
 		<item>
+			<pubDate>Fri, 30 Mar 2018 05:22:58 GMT</pubDate>
+			<title>Весервер Station922</title>
+			<link>http://www.freebasic.su/code/station922.xhtml</link>
+			<description>Компактный вебсервер для Windows, написанный на фрибейсике. Умеет обрабатывать методы CONNECT, GET, HEAD, PUT, DELETE, TRACE и OPTIONS. Сервер работает «из коробки», необходимо лишь прописать пути к сайтам в файле конфигурации. Для ведения журнала сетевых соединений сервер создаёт каталог «logs» в папке с программой. Вебсервер назван в честь запрещённого видеофайла <a href="https://mrakopedia.org/wiki/21:Буратино">station922.mkv</a>.
+			</description>
+			<guid isPermaLink="false">{5EA4A2E9-4A6E-4FAB-837B-CDE854B3C9FF}</guid>
+		</item>
+		
+		<item>
 			<pubDate>Mon, 26 Mar 2018 18:07:54 GMT</pubDate>
 			<title>Интерфейсы простыми средствами</title>
 			<link>http://www.freebasic.su/src/interface.xhtml</link>
@@ -84,15 +93,6 @@
 			<link>http://www.freebasic.su/src/codepages.xhtml</link>
 			<description>Самый часто задаваемый вопрос новичков по фрибейсику: как выводить кириллицу и русские буквы на консоль.</description>
 			<guid isPermaLink="false">{1B75C88B-F63D-4309-900A-2BFC686CA37C}</guid>
-		</item>
-		
-
-		<item>
-			<pubDate>Mon, 09 Jan 2017 13:54:43 GMT</pubDate>
-			<title>Изменения на сайте</title>
-			<link>http://www.freebasic.su/</link>
-			<description>Первое: на сайте появился рекламный баннер. Второе: страница со статьями переехала в свой раздел, а на глагне теперь визиткая карточка языка.</description>
-			<guid isPermaLink="false">{056766A0-2DCE-4900-8639-61AF09D1DE46}</guid>
 		</item>
 		
 	</channel>

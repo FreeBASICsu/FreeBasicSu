@@ -77,20 +77,21 @@
 	<p>В ini‐файлах предусмотрены комментарии — это строки, начинающиеся с точки с запятой.</p>
 
 	<p class="codebox"><span>Код</span>&#32;<span>INI‐файл</span><br /><code>
-	<span class="inisection">[секция_1]</span><br />
-	параметр1<span class="assignment">=</span>значение1<br />
-	<span class="remark">; это комментарий</span><br />
-	параметр2<span class="assignment">=</span>значение2<br />
-	<br />
-	<span class="inisection">[секция_2]</span><br />
-	параметр1<span class="assignment">=</span>значение1<br />
-	параметр2<span class="assignment">=</span>значение2
+		<span class="inisection">[секция_1]</span><br />
+		параметр1<span class="assignment">=</span>значение1<br />
+		<span class="remark">; это комментарий</span><br />
+		параметр2<span class="assignment">=</span>значение2<br />
+		<br />
+		<span class="inisection">[секция_2]</span><br />
+		параметр1<span class="assignment">=</span>значение1<br />
+		параметр2<span class="assignment">=</span>значение2
 	</code></p>
 
 
 	<h2><a id="c2">Функции для работы с ini‐файлами</a></h2>
 
 	<p>Существуют специальные функции, предназначенные для чтения и записи INI-файлов, они лежат в библиотеке <strong>kernel32.dll</strong>:</p>
+	
 	<ul>
 		<li><strong>GetPrivateProfileString</strong> — считывает строковое значение указанного параметра из указанного раздела;</li>
 		<li><strong>GetPrivateProfileInt</strong> — считывает целочисленное значение указанного параметра из указанного раздела;</li>
@@ -105,14 +106,14 @@
 	<p>Получает строковое значение из INI‐файла.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	<span class="keyword">Declare</span> <span class="keyword">Function</span> GetPrivateProfileString <span class="keyword">Alias</span> <span class="string">&quot;GetPrivateProfileStringW&quot;</span>( _<br />
-	&t;<span class="keyword">ByVal</span> lpAppName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpKeyName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpDefault <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpReturnedString <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> nSize <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpFileName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>) _<br />
-	<span class="keyword">As</span> <span class="datatype">DWORD</span>
+		<span class="keyword">Declare</span> <span class="keyword">Function</span> GetPrivateProfileString <span class="keyword">Alias</span> <span class="string">&quot;GetPrivateProfileStringW&quot;</span>( _<br />
+			&t;<span class="keyword">ByVal</span> lpAppName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+			&t;<span class="keyword">ByVal</span> lpKeyName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+			&t;<span class="keyword">ByVal</span> lpDefault <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+			&t;<span class="keyword">ByVal</span> lpReturnedString <span class="keyword">As</span> <span class="datatype">LPWSTR</span>, _<br />
+			&t;<span class="keyword">ByVal</span> nSize <span class="keyword">As</span> <span class="datatype">DWORD</span>, _<br />
+			&t;<span class="keyword">ByVal</span> lpFileName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span> _<br />
+		)<span class="keyword">As</span> <span class="datatype">DWORD</span>
 	</code></p>
 
 
@@ -159,12 +160,12 @@
 	<p>Если значение в файле инициализации представлено числом, то его проще получить функцией GetPrivateProfileInt. Вот её определение из заголовочных файлов:</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	<span class="keyword">Declare</span> <span class="keyword">Function</span> GetPrivateProfileInt <span class="keyword">Alias</span> <span class="string">&quot;GetPrivateProfileIntW&quot;</span>( _<br />
-	&t;<span class="keyword">ByVal</span> lpAppName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpKeyName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpDefault <span class="keyword">As</span> <span class="datatype">INT_</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpFileName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>) _<br />
-	<span class="keyword">As</span> <span class="datatype">UINT</span>
+		<span class="keyword">Declare</span> <span class="keyword">Function</span> GetPrivateProfileInt <span class="keyword">Alias</span> <span class="string">&quot;GetPrivateProfileIntW&quot;</span>( _<br />
+			&t;<span class="keyword">ByVal</span> lpAppName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+			&t;<span class="keyword">ByVal</span> lpKeyName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+			&t;<span class="keyword">ByVal</span> lpDefault <span class="keyword">As</span> <span class="datatype">INT_</span>, _<br />
+			&t;<span class="keyword">ByVal</span> lpFileName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span> _<br />
+		)<span class="keyword">As</span> <span class="datatype">UINT</span>
 	</code></p>
 
 
@@ -201,12 +202,12 @@
 	<p>Записывает значение в ini‐файл, а если такового не было, то создаёт его.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-	<span class="keyword">Declare</span> <span class="keyword">Function</span> WritePrivateProfileString <span class="keyword">Alias</span> <span class="string">&quot;WritePrivateProfileStringW&quot;</span>( _<br />
-	&t;<span class="keyword">ByVal</span> lpAppName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpKeyName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpString <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
-	&t;<span class="keyword">ByVal</span> lpFileName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>) _<br />
-	<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
+		<span class="keyword">Declare</span> <span class="keyword">Function</span> WritePrivateProfileString <span class="keyword">Alias</span> <span class="string">&quot;WritePrivateProfileStringW&quot;</span>( _<br />
+			&t;<span class="keyword">ByVal</span> lpAppName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+			&t;<span class="keyword">ByVal</span> lpKeyName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+			&t;<span class="keyword">ByVal</span> lpString <span class="keyword">As</span> <span class="datatype">LPCWSTR</span>, _<br />
+			&t;<span class="keyword">ByVal</span> lpFileName <span class="keyword">As</span> <span class="datatype">LPCWSTR</span> _<br />
+		)<span class="keyword">As</span> <span class="datatype">WINBOOL</span>
 	</code></p>
 
 
@@ -247,73 +248,71 @@
 	<p>Создай в блокноте текстовый файл «configuration.ini» и сохрани его в кодировке Unicode (UTF-16):</p>
 
 	<p class="codebox"><span>Код</span>&#32;<span>INI‐файл</span><br />
-	<code><span class="inisection">[Окно]</span><br />
-	<span class="remark">; Ширина и высота окна</span><br />
-	Width<span class="assignment">=</span>640<br />
-	Height<span class="assignment">=</span>480<br />
-	<br />
-	<span class="remark">; Параметры пользователя</span><br />
-	<span class="inisection">[Пользователь]</span><br />
-	Имя<span class="assignment">=</span>Алексей
+		<code><span class="inisection">[Окно]</span><br />
+		<span class="remark">; Ширина и высота окна</span><br />
+		Width<span class="assignment">=</span>640<br />
+		Height<span class="assignment">=</span>480<br />
+		<br />
+		<span class="remark">; Параметры пользователя</span><br />
+		<span class="inisection">[Пользователь]</span><br />
+		Имя<span class="assignment">=</span>Алексей
 	</code></p>
 
 	<p>А теперь исходный код для чтения файла. Всё очень просто:</p>
 
-	<p class="codebox"><span>Код</span>&#32;<span>FreeBASIC</span><br />
-	<code>
-	<span class="remark">&apos; Чтобы работать с юникодом</span><br />
-	<span class="preprocessor">#define unicode</span><br />
-	<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
-	<br />
-	<span class="remark">&apos; Полный путь к файлу</span><br />
-	<span class="keyword">Const</span> FileName = <span class="string">&quot;E:\Programming\FreeBASIC Projects\INI\configuration.ini&quot;</span><br />
-	<span class="remark">&apos; Размер буфера</span><br />
-	<span class="keyword">Const</span> BufferSize <span class="keyword">As</span> <span class="keyword">Integer</span> = 255<br />
-	<span class="keyword">Const</span> SectionWindow = <span class="string">&quot;Окно&quot;</span><br /><span class="keyword">Const</span> KeyWidth = <span class="string">&quot;Width&quot;</span><br />
-	<span class="keyword">Const</span> KeyHeight = <span class="string">&quot;Height&quot;</span><br /><span class="keyword">Const</span> DefaultValue = <span class="string">&quot;Значение по умолчанию&quot;</span><br />
-	<br />
-	<span class="remark">&apos; Значение из ini‐файла, которое мы получим</span><br />
-	<span class="keyword">Dim</span> Value <span class="keyword">As</span> <span class="keyword">WString</span> * (BufferSize + 1) <span class="remark">&apos; Один символ под нулевой</span><br />
-	<br />
-	<span class="remark">&apos; Функция GetPrivateProfileString возвращает количество символов, скопированных в буфер (Value)</span><br />
-	<span class="remark">&apos; Если раздел или ключ не будут найдены, то в Value будет записано содержимое DefaultValue</span><br />
-	<span class="keyword">Dim</span> Result2 <span class="keyword">As</span> DWORD = GetPrivateProfileString(SectionWindow, KeyWidth, DefaultValue, Value, BufferSize, FileName)<br />
-	<span class="keyword">If</span> Result2 &gt; 0 <span class="keyword">Then</span><br />
-	&t;<span class="keyword">Print</span> KeyWidth, Value<br />
-	<span class="keyword">End If</span><br />
-	Result2 = GetPrivateProfileString(SectionWindow, KeyHeight, DefaultValue, Value, BufferSize, FileName)<br />
-	<span class="keyword">If</span> Result2 &gt; 0 <span class="keyword">Then</span><br />
-	&t;<span class="keyword">Print</span> KeyHeight, Value<br />
-	<span class="keyword">End If</span>
+	<p class="codebox"><span>Код</span>&#32;<span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Чтобы работать с юникодом</span><br />
+		<span class="preprocessor">#define unicode</span><br />
+		<span class="preprocessor">#include once &quot;windows.bi&quot;</span><br />
+		<br />
+		<span class="remark">&apos; Полный путь к файлу</span><br />
+		<span class="keyword">Const</span> FileName = <span class="string">&quot;E:\Programming\FreeBASIC Projects\INI\configuration.ini&quot;</span><br />
+		<span class="remark">&apos; Размер буфера</span><br />
+		<span class="keyword">Const</span> BufferSize <span class="keyword">As</span> <span class="keyword">Integer</span> = 255<br />
+		<span class="keyword">Const</span> SectionWindow = <span class="string">&quot;Окно&quot;</span><br /><span class="keyword">Const</span> KeyWidth = <span class="string">&quot;Width&quot;</span><br />
+		<span class="keyword">Const</span> KeyHeight = <span class="string">&quot;Height&quot;</span><br /><span class="keyword">Const</span> DefaultValue = <span class="string">&quot;Значение по умолчанию&quot;</span><br />
+		<br />
+		<span class="remark">&apos; Значение из ini‐файла, которое мы получим</span><br />
+		<span class="keyword">Dim</span> Value <span class="keyword">As</span> <span class="keyword">WString</span> * (BufferSize + 1) <span class="remark">&apos; Один символ под нулевой</span><br />
+		<br />
+		<span class="remark">&apos; Функция GetPrivateProfileString возвращает количество символов, скопированных в буфер (Value)</span><br />
+		<span class="remark">&apos; Если раздел или ключ не будут найдены, то в Value будет записано содержимое DefaultValue</span><br />
+		<span class="keyword">Dim</span> Result2 <span class="keyword">As</span> DWORD = GetPrivateProfileString(SectionWindow, KeyWidth, DefaultValue, Value, BufferSize, FileName)<br />
+		<span class="keyword">If</span> Result2 &gt; 0 <span class="keyword">Then</span><br />
+		&t;<span class="keyword">Print</span> KeyWidth, Value<br />
+		<span class="keyword">End If</span><br />
+		Result2 = GetPrivateProfileString(SectionWindow, KeyHeight, DefaultValue, Value, BufferSize, FileName)<br />
+		<span class="keyword">If</span> Result2 &gt; 0 <span class="keyword">Then</span><br />
+		&t;<span class="keyword">Print</span> KeyHeight, Value<br />
+		<span class="keyword">End If</span>
 	</code></p>
 
 	<h3><a id="c3c2">Получение всех секций и ключей</a></h3>
 
 	<p>Чтобы получить список всех секций, нужно в <strong>GetPrivateProfileString</strong> вместо имени секции передать Null. Функция заполнит возвращаемое значение Value строкой из всех разделов, разделённых символом с кодом 0. Аналогично для списка всех параметров в разделе: вместо имени требуемого параметра передать Null.</p>
 
-	<p class="codebox"><span>Код</span>&#32;<span>FreeBASIC</span><br />
-	<code>
-	<span class="remark">&apos; Получение всех секций</span><br />
-	<span class="keyword">Dim</span> Result2 <span class="keyword">As</span> DWORD = GetPrivateProfileString(Null, Null, DefaultValue, Value, BufferSize, FileName)<br />
-	PrintResult(Value, Result2)<br />
-	<br />
-	<span class="remark">&apos; Получение всех ключей</span><br />
-	Result2 = GetPrivateProfileString(SectionWindow, Null, DefaultValue, Value, BufferSize, FileName)<br />
-	PrintResult(Value, Result2)<br />
-	<br />
-	<span class="remark">&apos; Печать результата</span><br />
-	<span class="keyword">Sub</span> PrintResult(<span class="keyword">ByRef</span> Value <span class="keyword">As</span> <span class="keyword">WString</span>, <span class="keyword">ByVal</span> ValueLength <span class="keyword">As</span> <span class="keyword">Integer</span>)<br />
-	&t;<span class="keyword">Dim</span> Start <span class="keyword">As</span> <span class="keyword">Integer</span> = 0<br />
-	&t;<span class="keyword">Dim</span> w <span class="keyword">As</span> <span class="keyword">WString</span> <span class="keyword">Ptr</span> = <span class="keyword">Any</span><br />
-	&t;<span class="keyword">Do</span> <span class="keyword">While</span> Start &lt; ValueLength<br />
-	&t;&t;<span class="remark">&apos; Получить указатель на начало строки</span><br />
-	&t;&t;w = @Value[Start]<br />
-	&t;&t;<span class="remark">&apos; Распечатать</span><br />
-	&t;&t;<span class="keyword">Print</span> *w<br />
-	&t;&t;<span class="remark">&apos; Измерить длину строки, прибавить это к указателю + 1</span><br />
-	&t;&t;Start += <span class="keyword">Len</span>(*w) + 1<br />
-	&t;<span class="keyword">Loop</span><br />
-	<span class="keyword">End Sub</span>
+	<p class="codebox"><span>Код</span>&#32;<span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Получение всех секций</span><br />
+		<span class="keyword">Dim</span> Result2 <span class="keyword">As</span> DWORD = GetPrivateProfileString(Null, Null, DefaultValue, Value, BufferSize, FileName)<br />
+		PrintResult(Value, Result2)<br />
+		<br />
+		<span class="remark">&apos; Получение всех ключей</span><br />
+		Result2 = GetPrivateProfileString(SectionWindow, Null, DefaultValue, Value, BufferSize, FileName)<br />
+		PrintResult(Value, Result2)<br />
+		<br />
+		<span class="remark">&apos; Печать результата</span><br />
+		<span class="keyword">Sub</span> PrintResult(<span class="keyword">ByRef</span> Value <span class="keyword">As</span> <span class="keyword">WString</span>, <span class="keyword">ByVal</span> ValueLength <span class="keyword">As</span> <span class="keyword">Integer</span>)<br />
+		&t;<span class="keyword">Dim</span> Start <span class="keyword">As</span> <span class="keyword">Integer</span> = 0<br />
+		&t;<span class="keyword">Dim</span> w <span class="keyword">As</span> <span class="keyword">WString</span> <span class="keyword">Ptr</span> = <span class="keyword">Any</span><br />
+		&t;<span class="keyword">Do</span> <span class="keyword">While</span> Start &lt; ValueLength<br />
+		&t;&t;<span class="remark">&apos; Получить указатель на начало строки</span><br />
+		&t;&t;w = @Value[Start]<br />
+		&t;&t;<span class="remark">&apos; Распечатать</span><br />
+		&t;&t;<span class="keyword">Print</span> *w<br />
+		&t;&t;<span class="remark">&apos; Измерить длину строки, прибавить это к указателю + 1</span><br />
+		&t;&t;Start += <span class="keyword">Len</span>(*w) + 1<br />
+		&t;<span class="keyword">Loop</span><br />
+		<span class="keyword">End Sub</span>
 	</code></p>
 
 
@@ -321,17 +320,16 @@
 
 	<p>Попробуем сменить имя пользователя:</p>
 
-	<p class="codebox"><span>Код</span>&#32;<span>FreeBASIC</span><br />
-	<code>
-	<span class="keyword">Const</span> SectionUser = <span class="string">&quot;Пользователь&quot;</span><br />
-	<span class="keyword">Const</span> KeyUser = <span class="string">&quot;Имя&quot;</span><br />
-	<span class="keyword">Const</span> UserName = <span class="string">&quot;Саша&quot;</span><br />
-	<br />
-	<span class="remark">&apos; Функция возращает значение WinBool</span><br />
-	<span class="keyword">Dim</span> Result <span class="keyword">As</span> <span class="keyword">WinBool</span> = WritePrivateProfileString(SectionUser, KeyUser, UserName, FileName)<br />
-	<span class="keyword">If</span> Result <span class="keyword">Then</span><br />
-	&t;<span class="keyword">Print</span> <span class="string">&quot;Запись удалась&quot;</span><br />
-	<span class="keyword">End If</span>
+	<p class="codebox"><span>Код</span>&#32;<span>FreeBASIC</span><br /><code>
+		<span class="keyword">Const</span> SectionUser = <span class="string">&quot;Пользователь&quot;</span><br />
+		<span class="keyword">Const</span> KeyUser = <span class="string">&quot;Имя&quot;</span><br />
+		<span class="keyword">Const</span> UserName = <span class="string">&quot;Саша&quot;</span><br />
+		<br />
+		<span class="remark">&apos; Функция возращает значение WinBool</span><br />
+		<span class="keyword">Dim</span> Result <span class="keyword">As</span> <span class="keyword">WinBool</span> = WritePrivateProfileString(SectionUser, KeyUser, UserName, FileName)<br />
+		<span class="keyword">If</span> Result <span class="keyword">Then</span><br />
+		&t;<span class="keyword">Print</span> <span class="string">&quot;Запись удалась&quot;</span><br />
+		<span class="keyword">End If</span>
 	</code></p>
 
 
@@ -341,21 +339,20 @@
 
 	<p>Удалим параметр «Имя» из раздела «Пользователь»:</p>
 
-	<p class="codebox"><span>Код</span>&#32;<span>FreeBASIC</span><br />
-
-	<code>Result = WritePrivateProfileString(SectionUser, KeyUser, NULL, FileName)<br />
-	<span class="keyword">If</span> Result <span class="keyword">Then</span><br />
-	&t;<span class="keyword">Print</span> <span class="string">&quot;Удаление параметра успешно&quot;</span><br />
-	<span class="keyword">End If</span>
+	<p class="codebox"><span>Код</span>&#32;<span>FreeBASIC</span><br /><code>
+		Result = WritePrivateProfileString(SectionUser, KeyUser, NULL, FileName)<br />
+		<span class="keyword">If</span> Result <span class="keyword">Then</span><br />
+		&t;<span class="keyword">Print</span> <span class="string">&quot;Удаление параметра успешно&quot;</span><br />
+		<span class="keyword">End If</span>
 	</code></p>
 
 	<p>Точно также можно удалять целые секции из ini‐файлов:</p>
 
-	<p class="codebox"><span>Код</span>&#32;<span>FreeBASIC</span><br />
-	<code>Result = WritePrivateProfileString(SectionUser, NULL, NULL, FileName)<br />
-	<span class="keyword">If</span> Result <span class="keyword">Then</span><br />
-	&t;<span class="keyword">Print</span> <span class="string">&quot;Удаление секции успешно&quot;</span><br />
-	<span class="keyword">End If</span>
+	<p class="codebox"><span>Код</span>&#32;<span>FreeBASIC</span><br /><code>
+		Result = WritePrivateProfileString(SectionUser, NULL, NULL, FileName)<br />
+		<span class="keyword">If</span> Result <span class="keyword">Then</span><br />
+		&t;<span class="keyword">Print</span> <span class="string">&quot;Удаление секции успешно&quot;</span><br />
+		<span class="keyword">End If</span>
 	</code></p>
 
 	<p>Не забываем сохранять исходный код в кодировке UTF-8 или UTF-16, а сам ini‐файл в юникоде (UTF-16).</p>
