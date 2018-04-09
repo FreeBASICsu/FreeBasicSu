@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd"[
+
+	<!ENTITY nbsp "&#160;">
+	<!ENTITY t "&#160;&#160;&#160;&#160;">
+	
+]>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<head>
+	<title>Интерфейсы в COM</title>
+	<meta name="description" content="Как создавать COM‐совместимые интерфейсы и использовать их в своих программах" />
+	<meta name="keywords" content="Interface, COM, ActiveX" />
+	
+	<link href="/styles.css" type="text/css" rel="stylesheet" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+</head>
+
+<body>
+
+<header>
+	
+	<nav>
+		<p><a href="/">Главная</a></p>
+		<p><a href="/src/">Статьи</a></p>
+		<p><a href="/code/">Проекты</a></p>
+		<p><a href="/books/">Учебник</a></p>
+		<p><a href="/links.xhtml">Ссылки</a></p>
+		<p><a href="/about.xhtml">О сайте</a></p>
+	</nav>
+	
+</header>
+
+<h1>Интерфейсы в COM</h1>
+
+<main>
+	<p class="postername">
+		<a href="/users/mabu.xhtml">
+			<img src="/avatars/mabu.jpg" alt="Аватар пользователя" width="50" height="50" class="avatar" />
+			&#32;
+			mabu
+		</a>
+		&#32;
+		<time pubdate="pubdate">2016-02-10T09:25:31+07:00</time>
+	</p>
+	
+	<p>COM — означает модель объектного компонента. Реализует в себе два принципа объектно‐ориентированного программирования: инкапсуляцию и полиморфизм. Предназначена для взаимодействия программ, написанных на совершенно разных языках программирования и разных операционных систем, по специальным правилам.</p>
+	
+	<p>Так как в разных языках программирования классы и объекты могут реализовываться по‐разному, а то и вовсе отсутствовать, был придуман свод правил, по которым разные компоненты могут взаимодействовать друг с другом. Этот свод правил назвали COM.</p>
+	
+	<p>COM в качестве решения этой проблемы использует указатель на интерфейс: всё, что нужно для работы с объектом — это получить указатель на его интерфейс, и ничего более. Этот указатель представляет собой «чёрный ящик», ссылку на данные, о содержимом которых программисту знать не нужно.</p>
+	
+	<ol class="contents">
+		<li><a href="#c1">Интерфейс IUnknown</a>
+			<ol>
+				<li><a href="#c1c1">Первая подглава</a></li>
+				<li><a href="#c1c2">Вторая подглава</a></li>
+				<li><a href="#c1c3">Третья подглава</a></li>
+			</ol>
+		</li>
+		<li><a href="#c2">Вторая глава</a></li>
+		<li><a href="#c3">Третья глава</a></li>
+	</ol>
+	
+	<h2><a id="c1">Интерфейс IUnknown</a></h2>
+	
+	<p>Любой COM‐объект должен наследоваться от интерфейса, а любой другой интерфейс — от интерфейса <code>IUnknown</code>.</p>
+	
+	<p>Интерфейс <code>IUnknown</code> выполняет две функции. Первая состоит в том, чтобы обеспечить стандартный способ запроса определённого интерфейса данного компонента его пользователем (клиентом). Эту возможность предоставляет метод <code>QueryInterface</code>. Вторая функция состоит в управлении временем жизни объекта. Для этого у него есть два метода: <code>AddRef</code> и <code>Release</code>.</p>
+	
+	<h3>Описание</h3>
+	
+	<p>Вот описание <code>IUnknown</code>:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Type</span> <span class="datatype">IUnknown</span> <span class="keyword">As</span> <span class="datatype">IUnknown_</span><br />
+		<br />
+		<span class="keyword">Type</span> <span class="datatype">IUnknownVirtualTable</span><br />
+			<br />
+			&t;<span class="keyword">Dim</span> QueryInterface <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> This <span class="keyword">As</span> <span class="datatype">IUnknown Ptr</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> riid <span class="keyword">As</span> <span class="datatype">REFIID</span>, _<br />
+				&t;&t;<span class="keyword">ByVal</span> ppv <span class="keyword">As</span> <span class="datatype">Any Ptr Ptr</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">HRESULT</span><br />
+			<br />
+			&t;<span class="keyword">Dim</span> AddRef <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> This <span class="keyword">As</span> <span class="datatype">IUnknown Ptr</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">ULONG</span><br />
+			<br />
+			&t;<span class="keyword">Dim</span> Release <span class="keyword">As</span> <span class="datatype">Function</span>( _<br />
+				&t;&t;<span class="keyword">ByVal</span> This <span class="keyword">As</span> <span class="datatype">IUnknown Ptr</span> _<br />
+			&t;)<span class="keyword">As</span> <span class="datatype">ULONG</span><br />
+			<br />
+		<span class="keyword">End Type</span><br />
+		<br />
+		<span class="keyword">Type</span> <span class="datatype">IUnknown_</span><br />
+			<br />
+			&t;<span class="keyword">Dim</span> VirtualTable <span class="keyword">As</span> <span class="datatype">IUnknownVirtualTable Ptr</span><br />
+			<br />
+		<span class="keyword">End Type</span>
+	</code></p>
+	
+	<!--
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Type</span> <span class="datatype">IMath</span><br />
+	</code></p>
+	-->
+	
+	<h2>Поделись ссылочкой в социальных сетях</h2>
+	<div id="vk_share_button"></div>
+	
+</main>
+
+<hr />
+
+<footer>
+	<p>Сайт создан по технологии XHTML</p>
+	<p>
+		<span id="pLiveInternet"></span>
+		<a href="http://wscatalog.ru/dir/programmirovanie-na-yazyke-freebasic" title="Сайт есть в Каталоге">
+			<img width="88" height="31" src="http://wscatalog.ru/knopka.png" alt="Логотип wscatalog.ru" />
+		</a>
+		<a href="http://gluci.ru/dir/freebasic-na-russkom" title="Необычный Каталог Сайтов">
+			<img width="88" height="31" src="http://gluci.ru/88x31.png" alt="Логотип Глюки" />
+		</a> 
+	</p>
+</footer>
+
+<script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
+<script type="text/javascript">var docUrl=document.URL.toString();document.getElementById("vk_share_button").innerHTML=VK.Share.button(docUrl, {type: "round"});</script>
+
+
+<script type="text/javascript">var idL=document.getElementById("pLiveInternet");var idA=document.createElement("a");idA.href="//www.liveinternet.ru/stat/freebasic.su";idA.title="Счётчик посещений LiveInternet";var idImg=document.createElement("img");idImg.src="//counter.yadro.ru/hit?t44."+Math.round(1+18*Math.random())+";r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(docUrl)+";"+Math.random();idImg.alt="Логотип LiveInternet";idA.appendChild(idImg);idL.appendChild(idA);</script>
+
+</body></html>
