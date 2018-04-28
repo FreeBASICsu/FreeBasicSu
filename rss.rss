@@ -10,7 +10,7 @@
 		<item>
 			<pubDate>Fri, 30 Mar 2018 05:22:58 GMT</pubDate>
 			<title>Весервер Station922</title>
-			<link>http://www.freebasic.su/code/station922.xhtml</link>
+			<link>http://www.freebasic.su/projects/station922.xhtml</link>
 			<description>Компактный вебсервер для Windows, написанный на фрибейсике. Умеет обрабатывать методы CONNECT, GET, HEAD, PUT, DELETE, TRACE и OPTIONS. Сервер работает «из коробки», необходимо лишь прописать пути к сайтам в файле конфигурации. Для ведения журнала сетевых соединений сервер создаёт каталог «logs» в папке с программой. Вебсервер назван в честь запрещённого видеофайла <a href="https://mrakopedia.org/wiki/21:Буратино">station922.mkv</a>.
 			</description>
 			<guid isPermaLink="false">{5EA4A2E9-4A6E-4FAB-837B-CDE854B3C9FF}</guid>
@@ -19,7 +19,7 @@
 		<item>
 			<pubDate>Mon, 26 Mar 2018 18:07:54 GMT</pubDate>
 			<title>Интерфейсы простыми средствами</title>
-			<link>http://www.freebasic.su/src/interface.xhtml</link>
+			<link>http://www.freebasic.su/articles/interface.xhtml</link>
 			<description>Несмотря на то, что во фрибейсике отсутствует ключевое слово Interface, которое бы облегчало написание интерфейсов, мы справимся с этой задачей и сами голыми руками (печальный удел холостяка). Для демонстрации серьёзности намерений напишем какой‐нибудь бесполезный интерфейс, например, содержащий простые математические функции, и реализуем его.</description>
 			<guid isPermaLink="false">{33B80BF1-321E-4838-8512-8F7DFC492A51}</guid>
 		</item>
@@ -37,7 +37,7 @@
 		<item>
 			<pubDate>Wed, 07 Mar 2018 01:34:43 GMT</pubDate>
 			<title>Динамическое распределение памяти</title>
-			<link>http://www.freebasic.su/src/heap.xhtml</link>
+			<link>http://www.freebasic.su/articles/heap.xhtml</link>
 			<description>Управление памятью — одна из наиболее фундаментальных областей в программировании. Типичные примеры, где нужно динамическое распределение памяти: списки, деревья, буферы данных.</description>
 			<guid isPermaLink="false">{7B8B9AC0-9B6F-4A3E-AA9E-DCF4FACD579E}</guid>
 		</item>
@@ -54,7 +54,7 @@
 		<item>
 			<pubDate>Fri, 15 Sep 2017 22:31:05 GMT</pubDate>
 			<title>Реестр Windows</title>
-			<link>http://www.freebasic.su/src/registry.xhtml</link>
+			<link>http://www.freebasic.su/articles/registry.xhtml</link>
 			<description>Реестр всегда был опасным местом для пользователей и разработчиков, существуют рекомендации избегать реестра как огня.</description>
 			<guid isPermaLink="false">{A9DDCA3B-D0EE-4404-B28E-11FE4EBCE2F4}</guid>
 		</item>
@@ -63,7 +63,7 @@
 		<item>
 			<pubDate>Mon, 21 Aug 2017 08:54:14 GMT</pubDate>
 			<title>Об ошибках в Windows</title>
-			<link>http://www.freebasic.su/src/windows-errors.xhtml</link>
+			<link>http://www.freebasic.su/articles/windows-errors.xhtml</link>
 			<description>Статья о том как Windows уведомляет пользователя об ошибках и как получить текстовое описание ошибки.</description>
 			<guid isPermaLink="false">{F0E92BD9-B1DC-4F3B-9894-FD6B247E4A76}</guid>
 		</item>
@@ -72,8 +72,8 @@
 		<item>
 			<pubDate>Sun, 16 Jul 2017 13:33:39 GMT</pubDate>
 			<title>Сразу две неучтённые статьи</title>
-			<link>http://www.freebasic.su/src/fileswinapi.xhtml</link>
-			<description>Статья об работе с файлами средствами операционной системы <a href="http://www.freebasic.su/src/fileswinapi.xhtml">Работа с файлами средствами WinAPI</a>. Пригодится тем, кто хочет использовать файловые функции напрямую. Статья про уменьшение размера бинарных файлов <a href="http://www.freebasic.su/src/without-rtl.xhtml">Уменьшение размера бинарников</a> — интересные наблюдения за работой компилятора изнутри. Удивительно, почему эти статьи не попали в общую ленту.</description>
+			<link>http://www.freebasic.su/articles/fileswinapi.xhtml</link>
+			<description>Статья об работе с файлами средствами операционной системы <a href="http://www.freebasic.su/articles/fileswinapi.xhtml">Работа с файлами средствами WinAPI</a>. Пригодится тем, кто хочет использовать файловые функции напрямую. Статья про уменьшение размера бинарных файлов <a href="http://www.freebasic.su/articles/without-rtl.xhtml">Уменьшение размера бинарников</a> — интересные наблюдения за работой компилятора изнутри. Удивительно, почему эти статьи не попали в общую ленту.</description>
 			<guid isPermaLink="false">{0DE0A30B-B939-4F7F-A7C2-F3142FB58281}</guid>
 		</item>
 		
@@ -90,7 +90,7 @@
 		<item>
 			<pubDate>Sat, 21 Jan 2017 17:39:50 GMT</pubDate>
 			<title>FreeBASIC, кракозябры, кодировки и кириллица</title>
-			<link>http://www.freebasic.su/src/codepages.xhtml</link>
+			<link>http://www.freebasic.su/articles/codepages.xhtml</link>
 			<description>Самый часто задаваемый вопрос новичков по фрибейсику: как выводить кириллицу и русские буквы на консоль.</description>
 			<guid isPermaLink="false">{1B75C88B-F63D-4309-900A-2BFC686CA37C}</guid>
 		</item>
