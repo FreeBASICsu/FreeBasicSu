@@ -3,11 +3,15 @@
 	<url>
 		<loc>http://www.freebasic.su/</loc>
 	</url>
+	
 	<url>
-		<loc>http://www.freebasic.su/about.xhtml</loc>
+		<loc>http://www.freebasic.su/help/</loc>
 	</url>
 	<url>
-		<loc>http://www.freebasic.su/links.xhtml</loc>
+		<loc>http://www.freebasic.su/help/about.xhtml</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/help/links.xhtml</loc>
 	</url>
 	
 	
@@ -90,7 +94,14 @@
 	
 	
 	<url>
+		<loc>http://www.freebasic.su/users/</loc>
+	</url>
+	<url>
 		<loc>http://www.freebasic.su/users/mabu.xhtml</loc>
+	</url>
+	
+	<url>
+		<loc>http://www.freebasic.su/tags/</loc>
 	</url>
 	
 </urlset>
