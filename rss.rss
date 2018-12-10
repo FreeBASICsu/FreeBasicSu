@@ -8,6 +8,15 @@
 		
 		
 		<item>
+			<pubDate>Mon, 10 Dec 2018 08:54:29 GMT</pubDate>
+			<title>Тип данных HRESULT</title>
+			<link>http://www.freebasic.su/articles/hresult.xhtml</link>
+			<description>Тип HRESULT является одним из средств контроля ошибок в COM. Этот тип представляет собой 32‐битное число, в котором кодируется результат операции.
+			</description>
+			<guid isPermaLink="false">{038C9392-5898-49BE-9EAD-255894ED59EF}</guid>
+		</item>
+		
+		<item>
 			<pubDate>Fri, 30 Mar 2018 05:22:58 GMT</pubDate>
 			<title>Весервер Station922</title>
 			<link>http://www.freebasic.su/projects/station922.xhtml</link>
@@ -84,15 +93,6 @@
 			<link>http://www.freebasic.su/</link>
 			<description>После тщательных попыток поставить рекламу на сайт решено было отказаться от неё вовсе. Теперь можно смотреть на сайт без всякой рекламы. Хотя в будущем всё может измениться и она появится снова.</description>
 			<guid isPermaLink="false">{5ED914D2-9BAA-480E-9DA9-F6E4BA69BD77}</guid>
-		</item>
-		
-		
-		<item>
-			<pubDate>Sat, 21 Jan 2017 17:39:50 GMT</pubDate>
-			<title>FreeBASIC, кракозябры, кодировки и кириллица</title>
-			<link>http://www.freebasic.su/articles/codepages.xhtml</link>
-			<description>Самый часто задаваемый вопрос новичков по фрибейсику: как выводить кириллицу и русские буквы на консоль.</description>
-			<guid isPermaLink="false">{1B75C88B-F63D-4309-900A-2BFC686CA37C}</guid>
 		</item>
 		
 	</channel>

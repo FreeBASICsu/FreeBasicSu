@@ -9,9 +9,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 
 <head>
-	<title>Интерфейсы простыми средствами</title>
+	<title>Интерфейсы и полиморфизм</title>
 	<meta name="description" content="Некоторые приёмы объектно‐ориентированного программирования: создание интерфейсов" />
-	<meta name="keywords" content="Interface, наследование, реализация, виртуальная таблица методов, ООП" />
+	<meta name="keywords" content="Interface, наследование, полиморфизм, множественное наследование, реализация, таблица виртуальных методов, ООП" />
 	
 	<link href="/styles.css" type="text/css" rel="stylesheet" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -35,7 +35,7 @@
 	
 </header>
 
-<h1>Интерфейсы простыми средствами</h1>
+<h1>Интерфейсы и полиморфизм</h1>
 
 <main>
 	<p class="postername">
@@ -50,26 +50,46 @@
 	
 	<p>Для начала немного неточной терминологии.</p>
 	
-	<p><strong>Интерфейс</strong> — это набор функций, которые следует обязательно реализовать, то есть написать тело функций.</p>
+	<dl>
+		<dt>Интерфейс</dt>
+		<dd>Единый набор функций, которые следует обязательно реализовать. Абстрактный тип данных, определяющий поведение некоей сущности.</dd>
+	</dl>
 	
-	<p><strong>Наследование</strong> от интерфейса — это реализация набора функций.</p>
+	<dl>
+		<dt>Класс</dt>
+		<dd>Единый набор функций и данных. Абстрактный тип данных, определяющий и реализующий поведение и устройство сущности.</dd>
+	</dl>
 	
-	<p><strong>Метод</strong> в объектно‐ориентированном программировании — это функция интерфейса.</p>
+	<dl>
+		<dt>Объект</dt>
+		<dd>Переменная определённого класса или указатель на экземпляр таких данных. Конкретный тип.</dd>
+	</dl>
 	
-	<p><strong>Класс</strong> в объектно‐ориентированном программировании — это набор данных (структура), объединённый вместе с использующими эти данные функциями.</p>
+	<dl>
+		<dt>Наследование</dt>
+		<dd>Концепция, согласно которой существующий тип данных (родитель, базовый класс, прототип) и его поведение используются как образцы для построения другого типа данных (наследника) и поведения.</dd>
+	</dl>
 	
-	<p><strong>Объект</strong> — это переменная определённого класса или указатель на экземпляр таких данных (указатель на экземпляр структуры).</p>
+	<dl>
+		<dt>Полиморфизм</dt>
+		<dd>Способность функции обрабатывать данные разных типов.</dd>
+	</dl>
+	
+	<dl>
+		<dt>Метод</dt>
+		<dd>Функция интерфейса или класса.</dd>
+	</dl>
 	
 	<p>Вот общие принципы организации интерфейсов:</p>
 	
 	<ul>
 		<li>интерфейс только описывает функции (поведение) объекта, но не их реализацию;</li>
-		<li>любой класс или структура, унаследованные от интерфейса, должны реализовать все его функции;</li>
+		<li>любой класс, унаследованный от интерфейса, должен реализовать все его функции;</li>
 		<li>экземпляр интерфейса не создают напрямую, вместо этого создают экземпляр класса (объект), унаследованный от интерфейса;</li>
 		<li>интерфейсы содержат только функции, без переменных и констант;</li>
 		<li>интерфейсы не содержат реализации (тела) методов;</li>
-		<li>интерфейс может наследоваться от другого интерфейса, в таком случае производный класс реализует методы всех родительских интерфейсов;</li>
-		<li>класс или структура может наследоваться от нескольких интерфейсов (множественное наследование).</li>
+		<li>интерфейс может наследоваться от другого интерфейса, в таком случае конечный класс в цепочке иерархии реализует методы всех родительских интерфейсов;</li>
+		<li>класс может наследоваться от нескольких интерфейсов (множественное наследование).</li>
 	</ul>
 	
 	<p>Во фрибейсике нет ключевого слова <code>Interface</code>, которое бы облегчало написание интерфейсов, но мы справимся с этой задачей и сами голыми руками. Для демонстрации серьёзности намерений напишем  какой‐нибудь бесполезный интерфейс, например, содержащий простые математические функции, и реализуем его.</p>
@@ -77,18 +97,19 @@
 	<ol class="contents">
 		<li><a href="#c1">Этапы построения интерфейса</a>
 			<ol>
+				<li><a href="#c1c0">Правила именования</a></li>
 				<li><a href="#c1c1">Интерфейс как тип данных</a></li>
-				<li><a href="#c1c2">Добавление контекста вызова</a></li>
+				<li><a href="#c1c2">Контекст вызова</a></li>
 				<li><a href="#c1c3">Таблица виртуальных методов</a></li>
 				<li><a href="#c1c4">Разрешение циклических ссылок</a></li>
 			</ol>
 		</li>
-		<li><a href="#c2">Наследование от интерфейса</a>
+		<li><a href="#c2">Наследование класса от интерфейса</a>
 			<ol>
-				<li><a href="#c2c1">Реализация функций</a></li>
-				<li><a href="#c2c2">Таблица виртуальных методов</a></li>
-				<li><a href="#c2c3">Класс, наследующий интерфейс</a></li>
-				<li><a href="#c2c3">Создание объектов</a></li>
+				<li><a href="#c2c1">Класс, наследующий интерфейс</a></li>
+				<li><a href="#c2c2">Реализация функций</a></li>
+				<li><a href="#c2c3">Таблица виртуальных методов</a></li>
+				<li><a href="#c2c4">Создание объектов</a></li>
 			</ol>
 		</li>
 		<li><a href="#c3">Пример интерфейса ICloneable для клонирования объектов</a>
@@ -98,16 +119,18 @@
 				<li><a href="#c3c3">Соединяем всё вместе</a></li>
 			</ol>
 		</li>
-		<!-- <li><a href="#c4">Множественное наследование интерфейсов</a></li> -->
+		<li><a href="#c4">Множественное наследование интерфейсов</a></li>
 	</ol>
 	
 	<h2><a id="c1">Этапы построения интерфейса</a></h2>
+	
+	<h3><a id="c1c0">Правила именования</a></h3>
 	
 	<p>Обычно имя интерфейса строится по правилу «I&lt;Имя&gt;», то есть состоит из написанного с заглавной буквы осмысленного имени, которому предшествует заглавная латинская буква I. Примеры: <code>IUnknown</code>, <code>IDispatch</code>, <code>IStringList</code> и тому подобное.</p>
 	
 	<h3><a id="c1c1">Интерфейс как тип данных</a></h3>
 	
-	<p>Определим набор функций для операций над двумя числами: сложение, вычитание, умножение, деление. Так как нам впоследствии необходимо будет использовать реальные функции, это значит, что такой набор должен состоять из указателей на наши будущие функции. Завернём их в структуру:</p>
+	<p>Определим набор функций для операций над двумя числами: сложение, вычитание, умножение и деление. Так как нам впоследствии необходимо будет использовать реальные функции, это значит, что такой набор должен состоять из указателей на наши будущие функции. Завернём их в структуру:</p>
 	
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
 		<span class="keyword">Type</span> <span class="datatype">IMath</span><br />
@@ -133,9 +156,9 @@
 		<span class="keyword">End Type</span>
 	</code></p>
 	
-	<h3><a id="c1c2">Добавление контекста вызова</a></h3>
+	<h3><a id="c1c2">Контекст вызова</a></h3>
 	
-	<p>Чтобы функции интерфейса знали, какой объект их вызывает, придётся добавить в них указатель на объект, реализующий наш интерфейс, первым параметром:</p>
+	<p>Для полноценной работы методы должны иметь доступ к данным объекта. Чтобы функции интерфейса знали, какой объект их вызывает, добавим в них указатель на объект, реализующий наш интерфейс, первым параметром:</p>
 	
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
 		<span class="keyword">Type</span> <span class="datatype">IMath</span><br />
@@ -167,7 +190,7 @@
 	
 	<h3><a id="c1c3">Таблица виртуальных методов</a></h3>
 	
-	<p>На практике набор функций интерфейса выделяют в отдельную структуру, которую теперь называеют таблицей виртуальных методов, а в самом интерфейсе оставляют ссылку (указатель) на неё. Это позволяет использовать одну и ту же таблицу для разных объектов одного класса, реализующих один и тот же интерфейс, экономя память. Название <code>VirtualTable</code> часто сокращают до <code>Vtable</code> или даже <code>Vtbl</code>, но мы будет использовать полный вариант.</p>
+	<p>На практике набор функций интерфейса выделяют в отдельную структуру, которую теперь называеют таблицей виртуальных методов, а в самом интерфейсе оставляют ссылку (указатель) на неё. Это позволяет использовать одну и ту же таблицу для разных объектов одного класса, реализующих один и тот же интерфейс, экономя память. Название <code>VirtualTable</code> часто сокращают до <code>Vtable</code> или даже <code>Vtbl</code>, но в данном случае мы будет использовать полный вариант.</p>
 	
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
 		<span class="keyword">Type</span> <span class="datatype">IMathVirtualTable</span><br />
@@ -197,7 +220,7 @@
 		<span class="keyword">End Type</span><br />
 		<br />
 		<span class="keyword">Type</span> <span class="datatype">IMath</span><br />
-			&t;<span class="keyword">Dim</span> VirtualTable <span class="keyword">As</span> <span class="datatype">IMathVirtualTable Ptr</span><br />
+			&t;<span class="keyword">Dim</span> pVirtualTable <span class="keyword">As</span> <span class="datatype">IMathVirtualTable Ptr</span><br />
 		<span class="keyword">End Type</span>
 	</code></p>
 	
@@ -235,24 +258,38 @@
 		<span class="keyword">End Type</span><br />
 		<br />
 		<span class="keyword">Type</span> <span class="datatype">IMath_</span><br />
-			&t;<span class="keyword">Dim</span> VirtualTable <span class="keyword">As</span> <span class="datatype">IMathVirtualTable Ptr</span><br />
+			&t;<span class="keyword">Dim</span> pVirtualTable <span class="keyword">As</span> <span class="datatype">IMathVirtualTable Ptr</span><br />
 		<span class="keyword">End Type</span>
 	</code></p>
 	
 	<p>Ну вот теперь‐то описание нашего интерфейса готово.</p>
 	
 	
-	<h2><a id="c2">Наследование от интерфейса</a></h2>
+	<h2><a id="c2">Наследование класса от интерфейса</a></h2>
 	
-	<p>Наследование от интерфейса есть его реализация в производном классе. Здесь нам нужно написать функции, создать таблицу и объявить класс‐наследник.</p>
+	<p>Наследование от интерфейса есть его реализация в производном классе. Здесь нам нужно объявить класс‐наследник, написать функции и создать таблицу.</p>
 	
-	<h3><a id="c2c1">Реализация функций</a></h3>
+	
+	<h3><a id="c2c1">Класс, наследующий интерфейс</a></h3>
+	
+	<p>Теперь объявим класс, наследующий наш интерфейс:</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Type</span> <span class="datatype">Math</span><br />
+			&t;<span class="keyword">Dim</span> pVirtualTable <span class="keyword">As</span> <span class="datatype">IMathVirtualTable Ptr</span><br />
+		<span class="keyword">End Type</span>
+	</code></p>
+	
+	<p>Ты спросишь: почему здесь указана таблица виртуальных функций <code>IMathVirtualTable</code> вместо интерфейса <code>IMath</code>, если класс наследуется от <code>IMath</code>? Всё просто: все наследники интерфейса должны реализовывать все его методы, а сделать это можно объявив виртуальную таблицу функций этого интерфейса внутри класса.</p>
+	
+	
+	<h3><a id="c2c2">Реализация функций</a></h3>
 	
 	<p>Во всей этой мешанине виртуальных таблиц ты ещё не забыл, что интерфейс — это набор функций? Как раз пора приняться за них вплотную.</p>
 	
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-		<span class="keyword">Function</span> Add( _<br />
-				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+		<span class="keyword">Function</span> MathAdd( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">Math Ptr</span>, _<br />
 				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
 				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
 			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
@@ -260,8 +297,8 @@
 			&t;<span class="keyword">Return</span> LeftOperand + RightOperand<br />
 		<span class="keyword">End Function</span><br />
 		<br />
-		<span class="keyword">Function</span> Substract( _<br />
-				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+		<span class="keyword">Function</span> MathSubstract( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">Math Ptr</span>, _<br />
 				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
 				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
 			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
@@ -269,8 +306,8 @@
 			&t;<span class="keyword">Return</span> LeftOperand - RightOperand<br />
 		<span class="keyword">End Function</span><br />
 		<br />
-		<span class="keyword">Function</span> Multiply( _<br />
-				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+		<span class="keyword">Function</span> MathMultiply( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">Math Ptr</span>, _<br />
 				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
 				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
 			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
@@ -278,8 +315,8 @@
 			&t;<span class="keyword">Return</span> LeftOperand * RightOperand<br />
 		<span class="keyword">End Function</span><br />
 		<br />
-		<span class="keyword">Function</span> Divide( _<br />
-				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">IMath Ptr</span>, _<br />
+		<span class="keyword">Function</span> MathDivide( _<br />
+				&t;&t;<span class="keyword">ByVal</span> this <span class="keyword">As</span> <span class="datatype">Math Ptr</span>, _<br />
 				&t;&t;<span class="keyword">ByVal</span> LeftOperand <span class="keyword">As</span> <span class="datatype">Integer</span>, _<br />
 				&t;&t;<span class="keyword">ByVal</span> RightOperand <span class="keyword">As</span> <span class="datatype">Integer</span> _<br />
 			&t;)<span class="keyword">As</span> <span class="datatype">Integer</span><br />
@@ -290,40 +327,29 @@
 	
 	<p>Параметр <code>this</code> представляет собой указатель на объект, который вызвал функцию интерфейса.</p>
 	
-	<h3><a id="c2c2">Таблица виртуальных методов</a></h3>
 	
-	<p>Создадим таблицу виртуальных функций класса <code>Math</code>, это требуется делать всего один раз вначале, так как она будет общая для всех производных объектов.</p>
+	<h3><a id="c2c3">Таблица виртуальных методов</a></h3>
+	
+	<p>Создадим таблицу виртуальных функций класса <code>Math</code>. Это требуется сделать всего один раз, она будет общая для всех производных объектов.</p>
 
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-		<span class="keyword">Dim Shared</span> GlobalMathVirtualTable <span class="keyword">As</span> <span class="datatype">IMathVirtualTable</span><br />
-		GlobalMathVirtualTable.Add = @Add<br />
-		GlobalMathVirtualTable.Substract = @Substract<br />
-		GlobalMathVirtualTable.Multiply = @Multiply<br />
-		GlobalMathVirtualTable.Divide = @Divide
+		<span class="keyword">Common Shared</span> GlobalMathVirtualTable <span class="keyword">As</span> <span class="datatype">IMathVirtualTable</span><br />
+		GlobalMathVirtualTable.Add = @MathAdd<br />
+		GlobalMathVirtualTable.Substract = @MathSubstract<br />
+		GlobalMathVirtualTable.Multiply = @MathMultiply<br />
+		GlobalMathVirtualTable.Divide = @MathDivide
 	</code></p>
-	
-	<h3><a id="c2c3">Класс, наследующий интерфейс</a></h3>
-	
-	<p>Теперь объявим класс, наследующий наш интерфейс:</p>
-	
-	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-		<span class="keyword">Type</span> <span class="datatype">Math</span><br />
-			&t;<span class="keyword">Dim</span> VirtualTable <span class="keyword">As</span> <span class="datatype">IMathVirtualTable Ptr</span><br />
-		<span class="keyword">End Type</span>
-	</code></p>
-	
-	<p>Ты спросишь: почему здесь указана таблица виртуальных функций <code>IMathVirtualTable</code> вместо интерфейса <code>IMath</code>, если класс наследуется от <code>IMath</code>? Всё просто: все наследники интерфейса должны реализовывать все его методы, а сделать это можно объявив виртуальную таблицу функций этого интерфейса внутри класса.</p>
 	
 	
 	<h3><a id="c2c4">Создание объектов</a></h3>
 	
-	<p>Вся прелесть интерфейсов в том, что какой бы ни был объект, но если он реализует наш интерфейс, то у него всегда будут требуемые нам методы. Вызывать методы можно через объект, унаследованный от требуемого интерфейса.</p>
+	<p>Вся прелесть интерфейсов в том, что если класс реализует наш интерфейс, то у него всегда будут требуемые нам методы. Вызывать методы можно через объект.</p>
 	
 	<p>Чтобы создать объект, требуется выделить под него память и назначить ему таблицу виртуальных функций:</p>
 	
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
 		<span class="remark">&apos; Выделяем память под объект, унаследованный от IMath</span><br />
-		<span class="keyword">Dim</span> objMath <span class="keyword">As</span> <span class="datatype">IMath Ptr</span> = <span class="keyword">Allocate</span>(<span class="keyword">SizeOf</span>(<span class="datatype">Math</span>))<br />
+		<span class="keyword">Dim</span> objMath <span class="keyword">As</span> <span class="datatype">Math Ptr</span> = <span class="keyword">Allocate</span>(<span class="keyword">SizeOf</span>(<span class="datatype">Math</span>))<br />
 		<br />
 		<span class="remark">&apos; Обязательно проверяем на успешность выделения памяти</span><br />
 		<span class="keyword">If</span> objMath = 0 <span class="keyword">Then</span><br />
@@ -335,13 +361,15 @@
 		objMath-&gt;VirtualTable = @GlobalMathVirtualTable
 	</code></p>
 	
-	<p>Объект готов. Вызываем методы интерфейса у объекта:</p>
+	<p>Объект готов. Теперь получим указатель на интерфейс и вызовем методы интерфейса у объекта:</p>
 	
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-		<span class="keyword">Print</span> objMath-&gt;VirtualTable-&gt;Add(objMath, 3, 5)<br />
-		<span class="keyword">Print</span> objMath-&gt;VirtualTable-&gt;Substract(objMath, 8, 4)<br />
-		<span class="keyword">Print</span> objMath-&gt;VirtualTable-&gt;Multiply(objMath, 16, 5)<br />
-		<span class="keyword">Print</span> objMath-&gt;VirtualTable-&gt;Divide(objMath, 9, 3)<br />
+		<span class="keyword">Dim</span> pIMath <span class="keyword">As</span> <span class="datatype">IMath Ptr</span> = @objMath<br />
+		<br />
+		<span class="keyword">Print</span> pIMath-&gt;pVirtualTable-&gt;Add(pIMath, 3, 5)<br />
+		<span class="keyword">Print</span> pIMath-&gt;pVirtualTable-&gt;Substract(pIMath, 8, 4)<br />
+		<span class="keyword">Print</span> pIMath-&gt;pVirtualTable-&gt;Multiply(pIMath, 16, 5)<br />
+		<span class="keyword">Print</span> pIMath-&gt;pVirtualTable-&gt;Divide(pIMath, 9, 3)<br />
 		<br />
 		<span class="remark">&apos; Удаляем ненужные объекты</span><br />
 		<span class="keyword">Deallocate</span>(objMath)
@@ -373,7 +401,7 @@
 		<span class="keyword">End Type</span><br />
 		<br />
 		<span class="keyword">Type</span> <span class="datatype">ICloneable_</span><br />
-			&t;<span class="keyword">Dim</span> VirtualTable <span class="keyword">As</span> <span class="datatype">ICloneableVirtualTable Ptr</span><br />
+			&t;<span class="keyword">Dim</span> pVirtualTable <span class="keyword">As</span> <span class="datatype">ICloneableVirtualTable Ptr</span><br />
 		<span class="keyword">End Type</span><br />
 		<br />
 		<span class="preprocessor">#endif</span>
@@ -393,7 +421,7 @@
 		<br />
 		<span class="keyword">Type</span> <span class="datatype">Monster</span><br />
 			&t;<span class="remark">&apos; Виртуальная таблица</span><br />
-			&t;<span class="keyword">Dim</span> VirtualTable <span class="keyword">As</span> <span class="datatype">ICloneableVirtualTable Ptr</span><br />
+			&t;<span class="keyword">Dim</span> pVirtualTable <span class="keyword">As</span> <span class="datatype">ICloneableVirtualTable Ptr</span><br />
 			<br />
 			&t;<span class="remark">&apos; Параметры монстра</span><br />
 			<br />
@@ -522,6 +550,13 @@
 	<p>Множественное наследование позволяет объекту мимикрировать под разные договорённости о поведении. В исходном коде это реализуется добавлением в базовый класс нескольких таблиц виртуальных функций.</p>
 	
 	<p>Рассмотрим множественное наследование на примере </p>
+	
+	В статье про интерфейсы:
+	
+	* дополнить про реализацию: где именно реализовать
+	* исправить на Math Ptr в виртуальной таблице IMath
+	* дополнить множественным наследованием
+	
 	-->
 	
 	<h2>Поделись ссылочкой в социальных сетях</h2>

@@ -1,0 +1,383 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd"[
+
+	<!ENTITY nbsp "&#160;">
+	<!ENTITY t "&#160;&#160;&#160;&#160;">
+	
+]>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/1999/xhtml http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<head>
+	<title>Тип данных HRESULT</title>
+	<meta name="description" content="Тип HRESULT является одним из средств контроля ошибок в COM. Этот тип представляет собой 32‐битное число, в котором кодируется результат операции." />
+	<meta name="keywords" content="HRESULT, COM, Interface" />
+	
+	<link href="/styles.css" type="text/css" rel="stylesheet" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+</head>
+
+<body>
+
+<header>
+	
+	<nav>
+		<p><a href="/">Главная</a></p>
+		<p><a href="/articles/">Статьи</a></p>
+		<p><a href="/tags/">Рубрики</a></p>
+		<p><a href="/books/">Учебник</a></p>
+		<!-- <p><a href="/tasks/">Задачи</a></p> -->
+		<p><a href="/projects/">Проекты</a></p>
+		<p><a href="/users/">Пользователи</a></p>
+		<p><a href="/help/">Информация</a></p>
+	</nav>
+	
+</header>
+
+<h1>Тип данных HRESULT</h1>
+
+<main>
+	<p class="postername">
+		<a href="/users/mabu.xhtml">
+			<img src="/avatars/mabu.jpg" alt="Аватар пользователя" width="50" height="50" class="avatar" />
+			&#32;
+			mabu
+		</a>
+		&#32;
+		<time pubdate="pubdate">2018-12-10T05:24:00+07:00</time>
+	</p>
+	
+	<p><code>HRESULT</code> содержит информацию о результате вызова функции. Хотя из названия <code>HRESULT</code> можно было бы заключить, что это описатель (Handle) результата, на самом деле это не так. Название возникло по историческим причинам, просто расшифровывай его как «вот результат» (here is the result). <code>HRESULT</code> похож на код ошибки Windows, но это не одно и то же, и смешивать их не следует.</p>
+	
+	<ol class="contents">
+		<li><a href="#c1">Внутреннее устройство HRESULT</a>
+			<ol>
+				<li><a href="#c1c1">Детальный разбор</a></li>
+				<li><a href="#c1c2">Признак критичности</a></li>
+				<li><a href="#c1c3">Идентификатор средства</a></li>
+				<li><a href="#c1c4">Некоторые предопределённые HRESULT</a></li>
+			</ol>
+		</li>
+		<li><a href="#c2">Использование HRESULT</a>
+			<ol>
+				<li><a href="#c2c1">Макросы SUCCEEDED и FAILED</a></li>
+				<li><a href="#c2c2">Макрос HRESULT_CODE</a></li>
+				<li><a href="#c2c3">Макрос HRESULT_FACILITY</a></li>
+				<li><a href="#c2c4">Макрос HRESULT_SEVERITY</a></li>
+				<li><a href="#c2c5">Макрос HRESULT_FROM_WIN32</a></li>
+				<li><a href="#c2c6">Макрос MAKE_HRESULT</a></li>
+			</ol>
+		</li>
+	</ol>
+	
+	<h2><a id="c1">Внутреннее устройство HRESULT</a></h2>
+	
+	<p>В заголовочном файле «winerror.bi» Windows тип данных <code>HRESULT</code> описан как 32‐битное целое число.</p>
+	
+	<h3><a id="c1c1">Детальный разбор</a></h3>
+	
+	<table class="bitfields">
+		<tr>
+			<td>Биты числа</td>
+			<td>31</td>
+			<td>30</td>
+			<td>29</td>
+			<td>28</td>
+			<td>27</td>
+			<td>26</td>
+			<td>25</td>
+			<td>24</td>
+			<td>23</td>
+			<td>22</td>
+			<td>21</td>
+			<td>20</td>
+			<td>19</td>
+			<td>18</td>
+			<td>17</td>
+			<td>16</td>
+			<td>15</td>
+			<td>14</td>
+			<td>13</td>
+			<td>12</td>
+			<td>11</td>
+			<td>10</td>
+			<td>9</td>
+			<td>8</td>
+			<td>7</td>
+			<td>6</td>
+			<td>5</td>
+			<td>4</td>
+			<td>3</td>
+			<td>2</td>
+			<td>1</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td>Описание</td>
+			<td>Severity</td>
+			<td colspan="15">Facility</td>
+			<td colspan="16">Code</td>
+		</tr>
+	</table>
+	
+	<dl>
+		<dt>Бит 31</dt>
+		<dd>Признак критичности: 1 если произошла ошибка, 0 при успешном результате.</dd>
+	</dl>
+	
+	<dl>
+		<dt>Биты с 30 по 16</dt>
+		<dd>Идентификатор средства: какая часть операционной системы выдаёт данный код возврата.</dd>
+	</dl>
+	
+	<dl>
+		<dt>Биты с 15 по 0</dt>
+		<dd>Собственно код возврата.</dd>
+	</dl>
+	
+	<h3><a id="c1c2">Признак критичности</a></h3>
+	
+	<p>Бит 31 (Severity) — это признак критичности. Позволяет использовать <code>HRESULT</code> как результат индикации как успешного выполнения функций, так и при ошибке.</p>
+	
+	<table>
+		<tr>
+			<th>Константа критичности</th>
+			<th>Значение</th>
+			<th>Описание</th>
+		</tr>
+		<tr>
+			<td>SEVERITY_SUCCESS</td>
+			<td>0</td>
+			<td>Функция отработала успешно</td>
+		</tr>
+		<tr>
+			<td>SEVERITY_ERROR</td>
+			<td>1</td>
+			<td>Функция завершилась ошибкой</td>
+		</tr>
+	</table>
+	
+	<h3><a id="c1c3">Идентификатор средства</a></h3>
+	
+	<p>Пятнадцать битов — с 30-го по 16-й — содержат идентификатор средства (Facility). Он указывает, какая часть операционной системы выдаёт данный код возврата. Поскольку операционную систему разрабатывает корпорация Microsoft, она зарезервировала право определения идентификаторов средств за собой.</p>
+	
+	<table>
+		<tr>
+			<th>Константа идентификатора средства</th>
+			<th>Значение</th>
+		</tr>
+		<tr>
+			<td>FACILITY_WINDOWS</td>
+			<td>8</td>
+		</tr>
+		<tr>
+			<td>FACILITY_STORAGE</td>
+			<td>3</td>
+		</tr>
+		<tr>
+			<td>FACILITY_SSPI</td>
+			<td>9</td>
+		</tr>
+		<tr>
+			<td>FACILITY_RPC</td>
+			<td>1</td>
+		</tr>
+		<tr>
+			<td>FACILITY_WIN32</td>
+			<td>7</td>
+		</tr>
+		<tr>
+			<td>FACILITY_CONTROL</td>
+			<td>10</td>
+		</tr>
+		<tr>
+			<td>FACILITY_NULL</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td>FACILITY_ITF</td>
+			<td>4</td>
+		</tr>
+		<tr>
+			<td>FACILITY_DISPATCH</td>
+			<td>2</td>
+		</tr>
+		<tr>
+			<td>FACILITY_CERT</td>
+			<td>11</td>
+		</tr>
+	</table>
+	
+	<p>В том случае, если стандартных значений недостаточно, то при создании собственных <code>HRESULT</code> следует устанавливать идентификатор средства в <code>FACILITY_ITF</code>.</p>
+	
+	<h3><a id="c1c4">Некоторые предопределённые HRESULT</a></h3>
+	
+	<p>В таблице приведены часто используемые константы <code>HRESULT</code>. По соглашению в названиях успешных кодов содержится <code>S_</code>, а в названиях кодов ошибок <code>E_</code>.</p>
+	
+	<table>
+		<tr>
+			<th>Константа</th>
+			<th>Значение</th>
+			<th>Описание</th>
+		</tr>
+		<tr>
+			<td>S_OK</td>
+			<td>&amp;h00000000</td>
+			<td>Функция отработала успешно. В некоторых случаях этот код также означает логическую истину.</td>
+		</tr>
+		<tr>
+			<td>S_FALSE</td>
+			<td>&amp;h00000001</td>
+			<td>Функция отработала успешно и возвращает логическую ложь. Это несколько противоречит обычной практике программирования, где 0 — это ложь, а не-0 — истина.</td>
+		</tr>
+		<tr>
+			<td>E_FAIL</td>
+			<td>&amp;h80004005</td>
+			<td>Ошибка по неуказанной причине.</td>
+		</tr>
+		<tr>
+			<td>E_ABORT</td>
+			<td>&amp;h80004004</td>
+			<td>Операция прервана.</td>
+		</tr>
+		<tr>
+			<td>E_ACCESSDENIED</td>
+			<td>&amp;h80070005</td>
+			<td>Доступ запрещён.</td>
+		</tr>
+		<tr>
+			<td>E_HANDLE</td>
+			<td>&amp;h80070006</td>
+			<td>Описатель недействителен.</td>
+		</tr>
+		<tr>
+			<td>E_INVALIDARG</td>
+			<td>&amp;h80070057</td>
+			<td>Один или несколько аргументов неправильные.</td>
+		</tr>
+		<tr>
+			<td>E_NOINTERFACE</td>
+			<td>&amp;h80004002</td>
+			<td>Запрашиваемый интерфейс не поддерживается.</td>
+		</tr>
+		<tr>
+			<td>E_NOTIMPL</td>
+			<td>&amp;h80004001</td>
+			<td>Метод не реализован.</td>
+		</tr>
+		<tr>
+			<td>E_OUTOFMEMORY</td>
+			<td>&amp;h8007000E</td>
+			<td>Невозможно выделить память.</td>
+		</tr>
+		<tr>
+			<td>E_POINTER</td>
+			<td>&amp;h80004003</td>
+			<td>Указатель недействителен.</td>
+		</tr>
+		<tr>
+			<td>E_UNEXPECTED</td>
+			<td>&amp;h8000FFFF</td>
+			<td>Неожиданная ошибка.</td>
+		</tr>
+	</table>
+	
+	<p>Большой и длинный список HRESULT можно найти <a href="https://msdn.microsoft.com/en-us/library/cc704587.aspx">в статье на MSDN «HRESULT Values»</a>.</p>
+	
+	
+	<h2><a id="c2">Использование HRESULT</a></h2>
+	
+	<h3><a id="c2c1">Макросы SUCCEEDED и FAILED</a></h3>
+	
+	<p>Для проверки успешного или ошибочного результата функции нельзя сравнивать <code>HRESULT</code> с каким‐либо одним кодом. Например, если функция завершилась успешно, то нельзя ожидать возврата только <code>S_OK</code>, и наоборот — при ошибке нелья ждать только <code>E_FAIL</code>. Необходимо использовать предопределённые макросы <code>SUCCEEDED</code> и <code>FAILED</code>.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Вызываем функцию и получаем HRESULT:</span><br />
+		<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">HRESULT</span><br />
+		<br />
+		<span class="remark">&apos; Не делай так:</span><br />
+		<span class="keyword">If</span> hr = E_FAIL <span class="keyword">Then</span><br />
+			&t;<span class="keyword">Print</span> <span class="string">&quot;Ошибка&quot;</span><br />
+		<span class="keyword">End If</span><br />
+		<span class="keyword">If</span> hr = S_OK <span class="keyword">Then</span><br />
+			&t;<span class="keyword">Print</span> <span class="string">&quot;Успешно&quot;</span><br />
+		<span class="keyword">End If</span><br />
+		<br />
+		<span class="remark">&apos; Следует делать так:</span><br />
+		<br />
+		<span class="remark">&apos; Проверка на успех:</span><br />
+		<span class="keyword">If</span> SUCCEEDED(hr) <span class="keyword">Then</span><br />
+			&t;<span class="keyword">Print</span> <span class="string">&quot;Успешно&quot;</span><br />
+		<span class="keyword">End If</span><br />
+		<br />
+		<span class="remark">&apos; Проверка на ошибку:</span><br />
+		<span class="keyword">If</span> FAILED(hr) <span class="keyword">Then</span><br />
+			&t;<span class="keyword">Print</span> <span class="string">&quot;Ошибка&quot;</span><br />
+		<span class="keyword">End If</span>
+	</code></p>
+	
+	<h3><a id="c2c2">Макрос HRESULT_CODE</a></h3>
+	
+	<p>Получает код возврата.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">HRESULT</span><br />
+		<span class="keyword">Dim</span> Code <span class="keyword">As</span> <span class="datatype">Integer</span> = HRESULT_CODE(hr)
+	</code></p>
+	
+	<h3><a id="c2c3">Макрос HRESULT_FACILITY</a></h3>
+	
+	<p>Получает идентификатор средства.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">HRESULT</span><br />
+		<span class="keyword">Dim</span> Facility <span class="keyword">As</span> <span class="datatype">Integer</span> = HRESULT_FACILITY(hr)
+	</code></p>
+	
+	<h3><a id="c2c4">Макрос HRESULT_SEVERITY</a></h3>
+	
+	<p>Получает признак критичности.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">HRESULT</span><br />
+		<span class="keyword">Dim</span> Severity <span class="keyword">As</span> <span class="datatype">Integer</span> = HRESULT_SEVERITY(hr)
+	</code></p>
+	
+	<h3><a id="c2c5">Макрос HRESULT_FROM_WIN32</a></h3>
+	
+	<p>Создаёт HRESULT из ошибки Windows.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Вызываем функцию и получаем HRESULT:</span><br />
+		<span class="keyword">Dim</span> dwError <span class="keyword">As</span> <span class="datatype">DWORD</span> = GetLastError()<br />
+		<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">HRESULT</span> = HRESULT_FROM_WIN32(dwError)
+	</code></p>
+	
+	<h3><a id="c2c6">Макрос MAKE_HRESULT</a></h3>
+	
+	<p>Создаёт собственный HRESULT.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Вызываем функцию и получаем HRESULT:</span><br />
+		<span class="keyword">Const</span> CUSTOM_E_PROTOCOLPERMISSION <span class="keyword">As</span> <span class="datatype">HRESULT</span> = MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 1)
+	</code></p>
+	
+	<h2>Поделись ссылочкой в социальных сетях</h2>
+	<div id="vk_share_button"></div>
+	
+</main>
+
+<hr />
+
+<footer>
+	<p>«Пакетные файлы» создали этот сайт по технологии XHTML 11 марта 2016 года</p>
+	<p id="pLiveInternet"></p>
+</footer>
+
+<script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
+<script type="text/javascript">var docUrl=document.URL.toString();document.getElementById("vk_share_button").innerHTML=VK.Share.button(docUrl, {type: "round"});</script>
+
+<script type="text/javascript">var idL=document.getElementById("pLiveInternet");var idA=document.createElement("a");idA.href="//www.liveinternet.ru/stat/freebasic.su";idA.title="Логотип LiveInternet";var idImg=document.createElement("img");idImg.src="//counter.yadro.ru/hit?t44."+Math.round(1+18*Math.random())+";r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();idImg.alt="Счётчик посещений LiveInternet";idA.appendChild(idImg);idL.appendChild(idA);</script>
+
+</body></html>
