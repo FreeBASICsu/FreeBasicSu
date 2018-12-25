@@ -65,8 +65,8 @@
 				<li><a href="#c2c2">Макрос HRESULT_CODE</a></li>
 				<li><a href="#c2c3">Макрос HRESULT_FACILITY</a></li>
 				<li><a href="#c2c4">Макрос HRESULT_SEVERITY</a></li>
-				<li><a href="#c2c5">Макрос HRESULT_FROM_WIN32</a></li>
-				<li><a href="#c2c6">Макрос MAKE_HRESULT</a></li>
+				<li><a href="#c2c5">Макрос MAKE_HRESULT</a></li>
+				<li><a href="#c2c6">Макрос HRESULT_FROM_WIN32</a></li>
 			</ol>
 		</li>
 	</ol>
@@ -166,50 +166,98 @@
 		<tr>
 			<th>Константа идентификатора средства</th>
 			<th>Значение</th>
-		</tr>
-		<tr>
-			<td>FACILITY_WINDOWS</td>
-			<td>8</td>
-		</tr>
-		<tr>
-			<td>FACILITY_STORAGE</td>
-			<td>3</td>
-		</tr>
-		<tr>
-			<td>FACILITY_SSPI</td>
-			<td>9</td>
-		</tr>
-		<tr>
-			<td>FACILITY_RPC</td>
-			<td>1</td>
-		</tr>
-		<tr>
-			<td>FACILITY_WIN32</td>
-			<td>7</td>
-		</tr>
-		<tr>
-			<td>FACILITY_CONTROL</td>
-			<td>10</td>
+			<th>Источник ошибки</th>
 		</tr>
 		<tr>
 			<td>FACILITY_NULL</td>
 			<td>0</td>
+			<td>Стандартные коды возврата</td>
 		</tr>
 		<tr>
-			<td>FACILITY_ITF</td>
-			<td>4</td>
+			<td>FACILITY_RPC</td>
+			<td>1</td>
+			<td>Удалённый вызов процедур RPC</td>
 		</tr>
 		<tr>
 			<td>FACILITY_DISPATCH</td>
 			<td>2</td>
+			<td>Объект автоматизации</td>
+		</tr>
+		<tr>
+			<td>FACILITY_STORAGE</td>
+			<td>3</td>
+			<td>Хранилище OLE</td>
+		</tr>
+		<tr>
+			<td>FACILITY_ITF</td>
+			<td>4</td>
+			<td>COM или OLE интерфейс сторонних разработчиков</td>
+		</tr>
+		<tr>
+			<td>FACILITY_WIN32</td>
+			<td>7</td>
+			<td>Декорированная ошибка функций Windows</td>
+		</tr>
+		<tr>
+			<td>FACILITY_WINDOWS</td>
+			<td>8</td>
+			<td>Подсистема Windows</td>
+		</tr>
+		<tr>
+			<td>FACILITY_SECURITY</td>
+			<td>9</td>
+			<td>Уровень безопасности</td>
+		</tr>
+		<tr>
+			<td>FACILITY_SSPI</td>
+			<td>9</td>
+			<td>Уровень безопасности</td>
+		</tr>
+		<tr>
+			<td>FACILITY_CONTROL</td>
+			<td>10</td>
+			<td>Уровень управления</td>
 		</tr>
 		<tr>
 			<td>FACILITY_CERT</td>
 			<td>11</td>
+			<td>Центр сертификации</td>
+		</tr>
+		<tr>
+			<td>FACILITY_INTERNET</td>
+			<td>12</td>
+			<td>Компонент Wininet</td>
+		</tr>
+		<tr>
+			<td>FACILITY_MEDIASERVER</td>
+			<td>13</td>
+			<td>Windows Media Server</td>
+		</tr>
+		<tr>
+			<td>FACILITY_MSMQ</td>
+			<td>14</td>
+			<td>Очередь сообщений</td>
+		</tr>
+		<tr>
+			<td>FACILITY_SETUPAPI</td>
+			<td>15</td>
+			<td>Setup API</td>
+		</tr>
+		<tr>
+			<td>FACILITY_SCARD</td>
+			<td>16</td>
+			<td>Подсистема смарт‐карт</td>
+		</tr>
+		<tr>
+			<td>FACILITY_COMPLUS</td>
+			<td>17</td>
+			<td>COM+</td>
 		</tr>
 	</table>
 	
 	<p>В том случае, если стандартных значений недостаточно, то при создании собственных <code>HRESULT</code> следует устанавливать идентификатор средства в <code>FACILITY_ITF</code>.</p>
+	
+	<p>Смысл кода возврата, отмеченного с помощью <code>FACILITY_ITF</code>, специфичен для возвращающих его функций и является уникальным только в пределах данной функции. Иногда функция вызывает другие функции, возвращающие <code>HRESULT</code> и отмеченные <code>FACILITY_ITF</code>. В этом случае такие коды возврата следует преобразовывать в специфичные для твоей функции; не следует отдавать их «как есть».</p>
 	
 	<h3><a id="c1c4">Некоторые предопределённые HRESULT</a></h3>
 	
@@ -283,18 +331,18 @@
 		</tr>
 	</table>
 	
-	<p>Большой и длинный список HRESULT можно найти <a href="https://msdn.microsoft.com/en-us/library/cc704587.aspx">в статье на MSDN «HRESULT Values»</a>.</p>
+	<p>Большой и длинный список <code>HRESULT</code> можно найти <a href="https://msdn.microsoft.com/en-us/library/cc704587.aspx">в статье на MSDN «HRESULT Values»</a>.</p>
 	
 	
 	<h2><a id="c2">Использование HRESULT</a></h2>
 	
 	<h3><a id="c2c1">Макросы SUCCEEDED и FAILED</a></h3>
 	
-	<p>Для проверки успешного или ошибочного результата функции нельзя сравнивать <code>HRESULT</code> с каким‐либо одним кодом. Например, если функция завершилась успешно, то нельзя ожидать возврата только <code>S_OK</code>, и наоборот — при ошибке нелья ждать только <code>E_FAIL</code>. Необходимо использовать предопределённые макросы <code>SUCCEEDED</code> и <code>FAILED</code>.</p>
+	<p>Для проверки успешного или ошибочного результата функции нельзя сравнивать <code>HRESULT</code> с каким‐либо одним кодом. Например, если функция завершилась успешно, то нельзя ожидать возврата только <code>S_OK</code>, и наоборот — при ошибке нелья ждать только <code>E_FAIL</code>. Следует использовать предопределённые макросы <code>SUCCEEDED</code> и <code>FAILED</code>.</p>
 	
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
 		<span class="remark">&apos; Вызываем функцию и получаем HRESULT:</span><br />
-		<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">HRESULT</span><br />
+		<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">HRESULT</span> = SomeFunction(param)<br />
 		<br />
 		<span class="remark">&apos; Не делай так:</span><br />
 		<span class="keyword">If</span> hr = E_FAIL <span class="keyword">Then</span><br />
@@ -322,7 +370,7 @@
 	<p>Получает код возврата.</p>
 	
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-		<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">HRESULT</span><br />
+		<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">HRESULT</span> = SomeFunction(param)<br />
 		<span class="keyword">Dim</span> Code <span class="keyword">As</span> <span class="datatype">Integer</span> = HRESULT_CODE(hr)
 	</code></p>
 	
@@ -331,7 +379,7 @@
 	<p>Получает идентификатор средства.</p>
 	
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-		<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">HRESULT</span><br />
+		<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">HRESULT</span> = SomeFunction(param)<br />
 		<span class="keyword">Dim</span> Facility <span class="keyword">As</span> <span class="datatype">Integer</span> = HRESULT_FACILITY(hr)
 	</code></p>
 	
@@ -340,27 +388,39 @@
 	<p>Получает признак критичности.</p>
 	
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-		<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">HRESULT</span><br />
+		<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">HRESULT</span> = SomeFunction(param)<br />
 		<span class="keyword">Dim</span> Severity <span class="keyword">As</span> <span class="datatype">Integer</span> = HRESULT_SEVERITY(hr)
 	</code></p>
 	
-	<h3><a id="c2c5">Макрос HRESULT_FROM_WIN32</a></h3>
+	<h3><a id="c2c5">Макрос MAKE_HRESULT</a></h3>
 	
-	<p>Создаёт HRESULT из ошибки Windows.</p>
+	<p>Создаёт собственный <code>HRESULT</code>. Все идентификаторы средств зарезервировала за собой корпорация Microsoft, поэтому стороннему разработчику следует использовать <code>FACILITY_ITF</code>.</p>
 	
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-		<span class="remark">&apos; Вызываем функцию и получаем HRESULT:</span><br />
-		<span class="keyword">Dim</span> dwError <span class="keyword">As</span> <span class="datatype">DWORD</span> = GetLastError()<br />
-		<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">HRESULT</span> = HRESULT_FROM_WIN32(dwError)
+		<span class="remark">&apos; Создаём собственный HRESULT с ошибкой:</span><br />
+		<span class="keyword">Const</span> CUSTOM_E_PROTOCOLPERMISSION <span class="keyword">As</span> <span class="datatype">HRESULT</span> = MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 1)<br />
+		<br />
+		<span class="remark">&apos; Создаём собственный HRESULT с успехом:</span><br />
+		<span class="keyword">Const</span> CUSTOM_S_PROTOCOLACCESS <span class="keyword">As</span> <span class="datatype">HRESULT</span> = MAKE_HRESULT(SEVERITY_SUCCESS, FACILITY_ITF, 1)
 	</code></p>
 	
-	<h3><a id="c2c6">Макрос MAKE_HRESULT</a></h3>
-	
-	<p>Создаёт собственный HRESULT.</p>
+	<p>При именовании констант собственных <code>HRESULT</code> хорошей практикой является приписывание слева имени компонента или приложения. Например:</p>
 	
 	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
-		<span class="remark">&apos; Вызываем функцию и получаем HRESULT:</span><br />
-		<span class="keyword">Const</span> CUSTOM_E_PROTOCOLPERMISSION <span class="keyword">As</span> <span class="datatype">HRESULT</span> = MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 1)
+		AIRPLANE_E_LANDINGWITHGEARUP<br />
+		HELICOPTER_S_ROTORRPMGREEN
+	</code></p>
+	
+	<h3><a id="c2c6">Макрос HRESULT_FROM_WIN32</a></h3>
+	
+	<p>Создаёт <code>HRESULT</code> из ошибки Windows. В этом случае признак критичности автоматически принимает значение <code>SEVERITY_ERROR</code>, а идентификатор средства — <code>FACILITY_WIN32</code>.</p>
+	
+	<p class="codebox"><span>Код</span> <span>FreeBASIC</span><br /><code>
+		<span class="remark">&apos; Получаем код ошибки Windows:</span><br />
+		<span class="keyword">Dim</span> dwError <span class="keyword">As</span> <span class="datatype">DWORD</span> = GetLastError()<br />
+		<br />
+		<span class="remark">&apos; Упаковываем её в HRESULT:</span><br />
+		<span class="keyword">Dim</span> hr <span class="keyword">As</span> <span class="datatype">HRESULT</span> = HRESULT_FROM_WIN32(dwError)
 	</code></p>
 	
 	<h2>Поделись ссылочкой в социальных сетях</h2>
