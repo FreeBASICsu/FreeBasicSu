@@ -89,7 +89,7 @@ Declare Function GetPrivateProfileInt( _
 
 #### Возвращаемое значение
 
-Функция возвращает число, представленное в INI‐файле. Если ключ не найдет, будет возвращено значение по умолчанию.
+Функция возвращает число, представленное в INI‐файле. Если ключ не найден, будет возвращено значение по умолчанию.
 
 
 ### WritePrivateProfileString
@@ -133,14 +133,14 @@ Declare Function WritePrivateProfileString( _
 Создай в блокноте текстовый файл «configuration.ini» и сохрани его в кодировке Unicode (UTF-16):
 
 ```INI-file
+; Параметры пользователя
+[Пользователь]
+Имя=Алексей
+
 [Окно]
 ; Ширина и высота окна
 Width=640
 Height=480
-
-; Параметры пользователя
-[Пользователь]
-Имя=Алексей
 ```
 
 Исходный код для чтения файла тоже необходимо сохранить в юникодной кодировке, например, в UTF-8 или UTF-16.
@@ -154,7 +154,6 @@ Const KeyWidth = "Width"
 Const KeyHeight = "Height"
 Const DefaultValue = "0"
 Const BufferSize As Integer = 255
-
 
 ' Полный путь к файлу
 Dim FileName As WString * (MAX_PATH + 1) = Any
@@ -177,73 +176,121 @@ Print KeyHeight; " = "; Value
 
 ### Получение всех секций и ключей
 
-Чтобы получить список всех секций, нужно в <strong>GetPrivateProfileString</strong> вместо имени секции передать NULL. Функция заполнит возвращаемое значение Value строкой из всех разделов, разделённых символом с кодом 0. Аналогично для списка всех параметров в разделе: вместо имени требуемого параметра передать NULL.
+Чтобы получить список всех секций, нужно в функцию <strong>GetPrivateProfileString</strong> вместо имени секции передать NULL. Функция заполнит буфер списком из всех секций, разделённых символом с кодом 0. Аналогично для списка всех ключей в разделе.
 
-<p class="codebox"><span>Код</span>&#32;<span>FreeBASIC</span><br /><code>
-	<span class="remark">&apos; Получение всех секций</span><br />
-	<span class="keyword">Dim</span> Result2 <span class="keyword">As</span> DWORD = GetPrivateProfileString(NULL, NULL, DefaultValue, Value, BufferSize, FileName)<br />
-	PrintResult(Value, Result2)<br />
-	<br />
-	<span class="remark">&apos; Получение всех ключей</span><br />
-	Result2 = GetPrivateProfileString(SectionWindow, Null, DefaultValue, Value, BufferSize, FileName)<br />
-	PrintResult(Value, Result2)<br />
-	<br />
-	<span class="remark">&apos; Печать результата</span><br />
-	<span class="keyword">Sub</span> PrintResult(<span class="keyword">ByRef</span> Value <span class="keyword">As</span> <span class="keyword">WString</span>, <span class="keyword">ByVal</span> ValueLength <span class="keyword">As</span> <span class="keyword">Integer</span>)<br />
-	&t;<span class="keyword">Dim</span> Start <span class="keyword">As</span> <span class="keyword">Integer</span> = 0<br />
-	&t;<span class="keyword">Dim</span> w <span class="keyword">As</span> <span class="keyword">WString</span> <span class="keyword">Ptr</span> = <span class="keyword">Any</span><br />
-	&t;<span class="keyword">Do</span> <span class="keyword">While</span> Start &lt; ValueLength<br />
-	&t;&t;<span class="remark">&apos; Получить указатель на начало строки</span><br />
-	&t;&t;w = @Value[Start]<br />
-	&t;&t;<span class="remark">&apos; Распечатать</span><br />
-	&t;&t;<span class="keyword">Print</span> *w<br />
-	&t;&t;<span class="remark">&apos; Измерить длину строки, прибавить это к указателю + 1</span><br />
-	&t;&t;Start += <span class="keyword">Len</span>(*w) + 1<br />
-	&t;<span class="keyword">Loop</span><br />
-	<span class="keyword">End Sub</span>
-</code></p>
 
+```FreeBASIC
+#define unicode
+#include "windows.bi"
+
+Const SectionWindow = "Окно"
+Const KeyWidth = "Width"
+Const KeyHeight = "Height"
+Const DefaultValue = NULL
+Const BufferSize As Integer = 32000 - 1
+
+' Печать результата
+Sub PrintResult(ByRef ValueList As WString)
+	Dim pItem As WString Ptr = @ValueList
+	Dim ItemLength As Integer = Len(*pItem)
+	
+	' До тех пор, пока элемент больше нуля
+	Do While ItemLength > 0
+		Print *pItem
+		pItem = @pItem[ItemLength + 1]
+		ItemLength = Len(*pItem)
+	Loop
+End Sub
+
+
+' Полный путь к файлу
+Dim FileName As WString * (MAX_PATH + 1) = Any
+FileName = ExePath() & "\configuration.ini"
+
+' Все секции ini‐файла
+Dim AllSections As WString * (BufferSize + 1) = Any ' + 1 под завершающий нулевой символ
+
+GetPrivateProfileString(Null, Null, DefaultValue, @AllSections, BufferSize, FileName)
+PrintResult(AllSections)
+
+' Получение всех ключей в секции Окно
+Dim AllKeys As WString * (BufferSize + 1) = Any ' + 1 под завершающий нулевой символ
+
+GetPrivateProfileString(SectionWindow, Null, DefaultValue, @AllKeys, BufferSize, FileName)
+PrintResult(AllKeys)
+```
 
 ### Запись в файл
 
 Попробуем сменить имя пользователя:
 
-<p class="codebox"><span>Код</span>&#32;<span>FreeBASIC</span><br /><code>
-	<span class="keyword">Const</span> SectionUser = <span class="string">&quot;Пользователь&quot;</span><br />
-	<span class="keyword">Const</span> KeyUser = <span class="string">&quot;Имя&quot;</span><br />
-	<span class="keyword">Const</span> UserName = <span class="string">&quot;Саша&quot;</span><br />
-	<br />
-	<span class="remark">&apos; Функция возращает значение WinBool</span><br />
-	<span class="keyword">Dim</span> Result <span class="keyword">As</span> <span class="keyword">WinBool</span> = WritePrivateProfileString(SectionUser, KeyUser, UserName, FileName)<br />
-	<span class="keyword">If</span> Result <span class="keyword">Then</span><br />
-	&t;<span class="keyword">Print</span> <span class="string">&quot;Запись удалась&quot;</span><br />
-	<span class="keyword">End If</span>
-</code></p>
+```FreeBASIC
+#define unicode
+#include "windows.bi"
+
+Const SectionUser = "Пользователь"
+Const KeyUser = "Имя"
+Const NewUserName = "Саша"
+
+' Полный путь к файлу
+Dim FileName As WString * (MAX_PATH + 1) = Any
+FileName = ExePath() & "\configuration.ini"
+
+' Функция возращает значение WinBool
+Dim Result As WinBool = WritePrivateProfileString(SectionUser, KeyUser, NewUserName, FileName)
+If Result Then
+    Print "Запись удалась"
+End If
+```
+
+### Удаление ключа
+
+Чтобы удалить ключ из секции, необходимо записать NULL в значение параметра.
+
+Удалим ключ «Имя» из секции «Пользователь»:
+
+```FreeBASIC
+#define unicode
+#include "windows.bi"
+
+Const SectionUser = "Пользователь"
+Const KeyUser = "Имя"
+
+' Полный путь к файлу
+Dim FileName As WString * (MAX_PATH + 1) = Any
+FileName = ExePath() & "\configuration.ini"
+
+' Функция возращает значение WinBool
+Dim Result As WinBool = WritePrivateProfileString(SectionUser, KeyUser, NULL, FileName)
+If Result Then
+    Print "Параметр «Имя» удалён"
+End If
+```
+
+### Удаление секции
+
+Аналогично удалению ключа из файла конфигурации удаляются целые секции. Записываем NULL в имя ключа:
 
 
-### Удаление раздела или параметра
+```FreeBASIC
+#define unicode
+#include "windows.bi"
 
-<p>Удаление — это запись NULL в ключ или раздел.</p>
+Const SectionUser = "Пользователь"
 
-<p>Удалим параметр «Имя» из раздела «Пользователь»:</p>
+' Полный путь к файлу
+Dim FileName As WString * (MAX_PATH + 1) = Any
+FileName = ExePath() & "\configuration.ini"
 
-<p class="codebox"><span>Код</span>&#32;<span>FreeBASIC</span><br /><code>
-	Result = WritePrivateProfileString(SectionUser, KeyUser, NULL, FileName)<br />
-	<span class="keyword">If</span> Result <span class="keyword">Then</span><br />
-	&t;<span class="keyword">Print</span> <span class="string">&quot;Удаление параметра успешно&quot;</span><br />
-	<span class="keyword">End If</span>
-</code></p>
-
-<p>Точно также можно удалять целые секции из ini‐файлов:</p>
-
-<p class="codebox"><span>Код</span>&#32;<span>FreeBASIC</span><br /><code>
-	Result = WritePrivateProfileString(SectionUser, NULL, NULL, FileName)<br />
-	<span class="keyword">If</span> Result <span class="keyword">Then</span><br />
-	&t;<span class="keyword">Print</span> <span class="string">&quot;Удаление секции успешно&quot;</span><br />
-	<span class="keyword">End If</span>
-</code></p>
+' Функция возращает значение WinBool
+Dim Result As WinBool = WritePrivateProfileString(SectionUser, NULL, NULL, FileName)
+If Result Then
+    Print "Секция «Пользователь» удалёна"
+End If
+```
 
 Не забываем сохранять исходный код в кодировке UTF-8 или UTF-16, а сам ini‐файл в юникоде (UTF-16).
+
 
 ## Литература
 
