@@ -4,6 +4,15 @@ html
 	font-family:sans-serif;
 }
 
+header{}
+main{}
+footer
+{
+	text-align:center;
+}
+
+aside{}
+
 nav
 {
 	margin:.25em;
@@ -62,42 +71,6 @@ h4
 	color:#006600;
 }
 
-hr
-{
-	border-color:#BBBBBB;
-	margin:1em 0 1em 0;
-	clear:both;
-}
-
-a[href]
-{
-	color:#FF6600;
-}
-
-a[href]:hover
-{
-	color:#0066FF;
-}
-
-p
-{
-	word-wrap:break-word;
-}
-
-div.fileblock
-{
-	margin:.5em;
-	clear:both;
-}
-
-img.avatar
-{
-	float:left;
-	margin:0em .5em .5em 0em;
-}
-
-span.postername{}
-
 table
 {
 	border:solid 1px #CCCCCC;
@@ -119,6 +92,34 @@ dt
 	font-weight:bold;
 }
 
+p
+{
+	word-wrap:break-word;
+}
+
+hr
+{
+	border-color:#BBBBBB;
+	margin:1em 0 1em 0;
+	clear:both;
+}
+
+a[href]
+{
+	color:#FF6600;
+}
+
+a[href]:hover
+{
+	color:#0066FF;
+}
+
+div.fileblock
+{
+	margin:.5em;
+	clear:both;
+}
+
 div.codebox
 {
 	padding:.25em;
@@ -126,6 +127,14 @@ div.codebox
 	border-radius:.25em;
 	background:#e6e6e6;
 }
+
+img.avatar
+{
+	float:left;
+	margin:0em .5em .5em 0em;
+}
+
+span.postername{}
 
 span.preprocessor
 {
@@ -160,9 +169,4 @@ span.inisection
 span.assignment
 {
 	color:#FF0000;
-}
-
-footer
-{
-	text-align:center;
 }
