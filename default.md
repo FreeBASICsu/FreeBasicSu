@@ -62,26 +62,23 @@ FreeBASIC обеспечивает высокий уровень совмест�
 ```FreeBASIC
 ' Функция сложения двух чисел
 Function AddNumbers(a As Integer, b As Integer)As Integer
-    Return a + b
+	Return a + b
 End Function
 
 ' Процедура, выводящая на консоль строку
 Sub Hello()
-    Print "Привет"
+	Print "Привет"
 End Sub
-
 
 ' Предварительное объявление процедуры
 Declare Sub MyPrint(num As Integer)
-
 
 ' Код вне любых функций и процедур считается главной точкой входа в программу
 Hello()
 Print AddNumbers(1, 1)
 MyPrint 5
 
-
 Sub MyPrint(num As Integer)
-    Print num
+	Print num
 End Sub
 ```
