@@ -8,9 +8,9 @@ $if(description)$
 	<meta name="description" content="$description$" />
 $endif$
 
-$-- $for(author-meta)$
-$-- 	<meta name="author" content="$author-meta$" />
-$-- $endfor$
+$for(author-meta)$
+	<meta name="author" content="$author-meta$" />
+$endfor$
 
 $-- $if(date-meta)$
 $-- 	<meta name="dcterms.date" content="$date-meta$" />
@@ -26,7 +26,9 @@ $for(css)$
 	<link rel="stylesheet" href="$css$" type="text/css" />
 $endfor$
 
+$if(HomePage)$
 	<link href="/rss.rss" type="application/rss+xml" rel="alternate" title="RSS 2.00" />
+$endif$
 
 $if(math)$
   $math$
@@ -40,17 +42,56 @@ $endfor$
 
 <body>
 
-<header>
+<header id="MainHeader">
 	
-	<nav>
+	<nav id="MainMenu">
+$if(HomePage)$
 		<p>Главная</p>
+$else$
+		<p><a href="/">Главная</a></p>
+$endif$
+		
+$if(ArticlesDefaultPage)$
+		<p>Статьи</p>
+$else$
 		<p><a href="/articles/">Статьи</a></p>
+$endif$
+		
+$if(TagsDefaultPage)$
+		<p>Рубрики</p>
+$else$
 		<p><a href="/tags/">Рубрики</a></p>
+$endif$
+
+$if(BooksDefaultPage)$
+		<p>Учебник</p>
+$else$
 		<p><a href="/books/">Учебник</a></p>
+$endif$
+
+$if(TasksDefaultPage)$
+		<!-- <p>Задачи</p> -->
+$else$
 		<!-- <p><a href="/tasks/">Задачи</a></p> -->
+$endif$
+
+$if(ProjectsDefaultPage)$
+		<p>Проекты</p>
+$else$
 		<p><a href="/projects/">Проекты</a></p>
+$endif$
+
+$if(UsersDefaultPage)$
+		<p>Пользователи</p>
+$else$
 		<p><a href="/users/">Пользователи</a></p>
+$endif$
+
+$if(HelpDefaultPage)$
+		<p>Информация</p>
+$else$
 		<p><a href="/help/">Информация</a></p>
+$endif$
 	</nav>
 	
 </header>
@@ -69,17 +110,30 @@ $endfor$
 
 <hr />
 
-<footer>
+<footer id="MainFooter">
 	
 	<p>«Пакетные файлы» создали этот сайт по технологии XHTML 11 марта 2016 года</p>
 	
-	<p id="pLiveInternet">
+	<p>
+
+$if(HomePage)$
 		<a href="https://webmaster.yandex.ru/sqi?host=www.freebasic.su">
 			<img width="88" height="31" alt="Индекс качества сайта по мнению Яндекса равен 10" src="https://yandex.ru/cycounter?www.freebasic.su&amp;theme=light&amp;lang=ru" />
 		</a>
+$endif$
+
+		<a id="pLiveInternet" href="https://www.liveinternet.ru/stat/freebasic.su" title="Смотреть статистику и счётчики посещений на сайте LiveInternet"></a>
+
 	</p>
 
-	<script>var idL=document.getElementById("pLiveInternet");var idA=document.createElement("a");idA.href="//www.liveinternet.ru/stat/freebasic.su";idA.title="Логотип LiveInternet";var idImg=document.createElement("img");idImg.src="//counter.yadro.ru/hit?t44."+Math.round(1+18*Math.random())+";r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();idImg.alt="Счётчик посещений LiveInternet";idA.appendChild(idImg);idL.appendChild(idA);</script>
+	<script>
+		var idImg=document.createElement("img");
+		idImg.src="//counter.yadro.ru/hit?t44."+Math.round(1+18*Math.random())+";r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();
+		idImg.alt="Логотип сайта LiveInternet";
+		
+		var idL=document.getElementById("pLiveInternet");
+		idL.appendChild(idImg);
+	</script>
 
 	<script src="/highlight.pack.js"></script>
 
