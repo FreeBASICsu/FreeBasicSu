@@ -1,7 +1,7 @@
 ﻿---
-title: "Презентация языка FreeBASIC: примеры процедурного и объектно‐ориентированного программирования"
+title: "FreeBASIC"
 
-# subtitle: "This is the subtitle"
+subtitle: "FreeBASIC на русском"
 
 author: 
   - mabu
@@ -10,9 +10,17 @@ description: "Презентация языка FreeBASIC: примеры про
 
 # abstract: 
 
-keywords: "FreeBASIC, программирование, исходники"
+keywords: 
+  - FreeBASIC
+  - программирование
+  - исходники
 
 lang: "ru"
 
 date: "2016-03-11"
+
+ModifiedDate: "2020-02-09"
+
+HomePage: true
+
 ...
