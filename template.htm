@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" $if(dir)$ dir="$dir$"$endif$ lang="$lang$" xml:lang="$lang$">
+<html xmlns="http://www.w3.org/1999/xhtml" $if(dir)$dir="$dir$"$endif$ lang="$lang$" xml:lang="$lang$">
 <head>
 
-	<title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
+	<title>$pagetitle$ — $subtitle$</title>
 
 $if(description)$
 	<meta name="description" content="$description$" />
@@ -12,9 +12,13 @@ $for(author-meta)$
 	<meta name="author" content="$author-meta$" />
 $endfor$
 
-$-- $if(date-meta)$
-$-- 	<meta name="dcterms.date" content="$date-meta$" />
-$-- $endif$
+$if(date-meta)$
+	<meta name="dcterms.created" content="$date-meta$" />
+$endif$
+
+$if(ModifiedDate)$
+	<meta name="dcterms.modified" content="$ModifiedDate$" />
+$endif$
 
 $if(keywords)$
 	<meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
@@ -45,58 +49,60 @@ $endfor$
 <header id="MainHeader">
 	
 	<nav id="MainMenu">
+
 $if(HomePage)$
-		<p>Главная</p>
+			<p>Главная</p>
 $else$
-		<p><a href="/">Главная</a></p>
+			<p><a href="/">Главная</a></p>
 $endif$
 		
 $if(ArticlesDefaultPage)$
-		<p>Статьи</p>
+			<p>Статьи</p>
 $else$
-		<p><a href="/articles/">Статьи</a></p>
+			<p><a href="/articles/">Статьи</a></p>
 $endif$
 		
 $if(TagsDefaultPage)$
-		<p>Рубрики</p>
+			<p>Рубрики</p>
 $else$
-		<p><a href="/tags/">Рубрики</a></p>
+			<p><a href="/tags/">Рубрики</a></p>
 $endif$
 
 $if(BooksDefaultPage)$
-		<p>Учебник</p>
+			<p>Учебник</p>
 $else$
-		<p><a href="/books/">Учебник</a></p>
+			<p><a href="/books/">Учебник</a></p>
 $endif$
 
 $if(TasksDefaultPage)$
-		<!-- <p>Задачи</p> -->
+			<!-- <p>Задачи</p> -->
 $else$
-		<!-- <p><a href="/tasks/">Задачи</a></p> -->
+			<!-- <p><a href="/tasks/">Задачи</a></p> -->
 $endif$
 
 $if(ProjectsDefaultPage)$
-		<p>Проекты</p>
+			<p>Проекты</p>
 $else$
-		<p><a href="/projects/">Проекты</a></p>
+			<p><a href="/projects/">Проекты</a></p>
 $endif$
 
 $if(UsersDefaultPage)$
-		<p>Пользователи</p>
+			<p>Пользователи</p>
 $else$
-		<p><a href="/users/">Пользователи</a></p>
+			<p><a href="/users/">Пользователи</a></p>
 $endif$
 
 $if(HelpDefaultPage)$
-		<p>Информация</p>
+			<p>Информация</p>
 $else$
-		<p><a href="/help/">Информация</a></p>
+			<p><a href="/help/">Информация</a></p>
 $endif$
+		
 	</nav>
 	
 </header>
 
-<main>
+<main id="MainContent">
 $for(include-before)$
 $include-before$
 $endfor$
@@ -117,22 +123,20 @@ $endfor$
 	<p>
 
 $if(HomePage)$
-		<a href="https://webmaster.yandex.ru/sqi?host=www.freebasic.su">
+		<a href="https://webmaster.yandex.ru/sqi?host=www.freebasic.su" title="Смотреть достижения сайта на Яднекс Вебмастере">
 			<img width="88" height="31" alt="Индекс качества сайта по мнению Яндекса равен 10" src="https://yandex.ru/cycounter?www.freebasic.su&amp;theme=light&amp;lang=ru" />
 		</a>
 $endif$
 
-		<a id="pLiveInternet" href="https://www.liveinternet.ru/stat/freebasic.su" title="Смотреть статистику и счётчики посещений на сайте LiveInternet"></a>
+		<a id="pLiveInternet" href="https://www.liveinternet.ru/stat/freebasic.su" title="Смотреть статистику и счётчики посещений сайта на LiveInternet">
+			<img width="88" height="31" alt="Логотип LiveInternet" id="imgLiveInternet" />
+		</a>
 
 	</p>
 
 	<script>
-		var idImg=document.createElement("img");
-		idImg.src="//counter.yadro.ru/hit?t44."+Math.round(1+18*Math.random())+";r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();
-		idImg.alt="Логотип сайта LiveInternet";
-		
-		var idL=document.getElementById("pLiveInternet");
-		idL.appendChild(idImg);
+		var idImg=document.getElementById("imgLiveInternet");
+		idImg.src="https://counter.yadro.ru/hit?t16.6;r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();
 	</script>
 
 	<script src="/highlight.pack.js"></script>
