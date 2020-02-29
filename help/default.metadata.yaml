@@ -1,0 +1,25 @@
+﻿---
+title: "Информация о сайте"
+
+subtitle: "FreeBASIC.su"
+
+author: 
+  - mabu
+
+description: "Помощь по сайту FreeBASIC.su"
+
+keywords: 
+  - FreeBASIC
+  - информация о сайте
+  - полезные ссылки
+  - пожертвования
+
+lang: "ru"
+
+date: "2016-03-11"
+
+ModifiedDate: "2020-02-09"
+
+HelpDefaultPage: true
+
+...
