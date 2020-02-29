@@ -1,0 +1,39 @@
+﻿input-files:
+- users\mabu\default.md
+
+from: markdown+emoji
+
+output-file: users\mabu\default.htm
+
+to: html5
+
+template: template.htm
+standalone: true
+self-contained: false
+
+metadata-files:
+- users\mabu\default.metadata.yaml
+
+css:
+- /styles.css
+
+html-q-tags: false
+
+# Note that these take files, not their contents:
+include-before-body: []
+include-after-body: []
+include-in-header: []
+resource-path: ["."]
+
+strip-empty-paragraphs: true
+# lf, crlf, or native
+eol: crlf
+strip-comments: false
+
+preserve-tabs: true
+
+# either a style name of a style definition file:
+highlight-style: pygments
+# A list of two-element lists
+request-headers:
+- ["User-Agent", "Mozilla/5.0"]
