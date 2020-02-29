@@ -1,0 +1,22 @@
+﻿---
+title: "Проекты"
+
+subtitle: "FreeBASIC.su"
+
+author: 
+  - mabu
+
+description: "Программы, библиотеки и исходные коды, написанные на языке FreeBASIC"
+
+keywords: 
+  - проекты на FreeBASIC
+
+lang: "ru"
+
+date: "2016-03-11"
+
+ModifiedDate: "2020-02-09"
+
+ProjectsDefaultPage: true
+
+...
