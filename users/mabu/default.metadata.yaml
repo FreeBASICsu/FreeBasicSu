@@ -1,24 +1,22 @@
 ﻿---
-title: "Пользователи сайта"
+title: "Анкета пользователя @mabu"
 
 subtitle: "FreeBASIC.su"
 
 author: 
   - mabu
 
-description: "Пользователи сайта FreeBASIC.su"
+description: "Анкета пользователя @mabu"
 
 keywords: 
-  - FreeBASIC
-  - программирование
-  - исходники
+  - mabu
+  - анкета
+  - информация о пользователе
 
 lang: "ru"
 
 date: "2016-03-11"
 
 ModifiedDate: "2020-02-09"
-
-UsersDefaultPage: true
 
 ...
