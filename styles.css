@@ -1,6 +1,6 @@
 html
 {
-	background:#EEEEEE;
+	background:#EFEFEF;
 	font-family:sans-serif;
 }
 
@@ -16,8 +16,8 @@ aside{}
 nav
 {
 	font-weight:bold;
-	background:#DDDDDD;
-	border:solid 1px #CCCCCC;
+	background:#CCCCCC;
+	border:solid 1px;
 	border-radius:.25em;
 }
 
@@ -26,8 +26,8 @@ nav p
 	display:inline-block;
 	width:8em;
 	height:2.5em;
+	margin:1em 0 0 0;
 	text-align:center;
-	margin:0;
 }
 
 nav a
@@ -36,13 +36,14 @@ nav a
 	text-decoration:none;
 	width:100%;
 	height:100%;
+	vertical-align:middle;
 }
 
 ol.contents
 {
 	margin:.25em;
 	background:#DDDDDD;
-	border:solid 1px #CCCCCC;
+	border:solid 1px;
 	border-radius:.25em;
 }
 
@@ -51,40 +52,20 @@ ol.contents li
 	padding:.5em .5em .5em .5em;
 }
 
-h1
-{
-	color:#FF6600;
-}
-
-h2
-{
-	color:#0066FF;
-}
-
-h3
-{
-	color:#0000FF;
-}
-
-h4
-{
-	color:#006600;
-}
-
 table
 {
-	border:solid 1px #CCCCCC;
+	border:solid 1px;
 	border-radius:.25em;
 }
 
 th
 {
-	border:solid 1px #CCCCCC;
+	border:solid 1px;
 }
 
 td
 {
-	border:solid 1px #CCCCCC;
+	border:solid 1px;
 }
 
 dt
@@ -97,19 +78,8 @@ p
 	word-wrap:break-word;
 }
 
-a[href]
-{
-	color:#FF6600;
-}
-
-a[href]:hover
-{
-	color:#0066FF;
-}
-
 hr
 {
-	border-color:#BBBBBB;
 	margin:1em 0 1em 0;
 	clear:both;
 }
@@ -122,10 +92,9 @@ div.fileblock
 
 div.codeblock
 {
-	padding:.25em;
-	border:solid 1px #CCCCCC;
+	border:solid 1px;
 	border-radius:.25em;
-	background:#e6e6e6;
+	background:#E0E0E0;
 }
 
 div.posternameblock{}
