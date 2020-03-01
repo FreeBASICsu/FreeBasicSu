@@ -11,6 +11,9 @@ template: template.htm
 standalone: true
 self-contained: false
 
+variables:
+  UsersDefaultPage: true
+
 metadata-files:
 - users\default.metadata.yaml
 

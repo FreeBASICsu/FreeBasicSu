@@ -10,6 +10,9 @@ template: template.htm
 standalone: true
 self-contained: false
 
+variables:
+  HomePage: true
+
 metadata-files:
 - default.metadata.yaml
 

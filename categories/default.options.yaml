@@ -1,9 +1,9 @@
 ﻿input-files:
-- projects\default.md
+- categories\default.md
 
 from: markdown+emoji
 
-output-file: projects\default.htm
+output-file: categories\default.htm
 
 to: html5
 
@@ -12,10 +12,10 @@ standalone: true
 self-contained: false
 
 variables:
-  ProjectsDefaultPage: true
+  CategoriesDefaultPage: true
 
 metadata-files:
-- projects\default.metadata.yaml
+- categories\default.metadata.yaml
 
 css:
 - /styles.css

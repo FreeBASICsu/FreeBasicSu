@@ -11,6 +11,9 @@ template: template.htm
 standalone: true
 self-contained: false
 
+variables:
+  HelpDefaultPage: true
+
 metadata-files:
 - help\default.metadata.yaml
 
