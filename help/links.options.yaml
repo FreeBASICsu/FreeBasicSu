@@ -1,9 +1,9 @@
 ﻿input-files:
-- help\links\default.md
+- help\links.md
 
 from: markdown+emoji
 
-output-file: help\links\default.htm
+output-file: help\links.htm
 
 to: html5
 
@@ -12,7 +12,7 @@ standalone: true
 self-contained: false
 
 metadata-files:
-- help\links\default.metadata.yaml
+- help\links.metadata.yaml
 
 css:
 - /styles.css

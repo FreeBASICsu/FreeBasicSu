@@ -1,9 +1,9 @@
 ﻿input-files:
-- help\about\default.md
+- help\about.md
 
 from: markdown+emoji
 
-output-file: help\about\default.htm
+output-file: help\about.htm
 
 to: html5
 
@@ -12,7 +12,7 @@ standalone: true
 self-contained: false
 
 metadata-files:
-- help\about\default.metadata.yaml
+- help\about.metadata.yaml
 
 css:
 - /styles.css
