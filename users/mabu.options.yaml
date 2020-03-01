@@ -1,9 +1,9 @@
 ﻿input-files:
-- users\mabu\default.md
+- users\mabu.md
 
 from: markdown+emoji
 
-output-file: users\mabu\default.htm
+output-file: users\mabu.htm
 
 to: html5
 
@@ -12,7 +12,7 @@ standalone: true
 self-contained: false
 
 metadata-files:
-- users\mabu\default.metadata.yaml
+- users\mabu.metadata.yaml
 
 css:
 - /styles.css
