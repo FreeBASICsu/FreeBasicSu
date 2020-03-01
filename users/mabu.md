@@ -2,7 +2,7 @@
 
 ## Фотокарточка
 
-[ ![Фотокарточка пользователя](/users/mabu/mabu.200x200.jpg){ width="200" height="200" } ](/users/mabu/mabu.original.jpg)
+[ ![Фотокарточка пользователя](/users/mabu.200x200.jpg){ width="200" height="200" } ](/users/mabu.original.jpg)
 
 
 ## Кто такой
