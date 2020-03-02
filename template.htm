@@ -62,10 +62,10 @@ $else$
 			<p><a href="/articles/">Статьи</a></p>
 $endif$
 		
-$if(TagsDefaultPage)$
+$if(CategoriesDefaultPage)$
 			<p>Рубрики</p>
 $else$
-			<p><a href="/tags/">Рубрики</a></p>
+			<p><a href="/categories/">Рубрики</a></p>
 $endif$
 
 $if(BooksDefaultPage)$
@@ -120,7 +120,7 @@ $endfor$
 	
 	<p>«Пакетные файлы» создали этот сайт по технологии XHTML 11 марта 2016 года</p>
 	
-	<p>
+	<p id="WebSiteCounters">
 
 $if(HomePage)$
 		<a href="https://webmaster.yandex.ru/sqi?host=www.freebasic.su" title="Смотреть достижения сайта на Яднекс Вебмастере">
@@ -128,15 +128,22 @@ $if(HomePage)$
 		</a>
 $endif$
 
-		<a id="pLiveInternet" href="https://www.liveinternet.ru/stat/freebasic.su" title="Смотреть статистику и счётчики посещений сайта на LiveInternet">
-			<img width="88" height="31" alt="Логотип LiveInternet" id="imgLiveInternet" />
-		</a>
-
 	</p>
 
 	<script>
-		var idImg=document.getElementById("imgLiveInternet");
-		idImg.src="https://counter.yadro.ru/hit?t16.6;r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();
+	var ImgLiveInternet=document.createElement("img");
+	ImgLiveInternet.src="https://counter.yadro.ru/hit?t16.6;r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();
+	ImgLiveInternet.alt="Логотип LiveInternet";
+	ImgLiveInternet.width=88;
+	ImgLiveInternet.height=31;
+	
+	var HrefLiveInternet=document.createElement("a");
+	HrefLiveInternet.href="https://www.liveinternet.ru/stat/freebasic.su";
+	HrefLiveInternet.title="Смотреть статистику и счётчики посещений сайта на LiveInternet";
+	HrefLiveInternet.appendChild(ImgLiveInternet);
+	
+	var idL=document.getElementById("WebSiteCounters");
+	idL.appendChild(HrefLiveInternet);
 	</script>
 
 	<script src="/highlight.pack.js"></script>
