@@ -13,7 +13,7 @@ standalone: true
 self-contained: false
 
 variables:
-  UsersDefaultPage: true
+  TutorialDefaultPage: true
   NeedSocialShareButtons: true
 
 metadata-files:
