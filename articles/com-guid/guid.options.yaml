@@ -1,9 +1,9 @@
 ﻿input-files:
-- articles\default.md
+- articles\com-guid\guid.md
 
 from: markdown+emoji
 
-output-file: articles\default.htm
+output-file: articles\com-guid\guid.htm
 to: html5
 
 template: template.htm
@@ -11,10 +11,10 @@ standalone: true
 self-contained: false
 
 variables:
-  ArticlesDefaultPage: true
+  ArticlesDefaultPage: false
 
 metadata-files:
-- articles\default.metadata.yaml
+- articles\com-guid\guid.metadata.yaml
 
 css:
 - /styles.css

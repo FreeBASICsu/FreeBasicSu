@@ -1,19 +1,25 @@
 ﻿---
-title: "Статьи — FreeBASIC на русском"
+title: "Статьи"
 
-# subtitle: "This is the subtitle"
+subtitle: "FreeBASIC.su"
 
 author: 
   - mabu
 
-description: "Статьи по программированию на языке FreeBASIC, технические статьи, документации, примеры кода FreeBASIC, исходники, библиотеки"
+description: "Список статей по программированию на языке FreeBASIC, технические статьи, документации, примеры кода FreeBASIC, исходники, библиотеки"
 
 # abstract: 
 
-keywords: "FreeBASIC, WinAPI, программирование, статьи, исходники, библиотеки"
+keywords: 
+  - FreeBASIC
+  - программирование
+  - исходники
+  - список статей
 
 lang: "ru"
 
 date: "2016-03-11"
+
+ModifiedDate: "2020-02-09"
 
 ...
