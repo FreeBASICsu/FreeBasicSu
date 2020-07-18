@@ -49,55 +49,55 @@ $endfor$
 <header id="MainHeader">
 	
 	<nav id="MainMenu">
-
+		<ul>
 $if(HomePage)$
-			<p>Главная</p>
+			<li>Главная</li>
 $else$
-			<p><a href="/">Главная</a></p>
+			<li><a href="/">Главная</a></li>
 $endif$
 		
 $if(ArticlesDefaultPage)$
-			<p>Статьи</p>
+			<li>Статьи</li>
 $else$
-			<p><a href="/articles/">Статьи</a></p>
+			<li><a href="/articles/">Статьи</a></li>
 $endif$
 		
 $if(CategoriesDefaultPage)$
-			<p>Рубрики</p>
+			<li>Рубрики</li>
 $else$
-			<p><a href="/categories/">Рубрики</a></p>
+			<li><a href="/categories/">Рубрики</a></li>
 $endif$
 
 $if(TutorialDefaultPage)$
-			<p>Учебник</p>
+			<li>Уроки</li>
 $else$
-			<p><a href="/tutorial/">Учебник</a></p>
+			<li><a href="/tutorial/">Уроки</a></li>
 $endif$
 
 $if(TasksDefaultPage)$
-			<!-- <p>Задачи</p> -->
+			<!-- <li>Задачи</li> -->
 $else$
-			<!-- <p><a href="/tasks/">Задачи</a></p> -->
+			<!-- <li><a href="/tasks/">Задачи</a></li> -->
 $endif$
 
 $if(ProjectsDefaultPage)$
-			<p>Проекты</p>
+			<li>Проекты</li>
 $else$
-			<p><a href="/projects/">Проекты</a></p>
+			<li><a href="/projects/">Проекты</a></li>
 $endif$
 
 $if(UsersDefaultPage)$
-			<p>Пользователи</p>
+			<li>Пользователи</li>
 $else$
-			<p><a href="/users/">Пользователи</a></p>
+			<li><a href="/users/">Пользователи</a></li>
 $endif$
 
 $if(HelpDefaultPage)$
-			<p>Информация</p>
+			<li>Информация</li>
 $else$
-			<p><a href="/help/">Информация</a></p>
+			<li><a href="/help/">Информация</a></li>
 $endif$
-		
+		</ul>
 	</nav>
 	
 </header>
@@ -118,7 +118,7 @@ $endfor$
 
 <footer id="MainFooter">
 	
-	<p>«Пакетные файлы» создали этот сайт по технологии XHTML 11 марта 2016 года</p>
+	<p>«Пакетные файлы» создали этот сайт <time datetime="2016-03-11T05:00:00+07:00">11 марта 2016 года</time></p>
 	
 	<p id="WebSiteCounters">
 
@@ -131,25 +131,21 @@ $endif$
 	</p>
 
 	<script>
-	var ImgLiveInternet=document.createElement("img");
-	ImgLiveInternet.src="https://counter.yadro.ru/hit?t16.6;r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();
-	ImgLiveInternet.alt="Логотип LiveInternet";
-	ImgLiveInternet.width=88;
-	ImgLiveInternet.height=31;
-	
-	var HrefLiveInternet=document.createElement("a");
-	HrefLiveInternet.href="https://www.liveinternet.ru/stat/freebasic.su";
-	HrefLiveInternet.title="Смотреть статистику и счётчики посещений сайта на LiveInternet";
-	HrefLiveInternet.appendChild(ImgLiveInternet);
-	
-	var idL=document.getElementById("WebSiteCounters");
-	idL.appendChild(HrefLiveInternet);
+		var ImgLiveInternet=document.createElement("img");
+		ImgLiveInternet.src="https://counter.yadro.ru/hit?t16.6;r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();
+		ImgLiveInternet.alt="Логотип LiveInternet";
+		ImgLiveInternet.width=88;
+		ImgLiveInternet.height=31;
+		
+		var HrefLiveInternet=document.createElement("a");
+		HrefLiveInternet.href="https://www.liveinternet.ru/stat/freebasic.su";
+		HrefLiveInternet.title="Смотреть статистику и счётчики посещений сайта на LiveInternet";
+		HrefLiveInternet.appendChild(ImgLiveInternet);
+		
+		var idL=document.getElementById("WebSiteCounters");
+		idL.appendChild(HrefLiveInternet);
 	</script>
 
-	<script src="/highlight.pack.js"></script>
-
-	<script>hljs.initHighlightingOnLoad();</script>
-	
 $if(NeedSocialShareButtons)$
 	<script src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
 	
