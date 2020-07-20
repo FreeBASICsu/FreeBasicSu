@@ -1,6 +1,5 @@
 ﻿input-files:
 - tutorial\default.md
-- socialsharebuttons.md
 
 from: markdown+emoji
 
@@ -14,7 +13,7 @@ self-contained: false
 
 variables:
   TutorialDefaultPage: true
-  NeedSocialShareButtons: true
+  NeedSocialShareButtons: false
 
 metadata-files:
 - tutorial\default.metadata.yaml
