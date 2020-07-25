@@ -85,3 +85,28 @@
 [Читать дальше →](/articles/winapi-errors/)
 	
 </article>
+
+
+<article>
+	
+<header>
+
+## Тип данных HRESULT
+
+:::: { .posternameblock}
+[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu/) опубликовал <time datetime="2018-12-10T05:24:00+07:00" pubdate="2018-12-10T05:24:00+07:00">10 декабря 2018</time>
+::::
+
+</header>
+	
+:::: { .fileblock}
+<svg width="18em" height="18em" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="100%" height="100%" fill="orange" stroke="orange" />
+</svg>
+::::
+	
+Тип HRESULT является одним из средств контроля ошибок в COM. Этот тип представляет собой 32‐битное число, в котором кодируется результат операции.
+	
+[Читать дальше →](/articles/datatype-hresult/)
+	
+</article>

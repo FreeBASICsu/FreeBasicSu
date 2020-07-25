@@ -75,9 +75,9 @@
 	<!-- <url> -->
 		<!-- <loc>http://www.freebasic.su/articles/interface.xhtml</loc> -->
 	<!-- </url> -->
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/hresult.xhtml</loc> -->
-	<!-- </url> -->
+	<url>
+		<loc>http://www.freebasic.su/articles/datatype-hresult/</loc>
+	</url>
 	
 	
 	<url>

@@ -1,0 +1,25 @@
+﻿---
+title: "Тип данных HRESULT"
+
+subtitle: "FreeBASIC.su"
+
+author: 
+  - mabu
+
+description: "Тип HRESULT является одним из средств контроля ошибок в COM. Этот тип представляет собой 32‐битное число, в котором кодируется результат операции."
+
+# abstract: 
+
+keywords: 
+  - HRESULT
+  - возвращаемое значение
+  - COM
+  - Itnerface
+
+lang: "ru"
+
+date: "2020-07-19"
+
+ModifiedDate: "2020-07-19"
+
+...
