@@ -15,32 +15,25 @@
 
 Посмотрим, как объявляется `BSTR` в заголовочных файлах. Открываем файл `inc\win\wtypes.bi`:
 
-:::: { .codeblock}
 ```FreeBASIC
 Type BSTR As OLECHAR Ptr
 Type LPBSTR As BSTR Ptr
 ```
-::::
 
 Выходит, что `BSTR` — это псевдоним для указателя на `OLECHAR`. Что такое `OLECHAR` выясняем в заголовочнике `inc\win\wtypesbase.bi`:
 
-:::: { .codeblock}
 ```FreeBASIC
 Type OLECHAR As WCHAR
 ```
-::::
 
 И вновь отсылка. Смотрим определение `WCHAR` в файле `inc\win\winnt.bi`:
 
-:::: { .codeblock}
 ```FreeBASIC
 Type WCHAR As wchar_t
 ```
-::::
 
 Осталось выяснить, что такое `wchar_t`. Определение этого типа находится в файле `inc\crt\stddef.bi` и зависит от конкретной платформы:
 
-:::: { .codeblock}
 ```FreeBASIC
 #ifdef __FB_DOS__
 	' wchar_t в DOS — это беззнаковое 8‐битное целое
@@ -53,7 +46,6 @@ Type WCHAR As wchar_t
 	Type wchar_t As Long
 #endif
 ```
-::::
 
 Таким образом, на Windows `BSTR` — это дополнительное имя для массива 16‐битных беззнаковых целых чисел. В данном случае эти числа интерпретируются как символы юникода в кодировке UTF-16 Little Endian.
 
@@ -71,7 +63,6 @@ Type WCHAR As wchar_t
 
 Схематичное представление строки в памяти в соответствии с кодировкой UTF-16 Little Endian:
 
-:::: { .codeblock}
 ```PlainText
              BSTR указывает на первый символ в массиве
                │
@@ -86,7 +77,6 @@ Type WCHAR As wchar_t
  ↑                                                                                    ↑
  Префикс длины                                                   Завершающий нулевой символ
 ```
-::::
 
 Такая реализация имеет ряд преимуществ:
 
@@ -112,12 +102,10 @@ Type WCHAR As wchar_t
 
 Все функции располагаются в библиотеке `OleAut32.dll`. Для их использования требуется подключить следующий заголовочные файлы:
 
-:::: { .codeblock}
 ```FreeBASIC
 #include "windows.bi"
 #include "win\ole2.bi"
 ```
-::::
 
 Нам потребуются функции:
 
@@ -132,132 +120,109 @@ Type WCHAR As wchar_t
 
 Функция принимает на вход указатель на буфер `WString` и возвращает `BSTR`.
 
-:::: { .codeblock}
 ```FreeBASIC
 Declare Function SysAllocString( _
 	ByVal As Const Wstring Ptr _
 )As BSTR
 ```
-::::
 
 В случае успеха возвращает `BSTR`, при ошибке — `NULL`.
 
 #### Пример
 
-:::: { .codeblock}
 ```FreeBASIC
 Dim b As BSTR = SysAllocString("Привет, мир!")
 ```
-::::
 
 ### SysAllocStringLen
 
 Функция `SysAllocStringLen` принимает на вход указатель на буфер `WString` и количество символов, копируемых из буфера в будущую `BSTR`.
 
-:::: { .codeblock}
 ```FreeBASIC
 Declare Function SysAllocStringLen( _
 	ByVal As Const Wstring Ptr, _
 	ByVal As UINT _
 )As BSTR
 ```
-::::
 
 В случае успеха возвращает `BSTR`, при ошибке — `NULL`.
 
 #### Пример
 
-:::: { .codeblock}
 ```FreeBASIC
 ' Скопируется строка «Привет»
 Dim b As BSTR = SysAllocStringLen("Привет, мир!", 6)
 ```
-::::
 
 ### Обратное преобразование в строку
 
 Достаточно привести данные `BSTR` к указателю на данные `WString`:
 
-:::: { .codeblock}
 ```FreeBASIC
 Dim b As BSTR = SysAllocString("Привет, мир!")
 Dim pW As WString Ptr = b
 Print *pW
 ```
-::::
 
 ### SysStringLen и SysStringByteLen
 
 Функция `SysStringLen` возвращает длину строки в символах без учёта завершающего нуля:
 
-:::: { .codeblock}
 ```FreeBASIC
 Declare Function SysStringLen( _
 	ByVal As BSTR _
 )As UINT
 ```
-::::
 
 Функция `SysStringByteLen` возвращает занимаемую символами строки память в байтах без учёта завершающего нуля:
 
-:::: { .codeblock}
 ```FreeBASIC
 Declare Function SysStringLen( _
 	ByVal As BSTR _
 )As UINT
 ```
-::::
 
 #### Пример
 
-:::: { .codeblock}
 ```FreeBASIC
 Dim b As BSTR = SysAllocStringLen("Привет, мир!")
 Print "Длина строки", SysStringLen(b) ' Выведет 12
 Print "Количество байт", SysStringLen(b) ' Выведет 24
 ```
-::::
 
 ### SysFreeString
 
 Когда строка больше не нужна, её следует удалить функцией `SysFreeString`.
 
-:::: { .codeblock}
 ```FreeBASIC
 Declare Sub SysFreeString( _
 	ByVal As BSTR _
 )
 ```
-::::
 
 Функция не возвращает значений.
 
 #### Пример
 
-:::: { .codeblock}
 ```FreeBASIC
 Dim b As BSTR = SysAllocString("Привет, мир!")
 SysFreeString(b)
 ```
-::::
 
 ### Копирование BSTR
 
 Встроенной функции, копирующей `BSTR` нет, но её можно написать самостоятельно.
 
-:::: { .codeblock}
 ```FreeBASIC
 Dim b As BSTR = SysAllocString("Привет, мир!")
 ' Копирование
 Dim copy As BSTR = SysAllocStringLen(b, SysStringLen(b))
 ```
-::::
 
 ### VarBstrCat
 
 Функция объединеняет две строки и возвращает результат выходящим параметром.
 
-:::: { .codeblock}
 ```FreeBASIC
 Declare Function VarBstrCat( _
 	ByVal bstrLeft As BSTR, _
@@ -265,13 +230,11 @@ Declare Function VarBstrCat( _
 	ByVal pbstrResult As LPBSTR _
 )As HRESULT
 ```
-::::
 
 В случае успеха возвращает `S_OK`, в случае ошибки — ошибочный код `HRESULT`.
 
 #### Пример
 
-:::: { .codeblock}
 ```FreeBASIC
 Dim bstrLeft As BSTR = SysAllocString("Привет, ")
 Dim bstrRight As BSTR = SysAllocString("мир!")
@@ -287,7 +250,6 @@ SysFreeString(bstrLeft)
 SysFreeString(bstrRight)
 SysFreeString(bstrCombine)
 ```
-::::
 
 ## Выделение и освобождение памяти для BSTR
 
@@ -303,17 +265,14 @@ SysFreeString(bstrCombine)
 
 Где‐то объявлена функция:
 
-:::: { .codeblock}
 ```FreeBASIC
 Declare Function GetStringValue( _
 	ByVal Value As Integer _
 )As BSTR
 ```
-::::
 
 Использующий функцию код:
 
-:::: { .codeblock}
 ```FreeBASIC
 ' Получаем строку
 Dim b As BSTR = GetStringValue(265)
@@ -321,7 +280,6 @@ Dim b As BSTR = GetStringValue(265)
 ' Мы должны сами убить строку
 SysFreeString(b)
 ```
-::::
 
 ### BSTR как входящий параметр функции
 
@@ -333,17 +291,14 @@ SysFreeString(b)
 
 Где‐то объявлена функция:
 
-:::: { .codeblock}
 ```FreeBASIC
 Declare Function MyWebBrowser.PutStatusText( _
 	ByVal b As BSTR  _
 )As HRESULT
 ```
-::::
 
 Использующий функцию код:
 
-:::: { .codeblock}
 ```FreeBASIC
 ' Сами выделяем память под строку
 Dim bstrStatus As BSTR = SysAllocString("Успешно")
@@ -355,7 +310,6 @@ If bstrStatus <> NULL Then
 	SysFreeString(bstrStatus)
 End If
 ```
-::::
 
 ### BSTR как выходящий параметр функции
 
@@ -369,17 +323,14 @@ End If
 
 Где‐то объявлена функция:
 
-:::: { .codeblock}
 ```FreeBASIC
 Declare Function MyWebBrowser.GetStatusText( _
 	ByVal pbstr As BSTR Ptr  _
 )As HRESULT
 ```
-::::
 
 Использующий функцию код:
 
-:::: { .codeblock}
 ```FreeBASIC
 Dim bstrStatus As BSTR
 pBrowser->GetStatusText(@bstrStatus)
@@ -387,7 +338,6 @@ pBrowser->GetStatusText(@bstrStatus)
 ' Мы сами удаляем строку, которую вернула функция
 SysFreeString(bstrStatus)
 ```
-::::
 
 ### BSTR как входящий и выходящий параметр функции
 
@@ -401,7 +351,6 @@ SysFreeString(bstrStatus)
 
 Реализация функции:
 
-:::: { .codeblock}
 ```FreeBASIC
 Function MyWebBrowser.GetStatusText( _
 		ByVal InputString As BSTR, _
@@ -428,4 +377,3 @@ Function MyWebBrowser.GetStatusText( _
 	
 End Function
 ```
-::::

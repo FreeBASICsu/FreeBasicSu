@@ -32,7 +32,6 @@ Microsoft применяет GUID в следующих случаях:
 
 В заголовочном файле `guiddef.bi` (входит в `windows.bi`) GUID объявляется в виде структуры:
 
-:::: { .codeblock}
 ```FreeBASIC
 Type _GUID
     Data1 As ULong
@@ -43,7 +42,6 @@ End Type
 
 Type GUID As _GUID
 ```
-::::
 
 То есть сначала идёт 32‐битное беззнаковое целое, затем два 16‐битных беззнаковых целых и потом восемь 8‐битных беззнаковых целых.
 
@@ -51,19 +49,16 @@ Type GUID As _GUID
 
 IID (идентификатор интерфейса) и CLSID (идентификатор класса) — это псевдонимы GUID:
 
-:::: { .codeblock}
 ```FreeBASIC
 Type IID As GUID
 
 Type CLSID As GUID
 ```
-::::
 
 ### REFGUID, REFIID и REFCLSID
 
 Поскольку размер GUID — 16 байтов и в обычный параметр «не влезает», мы будем передавать его в функции не по значению, а как указатель на структуру, а лучше как константный указатель на константные данные. Программистам из Microsoft показалось утомительным писать каждый раз что‐то вроде `ByVal As Const IID Const Ptr`, поэтому они определили в заголовочнике типы данных для таких указателей (Reference — отсюда приставка REF) на GUID, IID и CLSID:
 
-:::: { .codeblock}
 ```FreeBASIC
 Type REFGUID As Const GUID Const Ptr
 
@@ -71,7 +66,6 @@ Type REFIID As Const IID Const Ptr
 
 Type REFCLSID As Const IID Const Ptr
 ```
-::::
 
 Теперь можно объявлять параметр функции так: `ByVal As REFIID`.
 
@@ -82,7 +76,6 @@ Type REFCLSID As Const IID Const Ptr
 
 В тексте GUID записывается в виде строки из тридцати двух шестнадцатеричных цифр `XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX`, разбитой дефисоминусами на группы по пять штук. В формате реестра цифры обрамляют фигурными скобками. Ты уже наверняка где‐нибудь встречал похожие строки GUID:
 
-:::: { .codeblock}
 ```PlainText
 {00000000-0000-0000-C000-000000000046}
 
@@ -92,7 +85,6 @@ Type REFCLSID As Const IID Const Ptr
 
 {4C9E6590-A9C5-40AD-9E13-AB55F6AAC05F}
 ```
-::::
 
 Первая группа кодирует 32‐битное беззнаковое целое, вторая и третья группы — два 16‐битных беззнаковых целых, четвёртая и пятая — восемь 8‐битных беззнаковых целых.
 
@@ -101,7 +93,6 @@ Type REFCLSID As Const IID Const Ptr
 
 В исходном коде объявлять переменную типа GUID можно через длинный ряд шестнадцатеричных чисел. Посмотрим как объявляется IID интерфейса `IXmlHttpRequest` и CLSID класса `XmlHttpRequest`, который реализует этот интерфейс:
 
-:::: { .codeblock}
 ```FreeBASIC
 Dim IID_IXmlHttpRequest As IID = Type(&hED8C108D, &h4349, &h11D2, _
 	{&h91, &hA4, &h00, &hC0, &h4F, &h79, &h69, &hE8} _
@@ -111,7 +102,6 @@ Dim CLSID_XMLHTTPREQUEST As CLSID = Type(&hED8C108E, &h4349, &h11D2, _
 	{&h91, &hA4, &h00, &hC0, &h4F, &h79, &h69, &hE8} _
 )
 ```
-::::
 
 Но этот вариант недостаточно гибкий, так как работает на уровне одного файла (одной единицы трансляции).
 
@@ -119,15 +109,12 @@ Dim CLSID_XMLHTTPREQUEST As CLSID = Type(&hED8C108E, &h4349, &h11D2, _
 
 В случае, когда одно и то же значение переменной GUID необходимо использовать в нескольких файлах, то её объявляют в одном из общих заголовочных файлов как внешнюю переменную с константным типом:
 
-:::: { .codeblock}
 ```FreeBASIC
 Extern IID_IBaseStream Alias "IID_IBaseStream" As Const IID
 ```
-::::
 
 Затем создают заголовочный файл `Guids.bi` с макросами:
 
-:::: { .codeblock}
 ```FreeBASIC
 #ifndef GUIDS_BI
 #define GUIDS_BI
@@ -156,11 +143,9 @@ Extern IID_IBaseStream Alias "IID_IBaseStream" As Const IID
 
 #endif
 ```
-::::
 
 И уже файле реализации `Guids.bas` прописывают непосредственно значения GUID через макросы:
 
-:::: { .codeblock}
 ```FreeBASIC
 #include "Guids.bi"
 
@@ -169,7 +154,6 @@ DEFINE_IID(IID_IBaseStream, _
 	&hb6ac4cef, &h9b3d, &h4b41, &hb2, &hf6, &hde, &ha2, &h7d, &h8, &h5e, &hb7 _
 )
 ```
-::::
 
 
 ## Функции для работы с GUID
@@ -180,13 +164,11 @@ DEFINE_IID(IID_IBaseStream, _
 
 Создаёт GUID.
 
-:::: { .codeblock}
 ```FreeBASIC
 Declare Function CoCreateGuid( _
     ByVal pguid As GUID Ptr _
 )As HRESULT
 ```
-::::
 
 #### Параметры
 
@@ -203,7 +185,6 @@ pguid
 
 Предназначены для сравнения двух GUID, IID или CLSID.
 
-:::: { .codeblock}
 ```FreeBASIC
 Declare Function IsEqualGUID( _
     ByVal rguid1 As REFGUID, _
@@ -225,7 +206,6 @@ Declare Function InlineIsEqualGUID( _
     ByVal rguid2 As REFGUID _
 )As Boolean
 ```
-::::
 
 Макросы IsEqualGUID, IsEqualIID и IsEqualCLSID сравнивают два GUID через функцию memcmp(), а InlineIsEqualGUID делает это в коде, побайтово.
 
@@ -233,7 +213,6 @@ Declare Function InlineIsEqualGUID( _
 
 Заполняет буфер строкой из GUID в формате реестра.
 
-:::: { .codeblock}
 ```FreeBASIC
 Declare Function StringFromGUID2( _
     ByVal rguid As REFGUID , _
@@ -241,7 +220,6 @@ Declare Function StringFromGUID2( _
     ByVal cchMax As Long _
 )As Long
 ```
-::::
 
 #### Параметры
 
@@ -264,7 +242,6 @@ cchMax
 
 Возвращают строку из IID или CLSID в формате реестра.
 
-:::: { .codeblock}
 ```FreeBASIC
 Declare Function StringFromIID( _
     ByVal rclsid As REFIID , _
@@ -276,7 +253,6 @@ Declare Function StringFromCLSID( _
     ByVal lplpsz As LPOLESTR Ptr _
 )As HRESULT
 ```
-::::
 
 #### Параметры
 
@@ -298,7 +274,6 @@ lplpsz
 
 Заполняют структуры IID или CLSID из строки GUID в формате реестра.
 
-:::: { .codeblock}
 ```FreeBASIC
 Declare Function IIDFromString( _
     ByVal lpsz As LPCOLESTR, _
@@ -310,7 +285,6 @@ Declare Function CLSIDFromString( _
     ByVal pclsid As LPCLSID _
 )As HRESULT
 ```
-::::
 
 #### Параметры
 
@@ -333,7 +307,6 @@ lpiid или pclsid
 
 В этом простом примере посмотрим как создать GUID и вывести его на консоль.
 
-:::: { .codeblock}
 ```FreeBASIC
 #ifndef unicode
 #define unicode
@@ -355,6 +328,5 @@ Print *pstrIID_IFace
 ' Очищаем память
 CoTaskMemFree(pstrIID_IFace)
 ```
-::::
 
 Не забудь сохранить исходник в юникодной кодировке: UTF-8 или UTF-16.
