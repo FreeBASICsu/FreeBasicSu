@@ -76,7 +76,6 @@ FreeBASIC задуман как совместимая бесплатная ал
 
 ### Процедурное программирование
 
-:::: { .codeblock}
 ```FreeBASIC
 ' Функция сложения двух чисел
 Function AddNumbers(a As Integer, b As Integer)As Integer
@@ -100,4 +99,3 @@ Sub MyPrint(num As Integer)
 	Print num
 End Sub
 ```
-::::

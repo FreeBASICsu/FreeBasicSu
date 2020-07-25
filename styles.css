@@ -90,7 +90,7 @@ div.fileblock
 	clear:both;
 }
 
-div.codeblock
+pre
 {
 	border:solid 1px;
 	border-radius:.25em;
