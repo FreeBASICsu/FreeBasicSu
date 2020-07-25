@@ -1,0 +1,25 @@
+﻿---
+title: "Обработка ошибок в Windows"
+
+subtitle: "FreeBASIC.su"
+
+author: 
+  - mabu
+
+description: "Как устроена обработка ошибок в функциях Microsoft Windows"
+
+# abstract: 
+
+keywords: 
+  - обработка ошибок
+  - коды ошибок
+  - GetLastError
+  - SetLastError
+
+lang: "ru"
+
+date: "2020-07-19"
+
+ModifiedDate: "2020-07-19"
+
+...

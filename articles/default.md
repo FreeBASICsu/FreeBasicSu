@@ -49,3 +49,39 @@
 
 </article>
 
+
+<article>
+	
+<header>
+
+## Обработка ошибок в Windows
+
+:::: { .posternameblock}
+[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu/) опубликовал <time datetime="2017-08-10T12:49:07+07:00" pubdate="2017-08-10T12:49:07+07:00">10 августа 2017</time>
+::::
+
+</header>
+	
+:::: { .fileblock}
+<svg width="18em" height="18em" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="100%" height="100%" fill="none" stroke="black" stroke-width="2" />
+<rect x="1em" y="4em" width="16em" height="9em" fill="#C0C0C0" stroke="black" />
+<rect x="1em" y="4em" width="16em" height="1.5em" fill="#FFFFFF" stroke="black" />
+<rect x="15.5em" y="4em" width="1.5em" height="1.5em" fill="#FFFFFF" stroke="black" />
+<text x="16em" y="5em"><tspan style="font-weight: bold;">X</tspan></text>
+<text x="2em" y="5em">Ошибка</text>
+<text x="8em" y="8em">Ошибка!</text>
+<rect x="6em" y="10em" width="4em" height="2em" fill="none" stroke="black" />
+<text x="7em" y="11.25em">OK</text>
+<rect x="11em" y="10em" width="5.5em" height="2em" fill="none" stroke="black" />
+<text x="12em" y="11.25em">Отмена</text>
+<circle cx="3.5em" cy="8.5em" r="2em" fill="#FF0000" stroke="black" />
+<text x="1.11em" y="3.75em" fill="#FFFFFF"><tspan style="font-weight: bold;font-size: 2.5em;">X</tspan></text>
+</svg>
+::::
+	
+Прежде чем изучать функции, предлагаемые Microsoft Windows, посмотрим, как в них устроена обработка ошибок.
+	
+[Читать дальше →](/articles/winapi-errors/)
+	
+</article>
