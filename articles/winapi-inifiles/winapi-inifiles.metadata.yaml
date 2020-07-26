@@ -1,0 +1,25 @@
+﻿---
+title: "Файлы инициализации"
+
+subtitle: "FreeBASIC.su"
+
+author: 
+  - mabu
+
+description: "Чтение и запись файлов конфигурации — INI‐файлов — функциями GetPrivateProfileString и WritePrivateProfileString, получение всех секций и параметров в секции."
+
+# abstract: 
+
+keywords: 
+  - GetPrivateProfileString
+  - WritePrivateProfileString
+  - INI
+  - WinAPI
+
+lang: "ru"
+
+date: "2020-07-19"
+
+ModifiedDate: "2020-07-19"
+
+...

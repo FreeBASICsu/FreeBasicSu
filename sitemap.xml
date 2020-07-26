@@ -24,9 +24,9 @@
 	<url>
 		<loc>http://www.freebasic.su/articles/guid/</loc>
 	</url>
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/inifiles.xhtml</loc> -->
-	<!-- </url> -->
+	<url>
+		<loc>http://www.freebasic.su/articles/winapi-inifiles/</loc>
+	</url>
 	<!-- <url> -->
 		<!-- <loc>http://www.freebasic.su/articles/tips.xhtml</loc> -->
 	<!-- </url> -->
