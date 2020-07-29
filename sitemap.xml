@@ -66,9 +66,9 @@
 	<url>
 		<loc>http://www.freebasic.su/articles/windows-errors/</loc>
 	</url>
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/registry.xhtml</loc> -->
-	<!-- </url> -->
+	<url>
+		<loc>http://www.freebasic.su/articles/winapi-registry/</loc>
+	</url>
 	<!-- <url> -->
 		<!-- <loc>http://www.freebasic.su/articles/heap.xhtml</loc> -->
 	<!-- </url> -->

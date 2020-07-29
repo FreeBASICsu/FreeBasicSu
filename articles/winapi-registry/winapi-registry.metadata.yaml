@@ -1,0 +1,25 @@
+﻿---
+title: "Реестр Windows"
+
+subtitle: "FreeBASIC.su"
+
+author: 
+  - mabu
+
+description: "Работа с реестром Windows"
+
+# abstract: 
+
+keywords: 
+  - реестр
+  - RegCreateKeyEx
+  - RegQueryValueEx
+  - RegSetValueEx
+
+lang: "ru"
+
+date: "2020-07-19"
+
+ModifiedDate: "2020-07-19"
+
+...

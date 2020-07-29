@@ -51,7 +51,7 @@
 
 
 <article>
-	
+
 <header>
 
 ## Обработка ошибок в Windows
@@ -61,7 +61,7 @@
 ::::
 
 </header>
-	
+
 :::: { .fileblock}
 <svg width="18em" height="18em" xmlns="http://www.w3.org/2000/svg">
 <rect x="0" y="0" width="100%" height="100%" fill="none" stroke="black" stroke-width="2" />
@@ -79,16 +79,16 @@
 <text x="1.11em" y="3.75em" fill="#FFFFFF"><tspan style="font-weight: bold;font-size: 2.5em;">X</tspan></text>
 </svg>
 ::::
-	
+
 Прежде чем изучать функции, предлагаемые Microsoft Windows, посмотрим, как в них устроена обработка ошибок.
-	
+
 [Читать дальше →](/articles/winapi-errors/)
-	
+
 </article>
 
 
 <article>
-	
+
 <header>
 
 ## Тип данных HRESULT
@@ -98,22 +98,22 @@
 ::::
 
 </header>
-	
+
 :::: { .fileblock}
 <svg width="18em" height="18em" xmlns="http://www.w3.org/2000/svg">
 <rect x="0" y="0" width="100%" height="100%" fill="orange" stroke="orange" />
 </svg>
 ::::
-	
+
 Тип HRESULT является одним из средств контроля ошибок в COM. Этот тип представляет собой 32‐битное число, в котором кодируется результат операции.
-	
+
 [Читать дальше →](/articles/datatype-hresult/)
-	
+
 </article>
 
 
 <article>
-	
+
 <header>
 
 ## Файлы инициализации
@@ -123,7 +123,7 @@
 ::::
 
 </header>
-	
+
 :::: { .fileblock}
 <svg width="18em" height="18em" xmlns="http://www.w3.org/2000/svg">
 <rect x="0" y="0" width="100%" height="100%" fill="none" stroke="black" stroke-width="2" />
@@ -142,9 +142,79 @@
 <line x1="80" y1="233" x2="194" y2="233" stroke-linecap="round" stroke-width="3" stroke="rgb(0,0,0)" />
 </svg>
 ::::
-	
+
 INI‐файл — это файл конфигурации, который содержит данные настроек для Microsoft Windows, Windows NT и некоторых приложений. С помощью функций `GetPrivateProfileString` и `WritePrivateProfileString` можно с лёгкостью манипулировать такими файлами: изменять, удалять и добавлять параметры и секции, получать весь список параметров и секций.
-	
+
 [Читать дальше →](/articles/winapi-inifiles/)
-	
+
+</article>
+
+
+<article>
+
+<header>
+
+## Реестр Windows
+
+:::: { .posternameblock}
+[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu/) опубликовал <time datetime="2017-03-05T23:25:31+07:00" pubdate="2017-03-05T23:25:31+07:00">5 марта 2017</time>
+::::
+
+</header>
+
+:::: { .fileblock}
+<svg width="18em" height="18em" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="100%" height="100%" fill="none" stroke="black" stroke-width="2" />
+<rect x="1em" y="14em" width="3em" height="3em" fill="cyan" stroke="blue" />
+<rect x="4em" y="14em" width="3em" height="3em" fill="cyan" stroke="blue" />
+<rect x="7em" y="14em" width="3em" height="3em" fill="cyan" stroke="blue" />
+<rect x="1em" y="11em" width="3em" height="3em" fill="cyan" stroke="blue" />
+<rect x="4em" y="11em" width="3em" height="3em" fill="cyan" stroke="blue" />
+<rect x="1em" y="8em" width="3em" height="3em" fill="cyan" stroke="blue" />
+<line x1="1em" y1="8em" x2="2em" y2="7em" stroke="blue" />
+<line x1="4em" y1="8em" x2="5em" y2="7em" stroke="blue" />
+<line x1="2em" y1="7em" x2="5em" y2="7em" stroke="blue" />
+<line x1="4em" y1="11em" x2="5em" y2="10em" stroke="blue" />
+<line x1="7em" y1="11em" x2="8em" y2="10em" stroke="blue" />
+<line x1="7em" y1="14em" x2="8em" y2="13em" stroke="blue" />
+<line x1="10em" y1="14em" x2="11em" y2="13em" stroke="blue" />
+<line x1="10em" y1="17em" x2="11em" y2="16em" stroke="blue" />
+<line x1="11em" y1="16em" x2="11em" y2="13em" stroke="blue" />
+<line x1="2em" y1="7em" x2="3em" y2="6em" stroke="blue" />
+<line x1="5em" y1="7em" x2="6em" y2="6em" stroke="blue" />
+<line x1="3em" y1="6em" x2="6em" y2="6em" stroke="blue" />
+<line x1="8em" y1="7em" x2="9em" y2="6em" stroke="blue" />
+<line x1="9em" y1="6em" x2="6em" y2="6em" stroke="blue" />
+<line x1="8em" y1="10em" x2="9em" y2="9em" stroke="blue" />
+<line x1="11em" y1="10em" x2="12em" y2="9em" stroke="blue" />
+<line x1="11em" y1="13em" x2="12em" y2="12em" stroke="blue" />
+<line x1="11em" y1="16em" x2="12em" y2="15em" stroke="blue" />
+<line x1="12em" y1="15em" x2="12em" y2="12em" stroke="blue" />
+<line x1="12em" y1="12em" x2="12em" y2="9em" stroke="blue" />
+<line x1="3em" y1="6em" x2="4em" y2="5em" stroke="blue" />
+<line x1="6em" y1="6em" x2="7em" y2="5em" stroke="blue" />
+<line x1="4em" y1="5em" x2="7em" y2="5em" stroke="blue" />
+<line x1="9em" y1="6em" x2="10em" y2="5em" stroke="blue" />
+<line x1="10em" y1="5em" x2="7em" y2="5em" stroke="blue" />
+<line x1="12em" y1="6em" x2="13em" y2="5em" stroke="blue" />
+<line x1="13em" y1="5em" x2="10em" y2="5em" stroke="blue" />
+<line x1="12em" y1="9em" x2="13em" y2="8em" stroke="blue" />
+<line x1="13em" y1="8em" x2="13em" y2="5em" stroke="blue" />
+<line x1="12em" y1="12em" x2="13em" y2="11em" stroke="blue" />
+<line x1="13em" y1="11em" x2="13em" y2="8em" stroke="blue" />
+<line x1="12em" y1="15em" x2="13em" y2="14em" stroke="blue" />
+<line x1="13em" y1="14em" x2="13em" y2="11em" stroke="blue" />
+<rect x="8em" y="10em" width="3em" height="3em" fill="cyan" stroke="blue" />
+<rect x="5em" y="7em" width="3em" height="3em" fill="cyan" stroke="blue" />
+<rect x="9em" y="6em" width="3em" height="3em" fill="cyan" stroke="blue" />
+<rect x="10em" y="-10em" width="3em" height="3em" fill="cyan" stroke="blue" transform="rotate(45)" />
+<rect x="7em" y="-6em" width="3em" height="3em" fill="cyan" stroke="blue" transform="rotate(45)" />
+<rect x="15em" y="-7em" width="3em" height="3em" fill="cyan" stroke="blue" transform="rotate(45)" />
+</svg>
+::::
+
+Реестр всегда был опасным местом для пользователей и разработчиков. Однако мы не будем избегать реестра как огня, а научимся им пользоваться.
+
+[Читать дальше →](/articles/winapi-registry/)
+
 </article>
