@@ -2,7 +2,7 @@
 
 ## Фотокарточка
 
-[ ![Фотокарточка пользователя](/photos/mabu.200x200.jpg){ width="200" height="200" } ](/photos/mabu.original.jpg)
+[ ![Фотокарточка пользователя](/profilepictures/mabu.200x200.jpg){ width="200" height="200" } ](/profilepictures/mabu.original.jpg)
 
 
 ## Кто такой
@@ -29,15 +29,18 @@
 BASIC‐программист, COM‐пропагандист, открытый гей, распространитель I2P и ReactOS.
 
 
-## Контакты
+## Сайты
 
-### Сайт
+### Личный блог
 
 [пердоликс.рф](http://www.пердоликс.рф)
 
 ### Гитхаб
 
 [zamabuvaraeu](https://github.com/zamabuvaraeu)
+
+
+## Контакты
 
 ### Электропочта
 
