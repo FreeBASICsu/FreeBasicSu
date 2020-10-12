@@ -51,7 +51,7 @@ BINARY_TARGETS: $(BIN_DIR)\robots.txt $(BIN_DIR)\favicon.ico $(BIN_DIR)\googledf
 
 TEXT_TARGETS: $(BIN_DIR)\styles.css.gz $(BIN_DIR)\styles.css $(BIN_DIR)\rss.rss.gz $(BIN_DIR)\rss.rss $(BIN_DIR)\sitemap.xml.gz $(BIN_DIR)\sitemap.xml
 
-GENERATED_TARGETS: $(BIN_DIR)\default.htm.gz $(BIN_DIR)\default.htm $(BIN_DIR_TUTORIALS)\default.htm.gz $(BIN_DIR_TUTORIALS)\default.htm $(BIN_DIR_PROJECTS)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm $(BIN_DIR_USERS)\default.htm.gz $(BIN_DIR_USERS)\default.htm $(BIN_DIR_USERS)\mabu.htm.gz $(BIN_DIR_USERS)\mabu.htm $(BIN_DIR_HELP)\default.htm.gz $(BIN_DIR_HELP)\default.htm $(BIN_DIR_HELP)\about.htm.gz $(BIN_DIR_HELP)\about.htm $(BIN_DIR_HELP)\links.htm.gz $(BIN_DIR_HELP)\links.htm
+GENERATED_TARGETS: $(BIN_DIR)\default.htm.gz $(BIN_DIR)\default.htm $(BIN_DIR_ARTICLES)\default.htm.gz $(BIN_DIR_ARTICLES)\default.htm $(BIN_DIR_TUTORIALS)\default.htm.gz $(BIN_DIR_TUTORIALS)\default.htm $(BIN_DIR_PROJECTS)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm $(BIN_DIR_USERS)\default.htm.gz $(BIN_DIR_USERS)\default.htm $(BIN_DIR_USERS)\mabu.htm.gz $(BIN_DIR_USERS)\mabu.htm $(BIN_DIR_HELP)\default.htm.gz $(BIN_DIR_HELP)\default.htm $(BIN_DIR_HELP)\about.htm.gz $(BIN_DIR_HELP)\about.htm $(BIN_DIR_HELP)\links.htm.gz $(BIN_DIR_HELP)\links.htm
 
 $(BIN_DIR)\robots.txt: robots.txt
 	copy /B /Y robots.txt $(BIN_DIR)\robots.txt
@@ -95,9 +95,9 @@ $(BIN_DIR_RES)\heap.zip: res\heap.zip
 # 2. styles.css.txt (UTF-8 BOM) -> перезаписать styles.css + Отправить на сервер
 
 $(BIN_DIR)\styles.css.gz: $(BIN_DIR)\styles.css
-	move /Y $(BIN_DIR_HELP)\styles.css.utf-8.txt $(TMP_DIR)\styles.css
+	move /Y $(BIN_DIR)\styles.css.utf-8.txt $(TMP_DIR)\styles.css
 	creategzip.cmd $(TMP_DIR) styles.css.gz styles.css
-	move /Y $(TMP_DIR)\styles.css.gz $(BIN_DIR_HELP)\styles.css.gz
+	move /Y $(TMP_DIR)\styles.css.gz $(BIN_DIR)\styles.css.gz
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL)/styles.css.gz $(BIN_DIR)\styles.css.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
 $(BIN_DIR)\styles.css: styles.css
@@ -108,9 +108,9 @@ $(BIN_DIR)\styles.css: styles.css
 
 
 $(BIN_DIR)\rss.rss.gz: $(BIN_DIR)\rss.rss
-	move /Y $(BIN_DIR_HELP)\rss.rss.utf-8.txt $(TMP_DIR)\rss.rss
+	move /Y $(BIN_DIR)\rss.rss.utf-8.txt $(TMP_DIR)\rss.rss
 	creategzip.cmd $(TMP_DIR) rss.rss.gz rss.rss
-	move /Y $(TMP_DIR)\rss.rss.gz $(BIN_DIR_HELP)\rss.rss.gz
+	move /Y $(TMP_DIR)\rss.rss.gz $(BIN_DIR)\rss.rss.gz
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL)/rss.rss.gz $(BIN_DIR)\rss.rss.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
 $(BIN_DIR)\rss.rss: rss.rss
@@ -121,9 +121,9 @@ $(BIN_DIR)\rss.rss: rss.rss
 
 
 $(BIN_DIR)\sitemap.xml.gz: $(BIN_DIR)\sitemap.xml
-	move /Y $(BIN_DIR_HELP)\sitemap.xml.utf-8.txt $(TMP_DIR)\sitemap.xml
+	move /Y $(BIN_DIR)\sitemap.xml.utf-8.txt $(TMP_DIR)\sitemap.xml
 	creategzip.cmd $(TMP_DIR) sitemap.xml.gz sitemap.xml
-	move /Y $(TMP_DIR)\sitemap.xml.gz $(BIN_DIR_HELP)\sitemap.xml.gz
+	move /Y $(TMP_DIR)\sitemap.xml.gz $(BIN_DIR)\sitemap.xml.gz
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL)/sitemap.xml.gz $(BIN_DIR)\sitemap.xml.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
 $(BIN_DIR)\sitemap.xml: sitemap.xml
@@ -150,6 +150,20 @@ $(BIN_DIR)\default.htm: default.options.yaml
 	move /Y default.htm.utf-8.txt $(BIN_DIR)\default.htm.utf-8.txt
 	move /Y default.htm.txt $(BIN_DIR)\default.htm
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL)/default.htm $(BIN_DIR)\default.htm $(MIME_TEXT_HTML) $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+
+$(BIN_DIR_ARTICLES)\default.htm.gz: $(BIN_DIR_ARTICLES)\default.htm
+	move /Y $(BIN_DIR_ARTICLES)\default.htm.utf-8.txt $(TMP_DIR)\default.htm
+	creategzip.cmd $(TMP_DIR) default.htm.gz default.htm
+	move /Y $(TMP_DIR)\default.htm.gz $(BIN_DIR_ARTICLES)\default.htm.gz
+	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_ARTICLES)/default.htm.gz $(BIN_DIR_ARTICLES)\default.htm.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+$(BIN_DIR_ARTICLES)\default.htm: articles\default.options.yaml
+	$(PANDOC_PATH) -d articles\default.options.yaml
+	$(ONELINE_PATH) articles\default.htm
+	move /Y articles\default.htm.utf-8.txt $(BIN_DIR_ARTICLES)\default.htm.utf-8.txt
+	move /Y articles\default.htm.txt $(BIN_DIR_ARTICLES)\default.htm
+	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_ARTICLES)/default.htm $(BIN_DIR_ARTICLES)\default.htm $(MIME_TEXT_HTML) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
 
 $(BIN_DIR_TUTORIALS)\default.htm.gz: $(BIN_DIR_TUTORIALS)\default.htm
@@ -261,6 +275,10 @@ sitemap.xml: robots.txt
 styles.css:
 template.htm:
 yandex_461c9af9cde122fb.html:
+
+articles\default.md:
+articles\default.metadata.yaml:
+articles\default.options.yaml: template.htm articles\default.metadata.yaml articles\default.md
 
 tutorials\default.md:
 tutorials\default.metadata.yaml:

@@ -8,10 +8,10 @@
 		<loc>http://www.freebasic.su/help/</loc>
 	</url>
 	<url>
-		<loc>http://www.freebasic.su/help/about/</loc>
+		<loc>http://www.freebasic.su/help/about.htm</loc>
 	</url>
 	<url>
-		<loc>http://www.freebasic.su/help/links/</loc>
+		<loc>http://www.freebasic.su/help/links.htm</loc>
 	</url>
 	
 	
@@ -93,7 +93,7 @@
 	
 	
 	<url>
-		<loc>http://www.freebasic.su/tutorial/</loc>
+		<loc>http://www.freebasic.su/tutorials/</loc>
 	</url>
 	<!-- <url> -->
 		<!-- <loc>http://www.freebasic.su/tutorial/install.xhtml</loc> -->
@@ -110,7 +110,7 @@
 		<loc>http://www.freebasic.su/users/</loc>
 	</url>
 	<url>
-		<loc>http://www.freebasic.su/users/mabu/</loc>
+		<loc>http://www.freebasic.su/users/mabu.htm</loc>
 	</url>
 	
 	
