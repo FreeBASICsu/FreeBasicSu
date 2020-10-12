@@ -10,8 +10,6 @@ URL_TASKS=$(URL)/tasks
 URL_TUTORIALS=$(URL)/tutorials
 URL_USERS=$(URL)/users
 
-# <sourceFolder>D:\Programming\Исходники сайтов\www.freebasic.su\trunk\</sourceFolder>
-
 PANDOC_PATH="$(ProgramFiles)\Pandoc\pandoc.exe"
 ONELINE_PATH="C:\Programming\Unsorted FreeBASIC Projects\OneLine\oneline.exe"
 ARCHIVATOR_PATH="$(ProgramFiles)\7-Zip\7z.exe"
@@ -53,7 +51,7 @@ BINARY_TARGETS: $(BIN_DIR)\robots.txt $(BIN_DIR)\favicon.ico $(BIN_DIR)\googledf
 
 TEXT_TARGETS: $(BIN_DIR)\styles.css.gz $(BIN_DIR)\styles.css $(BIN_DIR)\rss.rss.gz $(BIN_DIR)\rss.rss $(BIN_DIR)\sitemap.xml.gz $(BIN_DIR)\sitemap.xml
 
-GENERATED_TARGETS: $(BIN_DIR)\default.htm.gz $(BIN_DIR)\default.htm $(BIN_DIR_USERS)\default.htm.gz $(BIN_DIR_USERS)\default.htm $(BIN_DIR_USERS)\mabu.htm.gz $(BIN_DIR_USERS)\mabu.htm $(BIN_DIR_HELP)\default.htm.gz $(BIN_DIR_HELP)\default.htm $(BIN_DIR_HELP)\about.htm.gz $(BIN_DIR_HELP)\about.htm $(BIN_DIR_HELP)\links.htm.gz $(BIN_DIR_HELP)\links.htm
+GENERATED_TARGETS: $(BIN_DIR)\default.htm.gz $(BIN_DIR)\default.htm $(BIN_DIR_PROJECTS)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm $(BIN_DIR_USERS)\default.htm.gz $(BIN_DIR_USERS)\default.htm $(BIN_DIR_USERS)\mabu.htm.gz $(BIN_DIR_USERS)\mabu.htm $(BIN_DIR_HELP)\default.htm.gz $(BIN_DIR_HELP)\default.htm $(BIN_DIR_HELP)\about.htm.gz $(BIN_DIR_HELP)\about.htm $(BIN_DIR_HELP)\links.htm.gz $(BIN_DIR_HELP)\links.htm
 
 $(BIN_DIR)\robots.txt: robots.txt
 	copy /B /Y robots.txt $(BIN_DIR)\robots.txt
@@ -154,6 +152,20 @@ $(BIN_DIR)\default.htm: default.md
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL)/default.htm $(BIN_DIR)\default.htm $(MIME_TEXT_HTML) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
 
+$(BIN_DIR_PROJECTS)\default.htm.gz: $(BIN_DIR_PROJECTS)\default.htm
+	move /Y $(BIN_DIR_PROJECTS)\default.htm.utf-8.txt $(TMP_DIR)\default.htm
+	creategzip.cmd $(TMP_DIR) default.htm.gz default.htm
+	move /Y $(TMP_DIR)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm.gz
+	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_PROJECTS)/default.htm.gz $(BIN_DIR_PROJECTS)\default.htm.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+$(BIN_DIR_PROJECTS)\default.htm: projects\default.md
+	$(PANDOC_PATH) -d projects\default.options.yaml
+	$(ONELINE_PATH) projects\default.htm
+	move /Y projects\default.htm.utf-8.txt $(BIN_DIR_PROJECTS)\default.htm.utf-8.txt
+	move /Y projects\default.htm.txt $(BIN_DIR_PROJECTS)\default.htm
+	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_PROJECTS)/default.htm $(BIN_DIR_PROJECTS)\default.htm $(MIME_TEXT_HTML) $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+
 $(BIN_DIR_USERS)\default.htm.gz: $(BIN_DIR_USERS)\default.htm
 	move /Y $(BIN_DIR_USERS)\default.htm.utf-8.txt $(TMP_DIR)\default.htm
 	creategzip.cmd $(TMP_DIR) default.htm.gz default.htm
@@ -235,6 +247,10 @@ sitemap.xml: robots.txt
 styles.css:
 template.htm:
 yandex_461c9af9cde122fb.html:
+
+projects\default.md: template.htm projects\default.options.yaml projects\default.metadata.yaml
+projects\default.metadata.yaml:
+projects\default.options.yaml:
 
 users\default.md: template.htm users\default.options.yaml users\default.metadata.yaml
 users\default.metadata.yaml:
