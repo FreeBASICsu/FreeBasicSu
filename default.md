@@ -99,3 +99,73 @@ Sub MyPrint(num As Integer)
 	Print num
 End Sub
 ```
+
+### Объектно-ориентированное программирование
+
+
+```
+Type Vector
+	W As Integer
+	H As Integer
+	Declare Constructor(nW As Integer, nH As Integer)
+End Type
+
+Constructor Vector(nW As Integer, nH As Integer)
+	W = nW
+	H = nH
+End Constructor
+
+' Класс для создания объекта
+Type AObject
+	Private:
+		X As Integer
+		Y As Integer
+		Movement As Vector Pointer
+	Public:
+		' Видимые извне методы, включая конструктор и деструктор
+		Declare Constructor(nX As Integer, nY As Integer)
+		Declare Destructor()
+		Declare Sub SetMotion(Motion As Vector Pointer)
+		Declare Sub Move()
+		Declare Property GetX As Integer
+End Type
+
+Constructor AObject(nX As Integer, nY As Integer)
+	X = nX
+	Y = nY
+End Constructor
+
+Destructor AObject()
+	Delete Movement
+End Destructor
+
+Sub AObject.SetMotion(Motion As Vector Pointer)
+	Movement = Motion
+End Sub
+
+Sub AObject.Move()
+	X += Movement->W
+	Y += Movement->H
+End Sub
+
+Property AObject.GetX As Integer
+	Return X
+End Property
+
+' Фактическое начало программы 
+
+' Создание экземпляра класса с координатами (100, 100)
+Dim Player As AObject = Type<AObject>(100, 100)
+
+' Создание вектора с начальными значениями (-10, 5) и перемещение позиции объекта
+Player.SetMotion(New Vector(-10, 5))
+
+' Перемещение объекта
+Player.Move()
+
+' Получаем координату X и выводим на консоль
+Print Player.GetX
+
+' Деструктор объекта «Player» вызывается тогда, когда объект покидает зону видимости
+' Так как «Player» является локальной переменной, деструктор вызывается автоматически
+```

@@ -28,6 +28,10 @@
 
 [freebasic.forum2x2.ru/](https://freebasic.forum2x2.ru/forum)
 
+### На iforum.pro
+
+[http://iforum.pro/freebasic-93/](http://iforum.pro/freebasic-93/)
+
 
 ## Социальные сети
 

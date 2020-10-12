@@ -1,4 +1,4 @@
-﻿# Статьи — FreeBASIC.su
+﻿# Статьи
 
 <article>
 
