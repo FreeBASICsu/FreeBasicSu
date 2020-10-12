@@ -33,15 +33,15 @@ BIN_DIR=bin
 OBJ_DIR=obj
 TMP_DIR=obj
 BIN_DIR_ARTICLES=$(BIN_DIR)\articles
-BIN_DIR_AVATARS=$(BIN_DIR)\avatars
 BIN_DIR_CATEGORIES=$(BIN_DIR)\categories
-BIN_DIR_HELP=$(BIN_DIR)\help
-BIN_DIR_PROFILEPICTURES=$(BIN_DIR)\profilepictures
-BIN_DIR_PROJECTS=$(BIN_DIR)\projects
-BIN_DIR_RES=$(BIN_DIR)\res
-BIN_DIR_TASKS=$(BIN_DIR)\tasks
 BIN_DIR_TUTORIALS=$(BIN_DIR)\tutorials
+BIN_DIR_TASKS=$(BIN_DIR)\tasks
+BIN_DIR_PROJECTS=$(BIN_DIR)\projects
 BIN_DIR_USERS=$(BIN_DIR)\users
+BIN_DIR_HELP=$(BIN_DIR)\help
+BIN_DIR_AVATARS=$(BIN_DIR)\avatars
+BIN_DIR_PROFILEPICTURES=$(BIN_DIR)\profilepictures
+BIN_DIR_RES=$(BIN_DIR)\res
 
 .PHONY: WWW_FREEBASIC_SU all clean install uninstall configure
 
@@ -51,7 +51,7 @@ BINARY_TARGETS: $(BIN_DIR)\robots.txt $(BIN_DIR)\favicon.ico $(BIN_DIR)\googledf
 
 TEXT_TARGETS: $(BIN_DIR)\styles.css.gz $(BIN_DIR)\styles.css $(BIN_DIR)\rss.rss.gz $(BIN_DIR)\rss.rss $(BIN_DIR)\sitemap.xml.gz $(BIN_DIR)\sitemap.xml
 
-GENERATED_TARGETS: $(BIN_DIR)\default.htm.gz $(BIN_DIR)\default.htm $(BIN_DIR_PROJECTS)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm $(BIN_DIR_USERS)\default.htm.gz $(BIN_DIR_USERS)\default.htm $(BIN_DIR_USERS)\mabu.htm.gz $(BIN_DIR_USERS)\mabu.htm $(BIN_DIR_HELP)\default.htm.gz $(BIN_DIR_HELP)\default.htm $(BIN_DIR_HELP)\about.htm.gz $(BIN_DIR_HELP)\about.htm $(BIN_DIR_HELP)\links.htm.gz $(BIN_DIR_HELP)\links.htm
+GENERATED_TARGETS: $(BIN_DIR)\default.htm.gz $(BIN_DIR)\default.htm $(BIN_DIR_TUTORIALS)\default.htm.gz $(BIN_DIR_TUTORIALS)\default.htm $(BIN_DIR_PROJECTS)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm $(BIN_DIR_USERS)\default.htm.gz $(BIN_DIR_USERS)\default.htm $(BIN_DIR_USERS)\mabu.htm.gz $(BIN_DIR_USERS)\mabu.htm $(BIN_DIR_HELP)\default.htm.gz $(BIN_DIR_HELP)\default.htm $(BIN_DIR_HELP)\about.htm.gz $(BIN_DIR_HELP)\about.htm $(BIN_DIR_HELP)\links.htm.gz $(BIN_DIR_HELP)\links.htm
 
 $(BIN_DIR)\robots.txt: robots.txt
 	copy /B /Y robots.txt $(BIN_DIR)\robots.txt
@@ -133,7 +133,7 @@ $(BIN_DIR)\sitemap.xml: sitemap.xml
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL)/sitemap.xml $(BIN_DIR)\sitemap.xml $(MIME_APPLICATION_RSSXML) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
 
-# default.md -> (PANDOC_PATH) ->
+# default.options.yaml -> (PANDOC_PATH) ->
 # default.htm -> (OneLine) ->
 # 1. default.htm.utf-8.txt (UTF-8 без BOM) -> default.htm -> default.htm.gz + Отправить архив на сервер
 # 2. default.htm.txt (UTF-8 BOM) -> перезаписать default.htm + Отправить на сервер
@@ -144,12 +144,26 @@ $(BIN_DIR)\default.htm.gz: $(BIN_DIR)\default.htm
 	move /Y $(TMP_DIR)\default.htm.gz $(BIN_DIR)\default.htm.gz
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL)/default.htm.gz $(BIN_DIR)\default.htm.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
-$(BIN_DIR)\default.htm: default.md
+$(BIN_DIR)\default.htm: default.options.yaml
 	$(PANDOC_PATH) -d default.options.yaml
 	$(ONELINE_PATH) default.htm
 	move /Y default.htm.utf-8.txt $(BIN_DIR)\default.htm.utf-8.txt
 	move /Y default.htm.txt $(BIN_DIR)\default.htm
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL)/default.htm $(BIN_DIR)\default.htm $(MIME_TEXT_HTML) $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+
+$(BIN_DIR_TUTORIALS)\default.htm.gz: $(BIN_DIR_TUTORIALS)\default.htm
+	move /Y $(BIN_DIR_TUTORIALS)\default.htm.utf-8.txt $(TMP_DIR)\default.htm
+	creategzip.cmd $(TMP_DIR) default.htm.gz default.htm
+	move /Y $(TMP_DIR)\default.htm.gz $(BIN_DIR_TUTORIALS)\default.htm.gz
+	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_TUTORIALS)/default.htm.gz $(BIN_DIR_TUTORIALS)\default.htm.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+$(BIN_DIR_TUTORIALS)\default.htm: tutorials\default.options.yaml
+	$(PANDOC_PATH) -d tutorials\default.options.yaml
+	$(ONELINE_PATH) tutorials\default.htm
+	move /Y tutorials\default.htm.utf-8.txt $(BIN_DIR_TUTORIALS)\default.htm.utf-8.txt
+	move /Y tutorials\default.htm.txt $(BIN_DIR_TUTORIALS)\default.htm
+	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_TUTORIALS)/default.htm $(BIN_DIR_TUTORIALS)\default.htm $(MIME_TEXT_HTML) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
 
 $(BIN_DIR_PROJECTS)\default.htm.gz: $(BIN_DIR_PROJECTS)\default.htm
@@ -158,7 +172,7 @@ $(BIN_DIR_PROJECTS)\default.htm.gz: $(BIN_DIR_PROJECTS)\default.htm
 	move /Y $(TMP_DIR)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm.gz
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_PROJECTS)/default.htm.gz $(BIN_DIR_PROJECTS)\default.htm.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
-$(BIN_DIR_PROJECTS)\default.htm: projects\default.md
+$(BIN_DIR_PROJECTS)\default.htm: projects\default.options.yaml
 	$(PANDOC_PATH) -d projects\default.options.yaml
 	$(ONELINE_PATH) projects\default.htm
 	move /Y projects\default.htm.utf-8.txt $(BIN_DIR_PROJECTS)\default.htm.utf-8.txt
@@ -172,7 +186,7 @@ $(BIN_DIR_USERS)\default.htm.gz: $(BIN_DIR_USERS)\default.htm
 	move /Y $(TMP_DIR)\default.htm.gz $(BIN_DIR_USERS)\default.htm.gz
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_USERS)/default.htm.gz $(BIN_DIR_USERS)\default.htm.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
-$(BIN_DIR_USERS)\default.htm: users\default.md
+$(BIN_DIR_USERS)\default.htm: users\default.options.yaml
 	$(PANDOC_PATH) -d users\default.options.yaml
 	$(ONELINE_PATH) users\default.htm
 	move /Y users\default.htm.utf-8.txt $(BIN_DIR_USERS)\default.htm.utf-8.txt
@@ -186,7 +200,7 @@ $(BIN_DIR_USERS)\mabu.htm.gz: $(BIN_DIR_USERS)\mabu.htm
 	move /Y $(TMP_DIR)\mabu.htm.gz $(BIN_DIR_USERS)\mabu.htm.gz
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_USERS)/mabu.htm.gz $(BIN_DIR_USERS)\mabu.htm.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
-$(BIN_DIR_USERS)\mabu.htm: users\mabu.md
+$(BIN_DIR_USERS)\mabu.htm: users\mabu.options.yaml
 	$(PANDOC_PATH) -d users\mabu.options.yaml
 	$(ONELINE_PATH) users\mabu.htm
 	move /Y users\mabu.htm.utf-8.txt $(BIN_DIR_USERS)\mabu.htm.utf-8.txt
@@ -200,7 +214,7 @@ $(BIN_DIR_HELP)\default.htm.gz: $(BIN_DIR_HELP)\default.htm
 	move /Y $(TMP_DIR)\default.htm.gz $(BIN_DIR_HELP)\default.htm.gz
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_HELP)/default.htm.gz $(BIN_DIR_HELP)\default.htm.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
-$(BIN_DIR_HELP)\default.htm: help\default.md
+$(BIN_DIR_HELP)\default.htm: help\default.options.yaml
 	$(PANDOC_PATH) -d help\default.options.yaml
 	$(ONELINE_PATH) help\default.htm
 	move /Y help\default.htm.utf-8.txt $(BIN_DIR_HELP)\default.htm.utf-8.txt
@@ -214,7 +228,7 @@ $(BIN_DIR_HELP)\about.htm.gz: $(BIN_DIR_HELP)\about.htm
 	move /Y $(TMP_DIR)\about.htm.gz $(BIN_DIR_HELP)\about.htm.gz
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_HELP)/about.htm.gz $(BIN_DIR_HELP)\about.htm.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
-$(BIN_DIR_HELP)\about.htm: help\about.md
+$(BIN_DIR_HELP)\about.htm: help\about.options.yaml
 	$(PANDOC_PATH) -d help\about.options.yaml
 	$(ONELINE_PATH) help\about.htm
 	move /Y help\about.htm.utf-8.txt $(BIN_DIR_HELP)\about.htm.utf-8.txt
@@ -228,7 +242,7 @@ $(BIN_DIR_HELP)\links.htm.gz: $(BIN_DIR_HELP)\links.htm
 	move /Y $(TMP_DIR)\links.htm.gz $(BIN_DIR_HELP)\links.htm.gz
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_HELP)/links.htm.gz $(BIN_DIR_HELP)\links.htm.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
-$(BIN_DIR_HELP)\links.htm: help\links.md
+$(BIN_DIR_HELP)\links.htm: help\links.options.yaml
 	$(PANDOC_PATH) -d help\links.options.yaml
 	$(ONELINE_PATH) help\links.htm
 	move /Y help\links.htm.utf-8.txt $(BIN_DIR_HELP)\links.htm.utf-8.txt
@@ -236,9 +250,9 @@ $(BIN_DIR_HELP)\links.htm: help\links.md
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_HELP)/links.htm $(BIN_DIR_HELP)\links.htm $(MIME_TEXT_HTML) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
 
-default.md: default.metadata.yaml default.options.yaml template.htm
+default.md:
 default.metadata.yaml:
-default.options.yaml:
+default.options.yaml: template.htm default.metadata.yaml default.md
 favicon.ico:
 googledffc38e6f05ff431.html:
 robots.txt:
@@ -248,49 +262,39 @@ styles.css:
 template.htm:
 yandex_461c9af9cde122fb.html:
 
-projects\default.md: template.htm projects\default.options.yaml projects\default.metadata.yaml
+tutorials\default.md:
+tutorials\default.metadata.yaml:
+tutorials\default.options.yaml: template.htm tutorials\default.metadata.yaml tutorials\default.md
+
+projects\default.md:
 projects\default.metadata.yaml:
-projects\default.options.yaml:
+projects\default.options.yaml: template.htm projects\default.metadata.yaml projects\default.md
 
-users\default.md: template.htm users\default.options.yaml users\default.metadata.yaml
+users\default.md:
 users\default.metadata.yaml:
-users\default.options.yaml:
+users\default.options.yaml: template.htm users\default.metadata.yaml users\default.md
 
-users\mabu.md: template.htm users\mabu.options.yaml users\mabu.metadata.yaml
+users\mabu.md:
 users\mabu.metadata.yaml:
-users\mabu.options.yaml:
+users\mabu.options.yaml: template.htm users\mabu.metadata.yaml users\mabu.md
 
-help\about.md: template.htm help\about.options.yaml help\about.metadata.yaml
+help\about.md:
 help\about.metadata.yaml:
-help\about.options.yaml:
+help\about.options.yaml: template.htm help\about.metadata.yaml help\about.md
 
-help\default.md: template.htm help\default.options.yaml help\default.metadata.yaml
+help\default.md:
 help\default.metadata.yaml:
-help\default.options.yaml:
+help\default.options.yaml: template.htm help\default.metadata.yaml help\default.md
 
-help\links.md: template.htm help\links.options.yaml help\links.metadata.yaml
+help\links.md:
 help\links.metadata.yaml:
-help\links.options.yaml:
+help\links.options.yaml: template.htm help\links.metadata.yaml help\links.md
 
 users\mabu\mabu.50x50.jpg:
 users\mabu\mabu.90x90.png:
 users\mabu\mabu.original.jpg:
 users\mabu\mabu.200x200.jpg:
 
-# res\cardsreactos.png:
-# <binaryFiles>
-# <urlPath>/res/cardsreactos.png</urlPath>
-# <file>res/cardsreactos.png</file>
-# <contentType>image/png</contentType>
-# <contentLanguage>ru</contentLanguage>
-# </binaryFiles>
-# res\cardswindows2003.png:
-# <binaryFiles>
-# <urlPath>/res/cardswindows2003.png</urlPath>
-# <file>res/cardswindows2003.png</file>
-# <contentType>image/png</contentType>
-# <contentLanguage>ru</contentLanguage>
-# </binaryFiles>
 res\heap.zip:
 
 configure:

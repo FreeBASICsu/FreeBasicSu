@@ -1,9 +1,9 @@
 ﻿input-files:
-- tutorial\default.md
+- tutorials\default.md
 
 from: markdown+emoji
 
-output-file: tutorial\default.htm
+output-file: tutorials\default.htm
 
 to: html5
 
@@ -16,7 +16,7 @@ variables:
   NeedSocialShareButtons: false
 
 metadata-files:
-- tutorial\default.metadata.yaml
+- tutorials\default.metadata.yaml
 
 css:
 - /styles.css
