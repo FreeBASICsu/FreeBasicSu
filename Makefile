@@ -49,9 +49,9 @@ WWW_FREEBASIC_SU: BINARY_TARGETS TEXT_TARGETS GENERATED_TARGETS
 
 BINARY_TARGETS: $(BIN_DIR)\robots.txt $(BIN_DIR)\favicon.ico $(BIN_DIR)\googledffc38e6f05ff431.html $(BIN_DIR)\yandex_461c9af9cde122fb.html $(BIN_DIR_AVATARS)\mabu.50x50.jpg $(BIN_DIR_AVATARS)\mabu.90x90.png $(BIN_DIR_PROFILEPICTURES)\mabu.original.jpg $(BIN_DIR_PROFILEPICTURES)\mabu.200x200.jpg $(BIN_DIR_RES)\heap.zip
 
-TEXT_TARGETS: $(BIN_DIR)\styles.css.gz $(BIN_DIR)\styles.css $(BIN_DIR)\rss.rss.gz $(BIN_DIR)\rss.rss $(BIN_DIR)\sitemap.xml.gz $(BIN_DIR)\sitemap.xml
+TEXT_TARGETS: $(BIN_DIR)\styles.css.gz $(BIN_DIR)\rss.rss.gz $(BIN_DIR)\sitemap.xml.gz
 
-GENERATED_TARGETS: $(BIN_DIR)\default.htm.gz $(BIN_DIR)\default.htm $(BIN_DIR_ARTICLES)\default.htm.gz $(BIN_DIR_ARTICLES)\default.htm $(BIN_DIR_TUTORIALS)\default.htm.gz $(BIN_DIR_TUTORIALS)\default.htm $(BIN_DIR_PROJECTS)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm $(BIN_DIR_USERS)\default.htm.gz $(BIN_DIR_USERS)\default.htm $(BIN_DIR_USERS)\mabu.htm.gz $(BIN_DIR_USERS)\mabu.htm $(BIN_DIR_HELP)\default.htm.gz $(BIN_DIR_HELP)\default.htm $(BIN_DIR_HELP)\about.htm.gz $(BIN_DIR_HELP)\about.htm $(BIN_DIR_HELP)\links.htm.gz $(BIN_DIR_HELP)\links.htm
+GENERATED_TARGETS: $(BIN_DIR)\default.htm.gz $(BIN_DIR_ARTICLES)\default.htm.gz $(BIN_DIR_ARTICLES)\bstr.htm.gz $(BIN_DIR_TUTORIALS)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm.gz $(BIN_DIR_USERS)\default.htm.gz $(BIN_DIR_USERS)\mabu.htm.gz $(BIN_DIR_HELP)\default.htm.gz $(BIN_DIR_HELP)\about.htm.gz $(BIN_DIR_HELP)\links.htm.gz
 
 $(BIN_DIR)\robots.txt: robots.txt
 	copy /B /Y robots.txt $(BIN_DIR)\robots.txt
@@ -164,6 +164,20 @@ $(BIN_DIR_ARTICLES)\default.htm: articles\default.options.yaml
 	move /Y articles\default.htm.utf-8.txt $(BIN_DIR_ARTICLES)\default.htm.utf-8.txt
 	move /Y articles\default.htm.txt $(BIN_DIR_ARTICLES)\default.htm
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_ARTICLES)/default.htm $(BIN_DIR_ARTICLES)\default.htm $(MIME_TEXT_HTML) $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+
+$(BIN_DIR_ARTICLES)\bstr.htm.gz: $(BIN_DIR_ARTICLES)\bstr.htm
+	move /Y $(BIN_DIR_ARTICLES)\bstr.htm.utf-8.txt $(TMP_DIR)\bstr.htm
+	creategzip.cmd $(TMP_DIR) bstr.htm.gz bstr.htm
+	move /Y $(TMP_DIR)\bstr.htm.gz $(BIN_DIR_ARTICLES)\bstr.htm.gz
+	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_ARTICLES)/bstr.htm.gz $(BIN_DIR_ARTICLES)\bstr.htm.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+$(BIN_DIR_ARTICLES)\bstr.htm: articles\bstr.options.yaml
+	$(PANDOC_PATH) -d articles\bstr.options.yaml
+	$(ONELINE_PATH) articles\bstr.htm
+	move /Y articles\bstr.htm.utf-8.txt $(BIN_DIR_ARTICLES)\bstr.htm.utf-8.txt
+	move /Y articles\bstr.htm.txt $(BIN_DIR_ARTICLES)\bstr.htm
+	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_ARTICLES)/bstr.htm $(BIN_DIR_ARTICLES)\bstr.htm $(MIME_TEXT_HTML) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
 
 $(BIN_DIR_TUTORIALS)\default.htm.gz: $(BIN_DIR_TUTORIALS)\default.htm

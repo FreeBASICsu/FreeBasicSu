@@ -1,9 +1,9 @@
 ﻿input-files:
-- articles\com-bstr\bstr.md
+- articles\bstr.md
 
 from: markdown+emoji
 
-output-file: articles\com-bstr\bstr.htm
+output-file: articles\bstr.htm
 to: html5
 
 template: template.htm
@@ -14,7 +14,7 @@ variables:
   ArticlesDefaultPage: false
 
 metadata-files:
-- articles\com-bstr\bstr.metadata.yaml
+- articles\bstr.metadata.yaml
 
 css:
 - /styles.css

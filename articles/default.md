@@ -7,7 +7,7 @@
 ## Строки BSTR
 
 :::: { .posternameblock}
-[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu/) опубликовал <time datetime="2020-07-19T02:37:20+07:00" pubdate="2020-07-19T02:37:20+07:00">19 июля 2020</time>
+[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu.htm) опубликовал <time datetime="2020-07-19T02:37:20+07:00" pubdate="2020-07-19T02:37:20+07:00">19 июля 2020</time>
 ::::
 
 </header>
@@ -20,7 +20,7 @@
 
 Строковый тип данных является одним из самых важных в любом языке программировании. Вряд ли можно написать полезную программу не задействовав этот тип данных. Строки `BSTR` применяют в COM, потому что строки COM должны быть универсальными для всех языков.
 
-[Читать дальше →](/articles/bstr/)
+[Читать дальше →](/articles/bstr.htm)
 
 </article>
 
@@ -32,7 +32,7 @@
 ## Что такое GUID и зачем он нужен
 
 :::: { .posternameblock}
-[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu/) опубликовал <time datetime="2019-01-26T00:45:10+07:00" pubdate="2019-01-26T00:45:10+07:00">26 января 2019</time>
+[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu.htm) опубликовал <time datetime="2019-01-26T00:45:10+07:00" pubdate="2019-01-26T00:45:10+07:00">26 января 2019</time>
 ::::
 
 </header>
@@ -57,7 +57,7 @@
 ## Обработка ошибок в Windows
 
 :::: { .posternameblock}
-[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu/) опубликовал <time datetime="2017-08-10T12:49:07+07:00" pubdate="2017-08-10T12:49:07+07:00">10 августа 2017</time>
+[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu.htm) опубликовал <time datetime="2017-08-10T12:49:07+07:00" pubdate="2017-08-10T12:49:07+07:00">10 августа 2017</time>
 ::::
 
 </header>
@@ -94,7 +94,7 @@
 ## Тип данных HRESULT
 
 :::: { .posternameblock}
-[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu/) опубликовал <time datetime="2018-12-10T05:24:00+07:00" pubdate="2018-12-10T05:24:00+07:00">10 декабря 2018</time>
+[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu.htm) опубликовал <time datetime="2018-12-10T05:24:00+07:00" pubdate="2018-12-10T05:24:00+07:00">10 декабря 2018</time>
 ::::
 
 </header>
@@ -119,7 +119,7 @@
 ## Файлы инициализации
 
 :::: { .posternameblock}
-[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu/) опубликовал <time datetime="2016-02-10T09:25:31+07:00" pubdate="2016-02-10T09:25:31+07:00">10 февраля 2016</time>
+[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu.htm) опубликовал <time datetime="2016-02-10T09:25:31+07:00" pubdate="2016-02-10T09:25:31+07:00">10 февраля 2016</time>
 ::::
 
 </header>
@@ -157,7 +157,7 @@ INI‐файл — это файл конфигурации, который со
 ## Реестр Windows
 
 :::: { .posternameblock}
-[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu/) опубликовал <time datetime="2017-03-05T23:25:31+07:00" pubdate="2017-03-05T23:25:31+07:00">5 марта 2017</time>
+[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu.htm) опубликовал <time datetime="2017-03-05T23:25:31+07:00" pubdate="2017-03-05T23:25:31+07:00">5 марта 2017</time>
 ::::
 
 </header>
