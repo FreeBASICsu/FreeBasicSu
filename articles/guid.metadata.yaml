@@ -1,0 +1,26 @@
+﻿---
+title: "Что такое GUID и зачем он нужен"
+
+subtitle: "FreeBASIC.su"
+
+author: 
+  - mabu
+
+description: "GUID представляет собой 128‐битное целое число. Цель создания — уникальная идентификации чего‐либо. Используется там, где нужен гарантированно уникальный идентификатор."
+
+# abstract: 
+
+keywords: 
+  - Globally Unique Identifier
+  - GUID
+  - IID
+  - CLSID
+  - COM
+
+lang: "ru"
+
+date: "2019-01-26"
+
+ModifiedDate: "2020-02-09"
+
+...
