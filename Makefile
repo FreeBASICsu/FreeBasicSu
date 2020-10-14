@@ -51,7 +51,7 @@ BINARY_TARGETS: $(BIN_DIR)\robots.txt $(BIN_DIR)\favicon.ico $(BIN_DIR)\googledf
 
 TEXT_TARGETS: $(BIN_DIR)\styles.css.gz $(BIN_DIR)\rss.rss.gz $(BIN_DIR)\sitemap.xml.gz
 
-GENERATED_TARGETS: $(BIN_DIR)\default.htm.gz $(BIN_DIR_ARTICLES)\default.htm.gz $(BIN_DIR_ARTICLES)\bstr.htm.gz $(BIN_DIR_TUTORIALS)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm.gz $(BIN_DIR_USERS)\default.htm.gz $(BIN_DIR_USERS)\mabu.htm.gz $(BIN_DIR_HELP)\default.htm.gz $(BIN_DIR_HELP)\about.htm.gz $(BIN_DIR_HELP)\links.htm.gz
+GENERATED_TARGETS: $(BIN_DIR)\default.htm.gz $(BIN_DIR_ARTICLES)\default.htm.gz $(BIN_DIR_ARTICLES)\bstr.htm.gz $(BIN_DIR_ARTICLES)\guid.htm.gz $(BIN_DIR_TUTORIALS)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm.gz $(BIN_DIR_USERS)\default.htm.gz $(BIN_DIR_USERS)\mabu.htm.gz $(BIN_DIR_HELP)\default.htm.gz $(BIN_DIR_HELP)\about.htm.gz $(BIN_DIR_HELP)\links.htm.gz
 
 $(BIN_DIR)\robots.txt: robots.txt
 	copy /B /Y robots.txt $(BIN_DIR)\robots.txt
@@ -180,6 +180,20 @@ $(BIN_DIR_ARTICLES)\bstr.htm: articles\bstr.options.yaml
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_ARTICLES)/bstr.htm $(BIN_DIR_ARTICLES)\bstr.htm $(MIME_TEXT_HTML) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
 
+$(BIN_DIR_ARTICLES)\guid.htm.gz: $(BIN_DIR_ARTICLES)\guid.htm
+	move /Y $(BIN_DIR_ARTICLES)\guid.htm.utf-8.txt $(TMP_DIR)\guid.htm
+	creategzip.cmd $(TMP_DIR) guid.htm.gz guid.htm
+	move /Y $(TMP_DIR)\guid.htm.gz $(BIN_DIR_ARTICLES)\guid.htm.gz
+	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_ARTICLES)/guid.htm.gz $(BIN_DIR_ARTICLES)\guid.htm.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+$(BIN_DIR_ARTICLES)\guid.htm: articles\guid.options.yaml
+	$(PANDOC_PATH) -d articles\guid.options.yaml
+	$(ONELINE_PATH) articles\guid.htm
+	move /Y articles\guid.htm.utf-8.txt $(BIN_DIR_ARTICLES)\guid.htm.utf-8.txt
+	move /Y articles\guid.htm.txt $(BIN_DIR_ARTICLES)\guid.htm
+	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_ARTICLES)/guid.htm $(BIN_DIR_ARTICLES)\guid.htm $(MIME_TEXT_HTML) $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+
 $(BIN_DIR_TUTORIALS)\default.htm.gz: $(BIN_DIR_TUTORIALS)\default.htm
 	move /Y $(BIN_DIR_TUTORIALS)\default.htm.utf-8.txt $(TMP_DIR)\default.htm
 	creategzip.cmd $(TMP_DIR) default.htm.gz default.htm
@@ -293,6 +307,14 @@ yandex_461c9af9cde122fb.html:
 articles\default.md:
 articles\default.metadata.yaml:
 articles\default.options.yaml: template.htm articles\default.metadata.yaml articles\default.md
+
+articles\bstr.md:
+articles\bstr.metadata.yaml:
+articles\bstr.options.yaml: template.htm articles\bstr.metadata.yaml articles\bstr.md
+
+articles\guid.md:
+articles\guid.metadata.yaml:
+articles\guid.options.yaml: template.htm articles\guid.metadata.yaml articles\guid.md
 
 tutorials\default.md:
 tutorials\default.metadata.yaml:
