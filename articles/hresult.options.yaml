@@ -1,9 +1,9 @@
 ﻿input-files:
-- articles\datatype-hresult\datatype-hresult.md
+- articles\hresult.md
 
 from: markdown+emoji
 
-output-file: articles\datatype-hresult\datatype-hresult.htm
+output-file: articles\hresult.htm
 to: html5
 
 template: template.htm
@@ -14,7 +14,7 @@ variables:
   ArticlesDefaultPage: false
 
 metadata-files:
-- articles\datatype-hresult\datatype-hresult.metadata.yaml
+- articles\hresult.metadata.yaml
 
 css:
 - /styles.css
