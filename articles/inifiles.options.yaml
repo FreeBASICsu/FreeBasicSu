@@ -1,9 +1,9 @@
 ﻿input-files:
-- articles\winapi-inifiles\winapi-inifiles.md
+- articles\inifiles.md
 
 from: markdown+emoji
 
-output-file: articles\winapi-inifiles\winapi-inifiles.htm
+output-file: articles\inifiles.htm
 to: html5
 
 template: template.htm
@@ -14,7 +14,7 @@ variables:
   ArticlesDefaultPage: false
 
 metadata-files:
-- articles\winapi-inifiles\winapi-inifiles.metadata.yaml
+- articles\inifiles.metadata.yaml
 
 css:
 - /styles.css

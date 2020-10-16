@@ -145,7 +145,7 @@
 
 INI‐файл — это файл конфигурации, который содержит данные настроек для Microsoft Windows, Windows NT и некоторых приложений. С помощью функций `GetPrivateProfileString` и `WritePrivateProfileString` можно с лёгкостью манипулировать такими файлами: изменять, удалять и добавлять параметры и секции, получать весь список параметров и секций.
 
-[Читать дальше →](/articles/winapi-inifiles/)
+[Читать дальше →](/articles/inifiles.htm)
 
 </article>
 
