@@ -1,9 +1,9 @@
 ﻿input-files:
-- articles\winapi-errors\winapi-errors.md
+- articles\winapi-registry.md
 
 from: markdown+emoji
 
-output-file: articles\winapi-errors\winapi-errors.htm
+output-file: articles\winapi-registry.htm
 to: html5
 
 template: template.htm
@@ -14,7 +14,7 @@ variables:
   ArticlesDefaultPage: false
 
 metadata-files:
-- articles\winapi-errors\winapi-errors.metadata.yaml
+- articles\winapi-registry.metadata.yaml
 
 css:
 - /styles.css

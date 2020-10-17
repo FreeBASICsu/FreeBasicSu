@@ -29,9 +29,8 @@ MIME_APPLICATION_GZIP=application/x-gzip
 MIME_APPLICATION_XML=application/xml
 MIME_APPLICATION_RSSXML=application/rss+xml
 
-BIN_DIR=bin
-OBJ_DIR=obj
-TMP_DIR=obj
+# BIN_DIR=bin
+BIN_DIR=C:\Programming\WebSites\www.freebasic.su
 BIN_DIR_ARTICLES=$(BIN_DIR)\articles
 BIN_DIR_CATEGORIES=$(BIN_DIR)\categories
 BIN_DIR_TUTORIALS=$(BIN_DIR)\tutorials
@@ -42,6 +41,8 @@ BIN_DIR_HELP=$(BIN_DIR)\help
 BIN_DIR_AVATARS=$(BIN_DIR)\avatars
 BIN_DIR_PROFILEPICTURES=$(BIN_DIR)\profilepictures
 BIN_DIR_RES=$(BIN_DIR)\res
+OBJ_DIR=obj
+TMP_DIR=obj
 
 .PHONY: WWW_FREEBASIC_SU all clean install uninstall configure
 
@@ -51,7 +52,7 @@ BINARY_TARGETS: $(BIN_DIR)\robots.txt $(BIN_DIR)\favicon.ico $(BIN_DIR)\googledf
 
 TEXT_TARGETS: $(BIN_DIR)\styles.css.gz $(BIN_DIR)\rss.rss.gz $(BIN_DIR)\sitemap.xml.gz
 
-GENERATED_TARGETS: $(BIN_DIR)\default.htm.gz $(BIN_DIR_ARTICLES)\default.htm.gz $(BIN_DIR_ARTICLES)\bstr.htm.gz $(BIN_DIR_ARTICLES)\guid.htm.gz $(BIN_DIR_ARTICLES)\hresult.htm.gz $(BIN_DIR_ARTICLES)\inifiles.htm.gz $(BIN_DIR_TUTORIALS)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm.gz $(BIN_DIR_USERS)\default.htm.gz $(BIN_DIR_USERS)\mabu.htm.gz $(BIN_DIR_HELP)\default.htm.gz $(BIN_DIR_HELP)\about.htm.gz $(BIN_DIR_HELP)\links.htm.gz
+GENERATED_TARGETS: $(BIN_DIR)\default.htm.gz $(BIN_DIR_ARTICLES)\default.htm.gz $(BIN_DIR_ARTICLES)\bstr.htm.gz $(BIN_DIR_ARTICLES)\guid.htm.gz $(BIN_DIR_ARTICLES)\hresult.htm.gz $(BIN_DIR_ARTICLES)\inifiles.htm.gz $(BIN_DIR_ARTICLES)\winapi-errors.htm.gz $(BIN_DIR_ARTICLES)\winapi-registry.htm.gz $(BIN_DIR_TUTORIALS)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm.gz $(BIN_DIR_USERS)\default.htm.gz $(BIN_DIR_USERS)\mabu.htm.gz $(BIN_DIR_HELP)\default.htm.gz $(BIN_DIR_HELP)\about.htm.gz $(BIN_DIR_HELP)\links.htm.gz
 
 $(BIN_DIR)\robots.txt: robots.txt
 	copy /B /Y robots.txt $(BIN_DIR)\robots.txt
@@ -222,6 +223,34 @@ $(BIN_DIR_ARTICLES)\inifiles.htm: articles\inifiles.options.yaml
 	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_ARTICLES)/inifiles.htm $(BIN_DIR_ARTICLES)\inifiles.htm $(MIME_TEXT_HTML) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
 
+$(BIN_DIR_ARTICLES)\winapi-errors.htm.gz: $(BIN_DIR_ARTICLES)\winapi-errors.htm
+	move /Y $(BIN_DIR_ARTICLES)\winapi-errors.htm.utf-8.txt $(TMP_DIR)\winapi-errors.htm
+	creategzip.cmd $(TMP_DIR) winapi-errors.htm.gz winapi-errors.htm
+	move /Y $(TMP_DIR)\winapi-errors.htm.gz $(BIN_DIR_ARTICLES)\winapi-errors.htm.gz
+	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_ARTICLES)/winapi-errors.htm.gz $(BIN_DIR_ARTICLES)\winapi-errors.htm.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+$(BIN_DIR_ARTICLES)\winapi-errors.htm: articles\winapi-errors.options.yaml
+	$(PANDOC_PATH) -d articles\winapi-errors.options.yaml
+	$(ONELINE_PATH) articles\winapi-errors.htm
+	move /Y articles\winapi-errors.htm.utf-8.txt $(BIN_DIR_ARTICLES)\winapi-errors.htm.utf-8.txt
+	move /Y articles\winapi-errors.htm.txt $(BIN_DIR_ARTICLES)\winapi-errors.htm
+	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_ARTICLES)/winapi-errors.htm $(BIN_DIR_ARTICLES)\winapi-errors.htm $(MIME_TEXT_HTML) $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+
+$(BIN_DIR_ARTICLES)\winapi-registry.htm.gz: $(BIN_DIR_ARTICLES)\winapi-registry.htm
+	move /Y $(BIN_DIR_ARTICLES)\winapi-registry.htm.utf-8.txt $(TMP_DIR)\winapi-registry.htm
+	creategzip.cmd $(TMP_DIR) winapi-registry.htm.gz winapi-registry.htm
+	move /Y $(TMP_DIR)\winapi-registry.htm.gz $(BIN_DIR_ARTICLES)\winapi-registry.htm.gz
+	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_ARTICLES)/winapi-registry.htm.gz $(BIN_DIR_ARTICLES)\winapi-registry.htm.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+$(BIN_DIR_ARTICLES)\winapi-registry.htm: articles\winapi-registry.options.yaml
+	$(PANDOC_PATH) -d articles\winapi-registry.options.yaml
+	$(ONELINE_PATH) articles\winapi-registry.htm
+	move /Y articles\winapi-registry.htm.utf-8.txt $(BIN_DIR_ARTICLES)\winapi-registry.htm.utf-8.txt
+	move /Y articles\winapi-registry.htm.txt $(BIN_DIR_ARTICLES)\winapi-registry.htm
+	$(HTTPPUT_PATH) $(IP_BIND_ADDRESS) $(URL_ARTICLES)/winapi-registry.htm $(BIN_DIR_ARTICLES)\winapi-registry.htm $(MIME_TEXT_HTML) $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+
 $(BIN_DIR_TUTORIALS)\default.htm.gz: $(BIN_DIR_TUTORIALS)\default.htm
 	move /Y $(BIN_DIR_TUTORIALS)\default.htm.utf-8.txt $(TMP_DIR)\default.htm
 	creategzip.cmd $(TMP_DIR) default.htm.gz default.htm
@@ -351,6 +380,14 @@ articles\hresult.options.yaml: template.htm articles\hresult.metadata.yaml artic
 articles\inifiles.md:
 articles\inifiles.metadata.yaml:
 articles\inifiles.options.yaml: template.htm articles\inifiles.metadata.yaml articles\inifiles.md
+
+articles\winapi-errors.md:
+articles\winapi-errors.metadata.yaml:
+articles\winapi-errors.options.yaml: template.htm articles\winapi-errors.metadata.yaml articles\winapi-errors.md
+
+articles\winapi-registry.md:
+articles\winapi-registry.metadata.yaml:
+articles\winapi-registry.options.yaml: template.htm articles\winapi-registry.metadata.yaml articles\winapi-registry.md
 
 tutorials\default.md:
 tutorials\default.metadata.yaml:
