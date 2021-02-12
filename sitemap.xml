@@ -5,17 +5,6 @@
 	</url>
 	
 	<url>
-		<loc>http://www.freebasic.su/help/</loc>
-	</url>
-	<url>
-		<loc>http://www.freebasic.su/help/about.htm</loc>
-	</url>
-	<url>
-		<loc>http://www.freebasic.su/help/links.htm</loc>
-	</url>
-	
-	
-	<url>
 		<loc>http://www.freebasic.su/articles/</loc>
 	</url>
 	<url>
@@ -27,6 +16,24 @@
 	<url>
 		<loc>http://www.freebasic.su/articles/inifiles.htm</loc>
 	</url>
+	<url>
+		<loc>http://www.freebasic.su/articles/winapi-errors.htm</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/articles/winapi-registry.htm</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/articles/hresult.htm</loc>
+	</url>
+	<!-- <url> -->
+		<!-- <loc>http://www.freebasic.su/articles/unicode.xhtml</loc> -->
+	<!-- </url> -->
+	<!-- <url> -->
+		<!-- <loc>http://www.freebasic.su/articles/codepages.xhtml</loc> -->
+	<!-- </url> -->
+	<!-- <url> -->
+		<!-- <loc>http://www.freebasic.su/articles/base64.xhtml</loc> -->
+	<!-- </url> -->
 	<!-- <url> -->
 		<!-- <loc>http://www.freebasic.su/articles/tips.xhtml</loc> -->
 	<!-- </url> -->
@@ -34,32 +41,23 @@
 		<!-- <loc>http://www.freebasic.su/articles/irclibrary.xhtml</loc> -->
 	<!-- </url> -->
 	
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/base64.xhtml</loc> -->
-	<!-- </url> -->
 	
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/memorymappedfiles.xhtml</loc> -->
-	<!-- </url> -->
-	
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/unicode.xhtml</loc> -->
-	<!-- </url> -->
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/codepages.xhtml</loc> -->
-	<!-- </url> -->
-	
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/consolehandlers.xhtml</loc> -->
-	<!-- </url> -->
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/cardslibrary.xhtml</loc> -->
-	<!-- </url> -->
 	<!-- <url> -->
 		<!-- <loc>http://www.freebasic.su/articles/fileswinapi.xhtml</loc> -->
 	<!-- </url> -->
 	<!-- <url> -->
+		<!-- <loc>http://www.freebasic.su/articles/memorymappedfiles.xhtml</loc> -->
+	<!-- </url> -->
+	<!-- <url> -->
+		<!-- <loc>http://www.freebasic.su/articles/consolehandlers.xhtml</loc> -->
+	<!-- </url> -->
+	<!-- <url> -->
 		<!-- <loc>http://www.freebasic.su/articles/windows-services.xhtml</loc> -->
+	<!-- </url> -->
+	
+	
+	<!-- <url> -->
+		<!-- <loc>http://www.freebasic.su/articles/cardslibrary.xhtml</loc> -->
 	<!-- </url> -->
 	<!-- <url> -->
 		<!-- <loc>http://www.freebasic.su/articles/without-rtl.xhtml</loc> -->
@@ -67,20 +65,26 @@
 	<!-- <url> -->
 		<!-- <loc>http://www.freebasic.su/articles/cheatsheet.xhtml</loc> -->
 	<!-- </url> -->
-	<url>
-		<loc>http://www.freebasic.su/articles/winapi-errors.htm</loc>
-	</url>
-	<url>
-		<loc>http://www.freebasic.su/articles/winapi-registry/</loc>
-	</url>
 	<!-- <url> -->
 		<!-- <loc>http://www.freebasic.su/articles/heap.xhtml</loc> -->
 	<!-- </url> -->
 	<!-- <url> -->
 		<!-- <loc>http://www.freebasic.su/articles/interface.xhtml</loc> -->
 	<!-- </url> -->
+	
 	<url>
-		<loc>http://www.freebasic.su/articles/hresult.htm</loc>
+		<loc>http://www.freebasic.su/categories/</loc>
+	</url>
+	
+	
+	<url>
+		<loc>http://www.freebasic.su/help/</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/help/about.htm</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/help/links.htm</loc>
 	</url>
 	
 	
@@ -95,9 +99,9 @@
 	<url>
 		<loc>http://www.freebasic.su/tutorials/</loc>
 	</url>
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/tutorial/install.xhtml</loc> -->
-	<!-- </url> -->
+	<url>
+		<loc>http://www.freebasic.su/tutorial/install.htm</loc>
+	</url>
 	<!-- <url> -->
 		<!-- <loc>http://www.freebasic.su/tutorial/variables.xhtml</loc> -->
 	<!-- </url> -->
@@ -111,11 +115,6 @@
 	</url>
 	<url>
 		<loc>http://www.freebasic.su/users/mabu.htm</loc>
-	</url>
-	
-	
-	<url>
-		<loc>http://www.freebasic.su/tags/</loc>
 	</url>
 	
 </urlset>

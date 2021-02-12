@@ -1,9 +1,9 @@
 ﻿input-files:
-- users\mabu.md
+- tutorials\install.md
 
 from: markdown+emoji
 
-output-file: users\mabu.htm
+output-file: tutorials\install.htm
 
 to: html5
 
@@ -11,8 +11,12 @@ template: templates\main.htm
 standalone: true
 self-contained: false
 
+variables:
+  TutorialDefaultPage: true
+  NeedSocialShareButtons: false
+
 metadata-files:
-- users\mabu.metadata.yaml
+- tutorials\install.metadata.yaml
 
 css:
 - /styles.css

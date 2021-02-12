@@ -7,7 +7,7 @@ output-file: help\about.htm
 
 to: html5
 
-template: template.htm
+template: templates\main.htm
 standalone: true
 self-contained: false
 

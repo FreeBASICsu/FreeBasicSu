@@ -7,7 +7,7 @@ output-file: help\links.htm
 
 to: html5
 
-template: template.htm
+template: templates\main.htm
 standalone: true
 self-contained: false
 

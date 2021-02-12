@@ -23,35 +23,22 @@ nav
 	border-radius:.25em;
 }
 
-nav p
+nav li
 {
-	display:inline-block;
-	width:8em;
-	height:2.5em;
-	margin:1em 0 0 0;
-	text-align:center;
+	display:inline;
 }
 
 nav a
 {
-	display:block;
+	display:inline-block;
 	text-decoration:none;
-	width:100%;
-	height:100%;
-	vertical-align:middle;
+	padding: 1em 1em;
 }
 
-ol.contents
+nav span
 {
-	margin:.25em;
-	background:#DDDDDD;
-	border:solid 1px;
-	border-radius:.25em;
-}
-
-ol.contents li
-{
-	padding:.5em .5em .5em .5em;
+	display:inline-block;
+	padding: 1em 1em;
 }
 
 table
@@ -75,11 +62,6 @@ dt
 	font-weight:bold;
 }
 
-p
-{
-	word-wrap:break-word;
-}
-
 hr
 {
 	margin:1em 0 1em 0;
@@ -98,6 +80,11 @@ pre
 	border-radius:.25em;
 	padding:.5em;
 	background:#E0E0E0;
+}
+
+code
+{
+	font-size:1.25em;
 }
 
 div.posternameblock{}
