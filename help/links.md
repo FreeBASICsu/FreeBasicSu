@@ -20,7 +20,7 @@
 
 [www.freebasic.net/forum](https://www.freebasic.net/forum/)
 
-### На ucoz.com
+### Форум Станислава Будинова
 
 [freebasic.ucoz.com](http://freebasic.ucoz.com/)
 
@@ -41,16 +41,20 @@
 
 ### Канал в телеграме
 
-[канал FreeBASIC в телеграме](https://t.me/freebasicru)
+[Канал FreeBASIC в телеграме](https://t.me/freebasicru)
 
 ### Чат в телеграме
 
 [чат FreeBASIC в телеграме](https://t.me/joinchat/AS6-GRCUXS8OgEw3tJnHQg)
 
+
 ## Чаты
 
 Чтобы получить ответ на вопрос онлайн и как можно быстрее, можно зайти на специальные каналы в IRC‐сети или конференции в джаббере.
 
+### Дискорд
+
+[FreeBASIC на дискорд‐сервере](https://discord.gg/286rSdK)
 
 ### Официальный IRC‐канал
 
@@ -62,4 +66,4 @@
 
 ### Джаббер‐конференция
 
-[freebasic@conference.jabber.ru](xmpp:freebasic@conference.jabber.ru)
+[Конференция на jabber.ru](xmpp:freebasic@conference.jabber.ru)
