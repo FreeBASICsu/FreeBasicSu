@@ -82,6 +82,16 @@ pre
 	background:#E0E0E0;
 }
 
+pre.samp
+{
+	color:#FFFFFF;
+	font-size:1.25em;
+	border:solid 1px;
+	border-radius:0;
+	padding:.5em;
+	background:#000000;
+}
+
 code
 {
 	font-size:1.25em;
