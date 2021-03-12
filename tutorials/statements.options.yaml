@@ -1,0 +1,43 @@
+﻿input-files:
+- tutorials\statements.md
+
+from: markdown+emoji
+
+output-file: tutorials\statements.htm
+
+to: html5
+
+template: templates\main.htm
+standalone: true
+self-contained: false
+
+variables:
+  TutorialDefaultPage: true
+  NeedSocialShareButtons: false
+
+metadata-files:
+- tutorials\statements.metadata.yaml
+
+css:
+- /styles.css
+
+html-q-tags: false
+
+# Note that these take files, not their contents:
+include-before-body: []
+include-after-body: []
+include-in-header: []
+resource-path: ["."]
+
+strip-empty-paragraphs: true
+# lf, crlf, or native
+eol: crlf
+strip-comments: false
+
+preserve-tabs: true
+
+# either a style name of a style definition file:
+highlight-style: pygments
+# A list of two-element lists
+request-headers:
+- ["User-Agent", "Mozilla/5.0"]
