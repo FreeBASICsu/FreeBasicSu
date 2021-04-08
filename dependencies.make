@@ -57,7 +57,7 @@ BINARY_TARGETS: $(BIN_DIR)\robots.txt $(BIN_DIR)\favicon.ico $(BIN_DIR)\googledf
 
 TEXT_TARGETS: $(BIN_DIR)\rss.rss.gz $(BIN_DIR)\rss.rss $(BIN_DIR)\sitemap.xml.gz $(BIN_DIR)\sitemap.xml $(BIN_DIR)\styles.css.gz $(BIN_DIR)\styles.css
 
-GENERATED_TARGETS: $(BIN_DIR)\default.htm.gz $(BIN_DIR)\default.htm $(BIN_DIR_ARTICLES)\default.htm.gz $(BIN_DIR_ARTICLES)\default.htm $(BIN_DIR_ARTICLES)\bstr.htm.gz $(BIN_DIR_ARTICLES)\bstr.htm $(BIN_DIR_ARTICLES)\guid.htm.gz $(BIN_DIR_ARTICLES)\guid.htm $(BIN_DIR_ARTICLES)\hresult.htm.gz $(BIN_DIR_ARTICLES)\hresult.htm $(BIN_DIR_ARTICLES)\inifiles.htm.gz $(BIN_DIR_ARTICLES)\inifiles.htm $(BIN_DIR_ARTICLES)\winapi-errors.htm.gz $(BIN_DIR_ARTICLES)\winapi-errors.htm $(BIN_DIR_ARTICLES)\winapi-registry.htm.gz $(BIN_DIR_ARTICLES)\winapi-registry.htm $(BIN_DIR_TUTORIALS)\default.htm.gz $(BIN_DIR_TUTORIALS)\default.htm $(BIN_DIR_TUTORIALS)\install.htm.gz $(BIN_DIR_TUTORIALS)\install.htm $(BIN_DIR_TUTORIALS)\variables.htm.gz $(BIN_DIR_TUTORIALS)\variables.htm $(BIN_DIR_TUTORIALS)\datatypes.htm.gz $(BIN_DIR_TUTORIALS)\datatypes.htm $(BIN_DIR_PROJECTS)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm $(BIN_DIR_USERS)\default.htm.gz $(BIN_DIR_USERS)\default.htm $(BIN_DIR_USERS)\mabu.htm.gz $(BIN_DIR_USERS)\mabu.htm $(BIN_DIR_HELP)\default.htm.gz $(BIN_DIR_HELP)\default.htm $(BIN_DIR_HELP)\about.htm.gz $(BIN_DIR_HELP)\about.htm $(BIN_DIR_HELP)\links.htm.gz $(BIN_DIR_HELP)\links.htm
+GENERATED_TARGETS: $(BIN_DIR)\default.htm.gz $(BIN_DIR)\default.htm $(BIN_DIR_ARTICLES)\default.htm.gz $(BIN_DIR_ARTICLES)\default.htm $(BIN_DIR_ARTICLES)\bstr.htm.gz $(BIN_DIR_ARTICLES)\bstr.htm $(BIN_DIR_ARTICLES)\guid.htm.gz $(BIN_DIR_ARTICLES)\guid.htm $(BIN_DIR_ARTICLES)\hresult.htm.gz $(BIN_DIR_ARTICLES)\hresult.htm $(BIN_DIR_ARTICLES)\inifiles.htm.gz $(BIN_DIR_ARTICLES)\inifiles.htm $(BIN_DIR_ARTICLES)\winapi-errors.htm.gz $(BIN_DIR_ARTICLES)\winapi-errors.htm $(BIN_DIR_ARTICLES)\winapi-registry.htm.gz $(BIN_DIR_ARTICLES)\winapi-registry.htm $(BIN_DIR_TUTORIALS)\default.htm.gz $(BIN_DIR_TUTORIALS)\default.htm $(BIN_DIR_TUTORIALS)\install.htm.gz $(BIN_DIR_TUTORIALS)\install.htm $(BIN_DIR_TUTORIALS)\variables.htm.gz $(BIN_DIR_TUTORIALS)\variables.htm $(BIN_DIR_TUTORIALS)\datatypes.htm.gz $(BIN_DIR_TUTORIALS)\datatypes.htm $(BIN_DIR_TUTORIALS)\statements.htm.gz $(BIN_DIR_TUTORIALS)\statements.htm $(BIN_DIR_PROJECTS)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm $(BIN_DIR_USERS)\default.htm.gz $(BIN_DIR_USERS)\default.htm $(BIN_DIR_USERS)\mabu.htm.gz $(BIN_DIR_USERS)\mabu.htm $(BIN_DIR_HELP)\default.htm.gz $(BIN_DIR_HELP)\default.htm $(BIN_DIR_HELP)\about.htm.gz $(BIN_DIR_HELP)\about.htm $(BIN_DIR_HELP)\links.htm.gz $(BIN_DIR_HELP)\links.htm
 
 
 $(BIN_DIR)\robots.txt: robots.txt
@@ -419,6 +419,28 @@ $(BIN_DIR_TUTORIALS)\datatypes.htm.gz: $(OBJ_DIR_TUTORIALS)\datatypes.htm.utf-8w
 
 $(OBJ_DIR_TUTORIALS)\datatypes.htm.utf-8wobom.txt: $(OBJ_DIR_TUTORIALS)\datatypes.htm
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_TUTORIALS)\datatypes.htm
+
+
+$(OBJ_DIR_TUTORIALS)\statements.htm: tutorials\statements.options.yaml templates\main.htm tutorials\statements.metadata.yaml tutorials\statements.md
+	$(PANDOC_UTIL_PATH) -d tutorials\statements.options.yaml
+	move /Y tutorials\statements.htm $(OBJ_DIR_TUTORIALS)\statements.htm
+
+$(BIN_DIR_TUTORIALS)\statements.htm: $(OBJ_DIR_TUTORIALS)\statements.htm.txt
+	copy /Y $(OBJ_DIR_TUTORIALS)\statements.htm.txt $(BIN_DIR_TUTORIALS)\statements.htm
+	$(HTTPPUT_UTIL_PATH) $(IP_BIND_ADDRESS) $(URL_TUTORIALS)/statements.htm    $(BIN_DIR_TUTORIALS)\statements.htm    $(MIME_TEXT_HTML)         $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+$(OBJ_DIR_TUTORIALS)\statements.htm.txt: $(OBJ_DIR_TUTORIALS)\statements.htm
+	$(ONELINE_UTIL_PATH) /utf-8 $(OBJ_DIR_TUTORIALS)\statements.htm
+
+$(BIN_DIR_TUTORIALS)\statements.htm.gz: $(OBJ_DIR_TUTORIALS)\statements.htm.utf-8wobom.txt
+	copy /Y $(OBJ_DIR_TUTORIALS)\statements.htm.utf-8wobom.txt $(TMP_DIR)\statements.htm
+	creategzip.cmd $(TMP_DIR) statements.htm.gz statements.htm
+	del $(TMP_DIR)\statements.htm
+	move /Y $(TMP_DIR)\statements.htm.gz $(BIN_DIR_TUTORIALS)\statements.htm.gz
+	$(HTTPPUT_UTIL_PATH) $(IP_BIND_ADDRESS) $(URL_TUTORIALS)/statements.htm.gz $(BIN_DIR_TUTORIALS)\statements.htm.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+$(OBJ_DIR_TUTORIALS)\statements.htm.utf-8wobom.txt: $(OBJ_DIR_TUTORIALS)\statements.htm
+	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_TUTORIALS)\statements.htm
 
 
 $(OBJ_DIR_PROJECTS)\default.htm: projects\default.options.yaml templates\main.htm projects\default.metadata.yaml projects\default.md
