@@ -12,7 +12,7 @@ standalone: true
 self-contained: false
 
 variables:
-  TutorialDefaultPage: true
+  TutorialDefaultPage: false
   NeedSocialShareButtons: false
 
 metadata-files:

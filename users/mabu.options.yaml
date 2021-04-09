@@ -11,6 +11,9 @@ template: templates\main.htm
 standalone: true
 self-contained: false
 
+variables:
+  UsersDefaultPage: false
+
 metadata-files:
 - users\mabu.metadata.yaml
 
