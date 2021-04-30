@@ -8,11 +8,18 @@
 		
 		
 		<item>
+			<pubDate>Wed, 14 Apr 2021 12:54:16 GMT</pubDate>
+			<title>>Юникод</title>
+			<link>http://www.freebasic.su/articles/unicode.htm</link>
+			<description>Проблемы, связанные с юникодом, обсуждаются почти в каждой теме. Тот, кто пишет программы для Microsoft Windows 2000 и новее, просто обязан использовать юникод, и точка.</description>
+			<guid isPermaLink="false">{56842E65-0C9D-4BB3-A983-B495B1B377B9}</guid>
+		</item>
+				
+		<item>
 			<pubDate>Mon, 10 Dec 2018 08:54:29 GMT</pubDate>
 			<title>Тип данных HRESULT</title>
-			<link>http://www.freebasic.su/articles/hresult.xhtml</link>
-			<description>Тип HRESULT является одним из средств контроля ошибок в COM. Этот тип представляет собой 32‐битное число, в котором кодируется результат операции.
-			</description>
+			<link>http://www.freebasic.su/articles/hresult.htm</link>
+			<description>Тип HRESULT является одним из средств контроля ошибок в COM. Этот тип представляет собой 32‐битное число, в котором кодируется результат операции.</description>
 			<guid isPermaLink="false">{038C9392-5898-49BE-9EAD-255894ED59EF}</guid>
 		</item>
 				

@@ -1,0 +1,25 @@
+﻿---
+title: "Юникод"
+
+subtitle: "FreeBASIC.su"
+
+author: 
+  - mabu
+
+description: "Как использовать кодировки и заставить FreeBASIC выводить и печатать в консоли русские буквы"
+
+# abstract: 
+
+keywords: 
+  - unicode
+  - юникод
+  - кодировки
+  - кириллица
+
+lang: "ru"
+
+date: "2020-07-19"
+
+ModifiedDate: "2020-07-19"
+
+...

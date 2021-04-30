@@ -4,6 +4,31 @@
 
 <header>
 
+## Юникод
+
+:::: { .posternameblock}
+[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu.htm) опубликовал <time datetime="2021-04-14T012:52:26+07:00" pubdate="2021-04-14T012:52:26+07:00">14 апреля 2021</time>
+::::
+
+</header>
+
+:::: { .fileblock}
+<svg width="18em" height="18em" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="100%" height="100%" fill="green" stroke="#AACC11" />
+</svg>
+::::
+
+Проблемы, связанные с юникодом, обсуждаются почти в каждой теме. Тот, кто пишет программы для Microsoft Windows 2000 и новее, просто обязан использовать юникод, и точка.
+
+[Читать дальше →](/articles/unicode.htm)
+
+</article>
+
+
+<article>
+
+<header>
+
 ## Строки BSTR
 
 :::: { .posternameblock}

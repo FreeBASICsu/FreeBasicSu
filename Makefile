@@ -1,10 +1,3 @@
-PANDOC_UTIL_PATH="$(ProgramFiles)\Pandoc\pandoc.exe"
-ONELINE_UTIL_PATH="C:\Programming\Unsorted FreeBASIC Projects\OneLine\oneline.exe"
-ARCHIVATOR_UTIL_PATH="$(ProgramFiles)\7-Zip\7z.exe"
-HTTPPUT_UTIL_PATH="C:\Programming\Unsorted FreeBASIC Projects\Http PUT\HttpPUT.exe"
-IP_BIND_ADDRESS=0.0.0.0
-CREDENTIALS=$(WWW_USERNAME):$(WWW_PASSWORD)
-
 CONTENT_LANGUAGE="Content-Language: ru"
 MIME_TEXT_CSS=text/css
 MIME_TEXT_HTML=text/html
