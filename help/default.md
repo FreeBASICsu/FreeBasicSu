@@ -22,6 +22,6 @@
 
 Поддержи Создателей Интернетов!
 
-### Яндекс‐деньги
+### Yoomoney (бывшие яндекс‐деньги)
 
-<iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&amp;targets=%D0%9F%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%BA%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0%20freebasic.su&amp;targets-hint=&amp;default-sum=100&amp;button-text=14&amp;payment-type-choice=on&amp;hint=&amp;successURL=&amp;quickpay=shop&amp;account=410011690783697" width="450" height="214" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
+<iframe src="https://yoomoney.ru/quickpay/shop-widget?writer=seller&targets=%D0%9F%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%BA%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0%20freebasic.su&targets-hint=&default-sum=100&button-text=11&payment-type-choice=on&hint=&successURL=&quickpay=shop&account=410011690783697" width="423" height="222" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
