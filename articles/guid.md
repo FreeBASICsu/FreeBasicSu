@@ -308,9 +308,6 @@ lpiid или pclsid
 В этом простом примере посмотрим как создать GUID и вывести его на консоль.
 
 ```FreeBASIC
-#ifndef unicode
-#define unicode
-#endif
 #include "windows.bi"
 #include "win\ole2.bi"
 

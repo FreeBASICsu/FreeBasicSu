@@ -48,7 +48,11 @@ Dim pwszBuffer As WString Ptr = Allocate((nCharacters + 1) * SizeOf(WString))
 Используя `WString` можно заполнять строки данными:
 
 ```FreeBASIC
+' Для строки с фиксированной длиной
 wszBuffer = "Error"
+
+' Для указателя на WString
+*pwszBuffer = "Error"
 ```
 
 Правда, в этом операторе есть проблема. По умолчанию FreeBASIC транслирует строковые литералы в зависимости от кодировки исходного файла. Если кодировка ANSI, то и литерал будет состоять из символов ANSI, а не из широких символов, присваивание широкой строке ANSI‐строки приведёт к неявной конвертации символов.
@@ -60,6 +64,7 @@ wszBuffer = "Error"
 ```FreeBASIC
 ' Для строк фиксированной длины
 wszBuffer = WStr("Error")
+
 ' Для динамической строки
 *pwszBuffer = WStr("Error")
 ```
@@ -93,7 +98,15 @@ Const SOME_STRING = WStr(!"\u0422\u0435\u043A\u0441\u0442 \u0441\u0442\u0440\u04
 Const SOME_STRING = "Текст строки"
 ```
 
-Превратить широкий литерал обратно в ANSI‐литерал может функция `Str`, но в этом случае может произойти потеря информации при конвертации кодов символов.
+### Создание литерала с ANSI‐символами
+
+Иногда требуется получить литерал только с ANSI‐символами, для этого литерал оборачивают в функцию `Str`:
+
+```FreeBASIC
+Const SOME_STRING = Str("ANSI")
+```
+
+В этом случае может произойти потеря информации при конвертации кодов символов с кодами больше 127.
 
 ### Функции работающие со строками
 
@@ -143,26 +156,43 @@ Const SOME_STRING = "Текст строки"
 
 ## Юникод и библиотека языка Си
 
+### Типы данных char и wchar_t
+
+В языке Си существуют типы данных: `char` и `wchar_t`.
+
+char
+ ~ Стандартный тип данных, содержащий 8‐битные символы, ANSI‐строки
+
+wchar_t
+ ~ Стандартный тип данных, содержащий широкий (юникодный) символ, Wide‐строки
+
+### Функции работающие со строками
+
+Эти стандартные функции работают только с ANSI‐строками:
+
+```C
+char * strcat(char *, const char *);
+char * strchr(const char *, int);
+int strcmp(const char *, const char *);
+char * strcpy(char *, const char *);
+size_t strlen(const char *);
+```
+
+Эти стандартные функции работают только с широкими строками:
+
+```C
+wchar_t * wcscat(wchar_t *, const wchar t *);
+wchar_t * wcschr(const wchar_t *, wchar_t);
+wchar_t * wcscpy(wchar_t *, const wchar_t *);
+int wcscmp(const wchar_t *, const wchar_t *);
+size_t wcslen(const wchar_t *);
+```
+
+Имена всех новых функций начинаются с `wcs` — это аббревиатура «wide character set» (набор широких символов). Таким образом, имена юникодных функций образуются простой заменой префикса `str` соответствующих ANSI‐функций на `wcs`.
+
+### Дефиниция _UNICODE
+
 Макрос `_UNICODE` используется в заголовочных файлах библиотек Си.
-
-
-## Юникод и COM
-
-Все методы СОМ‐интерфейсов, работающие со строками, должны принимать только строки типа `BSTR`, которые по своей природе сразу юникодные.
-
-Для инициализации COM‐строки можно использовать `WString`, так как она совместима с `OLECHAR` (псевдоним для `wchar_t`):
-
-```FreeBASIC
-Dim wszString As WString * (15 + 1)
-Dim b As BSTR = SysAllocString(StrPtr(wszString))
-```
-
-Второй вариант — использовать массив `OLECHAR`:
-
-```FreeBASIC
-Dim oleString(15) As OLECHAR
-Dim b As BSTR = SysAllocString(@oleString(0))
-```
 
 
 ## Юникод и WinAPI
@@ -176,17 +206,46 @@ Dim b As BSTR = SysAllocString(@oleString(0))
 
 ### Строковые типы данных
 
-Для символов ANSI используется тип `char` и макрокоманда `CHAR`:
+Для символов ANSI используется тип `CHAR`:
 
 ```FreeBASIC
-type CHAR as byte
+Type CHAR As Byte
+Type PCHAR As CHAR Ptr
 ```
 
-Широким символам соответствует тип `wchar_t`, с которым связан псевдоним `WCHAR`:
+ANSI‐строки:
 
 ```FreeBASIC
-type WCHAR as wchar_t
-type PWCHAR as WCHAR ptr
+Type LPSTR As ZString Ptr
+Type PSTR As ZString Ptr
+```
+
+Константные ANSI‐строки:
+
+```FreeBASIC
+Type LPCSTR As Const ZString Ptr
+Type PCSTR As Const ZString Ptr
+```
+
+Широким символам соответствует тип `WCHAR`:
+
+```FreeBASIC
+Type WCHAR As wchar_t
+Type PWCHAR As WCHAR Ptr
+```
+
+Широкие строки:
+
+```FreeBASIC
+Type LPWSTR As WString Ptr
+Type PWSTR As WString Ptr
+```
+
+Константные широкие строки:
+
+```FreeBASIC
+Type LPCWSTR As Const WString Ptr
+Type PCWSTR As Const WString Ptr
 ```
 
 ### Дефиниция UNICODE
@@ -216,10 +275,8 @@ fbc -d UNICODE file.bas
 | PTCHAR          | WCHAR Ptr          | Byte Ptr              | Указатель на символ |
 | TBYTE           | WCHAR              | UByte                 | Символ |
 | PTBYTE          | WCHAR Ptr          | UByte Ptr             | Указатель на символ |
-| PTSTR, LPTSTR   | LPWSTR             | LPSTR                 | Указатель на массив символов |
-| PCTSTR, LPCTSTR | LPCWSTR            | LPCSTR                | Указатель на константный массив символов |
-
-Префиксы `P` и `LP` означают указатели. Разница между ними объясняется исторически: в 16‐битном мире `P` — короткий указатель, `LP` — длинный. В настоящее время эти указатели равнозначны.
+| PTSTR, LPTSTR   | LPWSTR             | LPSTR                 | Указатель на строку |
+| PCTSTR, LPCTSTR | LPCWSTR            | LPCSTR                | Указатель на константную строку |
 
 ### Префиксы переменных
 
@@ -237,6 +294,9 @@ fbc -d UNICODE file.bas
 | ptsz, lptsz   | указатель на обобщённую строку с нулевым символом             |
 | pctsz, lpctsz | указатель на константную обобщённую строку с нулевым символом |
 
+Префиксы `P` и `LP` означают указатели. Разница между ними объясняется исторически: в 16‐битном мире `P` — короткий указатель, `LP` — длинный. В настоящее время эти указатели равнозначны.
+
+Префиксы не являются абсолютной истиной, например, поле `lpszClassName` в структуре `WNDCLASSEX` может ссылаться как на ANSI, так и на широкую строку.
 
 ### Константы
 
@@ -260,7 +320,10 @@ Dim ptszString As LPTSTR = StrPtr(SOME_STRING)
 Буфер для хранения символов делаем массивом обобщённого типа `TCHAR`:
 
 ```FreeBASIC
+' Буфер
 Dim tszString(265) As TCHAR
+
+' УКазатель на буфер
 Dim ptszString As LPTSTR = @tszString(0)
 ```
 
@@ -306,6 +369,28 @@ Dim ret As Long = LoadString( _
 )
 
 Print *CPtr(LPTSTR, @tszString(0))
+```
+
+
+## Юникод и COM
+
+Все методы СОМ‐интерфейсов, работающие со строками, должны принимать только строки типа `BSTR`, которые содержат только символы типа `OLECHAR`.
+
+OLECHAR
+ ~ псевдоним для `WCHAR`
+
+Для инициализации COM‐строки можно использовать `WString`, так как она совместима с `OLECHAR`:
+
+```FreeBASIC
+Dim wszString As WString * (15 + 1)
+Dim b As BSTR = SysAllocString(StrPtr(wszString))
+```
+
+Второй вариант — использовать массив `OLECHAR`:
+
+```FreeBASIC
+Dim oleString(15) As OLECHAR
+Dim b As BSTR = SysAllocString(@oleString(0))
 ```
 
 
