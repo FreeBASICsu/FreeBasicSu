@@ -28,49 +28,6 @@
 	<url>
 		<loc>http://www.freebasic.su/articles/unicode.htm</loc>
 	</url>
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/codepages.xhtml</loc> -->
-	<!-- </url> -->
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/base64.xhtml</loc> -->
-	<!-- </url> -->
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/tips.xhtml</loc> -->
-	<!-- </url> -->
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/irclibrary.xhtml</loc> -->
-	<!-- </url> -->
-	
-	
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/fileswinapi.xhtml</loc> -->
-	<!-- </url> -->
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/memorymappedfiles.xhtml</loc> -->
-	<!-- </url> -->
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/consolehandlers.xhtml</loc> -->
-	<!-- </url> -->
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/windows-services.xhtml</loc> -->
-	<!-- </url> -->
-	
-	
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/cardslibrary.xhtml</loc> -->
-	<!-- </url> -->
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/without-rtl.xhtml</loc> -->
-	<!-- </url> -->
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/cheatsheet.xhtml</loc> -->
-	<!-- </url> -->
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/heap.xhtml</loc> -->
-	<!-- </url> -->
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/articles/interface.xhtml</loc> -->
-	<!-- </url> -->
 	
 	<url>
 		<loc>http://www.freebasic.su/categories/</loc>
@@ -91,9 +48,6 @@
 	<url>
 		<loc>http://www.freebasic.su/projects/</loc>
 	</url>
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/projects/station922.xhtml</loc> -->
-	<!-- </url> -->
 	
 	
 	<url>
@@ -102,12 +56,6 @@
 	<url>
 		<loc>http://www.freebasic.su/tutorial/install.htm</loc>
 	</url>
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/tutorial/variables.xhtml</loc> -->
-	<!-- </url> -->
-	<!-- <url> -->
-		<!-- <loc>http://www.freebasic.su/tutorial/statements.xhtml</loc> -->
-	<!-- </url> -->
 	
 	
 	<url>
