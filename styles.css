@@ -74,6 +74,11 @@ div.fileblock
 	clear:both;
 }
 
+div.advertisement
+{
+	margin:2.0em;
+}
+
 pre
 {
 	border:solid 1px;
