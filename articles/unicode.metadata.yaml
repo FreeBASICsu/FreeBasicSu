@@ -10,11 +10,13 @@ description: "Как использовать кодировки и застав
 
 # abstract: 
 
-keywords: 
+keywords:
   - unicode
   - юникод
+  - cp1251
   - кодировки
   - кириллица
+  - консоль
 
 lang: "ru"
 

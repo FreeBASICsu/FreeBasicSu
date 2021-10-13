@@ -11,7 +11,7 @@
 
 ### Сайт Станислава Будинова
 
-[users.freebasic-portal.de/freebasicru/](http://users.freebasic-portal.de/freebasicru/)
+[users.freebasic-portal.de/freebasicru/](https://users.freebasic-portal.de/freebasicru/)
 
 
 ## Форумы

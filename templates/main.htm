@@ -63,9 +63,9 @@ $else$
 $endif$
 		
 $if(CategoriesDefaultPage)$
-			<li><span>Рубрики</span></li>
+			<!-- <li><span>Рубрики</span></li> -->
 $else$
-			<li><a href="/categories/">Рубрики</a></li>
+			<!-- <li><a href="/categories/">Рубрики</a></li> -->
 $endif$
 
 $if(TutorialDefaultPage)$
@@ -103,6 +103,10 @@ $endif$
 </header>
 
 <main id="MainContent">
+<div class="advertisement">
+	<script type="text/javascript" src="//j.contema.ru/Contema.js"></script>
+	<script type="text/javascript">Contema.load(21250,{adv_format : "banner"});</script>
+</div>
 $for(include-before)$
 $include-before$
 $endfor$

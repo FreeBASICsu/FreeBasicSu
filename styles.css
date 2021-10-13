@@ -80,6 +80,9 @@ pre
 	border-radius:.25em;
 	padding:.5em;
 	background:#E0E0E0;
+	overflow:scroll;
+	width:25em;
+	height:18em;
 }
 
 pre.samp
