@@ -68,6 +68,11 @@ hr
 	clear:both;
 }
 
+h1, h2, h3, h4, h5, h6
+{
+	margin-top:2.0em;
+}
+
 div.fileblock
 {
 	margin:.5em;
@@ -83,29 +88,43 @@ pre
 {
 	border:solid 1px;
 	border-radius:.25em;
-	padding:.5em;
+	padding:1.5em;
 	background:#E0E0E0;
-	overflow:scroll;
-	width:25em;
-	height:18em;
+	overflow:auto;
+	width:auto;
+	min-height:5em;
+	margin-bottom:1.0em;
 }
 
-pre.samp
+pre.console
 {
-	color:#FFFFFF;
-	font-size:1.25em;
-	border:solid 1px;
-	border-radius:0;
-	padding:.5em;
 	background:#000000;
+	color:#C0C0C0;
+	border-radius:0;
+	font-size:1.5em;
+	padding:0;
+	padding-bottom:0.25em;
+}
+
+pre.console:before
+{
+	content:"C:\\Windows\\system32\\cmd.exe";
+	display:block;
+	height:1.5em;
+	padding-top:0.25em;
+	background:#FFFFFF;
+	color:#000000;
+	border:solid 1px;
 }
 
 code
 {
-	font-size:1.25em;
+	font-size:1.35em;
 }
 
-div.posternameblock{}
+div.posternameblock{
+	text-align: right;
+}
 
 img.avatar
 {
