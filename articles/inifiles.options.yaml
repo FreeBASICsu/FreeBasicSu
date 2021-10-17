@@ -12,6 +12,7 @@ self-contained: false
 
 variables:
   ArticlesDefaultPage: false
+  VersionInfoDefined: true
 
 metadata-files:
 - articles\inifiles.metadata.yaml

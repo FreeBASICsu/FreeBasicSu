@@ -18,8 +18,18 @@ keywords:
 
 lang: "ru"
 
-date: "2020-07-19"
+FileVersion: 1.0
 
-ModifiedDate: "2020-07-19"
+PublicationDate: "2016-02-10T09:25:31+07:00"
+
+PublicationDateVerbose: "10 февраля 2016"
+
+ModifiedDate: "2016-02-10T09:25:31+07:00"
+
+ModifiedDateVerbose: "10 февраля 2016"
+
+AuthorPage: "/users/mabu.htm"
+
+AuthorAvatar: "/avatars/mabu.50x50.jpg"
 
 ...

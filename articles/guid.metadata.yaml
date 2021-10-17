@@ -19,8 +19,18 @@ keywords:
 
 lang: "ru"
 
-date: "2019-01-26"
+FileVersion: 1.0
 
-ModifiedDate: "2020-02-09"
+PublicationDate: "2019-01-26T00:45:10+07:00"
+
+PublicationDateVerbose: "26 января 2019"
+
+ModifiedDate: "2019-01-26T00:45:10+07:00"
+
+ModifiedDateVerbose: "26 января 2019"
+
+AuthorPage: "/users/mabu.htm"
+
+AuthorAvatar: "/avatars/mabu.50x50.jpg"
 
 ...
