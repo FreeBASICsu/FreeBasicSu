@@ -123,11 +123,14 @@ code
 }
 
 div.posternameblock{
-	text-align: right;
+	
+}
+
+div.versioninfo{
+	text-align:right;
 }
 
 img.avatar
 {
-	float:left;
-	margin:0em .5em .5em 0em;
+	margin:1em;
 }
