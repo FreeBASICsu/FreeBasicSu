@@ -103,19 +103,34 @@ $endif$
 </header>
 
 <main id="MainContent">
+
 <div class="advertisement">
 	<script type="text/javascript" src="//j.contema.ru/Contema.js"></script>
 	<script type="text/javascript">Contema.load(21250,{adv_format : "banner"});</script>
 </div>
+
 $for(include-before)$
 $include-before$
 $endfor$
+
+$if(VersionInfoDefined)$
+	<div class="versioninfo">
+		<p>Автор: <a href="$AuthorPage$">$author-meta$</a></p>
+		
+		<p>Опубликовано: <time datetime="$PublicationDate$" pubdate="$PublicationDate$">$PublicationDateVerbose$</time></p>
+		
+		<p>Исправлено: <time datetime="$ModifiedDate$">$ModifiedDateVerbose$</time></p>
+		
+		<p>Версия текста: $FileVersion$</p>
+	</div>
+$endif$
 
 $body$
 
 $for(include-after)$
 $include-after$
 $endfor$
+
 </main>
 
 <hr />
