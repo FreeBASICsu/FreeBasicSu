@@ -1,0 +1,50 @@
+﻿<svg version="1.1" width="18em" height="18em" xmlns="http://www.w3.org/2000/svg">
+	
+	<rect x="0" y="0" width="100%" height="100%" fill="none" stroke="black" stroke-width="2" />
+	
+	<rect x="1em" y="14em" width="3em" height="3em" fill="cyan" stroke="blue" />
+	<rect x="4em" y="14em" width="3em" height="3em" fill="cyan" stroke="blue" />
+	<rect x="7em" y="14em" width="3em" height="3em" fill="cyan" stroke="blue" />
+	<rect x="1em" y="11em" width="3em" height="3em" fill="cyan" stroke="blue" />
+	<rect x="4em" y="11em" width="3em" height="3em" fill="cyan" stroke="blue" />
+	<rect x="1em" y="8em" width="3em" height="3em" fill="cyan" stroke="blue" />
+	<line x1="1em" y1="8em" x2="2em" y2="7em" stroke="blue" />
+	<line x1="4em" y1="8em" x2="5em" y2="7em" stroke="blue" />
+	<line x1="2em" y1="7em" x2="5em" y2="7em" stroke="blue" />
+	<line x1="4em" y1="11em" x2="5em" y2="10em" stroke="blue" />
+	<line x1="7em" y1="11em" x2="8em" y2="10em" stroke="blue" />
+	<line x1="7em" y1="14em" x2="8em" y2="13em" stroke="blue" />
+	<line x1="10em" y1="14em" x2="11em" y2="13em" stroke="blue" />
+	<line x1="10em" y1="17em" x2="11em" y2="16em" stroke="blue" />
+	<line x1="11em" y1="16em" x2="11em" y2="13em" stroke="blue" />
+	<line x1="2em" y1="7em" x2="3em" y2="6em" stroke="blue" />
+	<line x1="5em" y1="7em" x2="6em" y2="6em" stroke="blue" />
+	<line x1="3em" y1="6em" x2="6em" y2="6em" stroke="blue" />
+	<line x1="8em" y1="7em" x2="9em" y2="6em" stroke="blue" />
+	<line x1="9em" y1="6em" x2="6em" y2="6em" stroke="blue" />
+	<line x1="8em" y1="10em" x2="9em" y2="9em" stroke="blue" />
+	<line x1="11em" y1="10em" x2="12em" y2="9em" stroke="blue" />
+	<line x1="11em" y1="13em" x2="12em" y2="12em" stroke="blue" />
+	<line x1="11em" y1="16em" x2="12em" y2="15em" stroke="blue" />
+	<line x1="12em" y1="15em" x2="12em" y2="12em" stroke="blue" />
+	<line x1="12em" y1="12em" x2="12em" y2="9em" stroke="blue" />
+	<line x1="3em" y1="6em" x2="4em" y2="5em" stroke="blue" />
+	<line x1="6em" y1="6em" x2="7em" y2="5em" stroke="blue" />
+	<line x1="4em" y1="5em" x2="7em" y2="5em" stroke="blue" />
+	<line x1="9em" y1="6em" x2="10em" y2="5em" stroke="blue" />
+	<line x1="10em" y1="5em" x2="7em" y2="5em" stroke="blue" />
+	<line x1="12em" y1="6em" x2="13em" y2="5em" stroke="blue" />
+	<line x1="13em" y1="5em" x2="10em" y2="5em" stroke="blue" />
+	<line x1="12em" y1="9em" x2="13em" y2="8em" stroke="blue" />
+	<line x1="13em" y1="8em" x2="13em" y2="5em" stroke="blue" />
+	<line x1="12em" y1="12em" x2="13em" y2="11em" stroke="blue" />
+	<line x1="13em" y1="11em" x2="13em" y2="8em" stroke="blue" />
+	<line x1="12em" y1="15em" x2="13em" y2="14em" stroke="blue" />
+	<line x1="13em" y1="14em" x2="13em" y2="11em" stroke="blue" />
+	<rect x="8em" y="10em" width="3em" height="3em" fill="cyan" stroke="blue" />
+	<rect x="5em" y="7em" width="3em" height="3em" fill="cyan" stroke="blue" />
+	<rect x="9em" y="6em" width="3em" height="3em" fill="cyan" stroke="blue" />
+	<rect x="10em" y="-10em" width="3em" height="3em" fill="cyan" stroke="blue" transform="rotate(45)" />
+	<rect x="7em" y="-6em" width="3em" height="3em" fill="cyan" stroke="blue" transform="rotate(45)" />
+	<rect x="15em" y="-7em" width="3em" height="3em" fill="cyan" stroke="blue" transform="rotate(45)" />
+</svg>
