@@ -131,6 +131,8 @@ $for(include-after)$
 $include-after$
 $endfor$
 
+<div id="disqus_thread"></div>
+
 </main>
 
 <hr />
@@ -145,6 +147,15 @@ $if(HomePage)$
 		<a href="https://webmaster.yandex.ru/sqi?host=www.freebasic.su" title="Смотреть достижения сайта на Яднекс Вебмастере">
 			<img width="88" height="31" alt="Индекс качества сайта по мнению Яндекса равен 10" src="https://yandex.ru/cycounter?www.freebasic.su&amp;theme=light&amp;lang=ru" />
 		</a>
+$else$
+	<script>
+		(function() {
+		var d = document, s = d.createElement('script');
+		s.src = 'https://www-freebasic-su.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+		})();
+	</script>
 $endif$
 
 	</p>
