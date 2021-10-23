@@ -8,8 +8,14 @@ $if(description)$
 	<meta name="description" content="$description$" />
 $endif$
 
-$for(author-meta)$
-	<meta name="author" content="$author-meta$" />
+$for(author)$
+$if(author.name)$
+	<meta name="author" content="$author.name$$if(author.affiliation)$ ($author.affiliation$)$endif$" />
+$else$
+$-- $for(author-meta)$
+$-- 	<meta name="author" content="$author-meta$" />
+$-- $endfor$
+$endif$
 $endfor$
 
 $if(date-meta)$
@@ -26,13 +32,17 @@ $endif$
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 
-$for(css)$
-	<link rel="stylesheet" href="$css$" type="text/css" />
-$endfor$
-
-$if(HomePage)$
-	<link href="/rss.rss" type="application/rss+xml" rel="alternate" title="RSS 2.00" />
+$if(inline-css)$
+	<style type="text/css">${ styles.css.utf-8wobom.txt() }</style>
+$else$
+	$for(css)$
+		<link href="$css$" type="text/css" rel="stylesheet" />
+	$endfor$
 $endif$
+
+$-- $if(HomePage)$
+$-- 	<link href="/rss.rss" type="application/rss+xml" rel="alternate" title="RSS 2.00" />
+$-- $endif$
 
 $if(math)$
   $math$
@@ -63,9 +73,9 @@ $else$
 $endif$
 		
 $if(CategoriesDefaultPage)$
-$--			<!-- <li><span>Рубрики</span></li> -->
+$--			<li><span>Рубрики</span></li>
 $else$
-$--			<!-- <li><a href="/categories/">Рубрики</a></li> -->
+$--			<li><a href="/categories/">Рубрики</a></li>
 $endif$
 
 $if(TutorialDefaultPage)$
@@ -75,9 +85,9 @@ $else$
 $endif$
 
 $if(TasksDefaultPage)$
-$--			<!-- <li><span>Задачи</span></li> -->
+$--			<li><span>Задачи</span></li>
 $else$
-$--			<!-- <li><a href="/tasks/">Задачи</a></li> -->
+$--			<li><a href="/tasks/">Задачи</a></li>
 $endif$
 
 $if(ProjectsDefaultPage)$
@@ -115,13 +125,17 @@ $endfor$
 
 $if(VersionInfoDefined)$
 	<div class="versioninfo">
-		<p>Автор: <a href="$AuthorPage$">$author-meta$</a></p>
+$for(author)$
+$if(author.name)$
+		<p class="authorname">Автор: <a href="$author.website$">$author.name$</a>$if(author.affiliation)$ ($author.affiliation$)$endif$</p>
+$endif$
+$endfor$
 		
-		<p>Опубликовано: <time datetime="$PublicationDate$" pubdate="$PublicationDate$">$PublicationDateVerbose$</time></p>
+		<p class="publicationdate">Опубликовано: <time datetime="$PublicationDate$" pubdate="$PublicationDate$">$PublicationDateVerbose$</time></p>
 		
-		<p>Исправлено: <time datetime="$ModifiedDate$">$ModifiedDateVerbose$</time></p>
+		<p class="modifieddate">Исправлено: <time datetime="$ModifiedDate$">$ModifiedDateVerbose$</time></p>
 		
-		<p>Версия текста: $FileVersion$</p>
+		<p class="documentversion">Версия документа: $FileVersion$</p>
 	</div>
 $endif$
 
@@ -145,17 +159,19 @@ $-- <div id="disqus_thread"></div>
 
 $if(HomePage)$
 		<a href="https://webmaster.yandex.ru/sqi?host=www.freebasic.su" title="Смотреть достижения сайта на Яднекс Вебмастере">
-			<img width="88" height="31" alt="Индекс качества сайта по мнению Яндекса равен 10" src="https://yandex.ru/cycounter?www.freebasic.su&amp;theme=light&amp;lang=ru" />
+			<svg width="88" height="31">
+				<rect x="0" y="0" width="100%" height="100%" />
+			</svg>
 		</a>
 $else$
-	<script>
-		(function() {
-		var d = document, s = d.createElement('script');
-		s.src = 'https://www-freebasic-su.disqus.com/embed.js';
-		s.setAttribute('data-timestamp', +new Date());
-		(d.head || d.body).appendChild(s);
-		})();
-	</script>
+$-- 	<script>
+$-- 		(function() {
+$-- 		var d = document, s = d.createElement('script');
+$-- 		s.src = 'https://www-freebasic-su.disqus.com/embed.js';
+$-- 		s.setAttribute('data-timestamp', +new Date());
+$-- 		(d.head || d.body).appendChild(s);
+$-- 		})();
+$-- 	</script>
 $endif$
 
 	</p>

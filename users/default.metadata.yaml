@@ -3,17 +3,28 @@ title: "Пользователи сайта"
 
 subtitle: "FreeBASIC.su"
 
-author: 
-  - mabu
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
 
-description: "Пользователи сайта FreeBASIC.su"
+# abstract: 
 
 keywords: 
   - список пользователей
 
+# subject:
+
+description: "Пользователи сайта FreeBASIC.su"
+
+# category:
+
 lang: "ru"
 
 date: "2016-03-11"
+
+# FileVersion: 1.0
 
 ModifiedDate: "2020-02-09"
 

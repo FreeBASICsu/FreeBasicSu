@@ -3,18 +3,29 @@ title: "О сайте"
 
 subtitle: "FreeBASIC.su"
 
-author: 
-  - mabu
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
 
-description: "История сайта FreeBASIC.su, используемое железо и программное обеспечение"
+# abstract: 
 
 keywords: 
   - FreeBASIC.su
   - информация о сайте
 
+# subject:
+
+description: "История сайта FreeBASIC.su, используемое железо и программное обеспечение"
+
+# category:
+
 lang: "ru"
 
 date: "2016-03-11"
+
+# FileVersion: 1.0
 
 ModifiedDate: "2020-02-09"
 

@@ -1,3 +1,5 @@
+.PHONY: all clean install uninstall configure
+
 CONTENT_LANGUAGE="Content-Language: ru"
 MIME_TEXT_CSS=text/css
 MIME_TEXT_HTML=text/html
@@ -9,10 +11,6 @@ MIME_APPLICATION_ZIP=application/zip
 MIME_APPLICATION_GZIP=application/x-gzip
 MIME_APPLICATION_XML=application/xml
 MIME_APPLICATION_RSSXML=application/rss+xml
-
-.PHONY: all clean install uninstall configure
-
-all: BINARY_TARGETS TEXT_TARGETS GENERATED_TARGETS
 
 URL=http://www.freebasic.su
 URL_ARTICLES=$(URL)/articles
@@ -47,6 +45,16 @@ OBJ_DIR_USERS=$(OBJ_DIR)\users
 OBJ_DIR_HELP=$(OBJ_DIR)\help
 TMP_DIR=tmp
 
+BINARY_TARGETS=$(BIN_DIR)\robots.txt $(BIN_DIR)\favicon.ico $(BIN_DIR)\googledffc38e6f05ff431.html $(BIN_DIR)\yandex_461c9af9cde122fb.html $(BIN_DIR_AVATARS)\mabu.50x50.jpg $(BIN_DIR_AVATARS)\mabu.90x90.png $(BIN_DIR_PROFILEPICTURES)\mabu.original.jpg $(BIN_DIR_PROFILEPICTURES)\mabu.200x200.jpg $(BIN_DIR_RES)\heap.zip
+
+TEXT_TARGETS=$(BIN_DIR)\rss.rss.gz $(BIN_DIR)\rss.rss $(BIN_DIR)\sitemap.xml.gz $(BIN_DIR)\sitemap.xml $(BIN_DIR)\styles.css.gz $(BIN_DIR)\styles.css
+
+GENERATED_TARGETS=$(BIN_DIR)\default.htm.gz $(BIN_DIR)\default.htm $(BIN_DIR_ARTICLES)\default.htm.gz $(BIN_DIR_ARTICLES)\default.htm $(BIN_DIR_ARTICLES)\tips.htm.gz $(BIN_DIR_ARTICLES)\tips.htm $(BIN_DIR_ARTICLES)\bstr.htm.gz $(BIN_DIR_ARTICLES)\bstr.htm $(BIN_DIR_ARTICLES)\guid.htm.gz $(BIN_DIR_ARTICLES)\guid.htm $(BIN_DIR_ARTICLES)\hresult.htm.gz $(BIN_DIR_ARTICLES)\hresult.htm $(BIN_DIR_ARTICLES)\inifiles.htm.gz $(BIN_DIR_ARTICLES)\inifiles.htm $(BIN_DIR_ARTICLES)\unicode.htm.gz $(BIN_DIR_ARTICLES)\unicode.htm $(BIN_DIR_ARTICLES)\winapi-errors.htm.gz $(BIN_DIR_ARTICLES)\winapi-errors.htm $(BIN_DIR_ARTICLES)\winapi-registry.htm.gz $(BIN_DIR_ARTICLES)\winapi-registry.htm $(BIN_DIR_TUTORIALS)\default.htm.gz $(BIN_DIR_TUTORIALS)\default.htm $(BIN_DIR_TUTORIALS)\install.htm.gz $(BIN_DIR_TUTORIALS)\install.htm $(BIN_DIR_TUTORIALS)\variables.htm.gz $(BIN_DIR_TUTORIALS)\variables.htm $(BIN_DIR_TUTORIALS)\datatypes.htm.gz $(BIN_DIR_TUTORIALS)\datatypes.htm $(BIN_DIR_TUTORIALS)\statements.htm.gz $(BIN_DIR_TUTORIALS)\statements.htm $(BIN_DIR_PROJECTS)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm $(BIN_DIR_USERS)\default.htm.gz $(BIN_DIR_USERS)\default.htm $(BIN_DIR_USERS)\mabu.htm.gz $(BIN_DIR_USERS)\mabu.htm $(BIN_DIR_HELP)\default.htm.gz $(BIN_DIR_HELP)\default.htm $(BIN_DIR_HELP)\about.htm.gz $(BIN_DIR_HELP)\about.htm $(BIN_DIR_HELP)\links.htm.gz $(BIN_DIR_HELP)\links.htm
+
+TEMPLATES=templates\main.htm templates\styles.css.utf-8wobom.txt 
+
+all: $(BINARY_TARGETS) $(TEXT_TARGETS) $(GENERATED_TARGETS)
+
 configure:
 	mkdir $(BIN_DIR)
 	mkdir $(BIN_DIR_ARTICLES)
@@ -68,13 +76,6 @@ configure:
 	mkdir $(OBJ_DIR_USERS)
 	mkdir $(OBJ_DIR_HELP)
 	mkdir $(TMP_DIR)
-
-BINARY_TARGETS: $(BIN_DIR)\robots.txt $(BIN_DIR)\favicon.ico $(BIN_DIR)\googledffc38e6f05ff431.html $(BIN_DIR)\yandex_461c9af9cde122fb.html $(BIN_DIR_AVATARS)\mabu.50x50.jpg $(BIN_DIR_AVATARS)\mabu.90x90.png $(BIN_DIR_PROFILEPICTURES)\mabu.original.jpg $(BIN_DIR_PROFILEPICTURES)\mabu.200x200.jpg $(BIN_DIR_RES)\heap.zip
-
-TEXT_TARGETS: $(BIN_DIR)\rss.rss.gz $(BIN_DIR)\rss.rss $(BIN_DIR)\sitemap.xml.gz $(BIN_DIR)\sitemap.xml $(BIN_DIR)\styles.css.gz $(BIN_DIR)\styles.css
-
-GENERATED_TARGETS: $(BIN_DIR)\default.htm.gz $(BIN_DIR)\default.htm $(BIN_DIR_ARTICLES)\default.htm.gz $(BIN_DIR_ARTICLES)\default.htm $(BIN_DIR_ARTICLES)\tips.htm.gz $(BIN_DIR_ARTICLES)\tips.htm $(BIN_DIR_ARTICLES)\bstr.htm.gz $(BIN_DIR_ARTICLES)\bstr.htm $(BIN_DIR_ARTICLES)\guid.htm.gz $(BIN_DIR_ARTICLES)\guid.htm $(BIN_DIR_ARTICLES)\hresult.htm.gz $(BIN_DIR_ARTICLES)\hresult.htm $(BIN_DIR_ARTICLES)\inifiles.htm.gz $(BIN_DIR_ARTICLES)\inifiles.htm $(BIN_DIR_ARTICLES)\unicode.htm.gz $(BIN_DIR_ARTICLES)\unicode.htm $(BIN_DIR_ARTICLES)\winapi-errors.htm.gz $(BIN_DIR_ARTICLES)\winapi-errors.htm $(BIN_DIR_ARTICLES)\winapi-registry.htm.gz $(BIN_DIR_ARTICLES)\winapi-registry.htm $(BIN_DIR_TUTORIALS)\default.htm.gz $(BIN_DIR_TUTORIALS)\default.htm $(BIN_DIR_TUTORIALS)\install.htm.gz $(BIN_DIR_TUTORIALS)\install.htm $(BIN_DIR_TUTORIALS)\variables.htm.gz $(BIN_DIR_TUTORIALS)\variables.htm $(BIN_DIR_TUTORIALS)\datatypes.htm.gz $(BIN_DIR_TUTORIALS)\datatypes.htm $(BIN_DIR_TUTORIALS)\statements.htm.gz $(BIN_DIR_TUTORIALS)\statements.htm $(BIN_DIR_PROJECTS)\default.htm.gz $(BIN_DIR_PROJECTS)\default.htm $(BIN_DIR_USERS)\default.htm.gz $(BIN_DIR_USERS)\default.htm $(BIN_DIR_USERS)\mabu.htm.gz $(BIN_DIR_USERS)\mabu.htm $(BIN_DIR_HELP)\default.htm.gz $(BIN_DIR_HELP)\default.htm $(BIN_DIR_HELP)\about.htm.gz $(BIN_DIR_HELP)\about.htm $(BIN_DIR_HELP)\links.htm.gz $(BIN_DIR_HELP)\links.htm
-
 
 $(BIN_DIR)\robots.txt: robots.txt
 	copy /B /Y robots.txt $(BIN_DIR)\robots.txt
@@ -113,24 +114,24 @@ $(BIN_DIR_RES)\heap.zip: res\heap.zip
 	$(HTTPPUT_UTIL_PATH) $(IP_BIND_ADDRESS) $(URL_RES)/heap.zip $(BIN_DIR_RES)\heap.zip $(MIME_APPLICATION_ZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
 
-$(BIN_DIR)\styles.css: $(OBJ_DIR)\styles.css.txt
-	copy /Y $(OBJ_DIR)\styles.css.txt $(BIN_DIR)\styles.css
+$(BIN_DIR)\styles.css: templates\styles.css.txt
+	copy /Y templates\styles.css.txt $(BIN_DIR)\styles.css
 	$(HTTPPUT_UTIL_PATH) $(IP_BIND_ADDRESS) $(URL)/styles.css    $(BIN_DIR)\styles.css    $(MIME_TEXT_CSS)         $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
-$(OBJ_DIR)\styles.css.txt: styles.css
+templates\styles.css.txt: styles.css
 	$(ONELINE_UTIL_PATH) /utf-8 styles.css
-	move /Y styles.css.txt $(OBJ_DIR)\styles.css.txt
+	move /Y styles.css.txt templates\styles.css.txt
 
-$(BIN_DIR)\styles.css.gz: $(OBJ_DIR)\styles.css.utf-8wobom.txt
-	copy /Y $(OBJ_DIR)\styles.css.utf-8wobom.txt $(TMP_DIR)\styles.css
+$(BIN_DIR)\styles.css.gz: templates\styles.css.utf-8wobom.txt
+	copy /Y templates\styles.css.utf-8wobom.txt $(TMP_DIR)\styles.css
 	creategzip.cmd $(TMP_DIR) styles.css.gz styles.css
 	del $(TMP_DIR)\styles.css
 	move /Y $(TMP_DIR)\styles.css.gz $(BIN_DIR)\styles.css.gz
 	$(HTTPPUT_UTIL_PATH) $(IP_BIND_ADDRESS) $(URL)/styles.css.gz $(BIN_DIR)\styles.css.gz $(MIME_APPLICATION_GZIP) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
-$(OBJ_DIR)\styles.css.utf-8wobom.txt: styles.css
+templates\styles.css.utf-8wobom.txt: styles.css
 	$(ONELINE_UTIL_PATH) /utf-8wobom styles.css
-	move /Y styles.css.utf-8wobom.txt $(OBJ_DIR)\styles.css.utf-8wobom.txt
+	move /Y styles.css.utf-8wobom.txt templates\styles.css.utf-8wobom.txt
 
 
 $(BIN_DIR)\rss.rss: $(OBJ_DIR)\rss.rss.txt
@@ -173,7 +174,7 @@ $(OBJ_DIR)\sitemap.xml.utf-8wobom.txt: sitemap.xml
 	move /Y sitemap.xml.utf-8wobom.txt $(OBJ_DIR)\sitemap.xml.utf-8wobom.txt
 
 
-$(OBJ_DIR)\default.htm: default.options.yaml templates\main.htm default.metadata.yaml default.md
+$(OBJ_DIR)\default.htm: default.options.yaml $(TEMPLATES) default.metadata.yaml default.md
 	$(PANDOC_UTIL_PATH) -d default.options.yaml
 	move /Y default.htm $(OBJ_DIR)\default.htm
 
@@ -195,7 +196,7 @@ $(OBJ_DIR)\default.htm.utf-8wobom.txt: $(OBJ_DIR)\default.htm
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR)\default.htm
 
 
-$(OBJ_DIR_ARTICLES)\default.htm: articles\default.options.yaml templates\main.htm articles\default.metadata.yaml articles\default.md
+$(OBJ_DIR_ARTICLES)\default.htm: articles\default.options.yaml $(TEMPLATES) articles\default.metadata.yaml articles\default.md
 	$(PANDOC_UTIL_PATH) -d articles\default.options.yaml
 	move /Y articles\default.htm $(OBJ_DIR_ARTICLES)\default.htm
 
@@ -217,7 +218,7 @@ $(OBJ_DIR_ARTICLES)\default.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\default.htm
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_ARTICLES)\default.htm
 
 
-$(OBJ_DIR_ARTICLES)\tips.htm: articles\tips.options.yaml templates\main.htm articles\tips.metadata.yaml articles\tips.md
+$(OBJ_DIR_ARTICLES)\tips.htm: articles\tips.options.yaml $(TEMPLATES) articles\tips.metadata.yaml articles\tips.md
 	$(PANDOC_UTIL_PATH) -d articles\tips.options.yaml
 	move /Y articles\tips.htm $(OBJ_DIR_ARTICLES)\tips.htm
 
@@ -239,7 +240,7 @@ $(OBJ_DIR_ARTICLES)\tips.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\tips.htm
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_ARTICLES)\tips.htm
 
 
-$(OBJ_DIR_ARTICLES)\bstr.htm: articles\bstr.options.yaml templates\main.htm articles\bstr.metadata.yaml articles\bstr.md
+$(OBJ_DIR_ARTICLES)\bstr.htm: articles\bstr.options.yaml $(TEMPLATES) articles\bstr.metadata.yaml articles\bstr.md
 	$(PANDOC_UTIL_PATH) -d articles\bstr.options.yaml
 	move /Y articles\bstr.htm $(OBJ_DIR_ARTICLES)\bstr.htm
 
@@ -261,7 +262,7 @@ $(OBJ_DIR_ARTICLES)\bstr.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\bstr.htm
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_ARTICLES)\bstr.htm
 
 
-$(OBJ_DIR_ARTICLES)\guid.htm: articles\guid.options.yaml templates\main.htm articles\guid.metadata.yaml articles\guid.md
+$(OBJ_DIR_ARTICLES)\guid.htm: articles\guid.options.yaml $(TEMPLATES) articles\guid.metadata.yaml articles\guid.md
 	$(PANDOC_UTIL_PATH) -d articles\guid.options.yaml
 	move /Y articles\guid.htm $(OBJ_DIR_ARTICLES)\guid.htm
 
@@ -283,7 +284,7 @@ $(OBJ_DIR_ARTICLES)\guid.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\guid.htm
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_ARTICLES)\guid.htm
 
 
-$(OBJ_DIR_ARTICLES)\hresult.htm: articles\hresult.options.yaml templates\main.htm articles\hresult.metadata.yaml articles\hresult.md
+$(OBJ_DIR_ARTICLES)\hresult.htm: articles\hresult.options.yaml $(TEMPLATES) articles\hresult.metadata.yaml articles\hresult.md
 	$(PANDOC_UTIL_PATH) -d articles\hresult.options.yaml
 	move /Y articles\hresult.htm $(OBJ_DIR_ARTICLES)\hresult.htm
 
@@ -305,7 +306,7 @@ $(OBJ_DIR_ARTICLES)\hresult.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\hresult.htm
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_ARTICLES)\hresult.htm
 
 
-$(OBJ_DIR_ARTICLES)\inifiles.htm: articles\inifiles.options.yaml templates\main.htm articles\inifiles.metadata.yaml articles\inifiles.md
+$(OBJ_DIR_ARTICLES)\inifiles.htm: articles\inifiles.options.yaml $(TEMPLATES) articles\inifiles.metadata.yaml articles\inifiles.md
 	$(PANDOC_UTIL_PATH) -d articles\inifiles.options.yaml
 	move /Y articles\inifiles.htm $(OBJ_DIR_ARTICLES)\inifiles.htm
 
@@ -327,7 +328,7 @@ $(OBJ_DIR_ARTICLES)\inifiles.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\inifiles.ht
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_ARTICLES)\inifiles.htm
 
 
-$(OBJ_DIR_ARTICLES)\unicode.htm: articles\unicode.options.yaml templates\main.htm articles\unicode.metadata.yaml articles\unicode.md
+$(OBJ_DIR_ARTICLES)\unicode.htm: articles\unicode.options.yaml $(TEMPLATES) articles\unicode.metadata.yaml articles\unicode.md
 	$(PANDOC_UTIL_PATH) -d articles\unicode.options.yaml
 	move /Y articles\unicode.htm $(OBJ_DIR_ARTICLES)\unicode.htm
 
@@ -349,7 +350,7 @@ $(OBJ_DIR_ARTICLES)\unicode.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\unicode.htm
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_ARTICLES)\unicode.htm
 
 
-$(OBJ_DIR_ARTICLES)\winapi-errors.htm: articles\winapi-errors.options.yaml templates\main.htm articles\winapi-errors.metadata.yaml articles\winapi-errors.md
+$(OBJ_DIR_ARTICLES)\winapi-errors.htm: articles\winapi-errors.options.yaml $(TEMPLATES) articles\winapi-errors.metadata.yaml articles\winapi-errors.md
 	$(PANDOC_UTIL_PATH) -d articles\winapi-errors.options.yaml
 	move /Y articles\winapi-errors.htm $(OBJ_DIR_ARTICLES)\winapi-errors.htm
 
@@ -371,7 +372,7 @@ $(OBJ_DIR_ARTICLES)\winapi-errors.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\winapi
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_ARTICLES)\winapi-errors.htm
 
 
-$(OBJ_DIR_ARTICLES)\winapi-registry.htm: articles\winapi-registry.options.yaml templates\main.htm articles\winapi-registry.metadata.yaml articles\winapi-registry.md
+$(OBJ_DIR_ARTICLES)\winapi-registry.htm: articles\winapi-registry.options.yaml $(TEMPLATES) articles\winapi-registry.metadata.yaml articles\winapi-registry.md
 	$(PANDOC_UTIL_PATH) -d articles\winapi-registry.options.yaml
 	move /Y articles\winapi-registry.htm $(OBJ_DIR_ARTICLES)\winapi-registry.htm
 
@@ -393,7 +394,7 @@ $(OBJ_DIR_ARTICLES)\winapi-registry.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\wina
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_ARTICLES)\winapi-registry.htm
 
 
-$(OBJ_DIR_TUTORIALS)\default.htm: tutorials\default.options.yaml templates\main.htm tutorials\default.metadata.yaml tutorials\default.md
+$(OBJ_DIR_TUTORIALS)\default.htm: tutorials\default.options.yaml $(TEMPLATES) tutorials\default.metadata.yaml tutorials\default.md
 	$(PANDOC_UTIL_PATH) -d tutorials\default.options.yaml
 	move /Y tutorials\default.htm $(OBJ_DIR_TUTORIALS)\default.htm
 
@@ -415,7 +416,7 @@ $(OBJ_DIR_TUTORIALS)\default.htm.utf-8wobom.txt: $(OBJ_DIR_TUTORIALS)\default.ht
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_TUTORIALS)\default.htm
 
 
-$(OBJ_DIR_TUTORIALS)\install.htm: tutorials\install.options.yaml templates\main.htm tutorials\install.metadata.yaml tutorials\install.md
+$(OBJ_DIR_TUTORIALS)\install.htm: tutorials\install.options.yaml $(TEMPLATES) tutorials\install.metadata.yaml tutorials\install.md
 	$(PANDOC_UTIL_PATH) -d tutorials\install.options.yaml
 	move /Y tutorials\install.htm $(OBJ_DIR_TUTORIALS)\install.htm
 
@@ -437,7 +438,7 @@ $(OBJ_DIR_TUTORIALS)\install.htm.utf-8wobom.txt: $(OBJ_DIR_TUTORIALS)\install.ht
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_TUTORIALS)\install.htm
 
 
-$(OBJ_DIR_TUTORIALS)\variables.htm: tutorials\variables.options.yaml templates\main.htm tutorials\variables.metadata.yaml tutorials\variables.md
+$(OBJ_DIR_TUTORIALS)\variables.htm: tutorials\variables.options.yaml $(TEMPLATES) tutorials\variables.metadata.yaml tutorials\variables.md
 	$(PANDOC_UTIL_PATH) -d tutorials\variables.options.yaml
 	move /Y tutorials\variables.htm $(OBJ_DIR_TUTORIALS)\variables.htm
 
@@ -459,7 +460,7 @@ $(OBJ_DIR_TUTORIALS)\variables.htm.utf-8wobom.txt: $(OBJ_DIR_TUTORIALS)\variable
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_TUTORIALS)\variables.htm
 
 
-$(OBJ_DIR_TUTORIALS)\datatypes.htm: tutorials\datatypes.options.yaml templates\main.htm tutorials\datatypes.metadata.yaml tutorials\datatypes.md
+$(OBJ_DIR_TUTORIALS)\datatypes.htm: tutorials\datatypes.options.yaml $(TEMPLATES) tutorials\datatypes.metadata.yaml tutorials\datatypes.md
 	$(PANDOC_UTIL_PATH) -d tutorials\datatypes.options.yaml
 	move /Y tutorials\datatypes.htm $(OBJ_DIR_TUTORIALS)\datatypes.htm
 
@@ -481,7 +482,7 @@ $(OBJ_DIR_TUTORIALS)\datatypes.htm.utf-8wobom.txt: $(OBJ_DIR_TUTORIALS)\datatype
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_TUTORIALS)\datatypes.htm
 
 
-$(OBJ_DIR_TUTORIALS)\statements.htm: tutorials\statements.options.yaml templates\main.htm tutorials\statements.metadata.yaml tutorials\statements.md
+$(OBJ_DIR_TUTORIALS)\statements.htm: tutorials\statements.options.yaml $(TEMPLATES) tutorials\statements.metadata.yaml tutorials\statements.md
 	$(PANDOC_UTIL_PATH) -d tutorials\statements.options.yaml
 	move /Y tutorials\statements.htm $(OBJ_DIR_TUTORIALS)\statements.htm
 
@@ -503,7 +504,7 @@ $(OBJ_DIR_TUTORIALS)\statements.htm.utf-8wobom.txt: $(OBJ_DIR_TUTORIALS)\stateme
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_TUTORIALS)\statements.htm
 
 
-$(OBJ_DIR_PROJECTS)\default.htm: projects\default.options.yaml templates\main.htm projects\default.metadata.yaml projects\default.md
+$(OBJ_DIR_PROJECTS)\default.htm: projects\default.options.yaml $(TEMPLATES) projects\default.metadata.yaml projects\default.md
 	$(PANDOC_UTIL_PATH) -d projects\default.options.yaml
 	move /Y projects\default.htm $(OBJ_DIR_PROJECTS)\default.htm
 
@@ -525,7 +526,7 @@ $(OBJ_DIR_PROJECTS)\default.htm.utf-8wobom.txt: $(OBJ_DIR_PROJECTS)\default.htm
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_PROJECTS)\default.htm
 
 
-$(OBJ_DIR_USERS)\default.htm: users\default.options.yaml templates\main.htm users\default.metadata.yaml users\default.md
+$(OBJ_DIR_USERS)\default.htm: users\default.options.yaml $(TEMPLATES) users\default.metadata.yaml users\default.md
 	$(PANDOC_UTIL_PATH) -d users\default.options.yaml
 	move /Y users\default.htm $(OBJ_DIR_USERS)\default.htm
 
@@ -547,7 +548,7 @@ $(OBJ_DIR_USERS)\default.htm.utf-8wobom.txt: $(OBJ_DIR_USERS)\default.htm
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_USERS)\default.htm
 
 
-$(OBJ_DIR_USERS)\mabu.htm: users\mabu.options.yaml templates\main.htm users\mabu.metadata.yaml users\mabu.md
+$(OBJ_DIR_USERS)\mabu.htm: users\mabu.options.yaml $(TEMPLATES) users\mabu.metadata.yaml users\mabu.md
 	$(PANDOC_UTIL_PATH) -d users\mabu.options.yaml
 	move /Y users\mabu.htm $(OBJ_DIR_USERS)\mabu.htm
 
@@ -569,7 +570,7 @@ $(OBJ_DIR_USERS)\mabu.htm.utf-8wobom.txt: $(OBJ_DIR_USERS)\mabu.htm
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_USERS)\mabu.htm
 
 
-$(OBJ_DIR_HELP)\default.htm: help\default.options.yaml templates\main.htm help\default.metadata.yaml help\default.md
+$(OBJ_DIR_HELP)\default.htm: help\default.options.yaml $(TEMPLATES) help\default.metadata.yaml help\default.md
 	$(PANDOC_UTIL_PATH) -d help\default.options.yaml
 	move /Y help\default.htm $(OBJ_DIR_HELP)\default.htm
 
@@ -591,7 +592,7 @@ $(OBJ_DIR_HELP)\default.htm.utf-8wobom.txt: $(OBJ_DIR_HELP)\default.htm
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_HELP)\default.htm
 
 
-$(OBJ_DIR_HELP)\about.htm: help\about.options.yaml templates\main.htm help\about.metadata.yaml help\about.md
+$(OBJ_DIR_HELP)\about.htm: help\about.options.yaml $(TEMPLATES) help\about.metadata.yaml help\about.md
 	$(PANDOC_UTIL_PATH) -d help\about.options.yaml
 	move /Y help\about.htm $(OBJ_DIR_HELP)\about.htm
 
@@ -613,7 +614,7 @@ $(OBJ_DIR_HELP)\about.htm.utf-8wobom.txt: $(OBJ_DIR_HELP)\about.htm
 	$(ONELINE_UTIL_PATH) /utf-8wobom $(OBJ_DIR_HELP)\about.htm
 
 
-$(OBJ_DIR_HELP)\links.htm: help\links.options.yaml templates\main.htm help\links.metadata.yaml help\links.md
+$(OBJ_DIR_HELP)\links.htm: help\links.options.yaml $(TEMPLATES) help\links.metadata.yaml help\links.md
 	$(PANDOC_UTIL_PATH) -d help\links.options.yaml
 	move /Y help\links.htm $(OBJ_DIR_HELP)\links.htm
 

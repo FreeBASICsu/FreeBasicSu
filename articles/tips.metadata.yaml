@@ -3,10 +3,11 @@ title: "Секреты и хитрости"
 
 subtitle: "FreeBASIC.su"
 
-author: 
-  - mabu
-
-description: "Советы по написанию быстрого и компактного кода"
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
 
 # abstract: 
 
@@ -15,20 +16,24 @@ keywords:
   - хитрости
   - оптимизация
 
+# subject:
+
+description: "Советы по написанию быстрого и компактного кода"
+
+# category:
+
 lang: "ru"
+
+date: "2021-10-20T21:51:00+07:00"
 
 FileVersion: 1.0
 
-PublicationDate: "2021-10-20T021:51:00+07:00"
+PublicationDate: "2021-10-20T21:51:00+07:00"
 
 PublicationDateVerbose: "20 октября 2021"
 
-ModifiedDate: "2021-10-21T021:51:00+07:00"
+ModifiedDate: "2021-10-21T21:51:00+07:00"
 
 ModifiedDateVerbose: "21 октября 2021"
-
-AuthorPage: "/users/mabu.htm"
-
-AuthorAvatar: "/avatars/mabu.50x50.jpg"
 
 ...

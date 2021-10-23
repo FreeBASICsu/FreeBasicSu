@@ -3,10 +3,11 @@ title: "Язык программирования FreeBASIC"
 
 subtitle: "FreeBASIC.su"
 
-author: 
-  - mabu
-
-description: "FreeBASIC: примеры процедурного и объектно‐ориентированного программирования"
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
 
 # abstract: 
 
@@ -15,10 +16,24 @@ keywords:
   - программирование
   - исходники
 
+# subject:
+
+description: "Сайт о языке программирования FreeBASIC для начинающих и продвинутых пользователей, статьи, уроки, руководства и учебник по FreeBASIC и WinAPI"
+
+# category:
+
 lang: "ru"
 
 date: "2016-03-11"
 
+# FileVersion: 1.0
+
+PublicationDate: "2016-03-11"
+
+PublicationDateVerbose: "2016-03-11"
+
 ModifiedDate: "2020-02-09"
+
+ModifiedDateVerbose: "2020-02-09"
 
 ...

@@ -3,10 +3,11 @@ title: "Файлы инициализации"
 
 subtitle: "FreeBASIC.su"
 
-author: 
-  - mabu
-
-description: "Чтение и запись файлов конфигурации — INI‐файлов — функциями GetPrivateProfileString и WritePrivateProfileString, получение всех секций и параметров в секции."
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
 
 # abstract: 
 
@@ -16,7 +17,13 @@ keywords:
   - INI
   - WinAPI
 
+# subject:
+
+description: "Чтение и запись файлов конфигурации — INI‐файлов — функциями GetPrivateProfileString и WritePrivateProfileString, получение всех секций и параметров в секции."
+
 lang: "ru"
+
+date: "2016-02-10T09:25:31+07:00"
 
 FileVersion: 1.0
 
@@ -27,9 +34,5 @@ PublicationDateVerbose: "10 февраля 2016"
 ModifiedDate: "2016-02-10T09:25:31+07:00"
 
 ModifiedDateVerbose: "10 февраля 2016"
-
-AuthorPage: "/users/mabu.htm"
-
-AuthorAvatar: "/avatars/mabu.50x50.jpg"
 
 ...

@@ -3,10 +3,11 @@ title: "Тип данных HRESULT"
 
 subtitle: "FreeBASIC.su"
 
-author: 
-  - mabu
-
-description: "Тип HRESULT является одним из средств контроля ошибок в COM. Этот тип представляет собой 32‐битное число, в котором кодируется результат операции."
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
 
 # abstract: 
 
@@ -16,7 +17,13 @@ keywords:
   - COM
   - Itnerface
 
+description: "Тип HRESULT является одним из средств контроля ошибок в COM. Этот тип представляет собой 32‐битное число, в котором кодируется результат операции."
+
+# category:
+
 lang: "ru"
+
+date: "2018-12-10T05:24:00+07:00"
 
 FileVersion: 1.0
 
@@ -27,10 +34,5 @@ PublicationDateVerbose: "10 декабря 2018"
 ModifiedDate: "2018-12-10T05:24:00+07:00"
 
 ModifiedDateVerbose: "10 декабря 2018"
-
-AuthorPage: "/users/mabu.htm"
-
-AuthorAvatar: "/avatars/mabu.50x50.jpg"
-
 
 ...

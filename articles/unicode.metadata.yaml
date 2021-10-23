@@ -3,10 +3,11 @@ title: "Юникод"
 
 subtitle: "FreeBASIC.su"
 
-author: 
-  - mabu
-
-description: "Как использовать кодировки и заставить FreeBASIC выводить и печатать в консоли русские буквы"
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
 
 # abstract: 
 
@@ -18,20 +19,24 @@ keywords:
   - кириллица
   - консоль
 
+# subject:
+
+description: "Как использовать кодировки и заставить FreeBASIC выводить и печатать в консоли русские буквы"
+
+# category:
+
 lang: "ru"
+
+date: "2021-04-14T12:52:26+07:00"
 
 FileVersion: 1.0
 
-PublicationDate: "2021-04-14T012:52:26+07:00"
+PublicationDate: "2021-04-14T12:52:26+07:00"
 
 PublicationDateVerbose: "14 апреля 2021"
 
-ModifiedDate: "2021-04-14T012:52:26+07:00"
+ModifiedDate: "2021-04-14T12:52:26+07:00"
 
 ModifiedDateVerbose: "14 апреля 2021"
-
-AuthorPage: "/users/mabu.htm"
-
-AuthorAvatar: "/avatars/mabu.50x50.jpg"
 
 ...

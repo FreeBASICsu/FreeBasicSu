@@ -8,12 +8,15 @@ output-file: tutorials\install.htm
 to: html5
 
 template: templates\main.htm
+
 standalone: true
-self-contained: false
+
+self-contained: true
 
 variables:
   TutorialDefaultPage: false
   NeedSocialShareButtons: false
+  inline-css: true
 
 metadata-files:
 - tutorials\install.metadata.yaml

@@ -8,11 +8,14 @@ output-file: projects\default.htm
 to: html5
 
 template: templates\main.htm
+
 standalone: true
-self-contained: false
+
+self-contained: true
 
 variables:
   ProjectsDefaultPage: true
+  inline-css: true
 
 metadata-files:
 - projects\default.metadata.yaml

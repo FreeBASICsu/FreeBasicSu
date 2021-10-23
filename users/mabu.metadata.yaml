@@ -3,19 +3,30 @@ title: "Анкета пользователя @mabu"
 
 subtitle: "FreeBASIC.su"
 
-author: 
-  - mabu
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
 
-description: "Анкета пользователя mabu"
+# abstract: 
 
 keywords: 
   - mabu
   - анкета
   - информация о пользователе
 
+# subject:
+
+description: "Анкета пользователя mabu"
+
+# category:
+
 lang: "ru"
 
 date: "2016-03-11"
+
+# FileVersion: 1.0
 
 ModifiedDate: "2020-02-09"
 

@@ -8,11 +8,14 @@ output-file: categories\default.htm
 to: html5
 
 template: template.htm
+
 standalone: true
-self-contained: false
+
+self-contained: true
 
 variables:
   CategoriesDefaultPage: true
+  inline-css: true
 
 metadata-files:
 - categories\default.metadata.yaml

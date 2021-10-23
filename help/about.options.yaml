@@ -8,11 +8,14 @@ output-file: help\about.htm
 to: html5
 
 template: templates\main.htm
+
 standalone: true
-self-contained: false
+
+self-contained: true
 
 variables:
   HelpDefaultPage: false
+  inline-css: true
 
 metadata-files:
 - help\about.metadata.yaml

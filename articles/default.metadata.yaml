@@ -3,10 +3,11 @@ title: "Статьи"
 
 subtitle: "FreeBASIC.su"
 
-author: 
-  - mabu
-
-description: "Список статей по программированию на языке FreeBASIC, технические статьи, документации, примеры кода FreeBASIC, исходники, библиотеки"
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
 
 # abstract: 
 
@@ -16,10 +17,24 @@ keywords:
   - исходники
   - список статей
 
+# subject:
+
+description: "Список статей по программированию на языке FreeBASIC, технические статьи, документации, примеры кода FreeBASIC, исходники, библиотеки"
+
+# category:
+
 lang: "ru"
 
 date: "2016-03-11"
 
+# FileVersion: 1.0
+
+PublicationDate: "2016-03-11"
+
+PublicationDateVerbose: "2016-03-11"
+
 ModifiedDate: "2020-02-09"
+
+ModifiedDateVerbose: "2020-02-09"
 
 ...

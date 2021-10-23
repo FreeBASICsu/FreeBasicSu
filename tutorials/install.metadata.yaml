@@ -3,20 +3,37 @@ title: "Установка, настройка и первая программ�
 
 subtitle: "FreeBASIC.su"
 
-author: 
-  - mabu
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
 
-description: "Уроки по программированию на языке FreeBASIC"
+# abstract: 
 
 keywords: 
   - FreeBASIC
   - уроки
   - учебник
 
+# subject:
+
+description: "Уроки по программированию на языке FreeBASIC"
+
+# category:
+
 lang: "ru"
 
 date: "2016-03-11"
 
+# FileVersion: 1.0
+
+PublicationDate: "2016-03-11"
+
+PublicationDateVerbose: "2016-03-11"
+
 ModifiedDate: "2021-03-10"
+
+ModifiedDateVerbose: "2021-03-10"
 
 ...

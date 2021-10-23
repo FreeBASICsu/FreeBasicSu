@@ -7,11 +7,14 @@ output-file: default.htm
 to: html5
 
 template: templates\main.htm
+
 standalone: true
-self-contained: false
+
+self-contained: true
 
 variables:
   HomePage: true
+  inline-css: true
 
 metadata-files:
 - default.metadata.yaml
@@ -28,14 +31,17 @@ include-in-header: []
 resource-path: ["."]
 
 strip-empty-paragraphs: true
-# lf, crlf, or native
-eol: crlf
-strip-comments: false
+
+strip-comments: true
 
 preserve-tabs: true
 
+# lf, crlf, or native
+eol: crlf
+
 # either a style name of a style definition file:
 highlight-style: pygments
+
 # A list of two-element lists
 request-headers:
 - ["User-Agent", "Mozilla/5.0"]

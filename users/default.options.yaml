@@ -8,11 +8,14 @@ output-file: users\default.htm
 to: html5
 
 template: templates\main.htm
+
 standalone: true
-self-contained: false
+
+self-contained: true
 
 variables:
   UsersDefaultPage: true
+  inline-css: true
 
 metadata-files:
 - users\default.metadata.yaml

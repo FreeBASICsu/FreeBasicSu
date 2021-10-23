@@ -3,10 +3,11 @@ title: "Что такое GUID и зачем он нужен"
 
 subtitle: "FreeBASIC.su"
 
-author: 
-  - mabu
-
-description: "GUID представляет собой 128‐битное целое число. Цель создания — уникальная идентификации чего‐либо. Используется там, где нужен гарантированно уникальный идентификатор."
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
 
 # abstract: 
 
@@ -17,7 +18,13 @@ keywords:
   - CLSID
   - COM
 
+# subject:
+
+description: "GUID представляет собой 128‐битное целое число. Цель создания — уникальная идентификации чего‐либо. Используется там, где нужен гарантированно уникальный идентификатор."
+
 lang: "ru"
+
+date: "2019-01-26T00:45:10+07:00"
 
 FileVersion: 1.0
 
@@ -28,9 +35,5 @@ PublicationDateVerbose: "26 января 2019"
 ModifiedDate: "2019-01-26T00:45:10+07:00"
 
 ModifiedDateVerbose: "26 января 2019"
-
-AuthorPage: "/users/mabu.htm"
-
-AuthorAvatar: "/avatars/mabu.50x50.jpg"
 
 ...
