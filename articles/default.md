@@ -7,7 +7,7 @@
 ## Секреты и хитрости
 
 :::: { .posternameblock}
-[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu.htm) опубликовал <time datetime="2021-04-14T012:52:26+07:00" pubdate="2021-04-14T012:52:26+07:00">14 апреля 2021</time>
+[ ![Аватар пользователя](/avatars/mabu.50x50.jpg){ .avatar width="50" height="50" } \@mabu](/users/mabu.htm) опубликовал <time datetime="2021-10-20T021:51:00+07:00" pubdate="2021-10-20T021:51:00+07:00">20 октября 2021</time>
 ::::
 
 </header>
