@@ -50,20 +50,12 @@
 
 ## Чаты
 
-Чтобы получить ответ на вопрос онлайн и как можно быстрее, можно зайти на специальные каналы в IRC‐сети или конференции в джаббере.
+Получать ответы на вопрос можно онлайн и как можно быстрее, достаточно зайти в эти чаты.
 
 ### Дискорд
 
 [FreeBASIC на дискорд‐сервере](https://discord.gg/286rSdK)
 
-### Официальный IRC‐канал
-
-[##freebasic](irc:chat.freenode.net/#freebasic)
-
-### Неофициальный русский IRC‐канал
-
-[#freebasic-ru](irc:chat.freenode.net/#freebasic-ru)
-
 ### Джаббер‐конференция
 
-[Конференция на jabber.ru](xmpp:freebasic@conference.jabber.ru)
+[Неофициальная конференция на jabber.ru](xmpp:freebasic@conference.jabber.ru)
