@@ -57,16 +57,19 @@
 		<loc>http://www.freebasic.su/tutorials/</loc>
 	</url>
 	<url>
-		<loc>http://www.freebasic.su/tutorial/install.htm</loc>
+		<loc>http://www.freebasic.su/tutorials/install.htm</loc>
 	</url>
 	<url>
-		<loc>http://www.freebasic.su/tutorial/datatypes.htm</loc>
+		<loc>http://www.freebasic.su/tutorials/first-program.htm</loc>
 	</url>
 	<url>
-		<loc>http://www.freebasic.su/tutorial/variables.htm</loc>
+		<loc>http://www.freebasic.su/tutorials/datatypes.htm</loc>
 	</url>
 	<url>
-		<loc>http://www.freebasic.su/tutorial/statements.htm</loc>
+		<loc>http://www.freebasic.su/tutorials/variables.htm</loc>
+	</url>
+	<url>
+		<loc>http://www.freebasic.su/tutorials/statements.htm</loc>
 	</url>
 	
 	
