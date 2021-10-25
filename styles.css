@@ -148,25 +148,8 @@ img.avatar
 	}
 
 
-	td
-	{
-		border:solid 1px;
-	}
-
-	dt
-	{
-		font-weight:bold;
-	}
-
-	hr
-	{
-		margin:1em 0 1em 0;
-		clear:both;
-	}
-
 	h1, h2, h3, h4, h5, h6
 	{
-		margin-top:2.0em;
 		font-weight: bold;
 		color: #FFAB3F;
 	}
@@ -178,19 +161,13 @@ img.avatar
 
 	pre.console
 	{
-		background:#000000;
 		color:#C0C0C0;
 	}
 
 	pre.console:before
 	{
-		content:"C:\\Windows\\system32\\cmd.exe";
-		display:block;
-		height:1.5em;
-		padding-top:0.25em;
 		background:#FFFFFF;
 		color:#000000;
-		border:solid 1px;
 	}
 	
 	textarea, select
