@@ -33,7 +33,7 @@ $endif$
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 
 $if(inline-css)$
-	<style type="text/css">${ styles.css.utf-8wobom.txt() }</style>
+	<style>${ styles.css.utf-8wobom.txt() }</style>
 $else$
 	$for(css)$
 		<link href="$css$" type="text/css" rel="stylesheet" />
@@ -131,7 +131,7 @@ $if(author.name)$
 $endif$
 $endfor$
 		
-		<p class="publicationdate">Опубликовано: <time datetime="$PublicationDate$" pubdate="$PublicationDate$">$PublicationDateVerbose$</time></p>
+		<p class="publicationdate">Опубликовано: <time datetime="$PublicationDate$">$PublicationDateVerbose$</time></p>
 		
 		<p class="modifieddate">Исправлено: <time datetime="$ModifiedDate$">$ModifiedDateVerbose$</time></p>
 		
