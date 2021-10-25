@@ -1,0 +1,39 @@
+﻿---
+title: "Первая программа и компиляция"
+
+subtitle: "FreeBASIC.su"
+
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
+
+# abstract: 
+
+keywords: 
+  - FreeBASIC
+  - уроки
+  - учебник
+
+# subject:
+
+description: "Уроки по программированию на языке FreeBASIC"
+
+# category:
+
+lang: "ru"
+
+date: "2021-10-24"
+
+# FileVersion: 1.0
+
+PublicationDate: "2021-10-24"
+
+PublicationDateVerbose: "2021-10-24"
+
+ModifiedDate: "2021-10-24"
+
+ModifiedDateVerbose: "2021-10-24"
+
+...
