@@ -1,0 +1,41 @@
+﻿---
+title: "Признаки ужасно оформленного кода"
+
+subtitle: "FreeBASIC.su"
+
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
+
+# abstract: 
+
+keywords:
+  - плохой код
+  - как не надо
+  - плохие практики
+  - антипаттерны
+  - антишаблоны
+
+# subject:
+
+description: "Основания, по которым исходный код следует относить в категорию низкого качества"
+
+# category:
+
+lang: "ru"
+
+date: "2021-10-27T18:25:00+07:00"
+
+FileVersion: 1.0
+
+PublicationDate: "2021-10-27T18:25:00+07:00"
+
+PublicationDateVerbose: "27 октября 2021"
+
+ModifiedDate: "2021-10-27T18:25:00+07:00"
+
+ModifiedDateVerbose: "27 октября 2021"
+
+...

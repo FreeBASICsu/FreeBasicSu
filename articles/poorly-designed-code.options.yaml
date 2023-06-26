@@ -1,0 +1,45 @@
+﻿input-files:
+- articles\poorly-designed-code.md
+
+from: markdown+emoji
+
+output-file: articles\poorly-designed-code.htm
+to: html5
+
+template: templates\main.htm
+
+standalone: true
+
+self-contained: true
+
+variables:
+  ArticlesDefaultPage: false
+  VersionInfoDefined: true
+  inline-css: true
+
+metadata-files:
+- articles\poorly-designed-code.metadata.yaml
+
+css:
+- /styles.css
+
+html-q-tags: false
+
+# Note that these take files, not their contents:
+include-before-body: []
+include-after-body: []
+include-in-header: []
+resource-path: ["."]
+
+strip-empty-paragraphs: true
+# lf, crlf, or native
+eol: crlf
+strip-comments: false
+# tab-stop: 4
+preserve-tabs: true
+
+# either a style name of a style definition file:
+highlight-style: pygments
+
+request-headers:
+- ["User-Agent", "Mozilla/5.0"]
