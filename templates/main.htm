@@ -72,22 +72,10 @@ $else$
 			<li><a href="/articles/">Статьи</a></li>
 $endif$
 		
-$if(CategoriesDefaultPage)$
-$--			<li><span>Рубрики</span></li>
-$else$
-$--			<li><a href="/categories/">Рубрики</a></li>
-$endif$
-
 $if(TutorialDefaultPage)$
 			<li><span>Уроки</span></li>
 $else$
 			<li><a href="/tutorials/">Уроки</a></li>
-$endif$
-
-$if(TasksDefaultPage)$
-$--			<li><span>Задачи</span></li>
-$else$
-$--			<li><a href="/tasks/">Задачи</a></li>
 $endif$
 
 $if(ProjectsDefaultPage)$
@@ -139,8 +127,6 @@ $body$
 $for(include-after)$
 $include-after$
 $endfor$
-
-$-- <div id="disqus_thread"></div>
 
 </main>
 
