@@ -114,11 +114,6 @@ $endif$
 
 <main id="MainContent">
 
-$-- <div class="advertisement">
-$-- 	<script type="text/javascript" src="//j.contema.ru/Contema.js"></script>
-$-- 	<script type="text/javascript">Contema.load(21250,{adv_format : "banner"});</script>
-$-- </div>
-
 $for(include-before)$
 $include-before$
 $endfor$
@@ -155,43 +150,6 @@ $-- <div id="disqus_thread"></div>
 	
 	<p>«Пакетные файлы» создали этот сайт <time datetime="2016-03-11T05:00:00+07:00">11 марта 2016 года</time></p>
 	
-$if(HomePage)$
-	<p id="WebSiteCounters">
-
-$--		<a href="https://webmaster.yandex.ru/sqi?host=www.freebasic.su" title="Смотреть достижения сайта на Яднекс Вебмастере">
-$--			<svg width="88" height="31">
-$--				<rect x="0" y="0" width="100%" height="100%" />
-$--			</svg>
-$--		</a>
-$else$
-$-- 	<script>
-$-- 		(function() {
-$-- 		var d = document, s = d.createElement('script');
-$-- 		s.src = 'https://www-freebasic-su.disqus.com/embed.js';
-$-- 		s.setAttribute('data-timestamp', +new Date());
-$-- 		(d.head || d.body).appendChild(s);
-$-- 		})();
-$-- 	</script>
-
-	</p>
-$endif$
-
-$--	<script>
-$--		var ImgLiveInternet=document.createElement("img");
-$--		ImgLiveInternet.src="https://counter.yadro.ru/hit?t16.6;r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();
-$--		ImgLiveInternet.alt="Логотип LiveInternet";
-$--		ImgLiveInternet.width=88;
-$--		ImgLiveInternet.height=31;
-$--		
-$--		var HrefLiveInternet=document.createElement("a");
-$--		HrefLiveInternet.href="https://www.liveinternet.ru/stat/freebasic.su";
-$--		HrefLiveInternet.title="Смотреть статистику и счётчики посещений сайта на LiveInternet";
-$--		HrefLiveInternet.appendChild(ImgLiveInternet);
-$--		
-$--		var idL=document.getElementById("WebSiteCounters");
-$--		idL.appendChild(HrefLiveInternet);
-$--	</script>
-
 </footer>
 
 </body>
