@@ -45,7 +45,7 @@ OBJ_DIR_USERS=$(OBJ_DIR)\users
 OBJ_DIR_HELP=$(OBJ_DIR)\help
 TMP_DIR=tmp
 
-BINARY_TARGETS=$(BIN_DIR)\robots.txt $(BIN_DIR)\favicon.ico $(BIN_DIR)\googledffc38e6f05ff431.html $(BIN_DIR)\yandex_461c9af9cde122fb.html $(BIN_DIR_AVATARS)\mabu.50x50.jpg $(BIN_DIR_AVATARS)\mabu.90x90.png $(BIN_DIR_PROFILEPICTURES)\mabu.original.jpg $(BIN_DIR_PROFILEPICTURES)\mabu.200x200.jpg $(BIN_DIR_RES)\heap.zip
+BINARY_TARGETS=$(BIN_DIR)\robots.txt $(BIN_DIR)\favicon.ico $(BIN_DIR)\qrCode.png $(BIN_DIR)\googledffc38e6f05ff431.html $(BIN_DIR)\yandex_461c9af9cde122fb.html $(BIN_DIR_AVATARS)\mabu.50x50.jpg $(BIN_DIR_AVATARS)\mabu.90x90.png $(BIN_DIR_PROFILEPICTURES)\mabu.original.jpg $(BIN_DIR_PROFILEPICTURES)\mabu.200x200.jpg $(BIN_DIR_RES)\heap.zip
 
 TEXT_TARGETS=$(BIN_DIR)\rss.rss.gz $(BIN_DIR)\rss.rss $(BIN_DIR)\sitemap.xml.gz $(BIN_DIR)\sitemap.xml $(BIN_DIR)\styles.css.gz $(BIN_DIR)\styles.css
 
@@ -88,6 +88,10 @@ $(BIN_DIR)\robots.txt: robots.txt
 $(BIN_DIR)\favicon.ico: favicon.ico
 	copy /B /Y favicon.ico $(BIN_DIR)\favicon.ico
 	$(HTTPPUT_UTIL_PATH) $(IP_BIND_ADDRESS) $(URL)/favicon.ico $(BIN_DIR)\favicon.ico $(MIME_IMAGE_ICON) $(CREDENTIALS) $(CONTENT_LANGUAGE)
+
+$(BIN_DIR)\qrCode.png: qrCode.png
+	copy /B /Y qrCode.png $(BIN_DIR)\qrCode.png
+	$(HTTPPUT_UTIL_PATH) $(IP_BIND_ADDRESS) $(URL)/qrCode.png $(BIN_DIR)\qrCode.png $(MIME_IMAGE_PNG) $(CREDENTIALS) $(CONTENT_LANGUAGE)
 
 $(BIN_DIR)\googledffc38e6f05ff431.html: googledffc38e6f05ff431.html
 	copy /B /Y googledffc38e6f05ff431.html $(BIN_DIR)\googledffc38e6f05ff431.html
