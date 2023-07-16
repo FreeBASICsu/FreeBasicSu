@@ -4,53 +4,53 @@
 
 	<title>$pagetitle$ — $subtitle$</title>
 
-$if(description)$
+	$if(description)$
 	<meta name="description" content="$description$" />
-$endif$
+	$endif$
 
-$for(author)$
-$if(author.name)$
+	$for(author)$
+	$if(author.name)$
 	<meta name="author" content="$author.name$$if(author.affiliation)$ ($author.affiliation$)$endif$" />
-$else$
-$-- $for(author-meta)$
-$-- 	<meta name="author" content="$author-meta$" />
-$-- $endfor$
-$endif$
-$endfor$
+	$else$
+	$-- $for(author-meta)$
+	$-- 	<meta name="author" content="$author-meta$" />
+	$-- $endfor$
+	$endif$
+	$endfor$
 
-$if(date-meta)$
+	$if(date-meta)$
 	<meta name="dcterms.created" content="$date-meta$" />
-$endif$
+	$endif$
 
-$if(ModifiedDate)$
+	$if(ModifiedDate)$
 	<meta name="dcterms.modified" content="$ModifiedDate$" />
-$endif$
+	$endif$
 
-$if(keywords)$
+	$if(keywords)$
 	<meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
-$endif$
+	$endif$
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 
-$if(inline-css)$
+	$if(inline-css)$
 	<style>${ styles.css.utf-8wobom.txt() }</style>
-$else$
+	$else$
 	$for(css)$
 		<link href="$css$" type="text/css" rel="stylesheet" />
 	$endfor$
-$endif$
+	$endif$
 
-$-- $if(HomePage)$
-$-- 	<link href="/rss.rss" type="application/rss+xml" rel="alternate" title="RSS 2.00" />
-$-- $endif$
+	$-- $if(HomePage)$
+	$-- 	<link href="/rss.rss" type="application/rss+xml" rel="alternate" title="RSS 2.00" />
+	$-- $endif$
 
-$if(math)$
-  $math$
-$endif$
+	$if(math)$
+  	$math$
+	$endif$
 
-$for(header-includes)$
-  $header-includes$
-$endfor$
+	$for(header-includes)$
+	$header-includes$
+	$endfor$
 
 </head>
 
@@ -60,79 +60,84 @@ $endfor$
 	
 	<nav id="MainMenu">
 		<ul>
-$if(HomePage)$
+			$if(HomePage)$
 			<li><span>Главная</span></li>
-$else$
+			$else$
 			<li><a href="/">Главная</a></li>
-$endif$
+			$endif$
 		
-$if(ArticlesDefaultPage)$
+			$if(ArticlesDefaultPage)$
 			<li><span>Статьи</span></li>
-$else$
+			$else$
 			<li><a href="/articles/">Статьи</a></li>
-$endif$
+			$endif$
 		
-$if(TutorialDefaultPage)$
+			$if(TutorialDefaultPage)$
 			<li><span>Уроки</span></li>
-$else$
+			$else$
 			<li><a href="/tutorials/">Уроки</a></li>
-$endif$
+			$endif$
 
-$if(ProjectsDefaultPage)$
+			$if(ProjectsDefaultPage)$
 			<li><span>Проекты</span></li>
-$else$
+			$else$
 			<li><a href="/projects/">Проекты</a></li>
-$endif$
+			$endif$
 
-$if(UsersDefaultPage)$
+			$if(UsersDefaultPage)$
 			<li><span>Персонажи</span></li>
-$else$
+			$else$
 			<li><a href="/users/">Персонажи</a></li>
-$endif$
+			$endif$
 
-$if(HelpDefaultPage)$
+			$if(HelpDefaultPage)$
 			<li><span>Информация</span></li>
-$else$
+			$else$
 			<li><a href="/help/">Информация</a></li>
-$endif$
+			$endif$
 		</ul>
 	</nav>
 	
 </header>
 
-<main id="MainContent">
+<main>
 
-$for(include-before)$
-$include-before$
-$endfor$
+	$for(include-before)$
+	$include-before$
+	$endfor$
 
-$if(VersionInfoDefined)$
-	<div class="versioninfo">
-$for(author)$
-$if(author.name)$
-		<p class="authorname">Автор: <a href="$author.website$">$author.name$</a>$if(author.affiliation)$ ($author.affiliation$)$endif$</p>
-$endif$
-$endfor$
-		
-		<p class="publicationdate">Опубликовано: <time datetime="$PublicationDate$">$PublicationDateVerbose$</time></p>
-		
-		<p class="modifieddate">Исправлено: <time datetime="$ModifiedDate$">$ModifiedDateVerbose$</time></p>
-		
-		<p class="documentversion">Версия документа: $FileVersion$</p>
-	</div>
-$endif$
+	$if(VersionInfoDefined)$
+		<div class="versioninfo">
+	$for(author)$
+	$if(author.name)$
+			<p class="authorname">Автор: <a href="$author.website$">$author.name$</a>$if(author.affiliation)$ ($author.affiliation$)$endif$</p>
+	$endif$
+	$endfor$
+			
+			<p class="publicationdate">Опубликовано: <time datetime="$PublicationDate$">$PublicationDateVerbose$</time></p>
+			
+			<p class="modifieddate">Исправлено: <time datetime="$ModifiedDate$">$ModifiedDateVerbose$</time></p>
+			
+			<p class="documentversion">Версия документа: $FileVersion$</p>
+		</div>
+	$endif$
 
-$body$
+	$body$
 
-$for(include-after)$
-$include-after$
-$endfor$
+	$for(include-after)$
+	$include-after$
+	$endfor$
 
 </main>
 
+<aside>
+	<div>Поблагодарить</div>
+	<p><a href="https://pay.cloudtips.ru/p/78d0143c">Здесь можно угостить автора кофе! ❤</a></p>
+</aside>
+
 <hr />
 
-<footer id="MainFooter">
+<footer>
 	
 	<p>«Пакетные файлы» создали этот сайт <time datetime="2016-03-11T05:00:00+07:00">11 марта 2016 года</time></p>
 	
