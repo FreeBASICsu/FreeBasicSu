@@ -10,12 +10,9 @@ template: templates\main.htm
 
 standalone: true
 
-self-contained: true
-
 variables:
   ArticlesDefaultPage: false
   VersionInfoDefined: true
-  inline-css: true
 
 metadata-files:
 - articles\guid.metadata.yaml

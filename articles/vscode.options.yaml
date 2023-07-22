@@ -1,9 +1,9 @@
 ﻿input-files:
-- articles\poorly-designed-code.md
+- articles\vscode.md
 
 from: markdown+emoji
 
-output-file: articles\poorly-designed-code.htm
+output-file: articles\vscode.htm
 to: html5
 
 template: templates\main.htm
@@ -15,7 +15,7 @@ variables:
   VersionInfoDefined: true
 
 metadata-files:
-- articles\poorly-designed-code.metadata.yaml
+- articles\vscode.metadata.yaml
 
 css:
 - /styles.css
@@ -32,11 +32,13 @@ strip-empty-paragraphs: true
 # lf, crlf, or native
 eol: crlf
 strip-comments: false
+
 # tab-stop: 4
 preserve-tabs: true
 
 # either a style name of a style definition file:
 highlight-style: pygments
 
+# A list of two-element lists
 request-headers:
 - ["User-Agent", "Mozilla/5.0"]

@@ -11,12 +11,9 @@ template: templates\main.htm
 
 standalone: true
 
-self-contained: true
-
 variables:
   TutorialDefaultPage: false
   NeedSocialShareButtons: false
-  inline-css: true
 
 metadata-files:
 - tutorials\statements.metadata.yaml

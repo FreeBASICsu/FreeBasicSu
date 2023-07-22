@@ -11,11 +11,8 @@ template: templates\main.htm
 
 standalone: true
 
-self-contained: true
-
 variables:
   HelpDefaultPage: false
-  inline-css: true
 
 metadata-files:
 - help\links.metadata.yaml

@@ -1,0 +1,40 @@
+﻿---
+title: "Юникод"
+
+subtitle: "FreeBASIC.su"
+
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
+
+# abstract: 
+
+keywords:
+  - Visual Studio Code
+  - VScode
+  - IDE
+  - отладка
+
+# subject:
+
+description: "Как настроить редактор Visual Studio Code для FreeBASIC"
+
+# category:
+
+lang: "ru"
+
+date: "2021-04-14T12:52:26+07:00"
+
+FileVersion: 1.0
+
+PublicationDate: "2023-07-14T12:52:26+07:00"
+
+PublicationDateVerbose: "14 июля 2023"
+
+ModifiedDate: "2023-07-14T12:52:26+07:00"
+
+ModifiedDateVerbose: "14 июля 2023"
+
+...

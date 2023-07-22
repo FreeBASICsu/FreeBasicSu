@@ -10,11 +10,8 @@ template: templates\main.htm
 
 standalone: true
 
-self-contained: true
-
 variables:
   ArticlesDefaultPage: true
-  inline-css: true
 
 metadata-files:
 - articles\default.metadata.yaml

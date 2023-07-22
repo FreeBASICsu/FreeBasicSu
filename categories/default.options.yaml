@@ -11,11 +11,8 @@ template: template.htm
 
 standalone: true
 
-self-contained: true
-
 variables:
   CategoriesDefaultPage: true
-  inline-css: true
 
 metadata-files:
 - categories\default.metadata.yaml
