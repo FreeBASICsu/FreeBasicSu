@@ -77,6 +77,11 @@ div.advertisement {
 	margin: 2.0em;
 }
 
+div.memorydump {
+	font-size: 1.35em;
+	font-family: monospace;
+}
+
 pre {
 	border: solid 1px;
 	border-radius: .25em;
