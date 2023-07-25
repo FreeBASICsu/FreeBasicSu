@@ -183,7 +183,7 @@ $(OBJ_DIR)\sitemap.xml.utf-8wobom.txt: sitemap.xml
 
 
 $(OBJ_DIR)\default.htm: default.options.yaml $(TEMPLATES) default.metadata.yaml default.md
-	$(PANDOC_UTIL_PATH) -d default.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d default.options.yaml
 	move /Y default.htm $(OBJ_DIR)\default.htm
 
 $(BIN_DIR)\default.htm: $(OBJ_DIR)\default.htm.txt
@@ -205,7 +205,7 @@ $(OBJ_DIR)\default.htm.utf-8wobom.txt: $(OBJ_DIR)\default.htm
 
 
 $(OBJ_DIR_ARTICLES)\default.htm: articles\default.options.yaml $(TEMPLATES) articles\default.metadata.yaml articles\default.md
-	$(PANDOC_UTIL_PATH) -d articles\default.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d articles\default.options.yaml
 	move /Y articles\default.htm $(OBJ_DIR_ARTICLES)\default.htm
 
 $(BIN_DIR_ARTICLES)\default.htm: $(OBJ_DIR_ARTICLES)\default.htm.txt
@@ -227,7 +227,7 @@ $(OBJ_DIR_ARTICLES)\default.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\default.htm
 
 
 $(OBJ_DIR_ARTICLES)\poorly-designed-code.htm: articles\poorly-designed-code.options.yaml $(TEMPLATES) articles\poorly-designed-code.metadata.yaml articles\poorly-designed-code.md
-	$(PANDOC_UTIL_PATH) -d articles\poorly-designed-code.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d articles\poorly-designed-code.options.yaml
 	move /Y articles\poorly-designed-code.htm $(OBJ_DIR_ARTICLES)\poorly-designed-code.htm
 
 $(BIN_DIR_ARTICLES)\poorly-designed-code.htm: $(OBJ_DIR_ARTICLES)\poorly-designed-code.htm.txt
@@ -249,7 +249,7 @@ $(OBJ_DIR_ARTICLES)\poorly-designed-code.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)
 
 
 $(OBJ_DIR_ARTICLES)\tips.htm: articles\tips.options.yaml $(TEMPLATES) articles\tips.metadata.yaml articles\tips.md
-	$(PANDOC_UTIL_PATH) -d articles\tips.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d articles\tips.options.yaml
 	move /Y articles\tips.htm $(OBJ_DIR_ARTICLES)\tips.htm
 
 $(BIN_DIR_ARTICLES)\tips.htm: $(OBJ_DIR_ARTICLES)\tips.htm.txt
@@ -271,7 +271,7 @@ $(OBJ_DIR_ARTICLES)\tips.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\tips.htm
 
 
 $(OBJ_DIR_ARTICLES)\bstr.htm: articles\bstr.options.yaml $(TEMPLATES) articles\bstr.metadata.yaml articles\bstr.md
-	$(PANDOC_UTIL_PATH) -d articles\bstr.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d articles\bstr.options.yaml
 	move /Y articles\bstr.htm $(OBJ_DIR_ARTICLES)\bstr.htm
 
 $(BIN_DIR_ARTICLES)\bstr.htm: $(OBJ_DIR_ARTICLES)\bstr.htm.txt
@@ -293,7 +293,7 @@ $(OBJ_DIR_ARTICLES)\bstr.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\bstr.htm
 
 
 $(OBJ_DIR_ARTICLES)\guid.htm: articles\guid.options.yaml $(TEMPLATES) articles\guid.metadata.yaml articles\guid.md
-	$(PANDOC_UTIL_PATH) -d articles\guid.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d articles\guid.options.yaml
 	move /Y articles\guid.htm $(OBJ_DIR_ARTICLES)\guid.htm
 
 $(BIN_DIR_ARTICLES)\guid.htm: $(OBJ_DIR_ARTICLES)\guid.htm.txt
@@ -315,7 +315,7 @@ $(OBJ_DIR_ARTICLES)\guid.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\guid.htm
 
 
 $(OBJ_DIR_ARTICLES)\hresult.htm: articles\hresult.options.yaml $(TEMPLATES) articles\hresult.metadata.yaml articles\hresult.md
-	$(PANDOC_UTIL_PATH) -d articles\hresult.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d articles\hresult.options.yaml
 	move /Y articles\hresult.htm $(OBJ_DIR_ARTICLES)\hresult.htm
 
 $(BIN_DIR_ARTICLES)\hresult.htm: $(OBJ_DIR_ARTICLES)\hresult.htm.txt
@@ -337,7 +337,7 @@ $(OBJ_DIR_ARTICLES)\hresult.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\hresult.htm
 
 
 $(OBJ_DIR_ARTICLES)\inifiles.htm: articles\inifiles.options.yaml $(TEMPLATES) articles\inifiles.metadata.yaml articles\inifiles.md
-	$(PANDOC_UTIL_PATH) -d articles\inifiles.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d articles\inifiles.options.yaml
 	move /Y articles\inifiles.htm $(OBJ_DIR_ARTICLES)\inifiles.htm
 
 $(BIN_DIR_ARTICLES)\inifiles.htm: $(OBJ_DIR_ARTICLES)\inifiles.htm.txt
@@ -359,7 +359,7 @@ $(OBJ_DIR_ARTICLES)\inifiles.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\inifiles.ht
 
 
 $(OBJ_DIR_ARTICLES)\unicode.htm: articles\unicode.options.yaml $(TEMPLATES) articles\unicode.metadata.yaml articles\unicode.md
-	$(PANDOC_UTIL_PATH) -d articles\unicode.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d articles\unicode.options.yaml
 	move /Y articles\unicode.htm $(OBJ_DIR_ARTICLES)\unicode.htm
 
 $(BIN_DIR_ARTICLES)\unicode.htm: $(OBJ_DIR_ARTICLES)\unicode.htm.txt
@@ -381,7 +381,7 @@ $(OBJ_DIR_ARTICLES)\unicode.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\unicode.htm
 
 
 $(OBJ_DIR_ARTICLES)\winapi-errors.htm: articles\winapi-errors.options.yaml $(TEMPLATES) articles\winapi-errors.metadata.yaml articles\winapi-errors.md
-	$(PANDOC_UTIL_PATH) -d articles\winapi-errors.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d articles\winapi-errors.options.yaml
 	move /Y articles\winapi-errors.htm $(OBJ_DIR_ARTICLES)\winapi-errors.htm
 
 $(BIN_DIR_ARTICLES)\winapi-errors.htm: $(OBJ_DIR_ARTICLES)\winapi-errors.htm.txt
@@ -403,7 +403,7 @@ $(OBJ_DIR_ARTICLES)\winapi-errors.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\winapi
 
 
 $(OBJ_DIR_ARTICLES)\winapi-registry.htm: articles\winapi-registry.options.yaml $(TEMPLATES) articles\winapi-registry.metadata.yaml articles\winapi-registry.md
-	$(PANDOC_UTIL_PATH) -d articles\winapi-registry.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d articles\winapi-registry.options.yaml
 	move /Y articles\winapi-registry.htm $(OBJ_DIR_ARTICLES)\winapi-registry.htm
 
 $(BIN_DIR_ARTICLES)\winapi-registry.htm: $(OBJ_DIR_ARTICLES)\winapi-registry.htm.txt
@@ -425,7 +425,7 @@ $(OBJ_DIR_ARTICLES)\winapi-registry.htm.utf-8wobom.txt: $(OBJ_DIR_ARTICLES)\wina
 
 
 $(OBJ_DIR_TUTORIALS)\default.htm: tutorials\default.options.yaml $(TEMPLATES) tutorials\default.metadata.yaml tutorials\default.md
-	$(PANDOC_UTIL_PATH) -d tutorials\default.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d tutorials\default.options.yaml
 	move /Y tutorials\default.htm $(OBJ_DIR_TUTORIALS)\default.htm
 
 $(BIN_DIR_TUTORIALS)\default.htm: $(OBJ_DIR_TUTORIALS)\default.htm.txt
@@ -447,7 +447,7 @@ $(OBJ_DIR_TUTORIALS)\default.htm.utf-8wobom.txt: $(OBJ_DIR_TUTORIALS)\default.ht
 
 
 $(OBJ_DIR_TUTORIALS)\install.htm: tutorials\install.options.yaml $(TEMPLATES) tutorials\install.metadata.yaml tutorials\install.md
-	$(PANDOC_UTIL_PATH) -d tutorials\install.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d tutorials\install.options.yaml
 	move /Y tutorials\install.htm $(OBJ_DIR_TUTORIALS)\install.htm
 
 $(BIN_DIR_TUTORIALS)\install.htm: $(OBJ_DIR_TUTORIALS)\install.htm.txt
@@ -469,7 +469,7 @@ $(OBJ_DIR_TUTORIALS)\install.htm.utf-8wobom.txt: $(OBJ_DIR_TUTORIALS)\install.ht
 
 
 $(OBJ_DIR_TUTORIALS)\first-program.htm: tutorials\first-program.options.yaml $(TEMPLATES) tutorials\first-program.metadata.yaml tutorials\first-program.md
-	$(PANDOC_UTIL_PATH) -d tutorials\first-program.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d tutorials\first-program.options.yaml
 	move /Y tutorials\first-program.htm $(OBJ_DIR_TUTORIALS)\first-program.htm
 
 $(BIN_DIR_TUTORIALS)\first-program.htm: $(OBJ_DIR_TUTORIALS)\first-program.htm.txt
@@ -491,7 +491,7 @@ $(OBJ_DIR_TUTORIALS)\first-program.htm.utf-8wobom.txt: $(OBJ_DIR_TUTORIALS)\firs
 
 
 $(OBJ_DIR_TUTORIALS)\datatypes.htm: tutorials\datatypes.options.yaml $(TEMPLATES) tutorials\datatypes.metadata.yaml tutorials\datatypes.md
-	$(PANDOC_UTIL_PATH) -d tutorials\datatypes.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d tutorials\datatypes.options.yaml
 	move /Y tutorials\datatypes.htm $(OBJ_DIR_TUTORIALS)\datatypes.htm
 
 $(BIN_DIR_TUTORIALS)\datatypes.htm: $(OBJ_DIR_TUTORIALS)\datatypes.htm.txt
@@ -513,7 +513,7 @@ $(OBJ_DIR_TUTORIALS)\datatypes.htm.utf-8wobom.txt: $(OBJ_DIR_TUTORIALS)\datatype
 
 
 $(OBJ_DIR_TUTORIALS)\variables.htm: tutorials\variables.options.yaml $(TEMPLATES) tutorials\variables.metadata.yaml tutorials\variables.md
-	$(PANDOC_UTIL_PATH) -d tutorials\variables.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d tutorials\variables.options.yaml
 	move /Y tutorials\variables.htm $(OBJ_DIR_TUTORIALS)\variables.htm
 
 $(BIN_DIR_TUTORIALS)\variables.htm: $(OBJ_DIR_TUTORIALS)\variables.htm.txt
@@ -535,7 +535,7 @@ $(OBJ_DIR_TUTORIALS)\variables.htm.utf-8wobom.txt: $(OBJ_DIR_TUTORIALS)\variable
 
 
 $(OBJ_DIR_TUTORIALS)\statements.htm: tutorials\statements.options.yaml $(TEMPLATES) tutorials\statements.metadata.yaml tutorials\statements.md
-	$(PANDOC_UTIL_PATH) -d tutorials\statements.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d tutorials\statements.options.yaml
 	move /Y tutorials\statements.htm $(OBJ_DIR_TUTORIALS)\statements.htm
 
 $(BIN_DIR_TUTORIALS)\statements.htm: $(OBJ_DIR_TUTORIALS)\statements.htm.txt
@@ -557,7 +557,7 @@ $(OBJ_DIR_TUTORIALS)\statements.htm.utf-8wobom.txt: $(OBJ_DIR_TUTORIALS)\stateme
 
 
 $(OBJ_DIR_PROJECTS)\default.htm: projects\default.options.yaml $(TEMPLATES) projects\default.metadata.yaml projects\default.md
-	$(PANDOC_UTIL_PATH) -d projects\default.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d projects\default.options.yaml
 	move /Y projects\default.htm $(OBJ_DIR_PROJECTS)\default.htm
 
 $(BIN_DIR_PROJECTS)\default.htm: $(OBJ_DIR_PROJECTS)\default.htm.txt
@@ -579,7 +579,7 @@ $(OBJ_DIR_PROJECTS)\default.htm.utf-8wobom.txt: $(OBJ_DIR_PROJECTS)\default.htm
 
 
 $(OBJ_DIR_USERS)\default.htm: users\default.options.yaml $(TEMPLATES) users\default.metadata.yaml users\default.md
-	$(PANDOC_UTIL_PATH) -d users\default.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d users\default.options.yaml
 	move /Y users\default.htm $(OBJ_DIR_USERS)\default.htm
 
 $(BIN_DIR_USERS)\default.htm: $(OBJ_DIR_USERS)\default.htm.txt
@@ -601,7 +601,7 @@ $(OBJ_DIR_USERS)\default.htm.utf-8wobom.txt: $(OBJ_DIR_USERS)\default.htm
 
 
 $(OBJ_DIR_USERS)\mabu.htm: users\mabu.options.yaml $(TEMPLATES) users\mabu.metadata.yaml users\mabu.md
-	$(PANDOC_UTIL_PATH) -d users\mabu.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d users\mabu.options.yaml
 	move /Y users\mabu.htm $(OBJ_DIR_USERS)\mabu.htm
 
 $(BIN_DIR_USERS)\mabu.htm: $(OBJ_DIR_USERS)\mabu.htm.txt
@@ -623,7 +623,7 @@ $(OBJ_DIR_USERS)\mabu.htm.utf-8wobom.txt: $(OBJ_DIR_USERS)\mabu.htm
 
 
 $(OBJ_DIR_HELP)\default.htm: help\default.options.yaml $(TEMPLATES) help\default.metadata.yaml help\default.md
-	$(PANDOC_UTIL_PATH) -d help\default.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d help\default.options.yaml
 	move /Y help\default.htm $(OBJ_DIR_HELP)\default.htm
 
 $(BIN_DIR_HELP)\default.htm: $(OBJ_DIR_HELP)\default.htm.txt
@@ -645,7 +645,7 @@ $(OBJ_DIR_HELP)\default.htm.utf-8wobom.txt: $(OBJ_DIR_HELP)\default.htm
 
 
 $(OBJ_DIR_HELP)\about.htm: help\about.options.yaml $(TEMPLATES) help\about.metadata.yaml help\about.md
-	$(PANDOC_UTIL_PATH) -d help\about.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d help\about.options.yaml
 	move /Y help\about.htm $(OBJ_DIR_HELP)\about.htm
 
 $(BIN_DIR_HELP)\about.htm: $(OBJ_DIR_HELP)\about.htm.txt
@@ -667,7 +667,7 @@ $(OBJ_DIR_HELP)\about.htm.utf-8wobom.txt: $(OBJ_DIR_HELP)\about.htm
 
 
 $(OBJ_DIR_HELP)\links.htm: help\links.options.yaml $(TEMPLATES) help\links.metadata.yaml help\links.md
-	$(PANDOC_UTIL_PATH) -d help\links.options.yaml
+	$(PANDOC_UTIL_PATH) --no-highlight -d help\links.options.yaml
 	move /Y help\links.htm $(OBJ_DIR_HELP)\links.htm
 
 $(BIN_DIR_HELP)\links.htm: $(OBJ_DIR_HELP)\links.htm.txt

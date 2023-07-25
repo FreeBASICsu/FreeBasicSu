@@ -35,8 +35,5 @@ strip-comments: false
 # tab-stop: 4
 preserve-tabs: true
 
-# either a style name of a style definition file:
-highlight-style: pygments
-
 request-headers:
 - ["User-Agent", "Mozilla/5.0"]

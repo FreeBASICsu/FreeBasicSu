@@ -36,9 +36,6 @@ preserve-tabs: true
 # lf, crlf, or native
 eol: crlf
 
-# either a style name of a style definition file:
-highlight-style: pygments
-
 # A list of two-element lists
 request-headers:
 - ["User-Agent", "Mozilla/5.0"]
