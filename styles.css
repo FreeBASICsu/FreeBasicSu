@@ -1,6 +1,12 @@
-html {
+﻿html {
 	background: #EFEFEF;
 	font-family: sans-serif;
+}
+
+body {
+	max-width: 1170px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 nav {
@@ -25,12 +31,18 @@ nav span {
 	padding: 1em 1em;
 }
 
+main {
+	max-width: 850px;
+	padding: 5px;
+}
+
 aside {
 	border: solid 1px;
-	border-radius: .25em;
-	padding: 1.5em;
+	border-radius: 0.25em;
+	padding: 5px;
 	margin-top: 2.0em;
 	background: #CCCCCC;
+	max-width: 320px;
 }
 
 footer {
@@ -68,15 +80,6 @@ h6 {
 	margin-top: 2.0em;
 }
 
-div.fileblock {
-	margin: .5em;
-	clear: both;
-}
-
-div.advertisement {
-	margin: 2.0em;
-}
-
 div.memorydump {
 	font-size: 1.35em;
 	font-family: monospace;
@@ -90,7 +93,8 @@ pre {
 	overflow: auto;
 	width: auto;
 	min-height: 5em;
-	margin-bottom: 1.0em;
+	margin-bottom: 2.0em;
+	word-wrap: break-word;
 }
 
 pre.console {
@@ -103,7 +107,7 @@ pre.console {
 }
 
 pre.console:before {
-	content: "C:\\Windows\\system32\\cmd.exe";
+	content: "🖥C:\\Windows\\system32\\cmd.exe";
 	display: block;
 	height: 1.5em;
 	padding-top: 0.25em;
@@ -117,12 +121,7 @@ code {
 }
 
 div.versioninfo {
-	margin-right: 2em;
 	text-align: right;
-}
-
-img.avatar {
-	margin: 1em;
 }
 
 @media (min-width: 921px) {
@@ -133,24 +132,23 @@ img.avatar {
 
 	main {
 		display: inline-block;
-		width: 70%;
 		vertical-align: top;
 	}
 }
 
 @media screen and (prefers-color-scheme: dark) {
 	html {
-		background-color: #212121;
-		color: #698CC0;
+		background-color: #180000;
+		color: #5097FF;
 	}
 
 	nav {
 		font-weight: bold;
-		background: #000000;
+		background: #080000;
 	}
 
 	aside {
-		background: #000000;
+		background: #080000;
 	}
 
 	h1,
@@ -160,11 +158,11 @@ img.avatar {
 	h5,
 	h6 {
 		font-weight: bold;
-		color: #FFAB3F;
+		color: #CCCCCC;
 	}
 
 	pre {
-		background: #000000;
+		background: #080000;
 	}
 
 	pre.console {
@@ -174,20 +172,6 @@ img.avatar {
 	pre.console:before {
 		background: #FFFFFF;
 		color: #000000;
-	}
-
-	textarea,
-	select {
-		background-color: #111111;
-		color: #CCCCCC;
-	}
-
-	textarea:hover,
-	textarea:focus,
-	select:hover,
-	select:focus {
-		background-color: #151515;
-		color: #EEEEEE;
 	}
 
 	a {
