@@ -76,10 +76,10 @@ Value[0] = 0
 Воспользуемся этой особенностью и объявим структуру, содержащую в себе массив фиксированной длины:
 
 ```FreeBASIC
-Const INTEGERVECTOR_CAPACITY = 512
+Const CAPACITY = 512
 
 Type IntegerVector
-	Buffer(INTEGERVECTOR_CAPACITY - 1) As Integer
+	Buffer(CAPACITY - 1) As Integer
 End Type
 ```
 
@@ -88,7 +88,7 @@ End Type
 ```FreeBASIC
 Dim Vector As IntegerVector = Any
 
-For i As Integer = 0 To INTEGERVECTOR_CAPACITY - 1
+For i As Integer = 0 To CAPACITY - 1
 	Vector.Buffer(i) = i
 Next
 ```
