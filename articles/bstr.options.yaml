@@ -17,9 +17,6 @@ variables:
 metadata-files:
 - articles\bstr.metadata.yaml
 
-css:
-- /styles.css
-
 html-q-tags: false
 
 # Note that these take files, not their contents:
