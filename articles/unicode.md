@@ -20,10 +20,10 @@ Print s
 
 С чистой совестью ты компилируешь программу, запускаешь, но вместо желанного текста «Привет, мир!» получаешь кракозябры:
 
-<pre class="console"><samp><span class="promt">C:\Programming\FreeBASIC Projects&gt;</span><kbd>HelloWorld.exe</kbd>
+<pre class="console"><samp><span class="promt">C:\FreeBASIC\Projects&gt;</span><kbd>HelloWorld.exe</kbd>
 ┬ёхь яЁштхЄ!
 
-<span class="promt">C:\Programming\FreeBASIC Projects&gt;</span><span class="cursor">_</span>
+<span class="promt">C:\FreeBASIC\Projects&gt;</span><span class="cursor">_</span>
 </samp></pre>
 
 Так происходит из‐за конфликта кодировок символьных данных:
