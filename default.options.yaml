@@ -24,13 +24,8 @@ include-after-body: []
 include-in-header: []
 resource-path: ["."]
 
-strip-empty-paragraphs: true
-
-strip-comments: true
-
 preserve-tabs: true
-
-# lf, crlf, or native
+wrap: none
 eol: crlf
 
 # A list of two-element lists
