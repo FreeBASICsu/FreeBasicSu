@@ -94,6 +94,7 @@ pre {
 	min-height: 5em;
 	margin-bottom: 2.0em;
 	word-wrap: break-word;
+	tab-size: 4;
 }
 
 pre.console {
