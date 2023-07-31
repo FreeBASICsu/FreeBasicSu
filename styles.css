@@ -1,5 +1,19 @@
-﻿html {
-	background: #EFEFEF;
+﻿:root {
+	--main-bg-color: #EFEFEF;
+	--main-fore-color: #000000;
+	--menu-bg-color: #CCCCCC;
+	--aside-bg-color: #CCCCCC;
+	--fenced-code-bg-color: #E0E0E0;
+	--a-color: #0000FF;
+	--a-hover-color: #FF0000;
+	--a-visited-color: #8000FF;
+	--header1-6-color: #000000;
+	--header1-6-weight: normal;
+}
+
+html {
+	background: var(--main-bg-color);
+	color: var(--main-fore-color);
 	font-family: sans-serif;
 }
 
@@ -12,9 +26,10 @@ body {
 
 nav {
 	font-weight: bold;
-	background: #CCCCCC;
+	background: var(--menu-bg-color);
 	border: solid 1px;
 	border-radius: .25em;
+	margin: 5px;
 }
 
 nav ul {
@@ -33,7 +48,7 @@ nav a {
 
 main {
 	max-width: 850px;
-	padding: 5px;
+	margin: 5px;
 }
 
 aside {
@@ -41,7 +56,7 @@ aside {
 	border-radius: 0.25em;
 	padding: 5px;
 	margin-top: 2.0em;
-	background: #CCCCCC;
+	background: var(--aside-bg-color);
 	max-width: 320px;
 }
 
@@ -78,6 +93,8 @@ h4,
 h5,
 h6 {
 	margin-top: 2.0em;
+	color: var(--header1-6-color);
+	font-weight: var(--header1-6-weight);
 }
 
 div.memorydump {
@@ -88,7 +105,7 @@ pre {
 	border: solid 1px;
 	border-radius: .25em;
 	padding: 1.0em;
-	background: #E0E0E0;
+	background: var(--fenced-code-bg-color);
 	overflow: auto;
 	width: auto;
 	min-height: 5em;
@@ -119,6 +136,18 @@ div.versioninfo {
 	text-align: right;
 }
 
+a {
+	color: var(--a-color);
+}
+
+a:hover {
+	color: var(--a-hover-color);
+}
+
+a:visited {
+	color: var(--a-visited-color);
+}
+
 @media (min-width: 921px) {
 	aside {
 		display: inline-block;
@@ -132,48 +161,16 @@ div.versioninfo {
 }
 
 @media screen and (prefers-color-scheme: dark) {
-	html {
-		background-color: #180000;
-		color: #5097FF;
-	}
-
-	nav {
-		font-weight: bold;
-		background: #080000;
-	}
-
-	aside {
-		background: #080000;
-	}
-
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6 {
-		font-weight: bold;
-		color: #CCCCCC;
-	}
-
-	pre {
-		background: #080000;
-	}
-
-	pre.console {
-		color: #C0C0C0;
-	}
-
-	pre.console:before {
-		background: #FFFFFF;
-		color: #000000;
-	}
-
-	a {
-		color: #C9BE89;
-	}
-
-	a:hover {
-		color: #EEFEBB;
+	:root {
+		--main-bg-color: #180000;
+		--main-fore-color: #5097FF;
+		--menu-bg-color: #080000;
+		--aside-bg-color: #080000;
+		--fenced-code-bg-color: #080000;
+		--a-color: #f1ca07;
+		--a-hover-color: #EEFEBB;
+		--a-visited-color: #9461c7;
+		--header1-6-color: #CCCCCC;
+		--header1-6-weight: bold;
 	}
 }
