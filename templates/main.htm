@@ -43,11 +43,11 @@ $-- 	<link href="/rss.rss" type="application/rss+xml" rel="alternate" title="RSS
 $-- $endif$
 
 $if(math)$
-	$math$
+$math$
 $endif$
 
 $for(header-includes)$
-	$header-includes$
+$header-includes$
 $endfor$
 
 </head>
@@ -58,41 +58,12 @@ $endfor$
 	
 	<nav>
 		<ul>
-$if(HomePage)$
-			<li><span>Главная</span></li>
-$else$
 			<li><a href="/">Главная</a></li>
-$endif$
-
-$if(ArticlesDefaultPage)$
-			<li><span>Статьи</span></li>
-$else$
 			<li><a href="/articles/">Статьи</a></li>
-$endif$
-
-$if(TutorialDefaultPage)$
-			<li><span>Уроки</span></li>
-$else$
 			<li><a href="/tutorials/">Уроки</a></li>
-$endif$
-
-$if(ProjectsDefaultPage)$
-			<li><span>Проекты</span></li>
-$else$
 			<li><a href="/projects/">Проекты</a></li>
-$endif$
-
-$if(UsersDefaultPage)$
-			<li><span>Персонажи</span></li>
-$else$
 			<li><a href="/users/">Персонажи</a></li>
-$endif$
-
-$if(HelpDefaultPage)$
-			<li><span>Информация</span></li>
-$else$
 			<li><a href="/help/">Информация</a></li>
-$endif$
 		</ul>
 	</nav>
 	
