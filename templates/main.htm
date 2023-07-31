@@ -8,24 +8,6 @@ $if(description)$
 	<meta name="description" content="$description$" />
 $endif$
 
-$for(author)$
-	$if(author.name)$
-		<meta name="author" content="$author.name$$if(author.affiliation)$ ($author.affiliation$)$endif$" />
-	$else$
-		$-- $for(author-meta)$
-		$-- 	<meta name="author" content="$author-meta$" />
-		$-- $endfor$
-	$endif$
-$endfor$
-
-$if(date-meta)$
-	<meta name="dcterms.created" content="$date-meta$" />
-$endif$
-
-$if(ModifiedDate)$
-	<meta name="dcterms.modified" content="$ModifiedDate$" />
-$endif$
-
 $if(keywords)$
 	<meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
 $endif$
