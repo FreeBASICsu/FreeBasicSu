@@ -7,6 +7,7 @@ body {
 	max-width: 1170px;
 	margin-left: auto;
 	margin-right: auto;
+	font-size: 16px;
 }
 
 nav {
@@ -114,10 +115,6 @@ pre.console:before {
 	background: #FFFFFF;
 	color: #000000;
 	border: solid 1px;
-}
-
-code {
-	font-size: 1.35em;
 }
 
 div.versioninfo {
