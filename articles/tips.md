@@ -130,16 +130,18 @@ Dim FirstName As String = "John Doe"
 SetName(FirstName)
 ```
 
+## Объявление переменных в том блоке, где они используются
+
 Если переменная используется только внутри блока, то её следует объявлять внутри блока:
 
 ```FreeBASIC
 If Condition Then
 	Dim Age As Integer = 80
-	SetAge(Value)
+	SetAge(Age)
 End If
 ```
 
-Это же относится к циклам `For`, счётчик цикла можно сразу указать в заголовке:
+Это же относится к циклам `For`, где счётчик цикла можно сразу указать в заголовке:
 
 ```FreeBASIC
 For i As Integer = 0 To Length - 1
