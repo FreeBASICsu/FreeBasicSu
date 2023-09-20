@@ -6,7 +6,7 @@
 	--fenced-code-bg-color: #E0E0E0;
 	--a-color: #0000FF;
 	--a-hover-color: #FF0000;
-	--a-visited-color: #8000FF;
+	--a-visited-color: #2F2C80;
 	--header1-6-color: #000000;
 	--header1-6-weight: normal;
 }
@@ -163,13 +163,13 @@ a:visited {
 @media screen and (prefers-color-scheme: dark) {
 	:root {
 		--main-bg-color: #180000;
-		--main-fore-color: #5097FF;
+		--main-fore-color: #80BF8F;
 		--menu-bg-color: #080000;
 		--aside-bg-color: #080000;
 		--fenced-code-bg-color: #080000;
 		--a-color: #f1ca07;
 		--a-hover-color: #EEFEBB;
-		--a-visited-color: #9461c7;
+		--a-visited-color: #F176EB;
 		--header1-6-color: #CCCCCC;
 		--header1-6-weight: bold;
 	}
