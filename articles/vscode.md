@@ -10,8 +10,6 @@
 
 ### Важные
 
-Русификатор для студии [Russian Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ru)
-
 Нужен для отладки [C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
 
 ### Подсветка синтаксиса
@@ -20,7 +18,7 @@
 
 Для ассемблера: [x86 and x86_64 Assembly](https://marketplace.visualstudio.com/items?itemName=13xforever.language-x86-64-assembly)
 
-Для файлов с ресурсами: [RC Script Language](https://marketplace.visualstudio.com/items?itemName=willasm.rc-script)
+К сожалению, существующие расширения подсветки не лишены недостатков и ошибок, однако это не мешает работе программы.
 
 ### Дополнительно для отладки
 
@@ -42,15 +40,22 @@
 
 Проверка правильности кода: [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 
+Русификатор для студии [Russian Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ru)
+
 Русификатор для Code Spell Checker [Russian - Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-russian)
+
+Подсветка синтаксиса для файлов с ресурсами: [RC Script Language](https://marketplace.visualstudio.com/items?itemName=willasm.rc-script)
 
 ## Создание проекта
 
-Для единообразия и организованности, предположим, что все наши проекты будут расположены в каталоге `C:\FreeBasic Projects`.
+Проекты в студии — это обычные каталоги. Для единообразия и организованности, предположим, что все наши проекты будут расположены в каталоге `C:\FreeBasic Projects`.
 
 Запускаем студию.
 
-Чтобы создать проект, в меню меню «Файл» выбираем «Открыть папку». Создаём в диалоге новую папку `Мой первый проект`, и выбираем её. Путь к проекту будет следующим: `C:\FreeBasic Projects\Мой первый проект`.
+Чтобы создать проект, можно пойти двумя путями:
+
+* в меню меню «Файл» выбираем «Открыть папку», создаём в диалоге папку `Мой первый проект`, и выбираем её;
+* создаём папку `Мой первый проект` в проводнике, и перетаскиваем мышью папку из проводника прямо на окно студии.
 
 Создадим директории:
 
@@ -124,7 +129,7 @@ For i As Integer = LBound(Vector) To UBound(Vector)
 Next
 ```
 
-### Задачи
+### Добавление задачи сборки
 
 Если вы не хотите возиться с утилитой `make`, и у вас есть какой‐нибудь пакетный файл с командами для сборки проекта, то можно добавить задачу на сборку.
 
@@ -218,8 +223,6 @@ https://code.visualstudio.com/docs/editor/debugging
 	]
 }
 ```
-
-
 
 ### Настройки для утилиты make
 
