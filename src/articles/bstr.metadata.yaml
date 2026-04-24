@@ -1,0 +1,42 @@
+﻿---
+title: "Строки BSTR"
+
+subtitle: "FreeBASIC.su"
+
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
+
+# abstract: 
+
+keywords: 
+  - BSTR
+  - строки
+  - COM
+  - автоматизация
+
+# subject:
+
+description: "Строковый тип данных является одним из самых важных в любом языке программировании. Вряд ли можно написать полезную программу не задействовав этот тип данных."
+
+# category:
+
+lang: "ru"
+
+# dir: 
+
+date: "2020-07-19"
+
+FileVersion: 1.0
+
+PublicationDate: "2020-07-19"
+
+PublicationDateVerbose: "2020-07-19"
+
+ModifiedDate: "2020-07-19"
+
+ModifiedDateVerbose: "2020-07-19"
+
+...

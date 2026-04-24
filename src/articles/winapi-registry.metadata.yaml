@@ -1,0 +1,40 @@
+﻿---
+title: "Реестр Windows"
+
+subtitle: "FreeBASIC.su"
+
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
+
+# abstract: 
+
+keywords: 
+  - реестр
+  - RegCreateKeyEx
+  - RegQueryValueEx
+  - RegSetValueEx
+
+# subject:
+
+description: "Работа с реестром Windows"
+
+# category:
+
+lang: "ru"
+
+date: "2017-03-05T23:25:31+07:00"
+
+FileVersion: 1.0
+
+PublicationDate: "2017-03-05T23:25:31+07:00"
+
+PublicationDateVerbose: "2020-07-19"
+
+ModifiedDate: "2021-10-07T18:00:00+07:00"
+
+ModifiedDateVerbose: "7 октября 2021"
+
+...

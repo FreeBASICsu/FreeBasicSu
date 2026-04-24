@@ -1,0 +1,40 @@
+﻿---
+title: "Обработка ошибок в Windows"
+
+subtitle: "FreeBASIC.su"
+
+author:
+- name: mabu
+  affiliation: Корпорация «Пакетные файлы»
+  website: "/users/mabu.htm"
+  avatar: "/avatars/mabu.50x50.jpg"
+
+# abstract: 
+
+keywords: 
+  - обработка ошибок
+  - коды ошибок
+  - GetLastError
+  - SetLastError
+
+# subject:
+
+description: "Как устроена обработка ошибок в функциях Microsoft Windows"
+
+# category:
+
+lang: "ru"
+
+date: "2017-08-10T12:49:07+07:00"
+
+FileVersion: 1.0
+
+PublicationDate: "2017-08-10T12:49:07+07:00"
+
+PublicationDateVerbose: "10 августа 2017"
+
+ModifiedDate: "2017-08-10T12:49:07+07:00"
+
+ModifiedDateVerbose: "10 августа 2017"
+
+...

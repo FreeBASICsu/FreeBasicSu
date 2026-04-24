@@ -1,0 +1,35 @@
+﻿input-files:
+- tutorials\install.md
+
+from: markdown+emoji
+
+output-file: tutorials\install.htm
+
+to: html5
+
+template: templates\main.htm
+
+standalone: true
+
+variables:
+  TutorialDefaultPage: false
+  NeedSocialShareButtons: false
+
+metadata-files:
+- tutorials\install.metadata.yaml
+
+html-q-tags: false
+
+# Note that these take files, not their contents:
+include-before-body: []
+include-after-body: []
+include-in-header: []
+resource-path: ["."]
+
+preserve-tabs: true
+wrap: none
+eol: crlf
+
+# A list of two-element lists
+request-headers:
+- ["User-Agent", "Mozilla/5.0"]

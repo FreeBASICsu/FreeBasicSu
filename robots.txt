@@ -1,4 +1,0 @@
-User-Agent: *
-
-Host: www.freebasic.su
-sitemap: http://www.freebasic.su/sitemap.xml

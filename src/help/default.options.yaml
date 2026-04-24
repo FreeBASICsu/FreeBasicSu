@@ -1,0 +1,34 @@
+﻿input-files:
+- help\default.md
+
+from: markdown+emoji
+
+output-file: help\default.htm
+
+to: html5
+
+template: templates\main.htm
+
+standalone: true
+
+variables:
+  HelpDefaultPage: true
+
+metadata-files:
+- help\default.metadata.yaml
+
+html-q-tags: false
+
+# Note that these take files, not their contents:
+include-before-body: []
+include-after-body: []
+include-in-header: []
+resource-path: ["."]
+
+preserve-tabs: true
+wrap: none
+eol: crlf
+
+# A list of two-element lists
+request-headers:
+- ["User-Agent", "Mozilla/5.0"]
